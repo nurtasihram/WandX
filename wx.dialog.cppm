@@ -5,7 +5,7 @@ module;
 
 export module wx.dialog;
 
-import wx.proto;
+import wx.win32;
 import wx.gdi;
 
 #pragma region Win32 Prototype Includes
@@ -16,53 +16,53 @@ namespace WX {
 #pragma region CommDlg.h
 #undef GetOpenFileName
 inline bool GetOpenFileName(LPOPENFILENAMEA lpofn)
-	reflect_as(::GetOpenFileNameA(lpofn));
+	ret_as(::GetOpenFileNameA(lpofn));
 inline bool GetOpenFileName(LPOPENFILENAMEW lpofn)
-	reflect_as(::GetOpenFileNameW(lpofn));
+	ret_as(::GetOpenFileNameW(lpofn));
 #undef GetSaveFileName
 inline bool GetSaveFileName(LPOPENFILENAMEA lpofn)
-	reflect_as(::GetSaveFileNameA(lpofn));
+	ret_as(::GetSaveFileNameA(lpofn));
 inline bool GetSaveFileName(LPOPENFILENAMEW lpofn)
-	reflect_as(::GetSaveFileNameW(lpofn));
+	ret_as(::GetSaveFileNameW(lpofn));
 #undef GetFileTitle
 inline short GetFileTitle(LPCSTR lpFileName, LPSTR lpBuffer, WORD cchSize)
-	assertl_reflect_as(auto res = ::GetFileTitleA(lpFileName, lpBuffer, cchSize); res >= 0, res);
+	safe_ret_as(auto res = ::GetFileTitleA(lpFileName, lpBuffer, cchSize); res >= 0, res);
 inline short GetFileTitle(LPCWSTR lpFileName, LPWSTR lpBuffer, WORD cchSize)
-	assertl_reflect_as(auto res = ::GetFileTitleW(lpFileName, lpBuffer, cchSize); res >= 0, res);
+	safe_ret_as(auto res = ::GetFileTitleW(lpFileName, lpBuffer, cchSize); res >= 0, res);
 #undef ChooseColor
 inline bool ChooseColor(LPCHOOSECOLORA lpcc)
-	reflect_as(::ChooseColorA(lpcc));
+	ret_as(::ChooseColorA(lpcc));
 inline bool ChooseColor(LPCHOOSECOLORW lpcc)
-	reflect_as(::ChooseColorW(lpcc));
+	ret_as(::ChooseColorW(lpcc));
 #undef FindText
 inline HWND FindText(LPFINDREPLACEA lpfr)
-	reflect_as(::FindTextA(lpfr));
+	ret_as(::FindTextA(lpfr));
 inline HWND FindText(LPFINDREPLACEW lpfr)
-	reflect_as(::FindTextW(lpfr));
+	ret_as(::FindTextW(lpfr));
 #undef ReplaceText
 inline HWND ReplaceText(LPFINDREPLACEA lpfr)
-	reflect_as(::ReplaceTextA(lpfr));
+	ret_as(::ReplaceTextA(lpfr));
 inline HWND ReplaceText(LPFINDREPLACEW lpfr)
-	reflect_as(::ReplaceTextW(lpfr));
+	ret_as(::ReplaceTextW(lpfr));
 #undef ChooseFont
 inline bool ChooseFont(LPCHOOSEFONTA lpcf)
-	reflect_as(::ChooseFontA(lpcf));
+	ret_as(::ChooseFontA(lpcf));
 inline bool ChooseFont(LPCHOOSEFONTW lpcf)
-	reflect_as(::ChooseFontW(lpcf));
+	ret_as(::ChooseFontW(lpcf));
 inline bool PrintDlg(LPPRINTDLGA lppd)
-	reflect_as(::PrintDlgA(lppd));
+	ret_as(::PrintDlgA(lppd));
 inline bool PrintDlg(LPPRINTDLGW lppd)
-	reflect_as(::PrintDlgW(lppd));
+	ret_as(::PrintDlgW(lppd));
 #undef PrintDlgEx
 inline bool PrintDlg(LPPRINTDLGEXA lppd)
-	reflect_as(::PrintDlgExA(lppd));
+	ret_as(::PrintDlgExA(lppd));
 inline bool PrintDlg(LPPRINTDLGEXW lppd)
-	reflect_as(::PrintDlgExW(lppd));
+	ret_as(::PrintDlgExW(lppd));
 #undef PageSetupDlg
 inline bool PageSetupDlg(LPPAGESETUPDLGA lppsd)
-	reflect_as(::PageSetupDlgA(lppsd));
+	ret_as(::PageSetupDlgA(lppsd));
 inline bool PageSetupDlg(LPPAGESETUPDLGW lppsd)
-	reflect_as(::PageSetupDlgW(lppsd));
+	ret_as(::PageSetupDlgW(lppsd));
 #pragma endregion
 
 }
@@ -83,42 +83,42 @@ public:
 public:
 	template<class RetType = LRESULT, class MsgType = UINT, class WParam = WPARAM, class LParam = LPARAM>
 	inline RetType Send(MsgType msgid, WParam wParam = 0, LParam lParam = 0) const
-		reflect_as(big_cast<RetType>(WX::SendDlgItemMessage(hDlg, nIDDlgItem, (UINT)(msgid), small_cast<WPARAM>(wParam), small_cast<LPARAM>(lParam))));
+		ret_as(big_cast<RetType>(WX::SendDlgItemMessage(hDlg, nIDDlgItem, (UINT)(msgid), small_cast<WPARAM>(wParam), small_cast<LPARAM>(lParam))));
 #pragma region Properties
 public: // Property - Int
-	/* W */ inline auto &Int(INT value) reflect_to_self(WX::SetDlgItemInt(hDlg, nIDDlgItem, value, true));
-	/* W */ inline auto &Int(UINT value) reflect_to_self(WX::SetDlgItemInt(hDlg, nIDDlgItem, value, false));
-	/* R */ inline INT   Int() const reflect_as(WX::GetDlgItemInt(hDlg, nIDDlgItem, O, true));
+	/* W */ inline auto &Int(INT value) ret_to_self(WX::SetDlgItemInt(hDlg, nIDDlgItem, value, true));
+	/* W */ inline auto &Int(UINT value) ret_to_self(WX::SetDlgItemInt(hDlg, nIDDlgItem, value, false));
+	/* R */ inline INT   Int() const ret_as(WX::GetDlgItemInt(hDlg, nIDDlgItem, O, true));
 public: // Property - UInt
-	/* R */ inline UINT  UInt() const reflect_as(WX::GetDlgItemInt(hDlg, nIDDlgItem, O, false));
+	/* R */ inline UINT  UInt() const ret_as(WX::GetDlgItemInt(hDlg, nIDDlgItem, O, false));
 public: // Property - ButtonCheck
-	/* W */ inline auto &CheckButton(bool bCheck) reflect_to_self(WX::CheckDlgButton(hDlg, nIDDlgItem, bCheck ? BST_CHECKED : BST_UNCHECKED));
-	/* R */ inline bool CheckButton() const reflect_as(WX::IsDlgButtonChecked(hDlg, nIDDlgItem) == BST_CHECKED);
+	/* W */ inline auto &CheckButton(bool bCheck) ret_to_self(WX::CheckDlgButton(hDlg, nIDDlgItem, bCheck ? BST_CHECKED : BST_UNCHECKED));
+	/* R */ inline bool CheckButton() const ret_as(WX::IsDlgButtonChecked(hDlg, nIDDlgItem) == BST_CHECKED);
 public: // Property - Text
 	template<class TCHAR>
-	/* W */ inline auto &Text(const TCHAR *lpText) reflect_to_self(WX::SetDlgItemText(hDlg, nIDDlgItem, lpText));
-	template<bool IsUnicode = WX::IsUnicode, size_t MaxLen = MaxLenNotice>
+	/* W */ inline auto &Text(const TCHAR *lpText) ret_to_self(WX::SetDlgItemText(hDlg, nIDDlgItem, lpText));
+	template<bool IsUnicode = WX::IsUnicode, SizeT MaxLen = MaxLenNotice>
 	/* R */ inline StringX<IsUnicode> Text() const {
 		StringX<IsUnicode> str(MaxLen);
 		auto len = WX::GetDlgItemText(hDlg, nIDDlgItem, str, (int)MaxLen);
-		return to_right_hand(str.Resize(len));
+		return right_hand_cast(str.Resize(len));
 	}
-	template<size_t MaxLen = MaxLenNotice>
-	/* R */ inline StringA TextA() const reflect_as(Text<false, MaxLen>());
-	template<size_t MaxLen = MaxLenNotice>
-	/* R */ inline StringW TextW() const reflect_as(Text<true, MaxLen>());
+	template<SizeT MaxLen = MaxLenNotice>
+	/* R */ inline StringA TextA() const ret_as(Text<false, MaxLen>());
+	template<SizeT MaxLen = MaxLenNotice>
+	/* R */ inline StringW TextW() const ret_as(Text<true, MaxLen>());
 public: // Property - Window
 	template<class AnyChild = void>
-	/* R */ inline WindowShim<AnyChild> Window() reflect_as(WX::GetDlgItem(hDlg, nIDDlgItem));
+	/* R */ inline WindowShim<AnyChild> Window() ret_as(WX::GetDlgItem(hDlg, nIDDlgItem));
 	template<class AnyChild = void>
-	/* R */ inline CWindowShim<AnyChild> Window() const reflect_as(WX::GetDlgItem(hDlg, nIDDlgItem));
+	/* R */ inline CWindowShim<AnyChild> Window() const ret_as(WX::GetDlgItem(hDlg, nIDDlgItem));
 #pragma endregion
 public:
-	inline operator HWND() const reflect_as(WX::GetDlgItem(hDlg, nIDDlgItem));
+	inline operator HWND() const ret_as(WX::GetDlgItem(hDlg, nIDDlgItem));
 	template<class AnyChild>
-	inline operator WindowShim<AnyChild>() reflect_as(WX::GetDlgItem(hDlg, nIDDlgItem));
+	inline operator WindowShim<AnyChild>() ret_as(WX::GetDlgItem(hDlg, nIDDlgItem));
 	template<class AnyChild>
-	inline operator CWindowShim<AnyChild>() const reflect_as(WX::GetDlgItem(hDlg, nIDDlgItem));
+	inline operator CWindowShim<AnyChild>() const ret_as(WX::GetDlgItem(hDlg, nIDDlgItem));
 };
 template<class AnyChild>
 class DialogBase : public WindowBase<AnyChild> {
@@ -131,7 +131,7 @@ public:
 	// inline auto Create()
 	// inline auto Box()
 	template<class AnyType = INT_PTR>
-	inline void End(AnyType nResult) reflect_to(WX::EndDialog(self, small_cast<INT_PTR>(nResult)));
+	inline void End(AnyType nResult) ret_to(WX::EndDialog(self, small_cast<INT_PTR>(nResult)));
 #pragma region Properties
 public: //
 #pragma endregion
@@ -146,16 +146,16 @@ class DialogCommon :
 	using LPCTSTR = decltype(DIALOGSTRUCT::lpTemplateName);
 	using String = StringX<IsSame<LPCTSTR, LPCWSTR>>;
 public:
-	using super = StructShim<DIALOGSTRUCT>;
+	using Super = StructShim<DIALOGSTRUCT>;
 	using Child = AnyChild;
 public:
-	DialogCommon() reflect_to(this->lStructSize = sizeof(DIALOGSTRUCT));
+	DialogCommon() ret_to(this->lStructSize = sizeof(DIALOGSTRUCT));
 public: // Properties
-	/* W */ inline auto &Owner(HWND hwndOwner) reflect_to_child(self->hwndOwner = hwndOwner);
-	/* W */ inline auto &Module(HINSTANCE hInstance) reflect_to_child(self->hInstance = (decltype(self->hInstance))hInstance);
-	/* W */ inline auto &Template(LPCTSTR lpTemplateName) reflect_to_child(self->lpTemplateName = lpTemplateName);
+	/* W */ inline auto &Owner(HWND hwndOwner) ret_to_child(self->hwndOwner = hwndOwner);
+	/* W */ inline auto &Module(HINSTANCE hInstance) ret_to_child(self->hInstance = (decltype(self->hInstance))hInstance);
+	/* W */ inline auto &Template(LPCTSTR lpTemplateName) ret_to_child(self->lpTemplateName = lpTemplateName);
 	template<class AnyType>
-	/* W */ inline auto &CustData(AnyType dat) reflect_to_child(self->lCustData = small_cast<LPARAM>(dat));
+	/* W */ inline auto &CustData(AnyType dat) ret_to_child(self->lCustData = small_cast<LPARAM>(dat));
 public:
 	//	LPOFNHOOKPROC lpfnHook;
 };
@@ -178,23 +178,23 @@ class DialogColorX : public DialogCommon<
 	Chain<DialogColorX<IsUnicode, AnyChild>, AnyChild>> {
 	using_structx(CHOOSECOLOR);
 public:
-	using super = DialogCommon<CHOOSECOLOR, DialogColorX>;
+	using Super = DialogCommon<CHOOSECOLOR, DialogColorX>;
 public:
 	using Style = DialogColorStyle;
 	using ColorSet = ArrayOf<RGBColor, 16>;
 	using CColorSet = const ArrayOf<RGBColor, 16>;
 public:
-	DialogColorX() reflect_to(self->lStructSize = sizeof(CHOOSECOLOR));
+	DialogColorX() ret_to(self->lStructSize = sizeof(CHOOSECOLOR));
 public: // Property - Styles
-	/* W */ inline auto &Styles(Style style) reflect_to_child(self->Flags = style.yield());
+	/* W */ inline auto &Styles(Style style) ret_to_child(self->Flags = style.yield());
 public: // Property - CustColors
-	/* W */ inline auto &CustColors(ColorSet *lpCustColors) reflect_to_child(self->lpCustColors = (COLORREF *)lpCustColors);
-	/* R */ inline CColorSet *CustColors() const reflect_as((CColorSet *)self->lpCustColors);
+	/* W */ inline auto &CustColors(ColorSet *lpCustColors) ret_to_child(self->lpCustColors = (COLORREF *)lpCustColors);
+	/* R */ inline CColorSet *CustColors() const ret_as((CColorSet *)self->lpCustColors);
 public: // Property - Result
-	/* W */ inline auto &Result(COLORREF rgb) reflect_to_child(self->rgbResult = rgb);
-	/* R */ inline RGBColor Result() const reflect_as(self->rgbResult);
+	/* W */ inline auto &Result(COLORREF rgb) ret_to_child(self->rgbResult = rgb);
+proxy_prop_get(Result,rgbResult,RGBColor);
 public:
-	inline bool Choose() reflect_as(WX::ChooseColor(this));
+	inline bool Choose() ret_as(WX::ChooseColor(this));
 };
 template<class AnyChild = void>
 using DialogColor  = DialogColorX<IsUnicode, AnyChild>;
@@ -249,41 +249,31 @@ class DialogFontX : public DialogCommon<
 	using_structx(String);
 	using LPCTSTR = LPCXSTR<IsUnicode>;
 public:
-	using super = StructShim<CHOOSEFONT>;
+	using Super = StructShim<CHOOSEFONT>;
 	using Style = DialogFontStyle;
 public:
-	DialogFontX() reflect_to(self->lStructSize = sizeof(CHOOSEFONT));
-	~DialogFontX() reflect_to(String::AutoFree(self->lpszStyle));
+	DialogFontX() ret_to(self->lStructSize = sizeof(CHOOSEFONT));
+	~DialogFontX() ret_to(String::AutoFree(self->lpszStyle));
 public: // Property - Styles
-	/* W */ inline auto &Styles(Style style) reflect_to_self(self->Flags = style.yield());
+	proxy_prop_set(Styles,style,Style);
 public: // Property - FontTypes
-	/* W */ inline auto    &FontTypes(FontType ft) reflect_to_self(self->nFontType = ft.yield());
-	/* R */ inline FontType FontTypes() const reflect_as(reuse_as<FontType>(self->nFontType));
-public: // Property - SizeMin
-	/* W */ inline auto&SizeMin(INT nSizeMin) reflect_to_self(self->nSizeMin = nSizeMin);
-	/* R */ inline INT   SizeMin() const reflect_as(self->nSizeMin);
-public: // Property - SizeMax
-	/* W */ inline auto&SizeMax(INT nSizeMax) reflect_to_self(self->nSizeMax = nSizeMax);
-	/* R */ inline INT  SizeMax() const reflect_as(self->nSizeMax);
-public: // Property - PointSize
-	/* W */ inline auto&PointSize(INT iPointSize) reflect_to_self(self->iPointSize = iPointSize);
-	/* R */ inline INT  PointSize() const reflect_as(self->iPointSize);
-public: // Property - Color
-	/* W */ inline auto    &Color(COLORREF rgbColors) reflect_to_self(self->rgbColors = rgbColors);
-	/* R */ inline RGBColor Color() const reflect_as(self->rgbColors);
-public: // Property - DC
-	/* W */ inline auto&DC(HDC hDC) reflect_to_self(self->hDC = hDC);
-	/* R */ inline CDC  DC() const reflect_as(self->hDC);
+	proxy_prop_set(FontTypes,ft,FontType);
+	/* R */ inline FontType FontTypes() const ret_as(reuse_cast<FontType>(self->nFontType));
+	proxy_prop_sync(SizeMin,nSizeMin,INT);
+	proxy_prop_sync(SizeMax,nSizeMax,INT);
+	proxy_prop_sync(PointSize,iPointSize,INT);
+	proxy_prop(Color,rgbColors,COLORREF,RGBColor);
+	proxy_prop(DC,hDC,HDC,CDC);
 public: // Property - FontStyle
-	/* W */ inline auto &FontStyle(const String &style) reflect_to_self(String::AutoCopy(self->lpszStyle, style));
-	template<size_t MaxLen = MaxLenNotice>
-	/* R */ inline const String FontStyle() const reflect_as(CString(self->lpszStyle, MaxLen));
+	/* W */ inline auto &FontStyle(const String &style) ret_to_self(String::AutoCopy(self->lpszStyle, style));
+	template<SizeT MaxLen = MaxLenNotice>
+	/* R */ inline const String FontStyle() const ret_as(CString(self->lpszStyle, MaxLen));
 public: // Property - LogFont
-	/* W */ inline auto &LogFont(LOGFONT *lpLogFont) reflect_to_self(self->lpLogFont = lpLogFont);
-	/* W */ inline auto &LogFont(FontLogic *lpLogFont) reflect_to_self(self->lpLogFont = (LOGFONT *)lpLogFont);
-	/* R */ inline auto LogFont() const reflect_as(self->lpLogFont);
+	/* W */ inline auto &LogFont(LOGFONT *lpLogFont) ret_to_self(self->lpLogFont = lpLogFont);
+	/* W */ inline auto &LogFont(FontLogic *lpLogFont) ret_to_self(self->lpLogFont = (LOGFONT *)lpLogFont);
+proxy_prop_get(LogFont,lpLogFont,auto);
 public:
-	inline bool Choose() reflect_as(WX::ChooseFont(this));
+	inline bool Choose() ret_as(WX::ChooseFont(this));
 };
 template<class AnyChild = void>
 using DialogFont = DialogFontX<IsUnicode, AnyChild>;
@@ -337,50 +327,46 @@ class DialogFileX : public DialogCommon<
 	using LPCTSTR = LPCXSTR<IsUnicode>;
 	using String = StringX<IsUnicode>;
 public:
-	using super = StructShim<OPENFILENAME>;
+	using Super = StructShim<OPENFILENAME>;
 	using Style = DialogFileStyle;
 public:
-	DialogFileX() reflect_to(self->lStructSize = sizeof(OPENFILENAME));
+	DialogFileX() ret_to(self->lStructSize = sizeof(OPENFILENAME));
 public: // Property - Styles
-	/* W */ inline auto &Styles(Style Flags) reflect_to_self(self->Flags = Flags.yield());
+	proxy_prop_set(Styles,Flags,Style);
 public: // Property - FileOffset
-	/* R */ inline WORD FileOffset() const reflect_as(self->nFileOffset);
+proxy_prop_get(FileOffset,nFileOffset,WORD);
 public: // Property - FileExtension
-	/* R */ inline WORD FileExtension() const reflect_as(self->nFileExtension);
+proxy_prop_get(FileExtension,nFileExtension,WORD);
 public: // Property - File
-//	/* W */ inline auto &File(const String &strFile) reflect_to_self(self->lpstrFile = lpstrFile);
-	/* W */ inline auto &File(String &strFile) reflect_to_self(self->lpstrFile = strFile, self->nMaxFile = (DWORD)strFile.Length());
-	/* R */ inline const String File() const reflect_as(CString(self->lpstrFile, self->nMaxFile));
-public: // Property - FileMaxLen
-	/* W */ inline auto &FileMaxLen(DWORD nMaxFile) reflect_to_self(self->nMaxFile = nMaxFile);
-	/* R */ inline auto  FileMaxLen() const reflect_as(self->nMaxFile);
+//	/* W */ inline auto &File(const String &strFile) ret_to_self(self->lpstrFile = lpstrFile);
+	/* W */ inline auto &File(String &strFile) ret_to_self(self->lpstrFile = strFile, self->nMaxFile = (DWORD)strFile.Length());
+	/* R */ inline const String File() const ret_as(CString(self->lpstrFile, self->nMaxFile));
+	proxy_prop(FileMaxLen,nMaxFile,DWORD,auto);
 public: // Property - FileTitle
-	/* W */ inline auto &FileTitle(LPTSTR lpstrFileTitle) reflect_as(self->lpstrFileTitle = lpstrFileTitle);
-	/* W */ inline auto &FileTitle(String &strFileTitle) reflect_to_self(self->lpstrFileTitle = strFileTitle, self->nMaxFileTitle = (DWORD)strFileTitle.Length());
-	/* R */ inline const String FileTitle() const reflect_as(CString(self->lpstrFileTitle, self->nMaxFileTitle));
+	/* W */ inline auto &FileTitle(LPTSTR lpstrFileTitle) ret_as(self->lpstrFileTitle = lpstrFileTitle);
+	/* W */ inline auto &FileTitle(String &strFileTitle) ret_to_self(self->lpstrFileTitle = strFileTitle, self->nMaxFileTitle = (DWORD)strFileTitle.Length());
+	/* R */ inline const String FileTitle() const ret_as(CString(self->lpstrFileTitle, self->nMaxFileTitle));
 public: // Property - FileTitleMaxLen
-	/* W */ inline auto &FileTitleMaxLen(DWORD nMaxFileTitle) reflect_to_self(self->nMaxFileTitle = nMaxFileTitle);
-	/* W */ inline auto  FileTitleMaxLen() const reflect_as(self->nMaxFileTitle);
+proxy_prop_set(FileTitleMaxLen, DWORD, nMaxFileTitle);
+	/* W */ inline auto  FileTitleMaxLen() const ret_as(self->nMaxFileTitle);
 public: // Property - CustomFilter
-	/* W */ inline auto &CustomFilter(LPTSTR lpstrCustomFilter) reflect_to_self(self->lpstrCustomFilter = lpstrCustomFilter);
-	/* W */ inline auto &CustomFilter(String &strCustFilter) reflect_to_self(self->lpstrCustomFilter = strCustFilter, self->nMaxCustFilter = (DWORD)strCustFilter.Length());
-	/* R */ inline const String CustomFilter() const reflect_as(CString(self->lpstrCustomFilter, self->nMaxCustFilter));
-public: // Property - CustomFilterMaxLen
-	/* W */ inline auto &CustomFilterMaxLen(DWORD nMaxCustFilter) reflect_to_self(self->nMaxCustFilter = nMaxCustFilter);
-	/* R */ inline auto  CustomFilterMaxLen() const reflect_as(self->nMaxCustFilter);
+proxy_prop_set(CustomFilter, LPTSTR, lpstrCustomFilter);
+	/* W */ inline auto &CustomFilter(String &strCustFilter) ret_to_self(self->lpstrCustomFilter = strCustFilter, self->nMaxCustFilter = (DWORD)strCustFilter.Length());
+	/* R */ inline const String CustomFilter() const ret_as(CString(self->lpstrCustomFilter, self->nMaxCustFilter));
+	proxy_prop(CustomFilterMaxLen,nMaxCustFilter,DWORD,auto);
 public: // Property - Filter
-	/* W */ inline auto &Filter(LPCTSTR lpstrFilter) reflect_to_self(self->lpstrFilter = lpstrFilter);
+proxy_prop_set(Filter, LPCTSTR, lpstrFilter);
 public: // Property - FilterIndex
-	/* R */ inline DWORD FilterIndex() const reflect_as(self->nFilterIndex);
+proxy_prop_get(FilterIndex,nFilterIndex,DWORD);
 public: // Property - InitialDir
-	/* W */ inline auto &InitialDir(LPCTSTR lpstrInitialDir) reflect_to_self(self->lpstrInitialDir = lpstrInitialDir);
+proxy_prop_set(InitialDir, LPCTSTR, lpstrInitialDir);
 public: // Property - Title
-	/* W */ inline auto &Title(LPCTSTR lpstrTitle) reflect_to_self(self->lpstrTitle = lpstrTitle);
+proxy_prop_set(Title, LPCTSTR, lpstrTitle);
 public: // Property - DefExt
-	/* W */ inline auto &DefExt(LPCTSTR lpstrDefExt) reflect_to_self(self->lpstrDefExt = lpstrDefExt);
+proxy_prop_set(DefExt, LPCTSTR, lpstrDefExt);
 public:
-	inline bool OpenFile() reflect_as(WX::GetOpenFileName(this));
-	inline bool SaveFile() reflect_as(WX::GetSaveFileName(this));
+	inline bool OpenFile() ret_as(WX::GetOpenFileName(this));
+	inline bool SaveFile() ret_as(WX::GetSaveFileName(this));
 };
 template<class AnyChild = void>
 using DialogFile = DialogFileX<IsUnicode, AnyChild>;
@@ -430,17 +416,17 @@ class DialogTextX : public DialogCommon<
 	using_structx(FINDREPLACE);
 	using String = StringX<IsUnicode>;
 public:
-	using super = StructShim<FINDREPLACE>;
+	using Super = StructShim<FINDREPLACE>;
 	using Style = DialogTextStyle;
 public:
-	DialogTextX() reflect_to(self->lStructSize = sizeof(FINDREPLACE));
+	DialogTextX() ret_to(self->lStructSize = sizeof(FINDREPLACE));
 public: // Properties
-	/* W */ inline auto &Styles(Style Flags) reflect_to_self(self->Flags = Flags.yield());
-	/* R */ inline const String FindWhat() reflect_as(CString(self->lpstrFindWhat, self->wFindWhatLen));
-	/* R */ inline const String ReplaceWith() reflect_as(CString(self->lpstrReplaceWith, self->wReplaceWithLen));
+	proxy_prop_set(Styles,Flags,Style);
+	/* R */ inline const String FindWhat() ret_as(CString(self->lpstrFindWhat, self->wFindWhatLen));
+	/* R */ inline const String ReplaceWith() ret_as(CString(self->lpstrReplaceWith, self->wReplaceWithLen));
 public:
-	inline HWND Find() reflect_as(WX::FindText(this));
-	inline HWND Replace() reflect_as(WX::ReplaceText(this));
+	inline HWND Find() ret_as(WX::FindText(this));
+	inline HWND Replace() ret_as(WX::ReplaceText(this));
 };
 template<class AnyChild = void>
 using DialogText = DialogTextX<IsUnicode, AnyChild>;
@@ -470,25 +456,25 @@ using DlgTextW = DialogTextW<AnyChild>;
 //		//self->wVersion = COMMCONFIG_VERSION;
 //	}
 //public: // Properties
-//	/* W */ inline auto &Parent(HWND hWnd) reflect_to_self(this->hwndOwner = hWnd);
+//	/* W */ inline auto &Parent(HWND hWnd) ret_to_self(this->hwndOwner = hWnd);
 //public:
-//	inline bool Config() reflect_as(CommConfigDialog(L"", hwndOwner, self))
+//	inline bool Config() ret_as(CommConfigDialog(L"", hwndOwner, self))
 //};
 
 #if 0
 #pragma region Dialog Template
 
-inline void PushHeap(void *&pHeap, size_t &maxSize, const void *pData, size_t dataSize) {
-	assertl(dataSize <= maxSize);
+inline void PushHeap(void *&pHeap, SizeT &maxSize, const void *pData, SizeT dataSize) {
+	nt_assert(dataSize <= maxSize);
 	CopyMemory(pHeap, pData, dataSize);
 	maxSize -= dataSize;
-	(uint8_t *&)pHeap += dataSize;
+	(Int8U *&)pHeap += dataSize;
 }
 template<class AnyType>
-inline void PushHeap(void *&pHeap, size_t &maxSize, const AnyType &type)
+inline void PushHeap(void *&pHeap, SizeT &maxSize, const AnyType &type)
 { PushHeap(pHeap, maxSize, &type, sizeof(AnyType)); }
 template<>
-inline void PushHeap<StringW>(void *&pHeap, size_t &maxSize, const StringW &str)
+inline void PushHeap<StringW>(void *&pHeap, SizeT &maxSize, const StringW &str)
 { PushHeap(pHeap, maxSize, str, str.Size()); }
 
 class DialogControl {
@@ -514,32 +500,32 @@ public:
 #pragma region Properties
 public: // Property - Style
 	template<class AnyStyle>
-	/* W */ inline auto &Style(AnyStyle style) reflect_to_self(dit.style = style.yield());
+	/* W */ inline auto &Style(AnyStyle style) ret_to_self(dit.style = style.yield());
 public: // Property - StyleEx
 	template<class AnyStyle>
-	/* W */ inline auto &StyleEx(AnyStyle exStyle) reflect_to_self(dit.dwExtendedStyle = exStyle.yield());
+	/* W */ inline auto &StyleEx(AnyStyle exStyle) ret_to_self(dit.dwExtendedStyle = exStyle.yield());
 public: // Property - Position
-	/* W */ inline auto &Position(LPoint p) reflect_to_self(dit.x = (SHORT)p.x, dit.y = (SHORT)p.y);
+	/* W */ inline auto &Position(LPoint p) ret_to_self(dit.x = (SHORT)p.x, dit.y = (SHORT)p.y);
 public: // Property - Size
-	/* W */ inline auto &Size(LSize sz) reflect_to_self(dit.cx = (SHORT)sz.cx, dit.cy = (SHORT)sz.cy);
+	/* W */ inline auto &Size(LSize sz) ret_to_self(dit.cx = (SHORT)sz.cx, dit.cy = (SHORT)sz.cy);
 public: // Property - ID
-	/* W */ inline auto &ID(WORD id) reflect_to_self(dit.id = id);
+	/* W */ inline auto &ID(WORD id) ret_to_self(dit.id = id);
 public: // Property - WindowClass
-	/* W */ inline auto &WindowClass(const StringW &className) reflect_to_self(this->className = +className);
-	/* W */ inline auto &WindowClass(WORD classId) reflect_to_self(this->className = { (wchar_t)classId });
+	/* W */ inline auto &WindowClass(const StringW &className) ret_to_self(this->className = +className);
+	/* W */ inline auto &WindowClass(WORD classId) ret_to_self(this->className = { (wchar_t)classId });
 public: // Property - Caption
-	/* W */ inline auto &Caption(const StringW &lpszCaption) reflect_to_self(this->caption = +lpszCaption);
+	/* W */ inline auto &Caption(const StringW &lpszCaption) ret_to_self(this->caption = +lpszCaption);
 #pragma endregion
 
 private:
 	friend class DialogFactory;
-	inline size_t HeapSize() {
+	inline SizeT HeapSize() {
 		return
 			sizeof(DLGITEMTEMPLATE) +
 			className.Size() + caption.Size() + 2 +
 			sizeof(sizeParam) + sizeParam;
 	}
-	inline void PushToHeap(void *&pHeap, size_t &maxSize) {
+	inline void PushToHeap(void *&pHeap, SizeT &maxSize) {
 		PushHeap(pHeap, maxSize, dit);
 		if (className.Length() <= 1) {
 			WORD aClassId[2] = { 0xFFFF, className[0] };
@@ -561,30 +547,30 @@ public:
 	DialogFactory() {}
 	DialogFactory(const StringW &caption) : caption(+caption) {}
 public:
-	inline auto &Add(const DialogControl &dc) reflect_to_self(dits.push_back(dc));
+	inline auto &Add(const DialogControl &dc) ret_to_self(dits.push_back(dc));
 #pragma region Properties
 public: // Property - Style
 	template<class AnyStyle>
-	/* W */ inline auto &Style(AnyStyle style) reflect_to_self(dt.style = style.yield());
+	/* W */ inline auto &Style(AnyStyle style) ret_to_self(dt.style = style.yield());
 public: // Property - StyleEx
 	template<class AnyStyle>
-	/* W */ inline auto &StyleEx(AnyStyle exStyle) reflect_to_self(dt.dwExtendedStyle = exStyle.yield());
+	/* W */ inline auto &StyleEx(AnyStyle exStyle) ret_to_self(dt.dwExtendedStyle = exStyle.yield());
 public: // Property - Position
-	/* W */ inline auto &Position(LPoint p) reflect_to_self(dt.x = (SHORT)p.x, dt.y = (SHORT)p.y);
+	/* W */ inline auto &Position(LPoint p) ret_to_self(dt.x = (SHORT)p.x, dt.y = (SHORT)p.y);
 public: // Property - Size
-	/* W */ inline auto &Size(LSize sz) reflect_to_self(dt.cx = (SHORT)sz.cx, dt.cy = (SHORT)sz.cy);
+	/* W */ inline auto &Size(LSize sz) ret_to_self(dt.cx = (SHORT)sz.cx, dt.cy = (SHORT)sz.cy);
 public: // Property - Menu
-	/* W */ inline auto &Menu(const StringW &menuName) reflect_to_self(this->menuName = +menuName);
-	/* W */ inline auto &Menu(WORD menuId) reflect_to_self(this->menuName = { (wchar_t)menuId });
+	/* W */ inline auto &Menu(const StringW &menuName) ret_to_self(this->menuName = +menuName);
+	/* W */ inline auto &Menu(WORD menuId) ret_to_self(this->menuName = { (wchar_t)menuId });
 public: // Property - WindowClass
-	/* W */ inline auto &WindowClass(const StringW &className) reflect_to_self(this->className = +className);
-	/* W */ inline auto &WindowClass(WORD classId) reflect_to_self(this->className = { (wchar_t)classId });
+	/* W */ inline auto &WindowClass(const StringW &className) ret_to_self(this->className = +className);
+	/* W */ inline auto &WindowClass(WORD classId) ret_to_self(this->className = { (wchar_t)classId });
 public: // Property - Caption
-	/* W */ inline auto &Caption(const StringW &caption) reflect_to_self(this->caption = +caption);
+	/* W */ inline auto &Caption(const StringW &caption) ret_to_self(this->caption = +caption);
 #pragma endregion
 
 private:
-	inline size_t HeapSize() {
+	inline SizeT HeapSize() {
 		auto size =
 			sizeof(DLGTEMPLATE) +
 			menuName.Size() + className.Size() + caption.Size();
@@ -593,7 +579,7 @@ private:
 			size += (dit.HeapSize() + 3) & ~3; // Align to DWORD // See Microsoft Learn for more
 		return size;
 	}
-	inline void PushToHeap(void *&pHeap, size_t &maxSize) {
+	inline void PushToHeap(void *&pHeap, SizeT &maxSize) {
 		if (menuName.Length() == 1) {
 			WORD aMenuId[2] = { 0xFFFF, menuName[0] };
 			PushHeap(pHeap, maxSize, aMenuId);
@@ -634,29 +620,29 @@ protected:
 	DialogItem(HWND hDlg, int nIDDlgItem) :
 		hDlg(hDlg), nIDDlgItem(nIDDlgItem) {}
 public: // Property - String
-	/* W */ inline auto &Text(LPSTR lpText) reflect_to_self(WX::SetDlgItemText(hDlg, nIDDlgItem, lpText));
-	/* W */ inline auto &Text(LPWSTR lpText) reflect_to_self(WX::SetDlgItemText(hDlg, nIDDlgItem, lpText));
+	/* W */ inline auto &Text(LPSTR lpText) ret_to_self(WX::SetDlgItemText(hDlg, nIDDlgItem, lpText));
+	/* W */ inline auto &Text(LPWSTR lpText) ret_to_self(WX::SetDlgItemText(hDlg, nIDDlgItem, lpText));
 	template<bool IsUnicode = WX::IsUnicode>
 	/* R */ inline StringX<IsUnicode> Text() const {
 		auto len = WX::GetDlgItemText(hDlg, nIDDlgItem, (LPXSTR<IsUnicode>)O, 0);
-		StringX<IsUnicode> str((size_t)len);
+		StringX<IsUnicode> str((SizeT)len);
 		WX::GetDlgItemText(hDlg, nIDDlgItem, str, len);
-		return to_right_hand(str);
+		return right_hand_cast(str);
 	}
-	/* R */ inline StringA TextA() const reflect_as(Text<false>());
-	/* R */ inline StringW TextW() const reflect_as(Text<true>());
+	/* R */ inline StringA TextA() const ret_as(Text<false>());
+	/* R */ inline StringW TextW() const ret_as(Text<true>());
 public: // Property - Int
-	/* W */ inline auto &Int(INT val) reflect_to_self(WX::SetDlgItemInt(hDlg, nIDDlgItem, std::abs(val), val < 0));
-//	/* R */ inline int Int(bool bSigned = true) const nt_assertl_reflect_to_self(auto val = GetDlgItemInt(hDlg, nIDDlgItem, O, false), val);
+	/* W */ inline auto &Int(INT val) ret_to_self(WX::SetDlgItemInt(hDlg, nIDDlgItem, std::abs(val), val < 0));
+//	/* R */ inline int Int(bool bSigned = true) const ret_safe_to_self(auto val = GetDlgItemInt(hDlg, nIDDlgItem, O, false), val);
 public: // Property - UInt
-	/* W */ inline auto &UInt(UINT val) reflect_to_self(WX::SetDlgItemInt(hDlg, nIDDlgItem, val, false));
-//	/* R */ inline UINT  UInt() const nt_assertl_reflect_to_self(auto val = GetDlgItemInt(hDlg, nIDDlgItem, O, false), val);
+	/* W */ inline auto &UInt(UINT val) ret_to_self(WX::SetDlgItemInt(hDlg, nIDDlgItem, val, false));
+//	/* R */ inline UINT  UInt() const ret_safe_to_self(auto val = GetDlgItemInt(hDlg, nIDDlgItem, O, false), val);
 public: // Property - CheckButton
-	/* W */ inline auto &CheckButton(bool bCheck) reflect_to_self(WX::CheckDlgButton(hDlg, nIDDlgItem, bCheck ? BST_CHECKED : BST_UNCHECKED));
-	/* R */ inline bool CheckButton() const reflect_as(WX::IsDlgButtonChecked(hDlg, nIDDlgItem) == BST_CHECKED);
+	/* W */ inline auto &CheckButton(bool bCheck) ret_to_self(WX::CheckDlgButton(hDlg, nIDDlgItem, bCheck ? BST_CHECKED : BST_UNCHECKED));
+	/* R */ inline bool CheckButton() const ret_as(WX::IsDlgButtonChecked(hDlg, nIDDlgItem) == BST_CHECKED);
 public:
 	template<class AnyWindow>
-	inline operator AnyWindow() reflect_as(reuse_as<AnyWindow>(GetDlgItem(hDlg, nIDDlgItem)));
+	inline operator AnyWindow() ret_as(reuse_cast<AnyWindow>(GetDlgItem(hDlg, nIDDlgItem)));
 };
 
 //template<class AnyChild>
@@ -665,7 +651,7 @@ public:
 //	use_member(Forming);
 //	use_member(InitDialog);
 //public:
-//	using super = WindowBase<AnyChild>;
+//	using Super = WindowBase<AnyChild>;
 //	using Child = AnyChild;
 //public:
 //	DialogBase() {}
@@ -682,33 +668,33 @@ public:
 //	}
 //	inline auto&Create(HWND hParent = NULL, HINSTANCE hInst = GetModuleHandle((LPCTSTR)O)) {
 //		if_c (member_Forming_of<Child>::template compatible_to<LPDLGTEMPLATE()>)
-//			assertl(CreateDialogIndirectParam(hInst, child.Forming(), hParent, DlgProc, (LPARAM)this))
+//			nt_assert(CreateDialogIndirectParam(hInst, child.Forming(), hParent, DlgProc, (LPARAM)this))
 //		elif_c (member_Forming_of<Child>::template compatible_to<LPCTSTR()>)
-//			assertl(CreateDialogParam(hInst, child.Forming(), hParent, DlgProc, (LPARAM)this))
+//			nt_assert(CreateDialogParam(hInst, child.Forming(), hParent, DlgProc, (LPARAM)this))
 //		else {
 //			static_assert(member_Forming_of<Child>::template compatible_to<UINT()>, "requires a valid template");
-//			assertl(CreateDialogParam(hInst, MAKEINTRESOURCE(child.Forming()), hParent, DlgProc, (LPARAM)this));
+//			nt_assert(CreateDialogParam(hInst, MAKEINTRESOURCE(child.Forming()), hParent, DlgProc, (LPARAM)this));
 //		}
 //		retchild;
 //	}
 //
-//	inline auto&End(INT_PTR nResult) assertl_reflect_as_child(::EndDialog(self, nResult));
+//	inline auto&End(INT_PTR nResult) safe_ret_as_child(::EndDialog(self, nResult));
 //
-//	inline DialogItem Item(int nIDDlgItem) reflect_as({ self, nIDDlgItem });
+//	inline DialogItem Item(int nIDDlgItem) ret_as({ self, nIDDlgItem });
 //
 //	template<class AnyWindow>
-//	inline AnyWindow Item(int nIDDlgItem) reflect_as(reuse_as<AnyWindow>(GetDlgItem(self, nIDDlgItem)));
+//	inline AnyWindow Item(int nIDDlgItem) ret_as(reuse_cast<AnyWindow>(GetDlgItem(self, nIDDlgItem)));
 //
 //protected:
 //	static INT_PTR CALLBACK DlgProc(HWND hDlg, UINT msgid, WPARAM wParam, LPARAM lParam) {
-//		auto &Wnd = super::Attach(hDlg);
+//		auto &Wnd = Super::Attach(hDlg);
 //		auto pThis = (Child *)Wnd.UserData();
 //		switch (msgid) {
 //			case WM_INITDIALOG: {
 //				pThis = (Child *)lParam;
 //				if (!Wnd.UserData(pThis))
 //					return (INT_PTR)false;
-//				(HWND &)*reuse_as<Window *>(pThis) = hDlg;
+//				(HWND &)*reuse_cast<Window *>(pThis) = hDlg;
 //				if_c (member_InitDialog_of<Child>::is_addressable) {
 //					using fn_type = bool();
 //					misdef_assert((member_InitDialog_of<Child>::template compatible_to<fn_type>),
@@ -726,16 +712,16 @@ public:
 //#define _CALL_(name) pThis->name
 //#define MSG_TRANS(msgid, ret, name, argslist, args, send, call) \
 //					case msgid: \
-//						if_c (super::template member_##name##_of<Child>::is_addressable) { \
+//						if_c (Super::template member_##name##_of<Child>::is_addressable) { \
 //							using fn_type = ret argslist; \
-//							misdef_assert((super::template member_##name##_of<Child>::template compatible_to<fn_type>), \
+//							misdef_assert((Super::template member_##name##_of<Child>::template compatible_to<fn_type>), \
 //										  "Member " #name " must be a method compatible to " #ret #argslist); \
 //							call; \
 //							return (INT_PTR)true; \
 //						} break;
 //#include "wx__msg.inl"
 //			}
-//			if_c (super::template member_Callback_of<Child>::is_addressable)
+//			if_c (Super::template member_Callback_of<Child>::is_addressable)
 //				return ((Child *)pThis)->Callback(msgid, wParam, lParam);
 //		} catch (MSG) {}
 //		return (INT_PTR)false;

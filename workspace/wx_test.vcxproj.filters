@@ -27,9 +27,6 @@
     <ClInclude Include="..\wx__nt.h">
       <Filter>wx_library\prv_inc</Filter>
     </ClInclude>
-    <ClInclude Include="..\wx_defs.h">
-      <Filter>wx_library\prv_inc</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\small.ico">
@@ -64,7 +61,7 @@
     <ClCompile Include="..\wx.gdi.cppm">
       <Filter>wx_library\modules</Filter>
     </ClCompile>
-    <ClCompile Include="..\wx.proto.cppm">
+    <ClCompile Include="..\wx.win32.cppm">
       <Filter>wx_library\modules</Filter>
     </ClCompile>
     <ClCompile Include="..\wx.realtime.cppm">

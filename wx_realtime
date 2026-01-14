@@ -13,5 +13,5 @@ import wx.realtime;
 
 #define BaseOf_Waitable(name) name : public WX::WaitableBase<name>
 
-#define SFINAE_Thread(name) friend class WX::ThreadBase<name>; using super = WX::ThreadBase<name>
+#define SFINAE_Thread(name) friend class WX::ThreadBase<name>; using Super = WX::ThreadBase<name>
 #define BaseOf_Thread(name) name : public WX::ThreadBase<name>

@@ -1,97 +1,163 @@
 #pragma once
 
-#include "wx_defs.h"
-
-#ifndef WX_CPPM_CORE
-import wx;
-#else
-#	undef WX_CPPM_CORE
+#ifndef __cplusplus
+#	error This project requires C++20 compilation.
+#elif __cplusplus < 202002L && defined(_MSC_VER)
+#	error This project requires C++20 or later. For MSVC may need open /Zc:__cplusplus option
+#elif __cplusplus < 202002L
+#	error This project requires C++20 or later.
 #endif
 
-/* assert & reflector */
-#define child (this->__child__())
-#define pchild (&this->__child__())
-#define retchild return child
-#define reflect_to_child(...) { __VA_ARGS__; retchild; }
-
-/* assert & reflector */
-#define wx_throw_line(sent) throw WX::Exception(__FILE__, __FUNCTION__, #sent, __LINE__)
-
-/* error & exception answer */
-#define wx_answer int
-#define wx_answer_ignore 0
-#define wx_answer_retry 1
-#define wx_answer_abort throw
-
-/* enumerator system */
-#define __enum_ex(name, base, oprt, estr, ...) \
-class name : public EnumBase<name, base> { \
-public: \
-	using super = EnumBase<name, base>; \
-	using EnumType = name; \
-	using ProtoEnum = typename super::ProtoEnum; \
-	using ProtoUnit = typename super::ProtoUnit; \
-	using ProtoType = typename super::ProtoType; \
-protected: \
-	friend struct EnumBase<name, base>; \
-	class Unit : protected ProtoUnit { \
-	protected: friend class name; \
-		Unit(const ProtoUnit &val) : ProtoUnit(val.val) {} \
-		constexpr Unit(const ProtoType &val) : ProtoUnit(val) { static_assert(sizeof(val) == sizeof(self), "alignment error"); } \
-		constexpr ProtoType operator=(const ProtoType &v) const reflect_as(v); \
-	public: using EnumType = name; \
-		oprt(Unit); \
-		inline ProtoType yield() const reflect_as(val); \
-	} val; \
-public: \
-	template<class AnyType> \
-	constexpr name(AnyType val) : val(ref_as<Unit>(val)) {} \
-	constexpr name(Unit val) : val(val.val) { static_assert(sizeof(val) == sizeof(self), "alignment error"); } \
-public: \
-	static inline const Unit __VA_ARGS__; \
- 	static constexpr CHAR __NameA[]{ #name }; \
-	static constexpr WCHAR __NameW[]{ L ## #name }; \
-	static constexpr CHAR __EntriesA[]{ estr }; \
-	static constexpr WCHAR __EntriesW[]{ L ## estr }; \
-	static inline const ProtoType __Vals[]{ __VA_ARGS__ }; \
-	static constexpr size_t Count = ArrayCountOf(__Vals); \
-public: \
-	inline ProtoType yield() const reflect_as(val.yield()); \
-	inline operator Unit() const reflect_as(val); \
-	oprt(Unit); }
-#define eunm_eq_opr(name) \
-	inline bool operator==(name v) const reflect_as( yield() == v.yield()); \
-	inline bool operator!=(name v) const reflect_as( yield() != v.yield())
-#define enum_flags_opr(name) \
-	static constexpr bool EnumFlags = true; \
-	inline name operator~ () const reflect_as(~val); \
-	template<class AnyType> inline auto operator^(AnyType v) const reflect_as(__makeResult<EnumType, typename AnyType::EnumType>((ProtoType)yield() ^  v.yield())); \
-	template<class AnyType> inline auto operator|(AnyType v) const reflect_as(__makeResult<EnumType, typename AnyType::EnumType>((ProtoType)yield() |  v.yield())); \
-	template<class AnyType> inline auto operator&(AnyType v) const reflect_as(__makeResult<EnumType, typename AnyType::EnumType>((ProtoType)yield() &  v.yield())); \
-	template<class AnyType> inline auto operator+(AnyType v) const reflect_as(__makeResult<EnumType, typename AnyType::EnumType>((ProtoType)yield() |  v.yield())); \
-	template<class AnyType> inline auto operator-(AnyType v) const reflect_as(__makeResult<EnumType, typename AnyType::EnumType>((ProtoType)yield() & ~v.yield())); \
-	inline name operator^=(name v) reflect_to_self( val ^=  v.val); \
-	inline name operator|=(name v) reflect_to_self( val |=  v.val); \
-	inline name operator&=(name v) reflect_to_self( val &=  v.val); \
-	inline bool operator<=(name v) const reflect_as((yield() &  v.yield()) ==   yield()); \
-	inline bool operator>=(name v) const reflect_as((yield() &  v.yield()) == v.yield()); \
-	eunm_eq_opr(name)
-#define enum_class_opr(name) \
-	static constexpr bool EnumClass = true; \
-	eunm_eq_opr(name)
-#define enum_flags(name, base, ...) __enum_ex(name, base, enum_flags_opr, #__VA_ARGS__, __VA_ARGS__)
-#define enum_class(name, base, ...) __enum_ex(name, base, enum_class_opr, #__VA_ARGS__, __VA_ARGS__)
+#pragma region Macros Self-Helpers
+// macro direct operators
+#define	_mx_cat_(a, b)  a ## b
+#define _mx_str_(x)    #x
+// macro argument counter
+#define _mx_ret_13_(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, ...) _13
+#define _mx_seq_12_ 12, 11, 10,  9,  8,  7,  6,  5,  4,   3,   2,   1,   0
+// macro cushion
+#define mx_b0(...)   __VA_ARGS__
+#define mx_b1(...) ( __VA_ARGS__ )
+#define mx_b2(...) { __VA_ARGS__ }
+#define mx_b3(...) < __VA_ARGS__ >
+// macro invoker
+#define mx_call(func, ...) mx_b0(func mx_b1(__VA_ARGS__))
+// macro indirect operators
+#define mx_cat(a, b)  mx_call(_mx_cat_, a, b)
+#define mx_str(x)     mx_call(_mx_str_, x)
+#define mx_narg(...)  mx_call(_mx_ret_13_, mx_b0() __VA_ARGS__, _mx_seq_12_)
+// macro argument counter wrappers
+#define mx_nameN(name, ...) mx_cat(name, mx_narg(__VA_ARGS__))
+#define mx_funcN(name, ...) mx_call(mx_nameN(name, __VA_ARGS__), __VA_ARGS__)
 #pragma endregion
 
-/* string selector */
-#define locale_symbolx(name) static constexpr auto name = AnyX<IsUnicode>(name##W, name##A)
-#define const_stringx(name, str)         \
-    static constexpr auto name##A = str; \
-    static constexpr auto name##W = L##str
-#define auto_stringx(name, str) \
-    const_stringx(name, str);   \
-    locale_symbolx(name)
-#define structx(name) std::conditional_t<IsUnicode, name##W, name##A>
-#define using_structx(name) using name = std::conditional_t<IsUnicode, name##W, name##A>
+#pragma region Macros Of C++ Keywords Alias
+// alias conditional branch
+#define if_c       if   constexpr
+#define elif       else if 
+#define elif_c     elif constexpr
+#define _if(...)     __VA_ARGS__ ? 
+#define _else      :
+#define _elif(...) : __VA_ARGS__ ?
+#define _return
+// alias return
+#define ret_as(...)       {       return __VA_ARGS__; }
+#define ret_to(line, ...) { line; return __VA_ARGS__; }
+// alias static assert
+#define misuse_assert(cond, note) { static_assert(cond , "Misused: "      note); }
+#define misdef_assert(cond, note) { static_assert(cond , "Misdefined: "   note); }
+#define wx_uncallable               misuse_assert(false, "Uncallable function")
+// alias type
+#define alias_of_type(alias, proto_name) using alias = proto_name
+#pragma endregion
 
-#define PROXY_SHIM(name) friend union WX::ProxyShim<name>
+#pragma region !!!!!!!!!!!!!!!!!! MAY BE DEPRECATED !!!!!!!!!!!!!!!!!!
+/* Macro string helpers */
+#if defined(UNICODE) || defined(_UNICODE)
+#	define T(str) TEXT(str)
+#else
+#	define T(str) TEXT(str)
+#endif
+/* Macro static reflection */
+#define use_member(name) \
+template <class AnyClass> class member_##name##_of { \
+	template<class AnyType> static auto ist(int) -> decltype(any_require<typename AnyType::name>(), std::true_type()); \
+	template<class AnyType> static auto ist(...) -> std::false_type; \
+	template<class AnyType> static auto adr(int) -> decltype(&AnyType::name, std::true_type()); \
+	template<class AnyType> static auto adr(...) -> std::false_type; \
+	template<class AnyType, class Ret, class... Args> \
+	static auto cmp(Ret(*)(Args...)) -> \
+		std::is_convertible<decltype(any_require<AnyType>().name(any_require<Args>()...)), Ret>; \
+	template<class AnyType, class Ret, class... Args> \
+	static auto cmp(Ret(AnyType::**)(Args...)) -> \
+		std::is_convertible<decltype(AnyType::name(any_require<Args>()...)), Ret>; \
+	template<class AnyType> \
+	static auto cmp(...) -> std::false_type; \
+public: \
+	static constexpr bool is_type = decltype(ist<AnyClass>(0))::value; \
+	static constexpr bool is_addressable = decltype(adr<AnyClass>(0))::value; \
+	static constexpr bool is_existed = is_type || is_addressable; \
+	template<class AnyType> \
+	static constexpr bool compatible_to = \
+		decltype(cmp<AnyClass>(any_require<AnyType *>()))::value; }
+#pragma endregion
+
+#pragma region Macros Of Proxy Shim
+// proxy struct
+#define proxy_struct1(name)                                struct name : WX::CTypeProxyShim<name>
+#define proxy_struct2(name, struct_name)                   struct name : WX::CTypeProxyShim<name, struct_name>
+#define proxy_struct3(name, struct_name, self_size_member) struct name : WX::CTypeProxyShim<name, struct_name, &struct_name::self_size_member>
+#define proxy_struct(...)                                  mx_funcN(proxy_struct, __VA_ARGS__)
+// proxy property
+#define proxy_prop_set(name, proto_name, type)            inline auto&name(type value) ret_to_self(self->proto_name = (decltype(self->proto_name))value)
+#define proxy_prop_get(name, proto_name, type)            inline auto name(          ) const ret_as(WX::safe_c_cast<type>(self->proto_name))
+#define proxy_prop(name, proto_name, type_in, type_out)   proxy_prop_set(name, proto_name, type_in   ) \
+														  proxy_prop_get(name, proto_name, type_out  )
+#define proxy_prop_sync(name, proto_name, type) 		  proxy_prop    (name, proto_name, type, type)
+// proxy view
+#define friend_to_proxy(name) friend union WX::ProxyView<name>
+#pragma endregion
+
+#pragma region Macros Of Enum 
+#define enum_shim(type, name, base) WX::Enum##type##Shim<name, base>
+#define enum_base(type, name, base, ...)                           \
+struct name : public enum_shim(type, name, base) {                 \
+	using ShimType = enum_shim(type, name, base)                 ; \
+	using ShimType::ShimType                                     ; \
+	using typename ShimType::Super                               ; \
+	using typename ShimType::BaseType                            ; \
+	static constexpr ShimType                      __VA_ARGS__   ; \
+	static constexpr BaseType EnumEntries     []{  __VA_ARGS__ } ; \
+	static constexpr char     EnumProtoString []{ #__VA_ARGS__ } ; \
+	static constexpr char     EnumName        []{  #name       } ; \
+}
+#define enum_class(name, base, ...) enum_base(Class, name, base, __VA_ARGS__)
+#define enum_flags(name, base, ...) enum_base(Flags, name, base, __VA_ARGS__)
+#pragma endregion
+
+#pragma region Macros Of Chain Extended Helper
+#define ChainedBase(name, child_tmpl_name) name : public WX::ChildBridge<child_tmpl_name, name>
+#define ChainedClass(name, base_tmpl_name) name : public WX::SuperBridge<base_tmpl_name, name>
+#define friend_to_child(template_child)    friend template_child
+#define friend_to_super()                  friend Super
+// alias key-word
+#define self     mx_b1(*this)
+#define pself    mx_b1( this)
+#define child    mx_b1( this->__child__())
+#define super    mx_b1( this->__super__())
+#define pchild   mx_b1(&this->__child__())
+#define psuper   mx_b1(&this->__super__())
+// alias return
+#define retself           {              return self ; }
+#define retchild          {              return child; }
+#define retsuper          {              return super; }
+#define ret_to_self(...)  { __VA_ARGS__; return self ; }
+#define ret_to_child(...) { __VA_ARGS__; return child; }
+#pragma endregion
+
+#pragma region Macros Of Exception System throw
+/* exception throw */
+#define wx_context_inf        __FILE__, __FUNCTION__, __LINE__
+#define wx_error_detail(sent) WX::Exception(wx_context_inf, #sent)
+#define wx_throw_line(sent)   throw wx_error_detail(sent)
+/* exception answer */
+#define wx_answer           int
+#define wx_answer_ignore    0
+#define wx_answer_retry     1
+#define wx_answer_abort     throw
+#pragma endregion
+
+/* Macro string branch selector */
+#define locale_symbolx(name)     static constexpr auto name = AnyX<IsUnicode>(name##W, name##A)
+#define const_stringx(name, str) static constexpr auto name##A = str; \
+								 static constexpr auto name##W = L##str
+#define auto_stringx(name, str)  const_stringx(name, str); \
+								 locale_symbolx(name)
+#define structx(name)            ConditionOf<IsUnicode, name##W, name##A>
+#define using_structx(name)      using name = ConditionOf<IsUnicode, name##W, name##A>
+
+#ifdef WX_CPPM_CORE
+#undef WX_CPPM_CORE
+#else
+import wx;
+#endif

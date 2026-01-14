@@ -12,24 +12,24 @@ namespace WX {
 #undef ConvertSidToStringSid
 // ConvertSidToStringSidA
 inline void ConvertSidToStringSid(PSID Sid, LPSTR *StringSid)
-	assertl_reflect_as(::ConvertSidToStringSidA(Sid, StringSid));
+	safe_ret_as(::ConvertSidToStringSidA(Sid, StringSid));
 // ConvertSidToStringSidW
 inline void ConvertSidToStringSid(PSID Sid, LPWSTR *StringSid)
-	assertl_reflect_as(::ConvertSidToStringSidW(Sid, StringSid));
+	safe_ret_as(::ConvertSidToStringSidW(Sid, StringSid));
 #undef ConvertStringSidToSid
 // ConvertStringSidToSidA
 inline void ConvertStringSidToSid(LPCSTR StringSid, PSID *Sid)
-	assertl_reflect_as(::ConvertStringSidToSidA(StringSid, Sid));
+	safe_ret_as(::ConvertStringSidToSidA(StringSid, Sid));
 // ConvertStringSidToSidW
 inline void ConvertStringSidToSid(LPCWSTR StringSid, PSID *Sid)
-	assertl_reflect_as(::ConvertStringSidToSidW(StringSid, Sid));
+	safe_ret_as(::ConvertStringSidToSidW(StringSid, Sid));
 #undef ConvertStringSecurityDescriptorToSecurityDescriptor
 // ConvertStringSecurityDescriptorToSecurityDescriptorA
 inline void ConvertStringSecurityDescriptorToSecurityDescriptor(LPCSTR StringSecurityDescriptor,
 																DWORD StringSDRevision,
 																PSECURITY_DESCRIPTOR *SecurityDescriptor,
 																PULONG SecurityDescriptorSize)
-	assertl_reflect_as(::ConvertStringSecurityDescriptorToSecurityDescriptorA(StringSecurityDescriptor,
+	safe_ret_as(::ConvertStringSecurityDescriptorToSecurityDescriptorA(StringSecurityDescriptor,
 																			  StringSDRevision,
 																			  SecurityDescriptor,
 																			  SecurityDescriptorSize));
@@ -38,7 +38,7 @@ inline void ConvertStringSecurityDescriptorToSecurityDescriptor(LPCWSTR StringSe
 																DWORD StringSDRevision,
 																PSECURITY_DESCRIPTOR *SecurityDescriptor,
 																PULONG SecurityDescriptorSize)
-	assertl_reflect_as(::ConvertStringSecurityDescriptorToSecurityDescriptorW(StringSecurityDescriptor,
+	safe_ret_as(::ConvertStringSecurityDescriptorToSecurityDescriptorW(StringSecurityDescriptor,
 																			  StringSDRevision,
 																			  SecurityDescriptor,
 																			  SecurityDescriptorSize));
@@ -49,7 +49,7 @@ inline void ConvertSecurityDescriptorToStringSecurityDescriptor(PSECURITY_DESCRI
 																SECURITY_INFORMATION SecurityInformation,
 																LPSTR *StringSecurityDescriptor,
 																PULONG StringSecurityDescriptorLen)
-	assertl_reflect_as(::ConvertSecurityDescriptorToStringSecurityDescriptorA(SecurityDescriptor,
+	safe_ret_as(::ConvertSecurityDescriptorToStringSecurityDescriptorA(SecurityDescriptor,
 																			  StringSDRevision,
 																			  SecurityInformation,
 																			  StringSecurityDescriptor,
@@ -60,7 +60,7 @@ inline void ConvertSecurityDescriptorToStringSecurityDescriptor(PSECURITY_DESCRI
 																SECURITY_INFORMATION SecurityInformation,
 																LPWSTR *StringSecurityDescriptor,
 																PULONG StringSecurityDescriptorLen)
-	assertl_reflect_as(::ConvertSecurityDescriptorToStringSecurityDescriptorW(SecurityDescriptor,
+	safe_ret_as(::ConvertSecurityDescriptorToStringSecurityDescriptorW(SecurityDescriptor,
 																			  StringSDRevision,
 																			  SecurityInformation,
 																			  StringSecurityDescriptor,
@@ -70,461 +70,461 @@ inline void ConvertSecurityDescriptorToStringSecurityDescriptor(PSECURITY_DESCRI
 #pragma region SecurityBaseAPI.h
 // AccessCheck
 inline void AccessCheck(PSECURITY_DESCRIPTOR pSecurityDescriptor, HANDLE ClientToken, DWORD DesiredAccess, PGENERIC_MAPPING GenericMapping, PPRIVILEGE_SET PrivilegeSet, LPDWORD PrivilegeSetLength, LPDWORD GrantedAccess, LPBOOL AccessStatus)
-    assertl_reflect_as(::AccessCheck(pSecurityDescriptor, ClientToken, DesiredAccess, GenericMapping, PrivilegeSet, PrivilegeSetLength, GrantedAccess, AccessStatus));
+    safe_ret_as(::AccessCheck(pSecurityDescriptor, ClientToken, DesiredAccess, GenericMapping, PrivilegeSet, PrivilegeSetLength, GrantedAccess, AccessStatus));
 // AccessCheckAndAuditAlarmW
 inline void AccessCheckAndAuditAlarm(LPCWSTR SubsystemName, LPVOID HandleId, LPWSTR ObjectTypeName, LPWSTR ObjectName, PSECURITY_DESCRIPTOR SecurityDescriptor, DWORD DesiredAccess, PGENERIC_MAPPING GenericMapping, BOOL ObjectCreation, LPDWORD GrantedAccess, LPBOOL AccessStatus, LPBOOL pfGenerateOnClose)
-    assertl_reflect_as(::AccessCheckAndAuditAlarmW(SubsystemName, HandleId, ObjectTypeName, ObjectName, SecurityDescriptor, DesiredAccess, GenericMapping, ObjectCreation, GrantedAccess, AccessStatus, pfGenerateOnClose));
+    safe_ret_as(::AccessCheckAndAuditAlarmW(SubsystemName, HandleId, ObjectTypeName, ObjectName, SecurityDescriptor, DesiredAccess, GenericMapping, ObjectCreation, GrantedAccess, AccessStatus, pfGenerateOnClose));
 // AccessCheckByType
 inline void AccessCheckByType(PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID PrincipalSelfSid, HANDLE ClientToken, DWORD DesiredAccess, POBJECT_TYPE_LIST ObjectTypeList, DWORD ObjectTypeListLength, PGENERIC_MAPPING GenericMapping, PPRIVILEGE_SET PrivilegeSet, LPDWORD PrivilegeSetLength, LPDWORD GrantedAccess, LPBOOL AccessStatus)
-    assertl_reflect_as(::AccessCheckByType(pSecurityDescriptor, PrincipalSelfSid, ClientToken, DesiredAccess, ObjectTypeList, ObjectTypeListLength, GenericMapping, PrivilegeSet, PrivilegeSetLength, GrantedAccess, AccessStatus));
+    safe_ret_as(::AccessCheckByType(pSecurityDescriptor, PrincipalSelfSid, ClientToken, DesiredAccess, ObjectTypeList, ObjectTypeListLength, GenericMapping, PrivilegeSet, PrivilegeSetLength, GrantedAccess, AccessStatus));
 // AccessCheckByTypeResultList
 inline void AccessCheckByTypeResultList(PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID PrincipalSelfSid, HANDLE ClientToken, DWORD DesiredAccess, POBJECT_TYPE_LIST ObjectTypeList, DWORD ObjectTypeListLength, PGENERIC_MAPPING GenericMapping, PPRIVILEGE_SET PrivilegeSet, LPDWORD PrivilegeSetLength, LPDWORD GrantedAccessList, LPDWORD AccessStatusList)
-    assertl_reflect_as(::AccessCheckByTypeResultList(pSecurityDescriptor, PrincipalSelfSid, ClientToken, DesiredAccess, ObjectTypeList, ObjectTypeListLength, GenericMapping, PrivilegeSet, PrivilegeSetLength, GrantedAccessList, AccessStatusList));
+    safe_ret_as(::AccessCheckByTypeResultList(pSecurityDescriptor, PrincipalSelfSid, ClientToken, DesiredAccess, ObjectTypeList, ObjectTypeListLength, GenericMapping, PrivilegeSet, PrivilegeSetLength, GrantedAccessList, AccessStatusList));
 // AccessCheckByTypeAndAuditAlarmW
 inline void AccessCheckByTypeAndAuditAlarm(LPCWSTR SubsystemName, LPVOID HandleId, LPCWSTR ObjectTypeName, LPCWSTR ObjectName, PSECURITY_DESCRIPTOR SecurityDescriptor, PSID PrincipalSelfSid, DWORD DesiredAccess, AUDIT_EVENT_TYPE AuditType, DWORD Flags, POBJECT_TYPE_LIST ObjectTypeList, DWORD ObjectTypeListLength, PGENERIC_MAPPING GenericMapping, BOOL ObjectCreation, LPDWORD GrantedAccess, LPBOOL AccessStatus, LPBOOL pfGenerateOnClose)
-    assertl_reflect_as(::AccessCheckByTypeAndAuditAlarmW(SubsystemName, HandleId, ObjectTypeName, ObjectName, SecurityDescriptor, PrincipalSelfSid, DesiredAccess, AuditType, Flags, ObjectTypeList, ObjectTypeListLength, GenericMapping, ObjectCreation, GrantedAccess, AccessStatus, pfGenerateOnClose));
+    safe_ret_as(::AccessCheckByTypeAndAuditAlarmW(SubsystemName, HandleId, ObjectTypeName, ObjectName, SecurityDescriptor, PrincipalSelfSid, DesiredAccess, AuditType, Flags, ObjectTypeList, ObjectTypeListLength, GenericMapping, ObjectCreation, GrantedAccess, AccessStatus, pfGenerateOnClose));
 // AccessCheckByTypeResultListAndAuditAlarmW
 inline void AccessCheckByTypeResultListAndAuditAlarm(LPCWSTR SubsystemName, LPVOID HandleId, LPCWSTR ObjectTypeName, LPCWSTR ObjectName, PSECURITY_DESCRIPTOR SecurityDescriptor, PSID PrincipalSelfSid, DWORD DesiredAccess, AUDIT_EVENT_TYPE AuditType, DWORD Flags, POBJECT_TYPE_LIST ObjectTypeList, DWORD ObjectTypeListLength, PGENERIC_MAPPING GenericMapping, BOOL ObjectCreation, LPDWORD GrantedAccessList, LPDWORD AccessStatusList, LPBOOL pfGenerateOnClose)
-    assertl_reflect_as(::AccessCheckByTypeResultListAndAuditAlarmW(SubsystemName, HandleId, ObjectTypeName, ObjectName, SecurityDescriptor, PrincipalSelfSid, DesiredAccess, AuditType, Flags, ObjectTypeList, ObjectTypeListLength, GenericMapping, ObjectCreation, GrantedAccessList, AccessStatusList, pfGenerateOnClose));
+    safe_ret_as(::AccessCheckByTypeResultListAndAuditAlarmW(SubsystemName, HandleId, ObjectTypeName, ObjectName, SecurityDescriptor, PrincipalSelfSid, DesiredAccess, AuditType, Flags, ObjectTypeList, ObjectTypeListLength, GenericMapping, ObjectCreation, GrantedAccessList, AccessStatusList, pfGenerateOnClose));
 // AccessCheckByTypeResultListAndAuditAlarmByHandleW
 inline void AccessCheckByTypeResultListAndAuditAlarmByHandle(LPCWSTR SubsystemName, LPVOID HandleId, HANDLE ClientToken, LPCWSTR ObjectTypeName, LPCWSTR ObjectName, PSECURITY_DESCRIPTOR SecurityDescriptor, PSID PrincipalSelfSid, DWORD DesiredAccess, AUDIT_EVENT_TYPE AuditType, DWORD Flags, POBJECT_TYPE_LIST ObjectTypeList, DWORD ObjectTypeListLength, PGENERIC_MAPPING GenericMapping, BOOL ObjectCreation, LPDWORD GrantedAccessList, LPDWORD AccessStatusList, LPBOOL pfGenerateOnClose)
-    assertl_reflect_as(::AccessCheckByTypeResultListAndAuditAlarmByHandleW(SubsystemName, HandleId, ClientToken, ObjectTypeName, ObjectName, SecurityDescriptor, PrincipalSelfSid, DesiredAccess, AuditType, Flags, ObjectTypeList, ObjectTypeListLength, GenericMapping, ObjectCreation, GrantedAccessList, AccessStatusList, pfGenerateOnClose));
+    safe_ret_as(::AccessCheckByTypeResultListAndAuditAlarmByHandleW(SubsystemName, HandleId, ClientToken, ObjectTypeName, ObjectName, SecurityDescriptor, PrincipalSelfSid, DesiredAccess, AuditType, Flags, ObjectTypeList, ObjectTypeListLength, GenericMapping, ObjectCreation, GrantedAccessList, AccessStatusList, pfGenerateOnClose));
 // AddAccessAllowedAce
 inline void AddAccessAllowedAce(PACL pAcl, DWORD dwAceRevision, DWORD AccessMask, PSID pSid)
-    assertl_reflect_as(::AddAccessAllowedAce(pAcl, dwAceRevision, AccessMask, pSid));
+    safe_ret_as(::AddAccessAllowedAce(pAcl, dwAceRevision, AccessMask, pSid));
 // AddAccessAllowedAceEx
 inline void AddAccessAllowedAceEx(PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD AccessMask, PSID pSid)
-    assertl_reflect_as(::AddAccessAllowedAceEx(pAcl, dwAceRevision, AceFlags, AccessMask, pSid));
+    safe_ret_as(::AddAccessAllowedAceEx(pAcl, dwAceRevision, AceFlags, AccessMask, pSid));
 // AddAccessAllowedObjectAce
 inline void AddAccessAllowedObjectAce(PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD AccessMask, GUID* ObjectTypeGuid, GUID* InheritedObjectTypeGuid, PSID pSid)
-    assertl_reflect_as(::AddAccessAllowedObjectAce(pAcl, dwAceRevision, AceFlags, AccessMask, ObjectTypeGuid, InheritedObjectTypeGuid, pSid));
+    safe_ret_as(::AddAccessAllowedObjectAce(pAcl, dwAceRevision, AceFlags, AccessMask, ObjectTypeGuid, InheritedObjectTypeGuid, pSid));
 // AddAccessDeniedAce
 inline void AddAccessDeniedAce(PACL pAcl, DWORD dwAceRevision, DWORD AccessMask, PSID pSid)
-    assertl_reflect_as(::AddAccessDeniedAce(pAcl, dwAceRevision, AccessMask, pSid));
+    safe_ret_as(::AddAccessDeniedAce(pAcl, dwAceRevision, AccessMask, pSid));
 // AddAccessDeniedAceEx
 inline void AddAccessDeniedAceEx(PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD AccessMask, PSID pSid)
-    assertl_reflect_as(::AddAccessDeniedAceEx(pAcl, dwAceRevision, AceFlags, AccessMask, pSid));
+    safe_ret_as(::AddAccessDeniedAceEx(pAcl, dwAceRevision, AceFlags, AccessMask, pSid));
 // AddAccessDeniedObjectAce
 inline void AddAccessDeniedObjectAce(PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD AccessMask, GUID* ObjectTypeGuid, GUID* InheritedObjectTypeGuid, PSID pSid)
-    assertl_reflect_as(::AddAccessDeniedObjectAce(pAcl, dwAceRevision, AceFlags, AccessMask, ObjectTypeGuid, InheritedObjectTypeGuid, pSid));
+    safe_ret_as(::AddAccessDeniedObjectAce(pAcl, dwAceRevision, AceFlags, AccessMask, ObjectTypeGuid, InheritedObjectTypeGuid, pSid));
 // AddAce
 inline void AddAce(PACL pAcl, DWORD dwAceRevision, DWORD dwStartingAceIndex, LPVOID pAceList, DWORD nAceListLength)
-    assertl_reflect_as(::AddAce(pAcl, dwAceRevision, dwStartingAceIndex, pAceList, nAceListLength));
+    safe_ret_as(::AddAce(pAcl, dwAceRevision, dwStartingAceIndex, pAceList, nAceListLength));
 // AddAuditAccessAce
 inline void AddAuditAccessAce(PACL pAcl, DWORD dwAceRevision, DWORD dwAccessMask, PSID pSid, BOOL bAuditSuccess, BOOL bAuditFailure)
-    assertl_reflect_as(::AddAuditAccessAce(pAcl, dwAceRevision, dwAccessMask, pSid, bAuditSuccess, bAuditFailure));
+    safe_ret_as(::AddAuditAccessAce(pAcl, dwAceRevision, dwAccessMask, pSid, bAuditSuccess, bAuditFailure));
 // AddAuditAccessAceEx
 inline void AddAuditAccessAceEx(PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD dwAccessMask, PSID pSid, BOOL bAuditSuccess, BOOL bAuditFailure)
-    assertl_reflect_as(::AddAuditAccessAceEx(pAcl, dwAceRevision, AceFlags, dwAccessMask, pSid, bAuditSuccess, bAuditFailure));
+    safe_ret_as(::AddAuditAccessAceEx(pAcl, dwAceRevision, AceFlags, dwAccessMask, pSid, bAuditSuccess, bAuditFailure));
 // AddAuditAccessObjectAce
 inline void AddAuditAccessObjectAce(PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD AccessMask, GUID* ObjectTypeGuid, GUID* InheritedObjectTypeGuid, PSID pSid, BOOL bAuditSuccess, BOOL bAuditFailure)
-    assertl_reflect_as(::AddAuditAccessObjectAce(pAcl, dwAceRevision, AceFlags, AccessMask, ObjectTypeGuid, InheritedObjectTypeGuid, pSid, bAuditSuccess, bAuditFailure));
+    safe_ret_as(::AddAuditAccessObjectAce(pAcl, dwAceRevision, AceFlags, AccessMask, ObjectTypeGuid, InheritedObjectTypeGuid, pSid, bAuditSuccess, bAuditFailure));
 // AddMandatoryAce
 inline void AddMandatoryAce(PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD MandatoryPolicy, PSID pLabelSid)
-    assertl_reflect_as(::AddMandatoryAce(pAcl, dwAceRevision, AceFlags, MandatoryPolicy, pLabelSid));
+    safe_ret_as(::AddMandatoryAce(pAcl, dwAceRevision, AceFlags, MandatoryPolicy, pLabelSid));
 // AddResourceAttributeAce
 inline void AddResourceAttributeAce(PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD AccessMask, PSID pSid, PCLAIM_SECURITY_ATTRIBUTES_INFORMATION pAttributeInfo, PDWORD pReturnLength)
-    assertl_reflect_as(::AddResourceAttributeAce(pAcl, dwAceRevision, AceFlags, AccessMask, pSid, pAttributeInfo, pReturnLength));
+    safe_ret_as(::AddResourceAttributeAce(pAcl, dwAceRevision, AceFlags, AccessMask, pSid, pAttributeInfo, pReturnLength));
 // AddScopedPolicyIDAce
 inline void AddScopedPolicyIDAce(PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD AccessMask, PSID pSid)
-    assertl_reflect_as(::AddScopedPolicyIDAce(pAcl, dwAceRevision, AceFlags, AccessMask, pSid));
+    safe_ret_as(::AddScopedPolicyIDAce(pAcl, dwAceRevision, AceFlags, AccessMask, pSid));
 // AdjustTokenGroups
 inline void AdjustTokenGroups(HANDLE TokenHandle, BOOL ResetToDefault, PTOKEN_GROUPS NewState, DWORD BufferLength, PTOKEN_GROUPS PreviousState, PDWORD ReturnLength)
-    assertl_reflect_as(::AdjustTokenGroups(TokenHandle, ResetToDefault, NewState, BufferLength, PreviousState, ReturnLength));
+    safe_ret_as(::AdjustTokenGroups(TokenHandle, ResetToDefault, NewState, BufferLength, PreviousState, ReturnLength));
 // AdjustTokenPrivileges
 inline void AdjustTokenPrivileges(HANDLE TokenHandle, BOOL DisableAllPrivileges, PTOKEN_PRIVILEGES NewState, DWORD BufferLength, PTOKEN_PRIVILEGES PreviousState, PDWORD ReturnLength)
-    assertl_reflect_as(::AdjustTokenPrivileges(TokenHandle, DisableAllPrivileges, NewState, BufferLength, PreviousState, ReturnLength));
+    safe_ret_as(::AdjustTokenPrivileges(TokenHandle, DisableAllPrivileges, NewState, BufferLength, PreviousState, ReturnLength));
 // AllocateAndInitializeSid
 inline void AllocateAndInitializeSid(PSID_IDENTIFIER_AUTHORITY pIdentifierAuthority, BYTE nSubAuthorityCount, DWORD nSubAuthority0, DWORD nSubAuthority1, DWORD nSubAuthority2, DWORD nSubAuthority3, DWORD nSubAuthority4, DWORD nSubAuthority5, DWORD nSubAuthority6, DWORD nSubAuthority7, PSID* pSid)
-    assertl_reflect_as(::AllocateAndInitializeSid(pIdentifierAuthority, nSubAuthorityCount, nSubAuthority0, nSubAuthority1, nSubAuthority2, nSubAuthority3, nSubAuthority4, nSubAuthority5, nSubAuthority6, nSubAuthority7, pSid));
+    safe_ret_as(::AllocateAndInitializeSid(pIdentifierAuthority, nSubAuthorityCount, nSubAuthority0, nSubAuthority1, nSubAuthority2, nSubAuthority3, nSubAuthority4, nSubAuthority5, nSubAuthority6, nSubAuthority7, pSid));
 // AllocateLocallyUniqueId
 inline void AllocateLocallyUniqueId(PLUID Luid)
-    assertl_reflect_as(::AllocateLocallyUniqueId(Luid));
+    safe_ret_as(::AllocateLocallyUniqueId(Luid));
 // AreAllAccessesGranted
 inline void AreAllAccessesGranted(DWORD GrantedAccess, DWORD DesiredAccess)
-    assertl_reflect_as(::AreAllAccessesGranted(GrantedAccess, DesiredAccess));
+    safe_ret_as(::AreAllAccessesGranted(GrantedAccess, DesiredAccess));
 // AreAnyAccessesGranted
 inline bool AreAnyAccessesGranted(DWORD GrantedAccess, DWORD DesiredAccess)
-    reflect_as(::AreAnyAccessesGranted(GrantedAccess, DesiredAccess));
+    ret_as(::AreAnyAccessesGranted(GrantedAccess, DesiredAccess));
 // CheckTokenMembership
 inline void CheckTokenMembership(HANDLE TokenHandle, PSID SidToCheck, PBOOL IsMember)
-    assertl_reflect_as(::CheckTokenMembership(TokenHandle, SidToCheck, IsMember));
+    safe_ret_as(::CheckTokenMembership(TokenHandle, SidToCheck, IsMember));
 // CheckTokenCapability
 inline void CheckTokenCapability(HANDLE TokenHandle, PSID CapabilitySidToCheck, PBOOL HasCapability)
-    assertl_reflect_as(::CheckTokenCapability(TokenHandle, CapabilitySidToCheck, HasCapability));
+    safe_ret_as(::CheckTokenCapability(TokenHandle, CapabilitySidToCheck, HasCapability));
 // GetAppContainerAce
 inline void GetAppContainerAce(PACL Acl, DWORD StartingAceIndex, PVOID* AppContainerAce, DWORD* AppContainerAceIndex)
-    assertl_reflect_as(::GetAppContainerAce(Acl, StartingAceIndex, AppContainerAce, AppContainerAceIndex));
+    safe_ret_as(::GetAppContainerAce(Acl, StartingAceIndex, AppContainerAce, AppContainerAceIndex));
 // CheckTokenMembershipEx
 inline void CheckTokenMembershipEx(HANDLE TokenHandle, PSID SidToCheck, DWORD Flags, PBOOL IsMember)
-    assertl_reflect_as(::CheckTokenMembershipEx(TokenHandle, SidToCheck, Flags, IsMember));
+    safe_ret_as(::CheckTokenMembershipEx(TokenHandle, SidToCheck, Flags, IsMember));
 // ConvertToAutoInheritPrivateObjectSecurity
 inline void ConvertToAutoInheritPrivateObjectSecurity(PSECURITY_DESCRIPTOR ParentDescriptor, PSECURITY_DESCRIPTOR CurrentSecurityDescriptor, PSECURITY_DESCRIPTOR* NewSecurityDescriptor, GUID* ObjectType, BOOLEAN IsDirectoryObject, PGENERIC_MAPPING GenericMapping)
-    assertl_reflect_as(::ConvertToAutoInheritPrivateObjectSecurity(ParentDescriptor, CurrentSecurityDescriptor, NewSecurityDescriptor, ObjectType, IsDirectoryObject, GenericMapping));
+    safe_ret_as(::ConvertToAutoInheritPrivateObjectSecurity(ParentDescriptor, CurrentSecurityDescriptor, NewSecurityDescriptor, ObjectType, IsDirectoryObject, GenericMapping));
 // CopySid
 inline void CopySid(DWORD nDestinationSidLength, PSID pDestinationSid, PSID pSourceSid)
-    assertl_reflect_as(::CopySid(nDestinationSidLength, pDestinationSid, pSourceSid));
+    safe_ret_as(::CopySid(nDestinationSidLength, pDestinationSid, pSourceSid));
 // CreatePrivateObjectSecurity
 inline void CreatePrivateObjectSecurity(PSECURITY_DESCRIPTOR ParentDescriptor, PSECURITY_DESCRIPTOR CreatorDescriptor, PSECURITY_DESCRIPTOR* NewDescriptor, BOOL IsDirectoryObject, HANDLE Token, PGENERIC_MAPPING GenericMapping)
-    assertl_reflect_as(::CreatePrivateObjectSecurity(ParentDescriptor, CreatorDescriptor, NewDescriptor, IsDirectoryObject, Token, GenericMapping));
+    safe_ret_as(::CreatePrivateObjectSecurity(ParentDescriptor, CreatorDescriptor, NewDescriptor, IsDirectoryObject, Token, GenericMapping));
 // CreatePrivateObjectSecurityEx
 inline void CreatePrivateObjectSecurityEx(PSECURITY_DESCRIPTOR ParentDescriptor, PSECURITY_DESCRIPTOR CreatorDescriptor, PSECURITY_DESCRIPTOR* NewDescriptor, GUID* ObjectType, BOOL IsContainerObject, ULONG AutoInheritFlags, HANDLE Token, PGENERIC_MAPPING GenericMapping)
-    assertl_reflect_as(::CreatePrivateObjectSecurityEx(ParentDescriptor, CreatorDescriptor, NewDescriptor, ObjectType, IsContainerObject, AutoInheritFlags, Token, GenericMapping));
+    safe_ret_as(::CreatePrivateObjectSecurityEx(ParentDescriptor, CreatorDescriptor, NewDescriptor, ObjectType, IsContainerObject, AutoInheritFlags, Token, GenericMapping));
 // CreatePrivateObjectSecurityWithMultipleInheritance
 inline void CreatePrivateObjectSecurityWithMultipleInheritance(PSECURITY_DESCRIPTOR ParentDescriptor, PSECURITY_DESCRIPTOR CreatorDescriptor, PSECURITY_DESCRIPTOR* NewDescriptor, GUID** ObjectTypes, ULONG GuidCount, BOOL IsContainerObject, ULONG AutoInheritFlags, HANDLE Token, PGENERIC_MAPPING GenericMapping)
-    assertl_reflect_as(::CreatePrivateObjectSecurityWithMultipleInheritance(ParentDescriptor, CreatorDescriptor, NewDescriptor, ObjectTypes, GuidCount, IsContainerObject, AutoInheritFlags, Token, GenericMapping));
+    safe_ret_as(::CreatePrivateObjectSecurityWithMultipleInheritance(ParentDescriptor, CreatorDescriptor, NewDescriptor, ObjectTypes, GuidCount, IsContainerObject, AutoInheritFlags, Token, GenericMapping));
 // CreateRestrictedToken
 inline void CreateRestrictedToken(HANDLE ExistingTokenHandle, DWORD Flags, DWORD DisableSidCount, PSID_AND_ATTRIBUTES SidsToDisable, DWORD DeletePrivilegeCount, PLUID_AND_ATTRIBUTES PrivilegesToDelete, DWORD RestrictedSidCount, PSID_AND_ATTRIBUTES SidsToRestrict, PHANDLE NewTokenHandle)
-    assertl_reflect_as(::CreateRestrictedToken(ExistingTokenHandle, Flags, DisableSidCount, SidsToDisable, DeletePrivilegeCount, PrivilegesToDelete, RestrictedSidCount, SidsToRestrict, NewTokenHandle));
+    safe_ret_as(::CreateRestrictedToken(ExistingTokenHandle, Flags, DisableSidCount, SidsToDisable, DeletePrivilegeCount, PrivilegesToDelete, RestrictedSidCount, SidsToRestrict, NewTokenHandle));
 // CreateWellKnownSid
 inline void CreateWellKnownSid(WELL_KNOWN_SID_TYPE WellKnownSidType, PSID DomainSid, PSID pSid, DWORD* cbSid)
-    assertl_reflect_as(::CreateWellKnownSid(WellKnownSidType, DomainSid, pSid, cbSid));
+    safe_ret_as(::CreateWellKnownSid(WellKnownSidType, DomainSid, pSid, cbSid));
 // EqualDomainSid
 inline void EqualDomainSid(PSID pSid1, PSID pSid2, BOOL* pfEqual)
-    assertl_reflect_as(::EqualDomainSid(pSid1, pSid2, pfEqual));
+    safe_ret_as(::EqualDomainSid(pSid1, pSid2, pfEqual));
 // DeleteAce
 inline void DeleteAce(PACL pAcl, DWORD dwAceIndex)
-    assertl_reflect_as(::DeleteAce(pAcl, dwAceIndex));
+    safe_ret_as(::DeleteAce(pAcl, dwAceIndex));
 // DestroyPrivateObjectSecurity
 inline void DestroyPrivateObjectSecurity(PSECURITY_DESCRIPTOR* ObjectDescriptor)
-    assertl_reflect_as(::DestroyPrivateObjectSecurity(ObjectDescriptor));
+    safe_ret_as(::DestroyPrivateObjectSecurity(ObjectDescriptor));
 // DuplicateToken
 inline void DuplicateToken(HANDLE ExistingTokenHandle, SECURITY_IMPERSONATION_LEVEL ImpersonationLevel, PHANDLE DuplicateTokenHandle)
-    assertl_reflect_as(::DuplicateToken(ExistingTokenHandle, ImpersonationLevel, DuplicateTokenHandle));
+    safe_ret_as(::DuplicateToken(ExistingTokenHandle, ImpersonationLevel, DuplicateTokenHandle));
 // DuplicateTokenEx
 inline void DuplicateTokenEx(HANDLE hExistingToken, DWORD dwDesiredAccess, LPSECURITY_ATTRIBUTES lpTokenAttributes, SECURITY_IMPERSONATION_LEVEL ImpersonationLevel, TOKEN_TYPE TokenType, PHANDLE phNewToken)
-    assertl_reflect_as(::DuplicateTokenEx(hExistingToken, dwDesiredAccess, lpTokenAttributes, ImpersonationLevel, TokenType, phNewToken));
+    safe_ret_as(::DuplicateTokenEx(hExistingToken, dwDesiredAccess, lpTokenAttributes, ImpersonationLevel, TokenType, phNewToken));
 // EqualPrefixSid
 inline bool EqualPrefixSid(PSID pSid1, PSID pSid2)
-    reflect_as(::EqualPrefixSid(pSid1, pSid2));
+    ret_as(::EqualPrefixSid(pSid1, pSid2));
 // EqualSid
 inline bool EqualSid(PSID pSid1, PSID pSid2)
-    reflect_as(::EqualSid(pSid1, pSid2));
+    ret_as(::EqualSid(pSid1, pSid2));
 // FindFirstFreeAce
 inline void FindFirstFreeAce(PACL pAcl, LPVOID* pAce)
-    assertl_reflect_as(::FindFirstFreeAce(pAcl, pAce));
+    safe_ret_as(::FindFirstFreeAce(pAcl, pAce));
 // GetAce
 inline void GetAce(PACL pAcl, DWORD dwAceIndex, LPVOID* pAce)
-    assertl_reflect_as(::GetAce(pAcl, dwAceIndex, pAce));
+    safe_ret_as(::GetAce(pAcl, dwAceIndex, pAce));
 // GetAclInformation
 inline void GetAclInformation(PACL pAcl, LPVOID pAclInformation, DWORD nAclInformationLength, ACL_INFORMATION_CLASS dwAclInformationClass)
-    assertl_reflect_as(::GetAclInformation(pAcl, pAclInformation, nAclInformationLength, dwAclInformationClass));
+    safe_ret_as(::GetAclInformation(pAcl, pAclInformation, nAclInformationLength, dwAclInformationClass));
 // GetFileSecurityW
 inline void GetFileSecurity(LPCWSTR lpFileName, SECURITY_INFORMATION RequestedInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor, DWORD nLength, LPDWORD lpnLengthNeeded)
-    assertl_reflect_as(::GetFileSecurityW(lpFileName, RequestedInformation, pSecurityDescriptor, nLength, lpnLengthNeeded));
+    safe_ret_as(::GetFileSecurityW(lpFileName, RequestedInformation, pSecurityDescriptor, nLength, lpnLengthNeeded));
 // GetKernelObjectSecurity
 inline void GetKernelObjectSecurity(HANDLE Handle, SECURITY_INFORMATION RequestedInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor, DWORD nLength, LPDWORD lpnLengthNeeded)
-    assertl_reflect_as(::GetKernelObjectSecurity(Handle, RequestedInformation, pSecurityDescriptor, nLength, lpnLengthNeeded));
+    safe_ret_as(::GetKernelObjectSecurity(Handle, RequestedInformation, pSecurityDescriptor, nLength, lpnLengthNeeded));
 // GetPrivateObjectSecurity
 inline void GetPrivateObjectSecurity(PSECURITY_DESCRIPTOR ObjectDescriptor, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR ResultantDescriptor, DWORD DescriptorLength, PDWORD ReturnLength)
-    assertl_reflect_as(::GetPrivateObjectSecurity(ObjectDescriptor, SecurityInformation, ResultantDescriptor, DescriptorLength, ReturnLength));
+    safe_ret_as(::GetPrivateObjectSecurity(ObjectDescriptor, SecurityInformation, ResultantDescriptor, DescriptorLength, ReturnLength));
 // GetSecurityDescriptorControl
 inline void GetSecurityDescriptorControl(PSECURITY_DESCRIPTOR pSecurityDescriptor, PSECURITY_DESCRIPTOR_CONTROL pControl, LPDWORD lpdwRevision)
-    assertl_reflect_as(::GetSecurityDescriptorControl(pSecurityDescriptor, pControl, lpdwRevision));
+    safe_ret_as(::GetSecurityDescriptorControl(pSecurityDescriptor, pControl, lpdwRevision));
 // GetSecurityDescriptorDacl
 inline void GetSecurityDescriptorDacl(PSECURITY_DESCRIPTOR pSecurityDescriptor, LPBOOL lpbDaclPresent, PACL* pDacl, LPBOOL lpbDaclDefaulted)
-    assertl_reflect_as(::GetSecurityDescriptorDacl(pSecurityDescriptor, lpbDaclPresent, pDacl, lpbDaclDefaulted));
+    safe_ret_as(::GetSecurityDescriptorDacl(pSecurityDescriptor, lpbDaclPresent, pDacl, lpbDaclDefaulted));
 // GetSecurityDescriptorGroup
 inline void GetSecurityDescriptorGroup(PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID* pGroup, LPBOOL lpbGroupDefaulted)
-    assertl_reflect_as(::GetSecurityDescriptorGroup(pSecurityDescriptor, pGroup, lpbGroupDefaulted));
+    safe_ret_as(::GetSecurityDescriptorGroup(pSecurityDescriptor, pGroup, lpbGroupDefaulted));
 // GetSecurityDescriptorOwner
 inline void GetSecurityDescriptorOwner(PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID* pOwner, LPBOOL lpbOwnerDefaulted)
-    assertl_reflect_as(::GetSecurityDescriptorOwner(pSecurityDescriptor, pOwner, lpbOwnerDefaulted));
+    safe_ret_as(::GetSecurityDescriptorOwner(pSecurityDescriptor, pOwner, lpbOwnerDefaulted));
 // GetSecurityDescriptorSacl
 inline void GetSecurityDescriptorSacl(PSECURITY_DESCRIPTOR pSecurityDescriptor, LPBOOL lpbSaclPresent, PACL* pSacl, LPBOOL lpbSaclDefaulted)
-    assertl_reflect_as(::GetSecurityDescriptorSacl(pSecurityDescriptor, lpbSaclPresent, pSacl, lpbSaclDefaulted));
+    safe_ret_as(::GetSecurityDescriptorSacl(pSecurityDescriptor, lpbSaclPresent, pSacl, lpbSaclDefaulted));
 // GetTokenInformation
 inline void GetTokenInformation(HANDLE TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, LPVOID TokenInformation, DWORD TokenInformationLength, PDWORD ReturnLength)
-    assertl_reflect_as(::GetTokenInformation(TokenHandle, TokenInformationClass, TokenInformation, TokenInformationLength, ReturnLength));
+    safe_ret_as(::GetTokenInformation(TokenHandle, TokenInformationClass, TokenInformation, TokenInformationLength, ReturnLength));
 // GetWindowsAccountDomainSid
 inline void GetWindowsAccountDomainSid(PSID pSid, PSID pDomainSid, DWORD* cbDomainSid)
-    assertl_reflect_as(::GetWindowsAccountDomainSid(pSid, pDomainSid, cbDomainSid));
+    safe_ret_as(::GetWindowsAccountDomainSid(pSid, pDomainSid, cbDomainSid));
 // ImpersonateAnonymousToken
 inline void ImpersonateAnonymousToken(HANDLE ThreadHandle)
-    assertl_reflect_as(::ImpersonateAnonymousToken(ThreadHandle));
+    safe_ret_as(::ImpersonateAnonymousToken(ThreadHandle));
 // ImpersonateLoggedOnUser
 inline void ImpersonateLoggedOnUser(HANDLE hToken)
-    assertl_reflect_as(::ImpersonateLoggedOnUser(hToken));
+    safe_ret_as(::ImpersonateLoggedOnUser(hToken));
 // ImpersonateSelf
 inline void ImpersonateSelf(SECURITY_IMPERSONATION_LEVEL ImpersonationLevel)
-    assertl_reflect_as(::ImpersonateSelf(ImpersonationLevel));
+    safe_ret_as(::ImpersonateSelf(ImpersonationLevel));
 // InitializeAcl
 inline void InitializeAcl(PACL pAcl, DWORD nAclLength, DWORD dwAclRevision)
-    assertl_reflect_as(::InitializeAcl(pAcl, nAclLength, dwAclRevision));
+    safe_ret_as(::InitializeAcl(pAcl, nAclLength, dwAclRevision));
 // InitializeSecurityDescriptor
 inline void InitializeSecurityDescriptor(PSECURITY_DESCRIPTOR pSecurityDescriptor, DWORD dwRevision)
-    assertl_reflect_as(::InitializeSecurityDescriptor(pSecurityDescriptor, dwRevision));
+    safe_ret_as(::InitializeSecurityDescriptor(pSecurityDescriptor, dwRevision));
 // InitializeSid
 inline void InitializeSid(PSID Sid, PSID_IDENTIFIER_AUTHORITY pIdentifierAuthority, BYTE nSubAuthorityCount)
-    assertl_reflect_as(::InitializeSid(Sid, pIdentifierAuthority, nSubAuthorityCount));
+    safe_ret_as(::InitializeSid(Sid, pIdentifierAuthority, nSubAuthorityCount));
 // IsTokenRestricted
 inline bool IsTokenRestricted(HANDLE TokenHandle)
-    reflect_as(::IsTokenRestricted(TokenHandle));
+    ret_as(::IsTokenRestricted(TokenHandle));
 // IsValidAcl
 inline bool IsValidAcl(PACL pAcl)
-    reflect_as(::IsValidAcl(pAcl));
+    ret_as(::IsValidAcl(pAcl));
 // IsValidSecurityDescriptor
 inline bool IsValidSecurityDescriptor(PSECURITY_DESCRIPTOR pSecurityDescriptor)
-    reflect_as(::IsValidSecurityDescriptor(pSecurityDescriptor));
+    ret_as(::IsValidSecurityDescriptor(pSecurityDescriptor));
 // IsValidSid
 inline bool IsValidSid(PSID pSid)
-    reflect_as(::IsValidSid(pSid));
+    ret_as(::IsValidSid(pSid));
 // IsWellKnownSid
 inline bool IsWellKnownSid(PSID pSid, WELL_KNOWN_SID_TYPE WellKnownSidType)
-    reflect_as(::IsWellKnownSid(pSid, WellKnownSidType));
+    ret_as(::IsWellKnownSid(pSid, WellKnownSidType));
 // MakeAbsoluteSD
 inline void MakeAbsoluteSD(PSECURITY_DESCRIPTOR pSelfRelativeSecurityDescriptor, PSECURITY_DESCRIPTOR pAbsoluteSecurityDescriptor, LPDWORD lpdwAbsoluteSecurityDescriptorSize, PACL pDacl, LPDWORD lpdwDaclSize, PACL pSacl, LPDWORD lpdwSaclSize, PSID pOwner, LPDWORD lpdwOwnerSize, PSID pPrimaryGroup, LPDWORD lpdwPrimaryGroupSize)
-    assertl_reflect_as(::MakeAbsoluteSD(pSelfRelativeSecurityDescriptor, pAbsoluteSecurityDescriptor, lpdwAbsoluteSecurityDescriptorSize, pDacl, lpdwDaclSize, pSacl, lpdwSaclSize, pOwner, lpdwOwnerSize, pPrimaryGroup, lpdwPrimaryGroupSize));
+    safe_ret_as(::MakeAbsoluteSD(pSelfRelativeSecurityDescriptor, pAbsoluteSecurityDescriptor, lpdwAbsoluteSecurityDescriptorSize, pDacl, lpdwDaclSize, pSacl, lpdwSaclSize, pOwner, lpdwOwnerSize, pPrimaryGroup, lpdwPrimaryGroupSize));
 // MakeSelfRelativeSD
 inline void MakeSelfRelativeSD(PSECURITY_DESCRIPTOR pAbsoluteSecurityDescriptor, PSECURITY_DESCRIPTOR pSelfRelativeSecurityDescriptor, LPDWORD lpdwBufferLength)
-    assertl_reflect_as(::MakeSelfRelativeSD(pAbsoluteSecurityDescriptor, pSelfRelativeSecurityDescriptor, lpdwBufferLength));
+    safe_ret_as(::MakeSelfRelativeSD(pAbsoluteSecurityDescriptor, pSelfRelativeSecurityDescriptor, lpdwBufferLength));
 // ObjectCloseAuditAlarmW
 inline void ObjectCloseAuditAlarm(LPCWSTR SubsystemName, LPVOID HandleId, BOOL GenerateOnClose)
-    assertl_reflect_as(::ObjectCloseAuditAlarmW(SubsystemName, HandleId, GenerateOnClose));
+    safe_ret_as(::ObjectCloseAuditAlarmW(SubsystemName, HandleId, GenerateOnClose));
 // ObjectDeleteAuditAlarmW
 inline void ObjectDeleteAuditAlarm(LPCWSTR SubsystemName, LPVOID HandleId, BOOL GenerateOnClose)
-    assertl_reflect_as(::ObjectDeleteAuditAlarmW(SubsystemName, HandleId, GenerateOnClose));
+    safe_ret_as(::ObjectDeleteAuditAlarmW(SubsystemName, HandleId, GenerateOnClose));
 // ObjectOpenAuditAlarmW
 inline void ObjectOpenAuditAlarm(LPCWSTR SubsystemName, LPVOID HandleId, LPWSTR ObjectTypeName, LPWSTR ObjectName, PSECURITY_DESCRIPTOR pSecurityDescriptor, HANDLE ClientToken, DWORD DesiredAccess, DWORD GrantedAccess, PPRIVILEGE_SET Privileges, BOOL ObjectCreation, BOOL AccessGranted, LPBOOL GenerateOnClose)
-    assertl_reflect_as(::ObjectOpenAuditAlarmW(SubsystemName, HandleId, ObjectTypeName, ObjectName, pSecurityDescriptor, ClientToken, DesiredAccess, GrantedAccess, Privileges, ObjectCreation, AccessGranted, GenerateOnClose));
+    safe_ret_as(::ObjectOpenAuditAlarmW(SubsystemName, HandleId, ObjectTypeName, ObjectName, pSecurityDescriptor, ClientToken, DesiredAccess, GrantedAccess, Privileges, ObjectCreation, AccessGranted, GenerateOnClose));
 // ObjectPrivilegeAuditAlarmW
 inline void ObjectPrivilegeAuditAlarm(LPCWSTR SubsystemName, LPVOID HandleId, HANDLE ClientToken, DWORD DesiredAccess, PPRIVILEGE_SET Privileges, BOOL AccessGranted)
-    assertl_reflect_as(::ObjectPrivilegeAuditAlarmW(SubsystemName, HandleId, ClientToken, DesiredAccess, Privileges, AccessGranted));
+    safe_ret_as(::ObjectPrivilegeAuditAlarmW(SubsystemName, HandleId, ClientToken, DesiredAccess, Privileges, AccessGranted));
 // PrivilegeCheck
 inline void PrivilegeCheck(HANDLE ClientToken, PPRIVILEGE_SET RequiredPrivileges, LPBOOL pfResult)
-    assertl_reflect_as(::PrivilegeCheck(ClientToken, RequiredPrivileges, pfResult));
+    safe_ret_as(::PrivilegeCheck(ClientToken, RequiredPrivileges, pfResult));
 // PrivilegedServiceAuditAlarmW
 inline void PrivilegedServiceAuditAlarm(LPCWSTR SubsystemName, LPCWSTR ServiceName, HANDLE ClientToken, PPRIVILEGE_SET Privileges, BOOL AccessGranted)
-    assertl_reflect_as(::PrivilegedServiceAuditAlarmW(SubsystemName, ServiceName, ClientToken, Privileges, AccessGranted));
+    safe_ret_as(::PrivilegedServiceAuditAlarmW(SubsystemName, ServiceName, ClientToken, Privileges, AccessGranted));
 // RevertToSelf
 inline void RevertToSelf()
-    assertl_reflect_as(::RevertToSelf());
+    safe_ret_as(::RevertToSelf());
 // SetAclInformation
 inline void SetAclInformation(PACL pAcl, LPVOID pAclInformation, DWORD nAclInformationLength, ACL_INFORMATION_CLASS dwAclInformationClass)
-    assertl_reflect_as(::SetAclInformation(pAcl, pAclInformation, nAclInformationLength, dwAclInformationClass));
+    safe_ret_as(::SetAclInformation(pAcl, pAclInformation, nAclInformationLength, dwAclInformationClass));
 // SetFileSecurityW
 inline void SetFileSecurity(LPCWSTR lpFileName, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor)
-    assertl_reflect_as(::SetFileSecurityW(lpFileName, SecurityInformation, pSecurityDescriptor));
+    safe_ret_as(::SetFileSecurityW(lpFileName, SecurityInformation, pSecurityDescriptor));
 // SetKernelObjectSecurity
 inline void SetKernelObjectSecurity(HANDLE Handle, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR SecurityDescriptor)
-    assertl_reflect_as(::SetKernelObjectSecurity(Handle, SecurityInformation, SecurityDescriptor));
+    safe_ret_as(::SetKernelObjectSecurity(Handle, SecurityInformation, SecurityDescriptor));
 // SetPrivateObjectSecurity
 inline void SetPrivateObjectSecurity(SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR ModificationDescriptor, PSECURITY_DESCRIPTOR* ObjectsSecurityDescriptor, PGENERIC_MAPPING GenericMapping, HANDLE Token)
-    assertl_reflect_as(::SetPrivateObjectSecurity(SecurityInformation, ModificationDescriptor, ObjectsSecurityDescriptor, GenericMapping, Token));
+    safe_ret_as(::SetPrivateObjectSecurity(SecurityInformation, ModificationDescriptor, ObjectsSecurityDescriptor, GenericMapping, Token));
 // SetPrivateObjectSecurityEx
 inline void SetPrivateObjectSecurityEx(SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR ModificationDescriptor, PSECURITY_DESCRIPTOR* ObjectsSecurityDescriptor, ULONG AutoInheritFlags, PGENERIC_MAPPING GenericMapping, HANDLE Token)
-    assertl_reflect_as(::SetPrivateObjectSecurityEx(SecurityInformation, ModificationDescriptor, ObjectsSecurityDescriptor, AutoInheritFlags, GenericMapping, Token));
+    safe_ret_as(::SetPrivateObjectSecurityEx(SecurityInformation, ModificationDescriptor, ObjectsSecurityDescriptor, AutoInheritFlags, GenericMapping, Token));
 // SetSecurityDescriptorControl
 inline void SetSecurityDescriptorControl(PSECURITY_DESCRIPTOR pSecurityDescriptor, SECURITY_DESCRIPTOR_CONTROL ControlBitsOfInterest, SECURITY_DESCRIPTOR_CONTROL ControlBitsToSet)
-    assertl_reflect_as(::SetSecurityDescriptorControl(pSecurityDescriptor, ControlBitsOfInterest, ControlBitsToSet));
+    safe_ret_as(::SetSecurityDescriptorControl(pSecurityDescriptor, ControlBitsOfInterest, ControlBitsToSet));
 // SetSecurityDescriptorDacl
 inline void SetSecurityDescriptorDacl(PSECURITY_DESCRIPTOR pSecurityDescriptor, BOOL bDaclPresent, PACL pDacl, BOOL bDaclDefaulted)
-    assertl_reflect_as(::SetSecurityDescriptorDacl(pSecurityDescriptor, bDaclPresent, pDacl, bDaclDefaulted));
+    safe_ret_as(::SetSecurityDescriptorDacl(pSecurityDescriptor, bDaclPresent, pDacl, bDaclDefaulted));
 // SetSecurityDescriptorGroup
 inline void SetSecurityDescriptorGroup(PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID pGroup, BOOL bGroupDefaulted)
-    assertl_reflect_as(::SetSecurityDescriptorGroup(pSecurityDescriptor, pGroup, bGroupDefaulted));
+    safe_ret_as(::SetSecurityDescriptorGroup(pSecurityDescriptor, pGroup, bGroupDefaulted));
 // SetSecurityDescriptorOwner
 inline void SetSecurityDescriptorOwner(PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID pOwner, BOOL bOwnerDefaulted)
-    assertl_reflect_as(::SetSecurityDescriptorOwner(pSecurityDescriptor, pOwner, bOwnerDefaulted));
+    safe_ret_as(::SetSecurityDescriptorOwner(pSecurityDescriptor, pOwner, bOwnerDefaulted));
 // SetSecurityDescriptorSacl
 inline void SetSecurityDescriptorSacl(PSECURITY_DESCRIPTOR pSecurityDescriptor, BOOL bSaclPresent, PACL pSacl, BOOL bSaclDefaulted)
-    assertl_reflect_as(::SetSecurityDescriptorSacl(pSecurityDescriptor, bSaclPresent, pSacl, bSaclDefaulted));
+    safe_ret_as(::SetSecurityDescriptorSacl(pSecurityDescriptor, bSaclPresent, pSacl, bSaclDefaulted));
 // SetTokenInformation
 inline void SetTokenInformation(HANDLE TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, LPVOID TokenInformation, DWORD TokenInformationLength)
-    assertl_reflect_as(::SetTokenInformation(TokenHandle, TokenInformationClass, TokenInformation, TokenInformationLength));
+    safe_ret_as(::SetTokenInformation(TokenHandle, TokenInformationClass, TokenInformation, TokenInformationLength));
 // SetCachedSigningLevel
 inline void SetCachedSigningLevel(PHANDLE SourceFiles, ULONG SourceFileCount, ULONG Flags, HANDLE TargetFile)
-    assertl_reflect_as(::SetCachedSigningLevel(SourceFiles, SourceFileCount, Flags, TargetFile));
+    safe_ret_as(::SetCachedSigningLevel(SourceFiles, SourceFileCount, Flags, TargetFile));
 // GetCachedSigningLevel
 inline void GetCachedSigningLevel(HANDLE File, PULONG Flags, PULONG SigningLevel, PUCHAR Thumbprint, PULONG ThumbprintSize, PULONG ThumbprintAlgorithm)
-    assertl_reflect_as(::GetCachedSigningLevel(File, Flags, SigningLevel, Thumbprint, ThumbprintSize, ThumbprintAlgorithm));
+    safe_ret_as(::GetCachedSigningLevel(File, Flags, SigningLevel, Thumbprint, ThumbprintSize, ThumbprintAlgorithm));
 // DeriveCapabilitySidsFromName
 inline void DeriveCapabilitySidsFromName(LPCWSTR CapName, PSID** CapabilityGroupSids, DWORD* CapabilityGroupSidCount, PSID** CapabilitySids, DWORD* CapabilitySidCount)
-    assertl_reflect_as(::DeriveCapabilitySidsFromName(CapName, CapabilityGroupSids, CapabilityGroupSidCount, CapabilitySids, CapabilitySidCount));
+    safe_ret_as(::DeriveCapabilitySidsFromName(CapName, CapabilityGroupSids, CapabilityGroupSidCount, CapabilitySids, CapabilitySidCount));
 // GetLengthSid
 inline DWORD GetLengthSid(PSID pSid)
-    reflect_as(::GetLengthSid(pSid));
+    ret_as(::GetLengthSid(pSid));
 // GetSecurityDescriptorLength
 inline DWORD GetSecurityDescriptorLength(PSECURITY_DESCRIPTOR pSecurityDescriptor)
-    reflect_as(::GetSecurityDescriptorLength(pSecurityDescriptor));
+    ret_as(::GetSecurityDescriptorLength(pSecurityDescriptor));
 // GetSecurityDescriptorRMControl
 inline void GetSecurityDescriptorRMControl(PSECURITY_DESCRIPTOR SecurityDescriptor, PUCHAR RMControl)
-    assertl_reflect_as(::GetSecurityDescriptorRMControl(SecurityDescriptor, RMControl) == ERROR_SUCCESS);
+    safe_ret_as(::GetSecurityDescriptorRMControl(SecurityDescriptor, RMControl) == ERROR_SUCCESS);
 // GetSidLengthRequired
 inline DWORD GetSidLengthRequired(UCHAR nSubAuthorityCount)
-    reflect_as(::GetSidLengthRequired(nSubAuthorityCount));
+    ret_as(::GetSidLengthRequired(nSubAuthorityCount));
 // SetSecurityDescriptorRMControl
 inline void SetSecurityDescriptorRMControl(PSECURITY_DESCRIPTOR SecurityDescriptor, PUCHAR RMControl)
-	assertl_reflect_as(::SetSecurityDescriptorRMControl(SecurityDescriptor, RMControl) == ERROR_SUCCESS);
+	safe_ret_as(::SetSecurityDescriptorRMControl(SecurityDescriptor, RMControl) == ERROR_SUCCESS);
 // CveEventWrite
 inline void CveEventWrite(PCWSTR CveId, PCWSTR AdditionalDetails)
-    assertl_reflect_as(::CveEventWrite(CveId, AdditionalDetails) == ERROR_SUCCESS);
+    safe_ret_as(::CveEventWrite(CveId, AdditionalDetails) == ERROR_SUCCESS);
 // GetSidSubAuthority
 inline PDWORD GetSidSubAuthority(PSID pSid, DWORD nSubAuthority)
-    nt_assertl_reflect_to(auto h = ::GetSidSubAuthority(pSid, nSubAuthority), h);
+    ret_safe_to(auto h = ::GetSidSubAuthority(pSid, nSubAuthority), h);
 // GetSidIdentifierAuthority
 inline PSID_IDENTIFIER_AUTHORITY GetSidIdentifierAuthority(PSID pSid)
-    nt_assertl_reflect_to(auto h = ::GetSidIdentifierAuthority(pSid), h);
+    ret_safe_to(auto h = ::GetSidIdentifierAuthority(pSid), h);
 // GetSidSubAuthorityCount
 inline PUCHAR GetSidSubAuthorityCount(PSID pSid)
-    nt_assertl_reflect_to(auto h = ::GetSidSubAuthorityCount(pSid), h);
+    ret_safe_to(auto h = ::GetSidSubAuthorityCount(pSid), h);
 // FreeSid
 inline void FreeSid(PSID pSid)
-    assertl_reflect_as(!::FreeSid(pSid));
+    safe_ret_as(!::FreeSid(pSid));
 // MapGenericMask
 inline void MapGenericMask(PDWORD AccessMask, PGENERIC_MAPPING GenericMapping)
-    reflect_to(::MapGenericMask(AccessMask, GenericMapping));
+    ret_to(::MapGenericMask(AccessMask, GenericMapping));
 // QuerySecurityAccessMask
 inline void QuerySecurityAccessMask(SECURITY_INFORMATION SecurityInformation, LPDWORD DesiredAccess)
-    reflect_to(::QuerySecurityAccessMask(SecurityInformation, DesiredAccess));
+    ret_to(::QuerySecurityAccessMask(SecurityInformation, DesiredAccess));
 // SetSecurityAccessMask
 inline void SetSecurityAccessMask(SECURITY_INFORMATION SecurityInformation, LPDWORD DesiredAccess)
-    reflect_to(::SetSecurityAccessMask(SecurityInformation, DesiredAccess));
+    ret_to(::SetSecurityAccessMask(SecurityInformation, DesiredAccess));
 #pragma endregion
 
 #pragma region AclApi.h
 #undef SetEntriesInAcl
 // SetEntriesInAclA
 inline void SetEntriesInAcl(ULONG cCountOfExplicitEntries, PEXPLICIT_ACCESS_A pListOfExplicitEntries, PACL OldAcl, PACL * NewAcl)
-    assertl_reflect_as(::SetEntriesInAclA(cCountOfExplicitEntries, pListOfExplicitEntries, OldAcl, NewAcl) == ERROR_SUCCESS);
+    safe_ret_as(::SetEntriesInAclA(cCountOfExplicitEntries, pListOfExplicitEntries, OldAcl, NewAcl) == ERROR_SUCCESS);
 // SetEntriesInAclW
 inline void SetEntriesInAcl(ULONG cCountOfExplicitEntries, PEXPLICIT_ACCESS_W pListOfExplicitEntries, PACL OldAcl, PACL * NewAcl)
-    assertl_reflect_as(::SetEntriesInAclW(cCountOfExplicitEntries, pListOfExplicitEntries, OldAcl, NewAcl) == ERROR_SUCCESS);
+    safe_ret_as(::SetEntriesInAclW(cCountOfExplicitEntries, pListOfExplicitEntries, OldAcl, NewAcl) == ERROR_SUCCESS);
 #undef GetExplicitEntriesFromAcl
 // GetExplicitEntriesFromAclA
 inline void GetExplicitEntriesFromAcl(PACL pacl, PULONG pcCountOfExplicitEntries, PEXPLICIT_ACCESS_A * pListOfExplicitEntries)
-    assertl_reflect_as(::GetExplicitEntriesFromAclA(pacl, pcCountOfExplicitEntries, pListOfExplicitEntries) == ERROR_SUCCESS);
+    safe_ret_as(::GetExplicitEntriesFromAclA(pacl, pcCountOfExplicitEntries, pListOfExplicitEntries) == ERROR_SUCCESS);
 // GetExplicitEntriesFromAclW
 inline void GetExplicitEntriesFromAcl(PACL pacl, PULONG pcCountOfExplicitEntries, PEXPLICIT_ACCESS_W * pListOfExplicitEntries)
-    assertl_reflect_as(::GetExplicitEntriesFromAclW(pacl, pcCountOfExplicitEntries, pListOfExplicitEntries) == ERROR_SUCCESS);
+    safe_ret_as(::GetExplicitEntriesFromAclW(pacl, pcCountOfExplicitEntries, pListOfExplicitEntries) == ERROR_SUCCESS);
 #undef GetEffectiveRightsFromAcl
 // GetEffectiveRightsFromAclA
 inline void GetEffectiveRightsFromAcl(PACL pacl, PTRUSTEE_A pTrustee, PACCESS_MASK pAccessRights)
-    assertl_reflect_as(::GetEffectiveRightsFromAclA(pacl, pTrustee, pAccessRights) == ERROR_SUCCESS);
+    safe_ret_as(::GetEffectiveRightsFromAclA(pacl, pTrustee, pAccessRights) == ERROR_SUCCESS);
 // GetEffectiveRightsFromAclW
 inline void GetEffectiveRightsFromAcl(PACL pacl, PTRUSTEE_W pTrustee, PACCESS_MASK pAccessRights)
-    assertl_reflect_as(::GetEffectiveRightsFromAclW(pacl, pTrustee, pAccessRights) == ERROR_SUCCESS);
+    safe_ret_as(::GetEffectiveRightsFromAclW(pacl, pTrustee, pAccessRights) == ERROR_SUCCESS);
 #undef GetAuditedPermissionsFromAcl
 // GetAuditedPermissionsFromAclA
 inline void GetAuditedPermissionsFromAcl(PACL pacl, PTRUSTEE_A pTrustee, PACCESS_MASK pSuccessfulAuditedRights, PACCESS_MASK pFailedAuditRights)
-    assertl_reflect_as(::GetAuditedPermissionsFromAclA(pacl, pTrustee, pSuccessfulAuditedRights, pFailedAuditRights) == ERROR_SUCCESS);
+    safe_ret_as(::GetAuditedPermissionsFromAclA(pacl, pTrustee, pSuccessfulAuditedRights, pFailedAuditRights) == ERROR_SUCCESS);
 // GetAuditedPermissionsFromAclW
 inline void GetAuditedPermissionsFromAcl(PACL pacl, PTRUSTEE_W pTrustee, PACCESS_MASK pSuccessfulAuditedRights, PACCESS_MASK pFailedAuditRights)
-    assertl_reflect_as(::GetAuditedPermissionsFromAclW(pacl, pTrustee, pSuccessfulAuditedRights, pFailedAuditRights) == ERROR_SUCCESS);
+    safe_ret_as(::GetAuditedPermissionsFromAclW(pacl, pTrustee, pSuccessfulAuditedRights, pFailedAuditRights) == ERROR_SUCCESS);
 #undef GetNamedSecurityInfo
 // GetNamedSecurityInfoA
 inline void GetNamedSecurityInfo(LPCSTR pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID * ppsidOwner, PSID * ppsidGroup, PACL * ppDacl, PACL * ppSacl, PSECURITY_DESCRIPTOR * ppSecurityDescriptor)
-    assertl_reflect_as(::GetNamedSecurityInfoA(pObjectName, ObjectType, SecurityInfo, ppsidOwner, ppsidGroup, ppDacl, ppSacl, ppSecurityDescriptor) == ERROR_SUCCESS);
+    safe_ret_as(::GetNamedSecurityInfoA(pObjectName, ObjectType, SecurityInfo, ppsidOwner, ppsidGroup, ppDacl, ppSacl, ppSecurityDescriptor) == ERROR_SUCCESS);
 // GetNamedSecurityInfoW
 inline void GetNamedSecurityInfo(LPCWSTR pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID * ppsidOwner, PSID * ppsidGroup, PACL * ppDacl, PACL * ppSacl, PSECURITY_DESCRIPTOR * ppSecurityDescriptor)
-    assertl_reflect_as(::GetNamedSecurityInfoW(pObjectName, ObjectType, SecurityInfo, ppsidOwner, ppsidGroup, ppDacl, ppSacl, ppSecurityDescriptor) == ERROR_SUCCESS);
+    safe_ret_as(::GetNamedSecurityInfoW(pObjectName, ObjectType, SecurityInfo, ppsidOwner, ppsidGroup, ppDacl, ppSacl, ppSecurityDescriptor) == ERROR_SUCCESS);
 // GetSecurityInfo
 inline void GetSecurityInfo(HANDLE handle, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID * ppsidOwner, PSID * ppsidGroup, PACL * ppDacl, PACL * ppSacl, PSECURITY_DESCRIPTOR * ppSecurityDescriptor)
-    assertl_reflect_as(::GetSecurityInfo(handle, ObjectType, SecurityInfo, ppsidOwner, ppsidGroup, ppDacl, ppSacl, ppSecurityDescriptor) == ERROR_SUCCESS);
+    safe_ret_as(::GetSecurityInfo(handle, ObjectType, SecurityInfo, ppsidOwner, ppsidGroup, ppDacl, ppSacl, ppSecurityDescriptor) == ERROR_SUCCESS);
 #undef SetNamedSecurityInfo
 // SetNamedSecurityInfoA
 inline void SetNamedSecurityInfo(LPSTR pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID psidOwner, PSID psidGroup, PACL pDacl, PACL pSacl)
-    assertl_reflect_as(::SetNamedSecurityInfoA(pObjectName, ObjectType, SecurityInfo, psidOwner, psidGroup, pDacl, pSacl) == ERROR_SUCCESS);
+    safe_ret_as(::SetNamedSecurityInfoA(pObjectName, ObjectType, SecurityInfo, psidOwner, psidGroup, pDacl, pSacl) == ERROR_SUCCESS);
 // SetNamedSecurityInfoW
 inline void SetNamedSecurityInfo(LPWSTR pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID psidOwner, PSID psidGroup, PACL pDacl, PACL pSacl)
-    assertl_reflect_as(::SetNamedSecurityInfoW(pObjectName, ObjectType, SecurityInfo, psidOwner, psidGroup, pDacl, pSacl) == ERROR_SUCCESS);
+    safe_ret_as(::SetNamedSecurityInfoW(pObjectName, ObjectType, SecurityInfo, psidOwner, psidGroup, pDacl, pSacl) == ERROR_SUCCESS);
 // SetSecurityInfo
 inline void SetSecurityInfo(HANDLE handle, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID psidOwner, PSID psidGroup, PACL pDacl, PACL pSacl)
-    assertl_reflect_as(::SetSecurityInfo(handle, ObjectType, SecurityInfo, psidOwner, psidGroup, pDacl, pSacl) == ERROR_SUCCESS);
+    safe_ret_as(::SetSecurityInfo(handle, ObjectType, SecurityInfo, psidOwner, psidGroup, pDacl, pSacl) == ERROR_SUCCESS);
 #undef GetInheritanceSource
 // GetInheritanceSourceA
 inline void GetInheritanceSource(LPSTR pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, BOOL Container, GUID	** pObjectClassGuids, DWORD GuidCount, PACL pAcl, PFN_OBJECT_MGR_FUNCTS pfnArray, PGENERIC_MAPPING pGenericMapping, PINHERITED_FROMA pInheritArray)
-    assertl_reflect_as(::GetInheritanceSourceA(pObjectName, ObjectType, SecurityInfo, Container, pObjectClassGuids, GuidCount, pAcl, pfnArray, pGenericMapping, pInheritArray) == ERROR_SUCCESS);
+    safe_ret_as(::GetInheritanceSourceA(pObjectName, ObjectType, SecurityInfo, Container, pObjectClassGuids, GuidCount, pAcl, pfnArray, pGenericMapping, pInheritArray) == ERROR_SUCCESS);
 // GetInheritanceSourceW
 inline void GetInheritanceSource(LPWSTR pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, BOOL Container, GUID	** pObjectClassGuids, DWORD GuidCount, PACL pAcl, PFN_OBJECT_MGR_FUNCTS pfnArray, PGENERIC_MAPPING pGenericMapping, PINHERITED_FROMW pInheritArray)
-    assertl_reflect_as(::GetInheritanceSourceW(pObjectName, ObjectType, SecurityInfo, Container, pObjectClassGuids, GuidCount, pAcl, pfnArray, pGenericMapping, pInheritArray) == ERROR_SUCCESS);
+    safe_ret_as(::GetInheritanceSourceW(pObjectName, ObjectType, SecurityInfo, Container, pObjectClassGuids, GuidCount, pAcl, pfnArray, pGenericMapping, pInheritArray) == ERROR_SUCCESS);
 // FreeInheritedFromArray
 inline void FreeInheritedFromArray(PINHERITED_FROMW pInheritArray, USHORT AceCnt, PFN_OBJECT_MGR_FUNCTS pfnArray)
-    assertl_reflect_as(::FreeInheritedFromArray(pInheritArray, AceCnt, pfnArray) == ERROR_SUCCESS);
+    safe_ret_as(::FreeInheritedFromArray(pInheritArray, AceCnt, pfnArray) == ERROR_SUCCESS);
 #undef TreeResetNamedSecurityInfo
 // TreeResetNamedSecurityInfoA
 inline void TreeResetNamedSecurityInfo(LPSTR pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID pOwner, PSID pGroup, PACL pDacl, PACL pSacl, BOOL KeepExplicit, FN_PROGRESS fnProgress, PROG_INVOKE_SETTING ProgressInvokeSetting, PVOID Args)
-    assertl_reflect_as(::TreeResetNamedSecurityInfoA(pObjectName, ObjectType, SecurityInfo, pOwner, pGroup, pDacl, pSacl, KeepExplicit, fnProgress, ProgressInvokeSetting, Args) == ERROR_SUCCESS);
+    safe_ret_as(::TreeResetNamedSecurityInfoA(pObjectName, ObjectType, SecurityInfo, pOwner, pGroup, pDacl, pSacl, KeepExplicit, fnProgress, ProgressInvokeSetting, Args) == ERROR_SUCCESS);
 // TreeResetNamedSecurityInfoW
 inline void TreeResetNamedSecurityInfo(LPWSTR pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID pOwner, PSID pGroup, PACL pDacl, PACL pSacl, BOOL KeepExplicit, FN_PROGRESS fnProgress, PROG_INVOKE_SETTING ProgressInvokeSetting, PVOID Args)
-    assertl_reflect_as(::TreeResetNamedSecurityInfoW(pObjectName, ObjectType, SecurityInfo, pOwner, pGroup, pDacl, pSacl, KeepExplicit, fnProgress, ProgressInvokeSetting, Args) == ERROR_SUCCESS);
+    safe_ret_as(::TreeResetNamedSecurityInfoW(pObjectName, ObjectType, SecurityInfo, pOwner, pGroup, pDacl, pSacl, KeepExplicit, fnProgress, ProgressInvokeSetting, Args) == ERROR_SUCCESS);
 #undef TreeSetNamedSecurityInfo
 // TreeSetNamedSecurityInfoA
 inline void TreeSetNamedSecurityInfo(LPSTR pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID pOwner, PSID pGroup, PACL pDacl, PACL pSacl, DWORD dwAction, FN_PROGRESS fnProgress, PROG_INVOKE_SETTING ProgressInvokeSetting, PVOID Args)
-    assertl_reflect_as(::TreeSetNamedSecurityInfoA(pObjectName, ObjectType, SecurityInfo, pOwner, pGroup, pDacl, pSacl, dwAction, fnProgress, ProgressInvokeSetting, Args) == ERROR_SUCCESS);
+    safe_ret_as(::TreeSetNamedSecurityInfoA(pObjectName, ObjectType, SecurityInfo, pOwner, pGroup, pDacl, pSacl, dwAction, fnProgress, ProgressInvokeSetting, Args) == ERROR_SUCCESS);
 // TreeSetNamedSecurityInfoW
 inline void TreeSetNamedSecurityInfo(LPWSTR pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID pOwner, PSID pGroup, PACL pDacl, PACL pSacl, DWORD dwAction, FN_PROGRESS fnProgress, PROG_INVOKE_SETTING ProgressInvokeSetting, PVOID Args)
-    assertl_reflect_as(::TreeSetNamedSecurityInfoW(pObjectName, ObjectType, SecurityInfo, pOwner, pGroup, pDacl, pSacl, dwAction, fnProgress, ProgressInvokeSetting, Args) == ERROR_SUCCESS);
+    safe_ret_as(::TreeSetNamedSecurityInfoW(pObjectName, ObjectType, SecurityInfo, pOwner, pGroup, pDacl, pSacl, dwAction, fnProgress, ProgressInvokeSetting, Args) == ERROR_SUCCESS);
 #undef BuildSecurityDescriptor
 // BuildSecurityDescriptorA
 inline void BuildSecurityDescriptor(PTRUSTEE_A pOwner, PTRUSTEE_A pGroup, ULONG cCountOfAccessEntries, PEXPLICIT_ACCESS_A pListOfAccessEntries, ULONG cCountOfAuditEntries, PEXPLICIT_ACCESS_A pListOfAuditEntries, PSECURITY_DESCRIPTOR pOldSD, PULONG pSizeNewSD, PSECURITY_DESCRIPTOR * pNewSD)
-    assertl_reflect_as(::BuildSecurityDescriptorA(pOwner, pGroup, cCountOfAccessEntries, pListOfAccessEntries, cCountOfAuditEntries, pListOfAuditEntries, pOldSD, pSizeNewSD, pNewSD) == ERROR_SUCCESS);
+    safe_ret_as(::BuildSecurityDescriptorA(pOwner, pGroup, cCountOfAccessEntries, pListOfAccessEntries, cCountOfAuditEntries, pListOfAuditEntries, pOldSD, pSizeNewSD, pNewSD) == ERROR_SUCCESS);
 // BuildSecurityDescriptorW
 inline void BuildSecurityDescriptor(PTRUSTEE_W pOwner, PTRUSTEE_W pGroup, ULONG cCountOfAccessEntries, PEXPLICIT_ACCESS_W pListOfAccessEntries, ULONG cCountOfAuditEntries, PEXPLICIT_ACCESS_W pListOfAuditEntries, PSECURITY_DESCRIPTOR pOldSD, PULONG pSizeNewSD, PSECURITY_DESCRIPTOR * pNewSD)
-    assertl_reflect_as(::BuildSecurityDescriptorW(pOwner, pGroup, cCountOfAccessEntries, pListOfAccessEntries, cCountOfAuditEntries, pListOfAuditEntries, pOldSD, pSizeNewSD, pNewSD) == ERROR_SUCCESS);
+    safe_ret_as(::BuildSecurityDescriptorW(pOwner, pGroup, cCountOfAccessEntries, pListOfAccessEntries, cCountOfAuditEntries, pListOfAuditEntries, pOldSD, pSizeNewSD, pNewSD) == ERROR_SUCCESS);
 #undef LookupSecurityDescriptorParts
 // LookupSecurityDescriptorPartsA
 inline void LookupSecurityDescriptorParts(PTRUSTEE_A * ppOwner, PTRUSTEE_A * ppGroup, PULONG pcCountOfAccessEntries, PEXPLICIT_ACCESS_A * ppListOfAccessEntries, PULONG pcCountOfAuditEntries, PEXPLICIT_ACCESS_A * ppListOfAuditEntries, PSECURITY_DESCRIPTOR pSD)
-    assertl_reflect_as(::LookupSecurityDescriptorPartsA(ppOwner, ppGroup, pcCountOfAccessEntries, ppListOfAccessEntries, pcCountOfAuditEntries, ppListOfAuditEntries, pSD) == ERROR_SUCCESS);
+    safe_ret_as(::LookupSecurityDescriptorPartsA(ppOwner, ppGroup, pcCountOfAccessEntries, ppListOfAccessEntries, pcCountOfAuditEntries, ppListOfAuditEntries, pSD) == ERROR_SUCCESS);
 // LookupSecurityDescriptorPartsW
 inline void LookupSecurityDescriptorParts(PTRUSTEE_W * ppOwner, PTRUSTEE_W * ppGroup, PULONG pcCountOfAccessEntries, PEXPLICIT_ACCESS_W * ppListOfAccessEntries, PULONG pcCountOfAuditEntries, PEXPLICIT_ACCESS_W * ppListOfAuditEntries, PSECURITY_DESCRIPTOR pSD)
-    assertl_reflect_as(::LookupSecurityDescriptorPartsW(ppOwner, ppGroup, pcCountOfAccessEntries, ppListOfAccessEntries, pcCountOfAuditEntries, ppListOfAuditEntries, pSD) == ERROR_SUCCESS);
+    safe_ret_as(::LookupSecurityDescriptorPartsW(ppOwner, ppGroup, pcCountOfAccessEntries, ppListOfAccessEntries, pcCountOfAuditEntries, ppListOfAuditEntries, pSD) == ERROR_SUCCESS);
 #undef BuildExplicitAccessWithName
 // BuildExplicitAccessWithNameA
 inline void BuildExplicitAccessWithName(PEXPLICIT_ACCESS_A pExplicitAccess, LPSTR pTrusteeName, DWORD AccessPermissions, ACCESS_MODE AccessMode, DWORD Inheritance)
-    reflect_to(::BuildExplicitAccessWithNameA(pExplicitAccess, pTrusteeName, AccessPermissions, AccessMode, Inheritance));
+    ret_to(::BuildExplicitAccessWithNameA(pExplicitAccess, pTrusteeName, AccessPermissions, AccessMode, Inheritance));
 // BuildExplicitAccessWithNameW
 inline void BuildExplicitAccessWithName(PEXPLICIT_ACCESS_W pExplicitAccess, LPWSTR pTrusteeName, DWORD AccessPermissions, ACCESS_MODE AccessMode, DWORD Inheritance)
-    reflect_to(::BuildExplicitAccessWithNameW(pExplicitAccess, pTrusteeName, AccessPermissions, AccessMode, Inheritance));
+    ret_to(::BuildExplicitAccessWithNameW(pExplicitAccess, pTrusteeName, AccessPermissions, AccessMode, Inheritance));
 #undef BuildTrusteeWithName
 // BuildTrusteeWithNameA
 inline void BuildTrusteeWithName(PTRUSTEE_A pTrustee, LPSTR pName)
-    reflect_to(::BuildTrusteeWithNameA(pTrustee, pName));
+    ret_to(::BuildTrusteeWithNameA(pTrustee, pName));
 // BuildTrusteeWithNameW
 inline void BuildTrusteeWithName(PTRUSTEE_W pTrustee, LPWSTR pName)
-    reflect_to(::BuildTrusteeWithNameW(pTrustee, pName));
+    ret_to(::BuildTrusteeWithNameW(pTrustee, pName));
 #undef BuildTrusteeWithSid
 // BuildTrusteeWithSidA
 inline void BuildTrusteeWithSid(PTRUSTEE_A pTrustee, PSID pSid)
-    reflect_to(::BuildTrusteeWithSidA(pTrustee, pSid));
+    ret_to(::BuildTrusteeWithSidA(pTrustee, pSid));
 // BuildTrusteeWithSidW
 inline void BuildTrusteeWithSid(PTRUSTEE_W pTrustee, PSID pSid)
-    reflect_to(::BuildTrusteeWithSidW(pTrustee, pSid));
+    ret_to(::BuildTrusteeWithSidW(pTrustee, pSid));
 #undef BuildTrusteeWithObjectsAndSid
 // BuildTrusteeWithObjectsAndSidA
 inline void BuildTrusteeWithObjectsAndSid(PTRUSTEE_A pTrustee, POBJECTS_AND_SID pObjSid, GUID * pObjectGuid, GUID * pInheritedObjectGuid, PSID pSid)
-    reflect_to(::BuildTrusteeWithObjectsAndSidA(pTrustee, pObjSid, pObjectGuid, pInheritedObjectGuid, pSid));
+    ret_to(::BuildTrusteeWithObjectsAndSidA(pTrustee, pObjSid, pObjectGuid, pInheritedObjectGuid, pSid));
 // BuildTrusteeWithObjectsAndSidW
 inline void BuildTrusteeWithObjectsAndSid(PTRUSTEE_W pTrustee, POBJECTS_AND_SID pObjSid, GUID * pObjectGuid, GUID * pInheritedObjectGuid, PSID pSid)
-    reflect_to(::BuildTrusteeWithObjectsAndSidW(pTrustee, pObjSid, pObjectGuid, pInheritedObjectGuid, pSid));
+    ret_to(::BuildTrusteeWithObjectsAndSidW(pTrustee, pObjSid, pObjectGuid, pInheritedObjectGuid, pSid));
 #undef BuildTrusteeWithObjectsAndName
 // BuildTrusteeWithObjectsAndNameA
 inline void BuildTrusteeWithObjectsAndName(PTRUSTEE_A pTrustee, POBJECTS_AND_NAME_A pObjName, SE_OBJECT_TYPE ObjectType, LPSTR ObjectTypeName, LPSTR InheritedObjectTypeName, LPSTR Name)
-    reflect_to(::BuildTrusteeWithObjectsAndNameA(pTrustee, pObjName, ObjectType, ObjectTypeName, InheritedObjectTypeName, Name));
+    ret_to(::BuildTrusteeWithObjectsAndNameA(pTrustee, pObjName, ObjectType, ObjectTypeName, InheritedObjectTypeName, Name));
 // BuildTrusteeWithObjectsAndNameW
 inline void BuildTrusteeWithObjectsAndName(PTRUSTEE_W pTrustee, POBJECTS_AND_NAME_W pObjName, SE_OBJECT_TYPE ObjectType, LPWSTR ObjectTypeName, LPWSTR InheritedObjectTypeName, LPWSTR Name)
-    reflect_to(::BuildTrusteeWithObjectsAndNameW(pTrustee, pObjName, ObjectType, ObjectTypeName, InheritedObjectTypeName, Name));
+    ret_to(::BuildTrusteeWithObjectsAndNameW(pTrustee, pObjName, ObjectType, ObjectTypeName, InheritedObjectTypeName, Name));
 #undef GetTrusteeName
 // GetTrusteeNameA
 inline LPSTR GetTrusteeName(PTRUSTEE_A pTrustee)
-    reflect_as(::GetTrusteeNameA(pTrustee));
+    ret_as(::GetTrusteeNameA(pTrustee));
 // GetTrusteeNameW
 inline LPWSTR GetTrusteeName(PTRUSTEE_W pTrustee)
-    reflect_as(::GetTrusteeNameW(pTrustee));
+    ret_as(::GetTrusteeNameW(pTrustee));
 #undef GetTrusteeType
 // GetTrusteeTypeA
 inline TRUSTEE_TYPE GetTrusteeType(PTRUSTEE_A pTrustee)
-    reflect_as(::GetTrusteeTypeA(pTrustee));
+    ret_as(::GetTrusteeTypeA(pTrustee));
 // GetTrusteeTypeW
 inline TRUSTEE_TYPE GetTrusteeType(PTRUSTEE_W pTrustee)
-    reflect_as(::GetTrusteeTypeW(pTrustee));
+    ret_as(::GetTrusteeTypeW(pTrustee));
 #undef GetTrusteeForm
 // GetTrusteeFormA
 inline TRUSTEE_FORM GetTrusteeForm(PTRUSTEE_A pTrustee)
-    reflect_as(::GetTrusteeFormA(pTrustee));
+    ret_as(::GetTrusteeFormA(pTrustee));
 // GetTrusteeFormW
 inline TRUSTEE_FORM GetTrusteeForm(PTRUSTEE_W pTrustee)
-    reflect_as(::GetTrusteeFormW(pTrustee));
+    ret_as(::GetTrusteeFormW(pTrustee));
 #pragma endregion
 
 }
@@ -540,21 +540,21 @@ class SecurityIdentifiersAuthority {
 	[[maybe_unused]] WORD _ = 0;
 public:
 	SecurityIdentifiersAuthority() { static_assert(sizeof(self) == 8, "alignment error"); }
-	SecurityIdentifiersAuthority(const ArrayOf<BYTE, 6> &sia) : sia(ref_as<const SID_IDENTIFIER_AUTHORITY>(sia)) {}
+	SecurityIdentifiersAuthority(const ArrayOf<BYTE, 6> &sia) : sia(ref_cast<const SID_IDENTIFIER_AUTHORITY>(sia)) {}
 	constexpr SecurityIdentifiersAuthority(BYTE s0, BYTE s1, BYTE s2, BYTE s3, BYTE s4, BYTE s5) : sia({ s0, s1, s2, s3, s4, s5 }) {}
 	SecurityIdentifiersAuthority(const SID_IDENTIFIER_AUTHORITY &sia) : sia(sia) {}
-	inline bool operator==(const SecurityIdentifiersAuthority &s) const reflect_as(reuse_as<uint64_t>(self) == reuse_as<uint64_t>(s));
-	inline bool operator!=(const SecurityIdentifiersAuthority &s) const reflect_as(reuse_as<uint64_t>(self) != reuse_as<uint64_t>(s));
+	inline bool operator==(const SecurityIdentifiersAuthority &s) const ret_as(reuse_cast<Int64U>(self) == reuse_cast<Int64U>(s));
+	inline bool operator!=(const SecurityIdentifiersAuthority &s) const ret_as(reuse_cast<Int64U>(self) != reuse_cast<Int64U>(s));
 	inline operator String() const
-		reflect_as(format(T("S-1-%d-%d-%d-%d-%d-%d-%d"), sia.Value[0], sia.Value[1], sia.Value[2], sia.Value[3], sia.Value[4], sia.Value[5]));
-	inline operator SID_IDENTIFIER_AUTHORITY &() const reflect_as(sia);
-	inline PSID_IDENTIFIER_AUTHORITY operator &() const reflect_as(&sia);
+		ret_as(format(T("S-1-%d-%d-%d-%d-%d-%d-%d"), sia.Value[0], sia.Value[1], sia.Value[2], sia.Value[3], sia.Value[4], sia.Value[5]));
+	inline operator SID_IDENTIFIER_AUTHORITY &() const ret_as(sia);
+	inline PSID_IDENTIFIER_AUTHORITY operator &() const ret_as(&sia);
 };
 using SecAuthorID = SecurityIdentifiersAuthority;
 
 struct SecurityIdentifiersAuthorities {
 	static constexpr SecAuthorID
-		Null    = SECURITY_NULL_SID_AUTHORITY,
+		Nu    = SECURITY_NULL_SID_AUTHORITY,
 		World   = SECURITY_WORLD_SID_AUTHORITY,
 		Local   = SECURITY_LOCAL_SID_AUTHORITY,
 		Creator = SECURITY_CREATOR_SID_AUTHORITY,
@@ -567,62 +567,62 @@ class SecurityIdentifier {
 	SecurityIdentifier(PSID pSID) : pSID(pSID) {}
 public:
 	SecurityIdentifier() {}
-	SecurityIdentifier(Null) {}
-	SecurityIdentifier(SecurityIdentifier &sid) : pSID(&sid) reflect_to(sid.pSID = O);
-	SecurityIdentifier(SecurityIdentifier &&sid) : pSID(&sid) reflect_to(sid.pSID = O);
+	SecurityIdentifier(Nu) {}
+	SecurityIdentifier(SecurityIdentifier &sid) : pSID(&sid) ret_to(sid.pSID = O);
+	SecurityIdentifier(SecurityIdentifier &&sid) : pSID(&sid) ret_to(sid.pSID = O);
 	SecurityIdentifier(const SecurityIdentifier &) = delete;
-	SecurityIdentifier(LPCSTR lpszSID) reflect_to(WX::ConvertStringSidToSid(lpszSID, &pSID));
-	SecurityIdentifier(LPCWSTR lpszSID) reflect_to(WX::ConvertStringSidToSid(lpszSID, &pSID));
+	SecurityIdentifier(LPCSTR lpszSID) ret_to(WX::ConvertStringSidToSid(lpszSID, &pSID));
+	SecurityIdentifier(LPCWSTR lpszSID) ret_to(WX::ConvertStringSidToSid(lpszSID, &pSID));
 	SecurityIdentifier(SID_IDENTIFIER_AUTHORITY &sia, RID nSA0)
-		reflect_to(WX::AllocateAndInitializeSid(&sia, 1, nSA0, 0, 0, 0, 0, 0, 0, 0, &pSID));
+		ret_to(WX::AllocateAndInitializeSid(&sia, 1, nSA0, 0, 0, 0, 0, 0, 0, 0, &pSID));
 	SecurityIdentifier(SID_IDENTIFIER_AUTHORITY &sia, RID nSA0, RID nSA1)
-		reflect_to(WX::AllocateAndInitializeSid(&sia, 2, nSA0, nSA1, 0, 0, 0, 0, 0, 0, &pSID));
+		ret_to(WX::AllocateAndInitializeSid(&sia, 2, nSA0, nSA1, 0, 0, 0, 0, 0, 0, &pSID));
 	SecurityIdentifier(SID_IDENTIFIER_AUTHORITY &sia, RID nSA0, RID nSA1, RID nSA2)
-		reflect_to(WX::AllocateAndInitializeSid(&sia, 3, nSA0, nSA1, nSA2, 0, 0, 0, 0, 0, &pSID));
+		ret_to(WX::AllocateAndInitializeSid(&sia, 3, nSA0, nSA1, nSA2, 0, 0, 0, 0, 0, &pSID));
 	SecurityIdentifier(SID_IDENTIFIER_AUTHORITY &sia, RID nSA0, RID nSA1, RID nSA2, RID nSA3)
-		reflect_to(WX::AllocateAndInitializeSid(&sia, 4, nSA0, nSA1, nSA2, nSA3, 0, 0, 0, 0, &pSID));
+		ret_to(WX::AllocateAndInitializeSid(&sia, 4, nSA0, nSA1, nSA2, nSA3, 0, 0, 0, 0, &pSID));
 	SecurityIdentifier(SID_IDENTIFIER_AUTHORITY &sia, RID nSA0, RID nSA1, RID nSA2, RID nSA3, RID nSA4)
-		reflect_to(WX::AllocateAndInitializeSid(&sia, 5, nSA0, nSA1, nSA2, nSA3, nSA4, 0, 0, 0, &pSID));
+		ret_to(WX::AllocateAndInitializeSid(&sia, 5, nSA0, nSA1, nSA2, nSA3, nSA4, 0, 0, 0, &pSID));
 	SecurityIdentifier(SID_IDENTIFIER_AUTHORITY &sia, RID nSA0, RID nSA1, RID nSA2, RID nSA3, RID nSA4, RID nSA5)
-		reflect_to(WX::AllocateAndInitializeSid(&sia, 6, nSA0, nSA1, nSA2, nSA3, nSA4, nSA5, 0, 0, &pSID));
+		ret_to(WX::AllocateAndInitializeSid(&sia, 6, nSA0, nSA1, nSA2, nSA3, nSA4, nSA5, 0, 0, &pSID));
 	SecurityIdentifier(SID_IDENTIFIER_AUTHORITY &sia, RID nSA0, RID nSA1, RID nSA2, RID nSA3, RID nSA4, RID nSA5, RID nSA6)
-		reflect_to(WX::AllocateAndInitializeSid(&sia, 7, nSA0, nSA1, nSA2, nSA3, nSA4, nSA5, nSA6, 0, &pSID));
+		ret_to(WX::AllocateAndInitializeSid(&sia, 7, nSA0, nSA1, nSA2, nSA3, nSA4, nSA5, nSA6, 0, &pSID));
 	SecurityIdentifier(SID_IDENTIFIER_AUTHORITY &sia, RID nSA0, RID nSA1, RID nSA2, RID nSA3, RID nSA4, RID nSA5, RID nSA6, RID nSA7)
-		reflect_to(WX::AllocateAndInitializeSid(&sia, 8, nSA0, nSA1, nSA2, nSA3, nSA4, nSA5, nSA6, nSA7, &pSID));
+		ret_to(WX::AllocateAndInitializeSid(&sia, 8, nSA0, nSA1, nSA2, nSA3, nSA4, nSA5, nSA6, nSA7, &pSID));
 	//SecurityIdentifier(SID_IDENTIFIER_AUTHORITY &sia, BYTE nSubAuthorityCount = 0) {
-	//	assertl(pSID = (PSID)LocalAlloc(0, GetSidLengthRequired(nSubAuthorityCount)));
-	//	assertl(InitializeSid(pSID, &sia, nSubAuthorityCount));
+	//	nt_assert(pSID = (PSID)LocalAlloc(0, GetSidLengthRequired(nSubAuthorityCount)));
+	//	nt_assert(InitializeSid(pSID, &sia, nSubAuthorityCount));
 	//}
-	~SecurityIdentifier() reflect_to(Delete());
+	~SecurityIdentifier() ret_to(Delete());
 public:
-	inline void Delete() reflect_to(Local::AutoFree(pSID));
+	inline void Delete() ret_to(Local::AutoFree(pSID));
 public:
-	inline bool EqualDomain(PSID pSID) reflect_to(BOOL eq, WX::EqualDomainSid(this->pSID, pSID, &eq), eq);
-	inline bool EqualPrefix(PSID pSID) reflect_as(WX::EqualPrefixSid(this->pSID, pSID));
+	inline bool EqualDomain(PSID pSID) ret_to(BOOL eq, WX::EqualDomainSid(this->pSID, pSID, &eq), eq);
+	inline bool EqualPrefix(PSID pSID) ret_as(WX::EqualPrefixSid(this->pSID, pSID));
 	//GetWindowsAccountDomainSid
 	//IsWellKnownSid
 	template<bool IsUnicode = WX::IsUnicode>
 	inline StringX<IsUnicode> toString() const 
-		reflect_to(LocalPointer<XCHAR<IsUnicode>> szSID(LocalHeap),
+		ret_to(LocalPointer<XCHAR<IsUnicode>> szSID(LocalHeap),
 				   WX::ConvertSidToStringSid(this->pSID, &(*szSID)),
 				   +CString(&szSID, MaxLenClass));
-	inline StringA toStringA() const reflect_as(toString<false>());
-	inline StringW toStringW() const reflect_as(toString<true>());
+	inline StringA toStringA() const ret_as(toString<false>());
+	inline StringW toStringW() const ret_as(toString<true>());
 
 #pragma region Properties
 public: // Property - Size
-	/* R */ inline DWORD Size() const reflect_as(WX::GetLengthSid(this->pSID));
+	/* R */ inline DWORD Size() const ret_as(WX::GetLengthSid(this->pSID));
 public: // Property - AuthorityID
-	/* R */ inline SecAuthorID AuthorityID() const reflect_as(*WX::GetSidIdentifierAuthority(this->pSID));
+	/* R */ inline SecAuthorID AuthorityID() const ret_as(*WX::GetSidIdentifierAuthority(this->pSID));
 public: // Property - AuthorityCount
-	/* R */ inline PUCHAR SubAuthorityCount() const reflect_as(WX::GetSidSubAuthorityCount(this->pSID));
+	/* R */ inline PUCHAR SubAuthorityCount() const ret_as(WX::GetSidSubAuthorityCount(this->pSID));
 #pragma endregion
 
 public:
-	inline operator bool() const reflect_as(this->pSID ? IsValidSid(this->pSID) : false);
-	inline operator StringA() const reflect_as(toString<false>());
-	inline operator StringW() const reflect_as(toString<true>());
-	inline PSID operator&() const reflect_as(this->pSID);
+	inline operator bool() const ret_as(this->pSID ? IsValidSid(this->pSID) : false);
+	inline operator StringA() const ret_as(toString<false>());
+	inline operator StringW() const ret_as(toString<true>());
+	inline PSID operator&() const ret_as(this->pSID);
 	inline SecurityIdentifier operator+() const {
 		if (!*this) return O;
 		auto size = Size();
@@ -630,10 +630,10 @@ public:
 		WX::CopySid(size, npSID, pSID);
 		return npSID;
 	}
-	inline RID &operator[](BYTE uSubAuthorityIndex) reflect_as(*WX::GetSidSubAuthority(this->pSID, uSubAuthorityIndex));
-	inline RID  operator[](BYTE uSubAuthorityIndex) const reflect_as(*WX::GetSidSubAuthority(this->pSID, uSubAuthorityIndex));
-	inline bool operator==(PSID pSID) const reflect_as(WX::EqualSid(this->pSID, pSID));
-	inline bool operator!=(PSID pSID) const reflect_as(WX::EqualSid(this->pSID, pSID));
+	inline RID &operator[](BYTE uSubAuthorityIndex) ret_as(*WX::GetSidSubAuthority(this->pSID, uSubAuthorityIndex));
+	inline RID  operator[](BYTE uSubAuthorityIndex) const ret_as(*WX::GetSidSubAuthority(this->pSID, uSubAuthorityIndex));
+	inline bool operator==(PSID pSID) const ret_as(WX::EqualSid(this->pSID, pSID));
+	inline bool operator!=(PSID pSID) const ret_as(WX::EqualSid(this->pSID, pSID));
 };
 using SecID = SecurityIdentifier;
 #pragma endregion
@@ -684,22 +684,22 @@ enum_class(AccessModes, ACCESS_MODE,
 	SetAuditSuccess = SET_AUDIT_SUCCESS,
 	SetAuditFailure = SET_AUDIT_FAILURE);
 class AccessExplicit : protected EXPLICIT_ACCESS {
-	using super = EXPLICIT_ACCESS;
+	using Super = EXPLICIT_ACCESS;
 public:
 	using Permission = AccessPermission;
 	using Inherit = AccessInherit;
 	using Modes = AccessModes;
 public:
-	AccessExplicit(Modes mode = Modes::Set) : super{ 0 } reflect_to(this->grfAccessMode = mode.yield());
-	AccessExplicit(const EXPLICIT_ACCESS &ea) : super(ea) {}
+	AccessExplicit(Modes mode = Modes::Set) : Super{ 0 } ret_to(this->grfAccessMode = mode.yield());
+	AccessExplicit(const EXPLICIT_ACCESS &ea) : Super(ea) {}
 public: // Permissions
-	/* W */ inline auto &Permissions(Permission permission) reflect_to_self(this->grfAccessPermissions = permission.yield());
+	/* W */ inline auto &Permissions(Permission permission) ret_to_self(this->grfAccessPermissions = permission.yield());
 public: // Inherit
-	/* W */ inline auto &Inherits(Inherit inherits) reflect_to_self(this->grfInheritance = inherits.yield());
+	/* W */ inline auto &Inherits(Inherit inherits) ret_to_self(this->grfInheritance = inherits.yield());
 public: // Trust
-	/* W */ inline auto &Trust(const SecID &sid) reflect_to_self(this->Trustee.TrusteeForm = TRUSTEE_IS_SID, this->Trustee.ptstrName = (LPTSTR)&sid);
+	/* W */ inline auto &Trust(const SecID &sid) ret_to_self(this->Trustee.TrusteeForm = TRUSTEE_IS_SID, this->Trustee.ptstrName = (LPTSTR)&sid);
 public: // TrustBy
-	/* W */ inline auto &TrustBy(TrustTypes type) reflect_to_self(this->Trustee.TrusteeType = type.yield());
+	/* W */ inline auto &TrustBy(TrustTypes type) ret_to_self(this->Trustee.TrusteeType = type.yield());
 };
 
 #pragma region Access Control Entry
@@ -760,30 +760,30 @@ public:
 	using Flag = AceFlag;
 public:
 //	AccessControlEntry(const SecID &sid) : pACE(Local) {}
-	AccessControlEntry(Null) {}
+	AccessControlEntry(Nu) {}
 public:
 #pragma region Properties
 public: // Property - Type
-	/* W */ inline auto &Type(Types AceType) reflect_to_self(ref_as<Types>(pACE->Header.AceType = AceType.yield()));
-	/* R */ inline Types Type() const reflect_as(ref_as<Types>(pACE->Header.AceType));
+	/* W */ inline auto &Type(Types AceType) ret_to_self(ref_cast<Types>(pACE->Header.AceType = AceType.yield()));
+	/* R */ inline Types Type() const ret_as(ref_cast<Types>(pACE->Header.AceType));
 public: // Property - Flags
-	/* W */ inline auto &Flags(Flag AceFlags) reflect_to_self(ref_as<Flag>(pACE->Header.AceFlags = AceFlags.yield()));
-	/* R */ inline Flag  Flags() const reflect_as(ref_as<Flag>(pACE->Header.AceFlags));
+	/* W */ inline auto &Flags(Flag AceFlags) ret_to_self(ref_cast<Flag>(pACE->Header.AceFlags = AceFlags.yield()));
+	/* R */ inline Flag  Flags() const ret_as(ref_cast<Flag>(pACE->Header.AceFlags));
 public: // Property - Size
-	/* R */ inline WORD Size() const reflect_as(pACE->Header.AceSize);
+	/* R */ inline WORD Size() const ret_as(pACE->Header.AceSize);
 public: // Property - Access
-	/* W */ inline auto &Access(AccessMask Mask) reflect_to_self(pACE->Mask = ref_as<ACCESS_MASK>(Mask));
-	/* R */ inline const AccessMask Access() reflect_as(ref_as<AccessMask>(pACE->Mask));
+	/* W */ inline auto &Access(AccessMask Mask) ret_to_self(pACE->Mask = ref_cast<ACCESS_MASK>(Mask));
+	/* R */ inline const AccessMask Access() ret_as(ref_cast<AccessMask>(pACE->Mask));
 public: // Property - SecurityIdentifier
 	///* W */ inline auto &SecurityIdentifier(const SecID &sid) {
 	//	auto size = sid.Size();
 	//	CopyMemory(&pACE->SidStart, &sid, size);
 	//	retself;
 	//}
-	/* R */ inline const SecID &SecurityIdentifier() const reflect_as(*reuse_as<const SecID *>(&pACE->SidStart));
+	/* R */ inline const SecID &SecurityIdentifier() const ret_as(*reuse_cast<const SecID *>(&pACE->SidStart));
 #pragma endregion
 public:
-	inline PACCESS_ALLOWED_ACE operator&() reflect_as(pACE);
+	inline PACCESS_ALLOWED_ACE operator&() ret_as(pACE);
 };
 using Ace = AccessControlEntry;
 #pragma endregion
@@ -800,29 +800,29 @@ public:
 		mutable DWORD dwAceIndex;
 		Iterator(const AccessControlList &acl, DWORD dwAceIndex) : acl(const_cast<AccessControlList &>(acl)), dwAceIndex(dwAceIndex) {}
 	public:
-		inline auto &Delete() reflect_to_self(WX::DeleteAce(&acl, dwAceIndex));
-		inline bool operator==(Null) const reflect_as(dwAceIndex >= acl.Count());
-		inline bool operator!=(Null) const reflect_as(dwAceIndex <  acl.Count());
-		inline bool operator==(const Iterator &i) const assertl_reflect_as(&acl == &i.acl, dwAceIndex == i.dwAceIndex);
-		inline bool operator!=(const Iterator &i) const assertl_reflect_as(&acl == &i.acl, dwAceIndex != i.dwAceIndex);
-		inline Entry *operator&() reflect_to(LPVOID lpACE, WX::GetAce(&acl, dwAceIndex, &lpACE), ref_as<Entry *>(lpACE));
-		inline const Entry *operator&() const reflect_to(LPVOID lpACE, WX::GetAce(&acl, dwAceIndex, &lpACE), ref_as<const Entry *>(lpACE));
-		inline Entry *operator->() reflect_to(LPVOID lpACE, WX::GetAce(&acl, dwAceIndex, &lpACE), ref_as<Entry *>(lpACE));
-		inline const Entry *operator->() const reflect_to(LPVOID lpACE, WX::GetAce(&acl, dwAceIndex, &lpACE), ref_as<const Entry *>(lpACE));
-		inline Entry & operator*() reflect_to(LPVOID lpACE, WX::GetAce(&acl, dwAceIndex, &lpACE), *ref_as<Entry *>(lpACE));
-		inline const Entry & operator*() const reflect_to(LPVOID lpACE, WX::GetAce(&acl, dwAceIndex, &lpACE), *ref_as<const Entry *>(lpACE));
-		inline Iterator &operator++() reflect_to_self(++dwAceIndex);
-		inline const Iterator &operator++() const reflect_to_self(++dwAceIndex);
-		inline Iterator operator++(int) reflect_as({ acl, dwAceIndex++ });
-		inline const Iterator operator++(int) const reflect_as({ acl, dwAceIndex++ });
+		inline auto &Delete() ret_to_self(WX::DeleteAce(&acl, dwAceIndex));
+		inline bool operator==(Nu) const ret_as(dwAceIndex >= acl.Count());
+		inline bool operator!=(Nu) const ret_as(dwAceIndex <  acl.Count());
+		inline bool operator==(const Iterator &i) const safe_ret_as(&acl == &i.acl, dwAceIndex == i.dwAceIndex);
+		inline bool operator!=(const Iterator &i) const safe_ret_as(&acl == &i.acl, dwAceIndex != i.dwAceIndex);
+		inline Entry *operator&() ret_to(LPVOID lpACE, WX::GetAce(&acl, dwAceIndex, &lpACE), ref_cast<Entry *>(lpACE));
+		inline const Entry *operator&() const ret_to(LPVOID lpACE, WX::GetAce(&acl, dwAceIndex, &lpACE), ref_cast<const Entry *>(lpACE));
+		inline Entry *operator->() ret_to(LPVOID lpACE, WX::GetAce(&acl, dwAceIndex, &lpACE), ref_cast<Entry *>(lpACE));
+		inline const Entry *operator->() const ret_to(LPVOID lpACE, WX::GetAce(&acl, dwAceIndex, &lpACE), ref_cast<const Entry *>(lpACE));
+		inline Entry & operator*() ret_to(LPVOID lpACE, WX::GetAce(&acl, dwAceIndex, &lpACE), *ref_cast<Entry *>(lpACE));
+		inline const Entry & operator*() const ret_to(LPVOID lpACE, WX::GetAce(&acl, dwAceIndex, &lpACE), *ref_cast<const Entry *>(lpACE));
+		inline Iterator &operator++() ret_to_self(++dwAceIndex);
+		inline const Iterator &operator++() const ret_to_self(++dwAceIndex);
+		inline Iterator operator++(int) ret_as({ acl, dwAceIndex++ });
+		inline const Iterator operator++(int) const ret_as({ acl, dwAceIndex++ });
 	};
 public:
 	AccessControlList() {}
-	AccessControlList(Null) {}
-	AccessControlList(AccessControlList &acl) : pACL(&acl) reflect_to(acl.pACL = O);
-	AccessControlList(AccessControlList &&acl) : pACL(&acl) reflect_to(acl.pACL = O);
+	AccessControlList(Nu) {}
+	AccessControlList(AccessControlList &acl) : pACL(&acl) ret_to(acl.pACL = O);
+	AccessControlList(AccessControlList &&acl) : pACL(&acl) ret_to(acl.pACL = O);
 	AccessControlList(const AccessControlList &) = delete;
-	AccessControlList(std::initializer_list<AccessExplicit> list) reflect_to(SetEntriesInAcl((ULONG)list.size(), (EXPLICIT_ACCESS *)list.begin(), O, &pACL));
+	AccessControlList(std::initializer_list<AccessExplicit> list) ret_to(SetEntriesInAcl((ULONG)list.size(), (EXPLICIT_ACCESS *)list.begin(), O, &pACL));
 #pragma region
 	//inline void Add() { AddAce(pACL, ); }
 
@@ -847,29 +847,29 @@ public:
 	//}
 #pragma region Properties
 public: // Property - Count
-	/* R */ inline DWORD Count() const reflect_to(ACL_SIZE_INFORMATION asi, WX::GetAclInformation(pACL, &asi, sizeof(asi), AclSizeInformation), asi.AceCount);
+	/* R */ inline DWORD Count() const ret_to(ACL_SIZE_INFORMATION asi, WX::GetAclInformation(pACL, &asi, sizeof(asi), AclSizeInformation), asi.AceCount);
 public: // Property - Usage
 	struct _Usage {
 		DWORD used, free;
-		inline DWORD Total() const reflect_as(used + free);
+		inline DWORD Total() const ret_as(used + free);
 	};
-	/* R */ inline auto Usage() const reflect_to(ACL_SIZE_INFORMATION asi, WX::GetAclInformation(pACL, &asi, sizeof(asi), AclSizeInformation), _Usage{ asi.AclBytesInUse, asi.AclBytesFree });
+	/* R */ inline auto Usage() const ret_to(ACL_SIZE_INFORMATION asi, WX::GetAclInformation(pACL, &asi, sizeof(asi), AclSizeInformation), _Usage{ asi.AclBytesInUse, asi.AclBytesFree });
 public: // Property - Size
-	/* R */ inline DWORD Size() const reflect_as(Usage().Total());
+	/* R */ inline DWORD Size() const ret_as(Usage().Total());
 public: // Property - Revision
-	/* W */ inline auto &Revision(DWORD dwRevision) reflect_to_self(ACL_REVISION_INFORMATION ari{ dwRevision }; WX::GetAclInformation(pACL, &ari, sizeof(ACL_REVISION_INFORMATION), AclRevisionInformation));
-	/* R */ inline DWORD Revision() const reflect_to(ACL_REVISION_INFORMATION ari, WX::GetAclInformation(pACL, &ari, sizeof(ACL_REVISION_INFORMATION), AclRevisionInformation), ari.AclRevision);
+	/* W */ inline auto &Revision(DWORD dwRevision) ret_to_self(ACL_REVISION_INFORMATION ari{ dwRevision }; WX::GetAclInformation(pACL, &ari, sizeof(ACL_REVISION_INFORMATION), AclRevisionInformation));
+	/* R */ inline DWORD Revision() const ret_to(ACL_REVISION_INFORMATION ari, WX::GetAclInformation(pACL, &ari, sizeof(ACL_REVISION_INFORMATION), AclRevisionInformation), ari.AclRevision);
 #pragma endregion
 public:
-	inline Iterator begin() reflect_as({ self, 0 });
-	inline const Iterator begin() const reflect_as({ self, 0 });
-	inline Iterator end() reflect_as({ self, Count() });
-	inline const Iterator end() const reflect_as({ self, Count() });
+	inline Iterator begin() ret_as({ self, 0 });
+	inline const Iterator begin() const ret_as({ self, 0 });
+	inline Iterator end() ret_as({ self, Count() });
+	inline const Iterator end() const ret_as({ self, Count() });
 public:
-	inline PACL &operator&() const reflect_as(pACL);
-	inline operator bool() const reflect_as(pACL ? WX::IsValidAcl(pACL) : false);
-	inline Iterator operator[](DWORD dwAceIndex) reflect_as({ self, dwAceIndex });
-	inline const Iterator operator[](DWORD dwAceIndex) const reflect_as({ self, dwAceIndex });
+	inline PACL &operator&() const ret_as(pACL);
+	inline operator bool() const ret_as(pACL ? WX::IsValidAcl(pACL) : false);
+	inline Iterator operator[](DWORD dwAceIndex) ret_as({ self, dwAceIndex });
+	inline const Iterator operator[](DWORD dwAceIndex) const ret_as({ self, dwAceIndex });
 
 };
 using AceList = AccessControlList;
@@ -905,25 +905,25 @@ class SecurityDescriptor {
 		xACL(xACL &) = delete;
 		xACL(xACL &&) = delete;
 		xACL(const xACL &) = delete;
-		~xACL() reflect_to(__Set());
+		~xACL() ret_to(__Set());
 	public: // Property - Present
-		/* W */ inline auto &Present(bool bPresent) reflect_to_self(bModified |= this->bPresent != bPresent, this->bPresent = bPresent);
-		/* R */ inline bool  Present() const reflect_as(this->bPresent);
+		/* W */ inline auto &Present(bool bPresent) ret_to_self(bModified |= this->bPresent != bPresent, this->bPresent = bPresent);
+		/* R */ inline bool  Present() const ret_as(this->bPresent);
 	public: // Property - Default
-		/* W */ inline auto &Default(bool bDefault) reflect_to_self(bModified |= this->bDefault != bDefault, this->bDefault = bDefault);
-		/* R */ inline bool  Default() const reflect_as(this->bDefault);
+		/* W */ inline auto &Default(bool bDefault) ret_to_self(bModified |= this->bDefault != bDefault, this->bDefault = bDefault);
+		/* R */ inline bool  Default() const ret_as(this->bDefault);
 	public:
-		inline operator SecurityDescriptor &() reflect_as(sd);
-		inline operator const SecurityDescriptor &() const reflect_as(sd);
-		inline operator bool() const reflect_as(Present());
-		inline bool operator==(Null) const reflect_as(Present() ? pACL == O : true);
-		inline bool operator!=(Null) const reflect_as(Present() ? pACL != O : false);
-		inline AceList &operator*() reflect_as(ref_as<AceList>(pACL));
-		inline const AceList &operator*() const reflect_as(ref_as<const AceList>(pACL));
-		inline AceList *operator&() reflect_as(reuse_as<AceList *>(&pACL));
-		inline const AceList *operator&() const reflect_as(reuse_as<const AceList *>(&pACL));
-		inline AceList *operator->() reflect_as(reuse_as<AceList *>(&pACL));
-		inline const AceList *operator->() const reflect_as(reuse_as<const AceList *>(&pACL));
+		inline operator SecurityDescriptor &() ret_as(sd);
+		inline operator const SecurityDescriptor &() const ret_as(sd);
+		inline operator bool() const ret_as(Present());
+		inline bool operator==(Nu) const ret_as(Present() ? pACL == O : true);
+		inline bool operator!=(Nu) const ret_as(Present() ? pACL != O : false);
+		inline AceList &operator*() ret_as(ref_cast<AceList>(pACL));
+		inline const AceList &operator*() const ret_as(ref_cast<const AceList>(pACL));
+		inline AceList *operator&() ret_as(reuse_cast<AceList *>(&pACL));
+		inline const AceList *operator&() const ret_as(reuse_cast<const AceList *>(&pACL));
+		inline AceList *operator->() ret_as(reuse_cast<AceList *>(&pACL));
+		inline const AceList *operator->() const ret_as(reuse_cast<const AceList *>(&pACL));
 	};
 	template<bool _GSID_1_OSID_0_>
 	class xSID {
@@ -950,20 +950,20 @@ class SecurityDescriptor {
 		xSID(xSID &) = delete;
 		xSID(xSID &&) = delete;
 		xSID(const xSID &) = delete;
-		~xSID() reflect_to(__Set());
+		~xSID() ret_to(__Set());
 	public: // Property - Default
-		/* W */ inline auto &Default(bool bDefault) reflect_to_self(bModified |= this->bDefault != bDefault, this->bDefault = bDefault);
-		/* R */ inline bool  Default() const reflect_as(this->bDefault);
+		/* W */ inline auto &Default(bool bDefault) ret_to_self(bModified |= this->bDefault != bDefault, this->bDefault = bDefault);
+		/* R */ inline bool  Default() const ret_as(this->bDefault);
 	public:
-		inline operator bool() const reflect_as(pSID);
-		inline bool operator==(Null) const reflect_as(!pSID);
-		inline bool operator!=(Null) const reflect_as(pSID);
-		inline SecID &operator*() reflect_as(ref_as<SecID &>(pSID));
-		inline const SecID &operator*() const reflect_as(ref_as<SecID &>(pSID));
-		inline SecID *operator&() reflect_as(reuse_as<SecID *>(&pSID));
-		inline const SecID *operator&() const reflect_as(reuse_as<const SecID *>(&pSID));
-		inline SecID *operator->() reflect_as(reuse_as<SecID *>(&pSID));
-		inline const SecID *operator->() const reflect_as(reuse_as<const SecID *>(&pSID));
+		inline operator bool() const ret_as(pSID);
+		inline bool operator==(Nu) const ret_as(!pSID);
+		inline bool operator!=(Nu) const ret_as(pSID);
+		inline SecID &operator*() ret_as(ref_cast<SecID &>(pSID));
+		inline const SecID &operator*() const ret_as(ref_cast<SecID &>(pSID));
+		inline SecID *operator&() ret_as(reuse_cast<SecID *>(&pSID));
+		inline const SecID *operator&() const ret_as(reuse_cast<const SecID *>(&pSID));
+		inline SecID *operator->() ret_as(reuse_cast<SecID *>(&pSID));
+		inline const SecID *operator->() const ret_as(reuse_cast<const SecID *>(&pSID));
 	};
 	class Control {
 		friend class SecurityDescriptor;
@@ -971,58 +971,58 @@ class SecurityDescriptor {
 	public:
 		Control(WORD flags) : flags(flags), mask(flags) {}
 	public: // Property - Owner_Default
-		/* W */ inline auto &Owner_Default(bool bDefault) reflect_to_self(if (bDefault) flags |= SE_OWNER_DEFAULTED; mask |= SE_OWNER_DEFAULTED);
-		/* R */ inline bool  Owner_Default() const reflect_as(flags &SE_OWNER_DEFAULTED);
+		/* W */ inline auto &Owner_Default(bool bDefault) ret_to_self(if (bDefault) flags |= SE_OWNER_DEFAULTED; mask |= SE_OWNER_DEFAULTED);
+		/* R */ inline bool  Owner_Default() const ret_as(flags &SE_OWNER_DEFAULTED);
 	public: // Property - Group_Default
-		/* W */ inline auto &Group_Default(bool bDefault) reflect_to_self(if (bDefault) flags |= SE_GROUP_DEFAULTED; mask |= SE_GROUP_DEFAULTED);
-		/* R */ inline bool  Group_Default() const reflect_as(flags &SE_GROUP_DEFAULTED);
+		/* W */ inline auto &Group_Default(bool bDefault) ret_to_self(if (bDefault) flags |= SE_GROUP_DEFAULTED; mask |= SE_GROUP_DEFAULTED);
+		/* R */ inline bool  Group_Default() const ret_as(flags &SE_GROUP_DEFAULTED);
 	public: // Property - DACL_Present
-		/* W */ inline auto &DACL_Present(bool bPresent) reflect_to_self(if (bPresent) flags |= SE_DACL_PRESENT; mask |= SE_DACL_PRESENT);
-		/* R */ inline bool  DACL_Present() const reflect_as(flags &SE_DACL_PRESENT);
+		/* W */ inline auto &DACL_Present(bool bPresent) ret_to_self(if (bPresent) flags |= SE_DACL_PRESENT; mask |= SE_DACL_PRESENT);
+		/* R */ inline bool  DACL_Present() const ret_as(flags &SE_DACL_PRESENT);
 	public: // Property - DACL_Default
-		/* W */ inline auto &DACL_Default(bool bDefault) reflect_to_self(if (bDefault) flags |= SE_DACL_DEFAULTED; mask |= SE_DACL_DEFAULTED);
-		/* R */ inline bool  DACL_Default() const reflect_as(flags &SE_DACL_DEFAULTED);
+		/* W */ inline auto &DACL_Default(bool bDefault) ret_to_self(if (bDefault) flags |= SE_DACL_DEFAULTED; mask |= SE_DACL_DEFAULTED);
+		/* R */ inline bool  DACL_Default() const ret_as(flags &SE_DACL_DEFAULTED);
 	public: // Property - DACL_Protect
-		/* W */ inline auto &DACL_Protect(bool bProtect) reflect_to_self(if (bProtect) flags |= SE_DACL_PROTECTED; mask |= SE_DACL_PROTECTED);
-		/* R */ inline bool  DACL_Protect() const reflect_as(flags &SE_DACL_PROTECTED);
+		/* W */ inline auto &DACL_Protect(bool bProtect) ret_to_self(if (bProtect) flags |= SE_DACL_PROTECTED; mask |= SE_DACL_PROTECTED);
+		/* R */ inline bool  DACL_Protect() const ret_as(flags &SE_DACL_PROTECTED);
 	public: // Property - DACL_AutoInherit
-		/* W */ inline auto &DACL_AutoInherit(bool bAutoInherit) reflect_to_self(if (bAutoInherit) flags |= SE_DACL_AUTO_INHERITED; mask |= SE_DACL_AUTO_INHERITED);
-		/* R */ inline bool  DACL_AutoInherit() const reflect_as(flags &SE_DACL_AUTO_INHERITED);
+		/* W */ inline auto &DACL_AutoInherit(bool bAutoInherit) ret_to_self(if (bAutoInherit) flags |= SE_DACL_AUTO_INHERITED; mask |= SE_DACL_AUTO_INHERITED);
+		/* R */ inline bool  DACL_AutoInherit() const ret_as(flags &SE_DACL_AUTO_INHERITED);
 	public: // Property - DACL_AutoInheritReq
-		/* W */ inline auto &DACL_AutoInheritReq(bool bAutoInheritReq) reflect_to_self(if (bAutoInheritReq) flags |= SE_DACL_AUTO_INHERIT_REQ; mask |= SE_DACL_AUTO_INHERIT_REQ);
-		/* R */ inline bool  DACL_AutoInheritReq() const reflect_as(flags &SE_DACL_AUTO_INHERIT_REQ);
+		/* W */ inline auto &DACL_AutoInheritReq(bool bAutoInheritReq) ret_to_self(if (bAutoInheritReq) flags |= SE_DACL_AUTO_INHERIT_REQ; mask |= SE_DACL_AUTO_INHERIT_REQ);
+		/* R */ inline bool  DACL_AutoInheritReq() const ret_as(flags &SE_DACL_AUTO_INHERIT_REQ);
 	public: // Property - SACL_Present
-		/* W */ inline auto &SACL_Present(bool bPresent) reflect_to_self(if (bPresent) flags |= SE_SACL_PRESENT; mask |= SE_SACL_PRESENT);
-		/* R */ inline bool  SACL_Present() const reflect_as(flags &SE_SACL_PRESENT);
+		/* W */ inline auto &SACL_Present(bool bPresent) ret_to_self(if (bPresent) flags |= SE_SACL_PRESENT; mask |= SE_SACL_PRESENT);
+		/* R */ inline bool  SACL_Present() const ret_as(flags &SE_SACL_PRESENT);
 	public: // Property - SACL_Default
-		/* W */ inline auto &SACL_Default(bool bDefault) reflect_to_self(if (bDefault) flags |= SE_SACL_DEFAULTED; mask |= SE_SACL_DEFAULTED);
-		/* R */ inline bool  SACL_Default() const reflect_as(flags &SE_SACL_DEFAULTED);
+		/* W */ inline auto &SACL_Default(bool bDefault) ret_to_self(if (bDefault) flags |= SE_SACL_DEFAULTED; mask |= SE_SACL_DEFAULTED);
+		/* R */ inline bool  SACL_Default() const ret_as(flags &SE_SACL_DEFAULTED);
 	public: // Property - SACL_Protect
-		/* W */ inline auto &SACL_Protect(bool bProtect) reflect_to_self(if (bProtect) flags |= SE_SACL_PROTECTED; mask |= SE_SACL_PROTECTED);
-		/* R */ inline bool  SACL_Protect() const reflect_as(flags &SE_SACL_PROTECTED);
+		/* W */ inline auto &SACL_Protect(bool bProtect) ret_to_self(if (bProtect) flags |= SE_SACL_PROTECTED; mask |= SE_SACL_PROTECTED);
+		/* R */ inline bool  SACL_Protect() const ret_as(flags &SE_SACL_PROTECTED);
 	public: // Property - SACL_AutoInherit
-		/* W */ inline auto &SACL_AutoInherit(bool bAutoInherit) reflect_to_self(if (bAutoInherit) flags |= SE_SACL_AUTO_INHERITED; mask |= SE_SACL_AUTO_INHERITED);
-		/* R */ inline bool  SACL_AutoInherit() const reflect_as(flags &SE_SACL_AUTO_INHERITED);
+		/* W */ inline auto &SACL_AutoInherit(bool bAutoInherit) ret_to_self(if (bAutoInherit) flags |= SE_SACL_AUTO_INHERITED; mask |= SE_SACL_AUTO_INHERITED);
+		/* R */ inline bool  SACL_AutoInherit() const ret_as(flags &SE_SACL_AUTO_INHERITED);
 	public: // Property - SACL_AutoInheritReq
-		/* W */ inline auto &SACL_AutoInheritReq(bool bAutoInheritReq) reflect_to_self(if (bAutoInheritReq) flags |= SE_SACL_AUTO_INHERIT_REQ; mask |= SE_SACL_AUTO_INHERIT_REQ);
-		/* R */ inline bool  SACL_AutoInheritReq() const reflect_as(flags &SE_SACL_AUTO_INHERIT_REQ);
+		/* W */ inline auto &SACL_AutoInheritReq(bool bAutoInheritReq) ret_to_self(if (bAutoInheritReq) flags |= SE_SACL_AUTO_INHERIT_REQ; mask |= SE_SACL_AUTO_INHERIT_REQ);
+		/* R */ inline bool  SACL_AutoInheritReq() const ret_as(flags &SE_SACL_AUTO_INHERIT_REQ);
 	public: // Property - ControlRM_Valid
-		/* W */ inline auto &ControlRM_Valid(bool bValid) reflect_to_self(if (bValid) flags |= SE_RM_CONTROL_VALID; mask |= SE_RM_CONTROL_VALID);
-		/* R */ inline bool  ControlRM_Valid() const reflect_as(flags &SE_RM_CONTROL_VALID);
+		/* W */ inline auto &ControlRM_Valid(bool bValid) ret_to_self(if (bValid) flags |= SE_RM_CONTROL_VALID; mask |= SE_RM_CONTROL_VALID);
+		/* R */ inline bool  ControlRM_Valid() const ret_as(flags &SE_RM_CONTROL_VALID);
 	public: // Property - Self_Relative
-		/* R */ inline bool  Self_Relative() const reflect_as(flags &SE_SELF_RELATIVE);
+		/* R */ inline bool  Self_Relative() const ret_as(flags &SE_SELF_RELATIVE);
 	};
 	SecurityDescriptor(PSECURITY_DESCRIPTOR pSD) : pSD(pSD) {}
 public:
-	SecurityDescriptor() : pSD(Local::Alloc<SECURITY_DESCRIPTOR>()) reflect_to(WX::InitializeSecurityDescriptor(pSD, SECURITY_DESCRIPTOR_REVISION));
-	SecurityDescriptor(Null) {}
-	SecurityDescriptor(SecurityDescriptor &sd) : pSD(sd.pSD) reflect_to(sd.pSD = O);
-	SecurityDescriptor(SecurityDescriptor &&sd) : pSD(sd.pSD) reflect_to(sd.pSD = O);
+	SecurityDescriptor() : pSD(Local::Alloc<SECURITY_DESCRIPTOR>()) ret_to(WX::InitializeSecurityDescriptor(pSD, SECURITY_DESCRIPTOR_REVISION));
+	SecurityDescriptor(Nu) {}
+	SecurityDescriptor(SecurityDescriptor &sd) : pSD(sd.pSD) ret_to(sd.pSD = O);
+	SecurityDescriptor(SecurityDescriptor &&sd) : pSD(sd.pSD) ret_to(sd.pSD = O);
 	SecurityDescriptor(const SecurityDescriptor &sd) = delete;
-	SecurityDescriptor(LPCSTR lpszDesc) reflect_to(ULONG size; WX::ConvertStringSecurityDescriptorToSecurityDescriptor(lpszDesc, SDDL_REVISION_1, &pSD, &size));
-	SecurityDescriptor(LPCWSTR lpszDesc) reflect_to(ULONG size; WX::ConvertStringSecurityDescriptorToSecurityDescriptor(lpszDesc, SDDL_REVISION_1, &pSD, &size));
+	SecurityDescriptor(LPCSTR lpszDesc) ret_to(ULONG size; WX::ConvertStringSecurityDescriptorToSecurityDescriptor(lpszDesc, SDDL_REVISION_1, &pSD, &size));
+	SecurityDescriptor(LPCWSTR lpszDesc) ret_to(ULONG size; WX::ConvertStringSecurityDescriptorToSecurityDescriptor(lpszDesc, SDDL_REVISION_1, &pSD, &size));
 public:
-	inline void Delete() reflect_to(Local::AutoFree(pSD));
+	inline void Delete() ret_to(Local::AutoFree(pSD));
 	inline SecurityDescriptor operator+() const {
 		if (!*this) return O;
 		auto size = Size();
@@ -1037,55 +1037,53 @@ public:
 	//}
 #pragma region Properties
 public: // Property - Size
-	/* R */ inline DWORD Size() const reflect_as(WX::GetSecurityDescriptorLength(pSD));
+	/* R */ inline DWORD Size() const ret_as(WX::GetSecurityDescriptorLength(pSD));
 public: // Property - Controls
-	/* W */ inline auto &Controls(Control ctl) reflect_to_self(WX::SetSecurityDescriptorControl(pSD, ctl.mask, ctl.flags));
-	/* R */ inline Control Controls() const reflect_to(WORD ctl; DWORD rev, WX::GetSecurityDescriptorControl(pSD, &ctl, &rev), ctl);
+	/* W */ inline auto &Controls(Control ctl) ret_to_self(WX::SetSecurityDescriptorControl(pSD, ctl.mask, ctl.flags));
+	/* R */ inline Control Controls() const ret_to(WORD ctl; DWORD rev, WX::GetSecurityDescriptorControl(pSD, &ctl, &rev), ctl);
 public: // Property - SelfRelative
-	/* R */ inline bool SelfRelative() const reflect_as(Controls().Self_Relative());
+	/* R */ inline bool SelfRelative() const ret_as(Controls().Self_Relative());
 public: // Property - Discretion
-	/* W */ inline xACL<false> Discretion(const AceList &acl) reflect_as({ self, &acl });
-	/* W */ inline xACL<false> Discretion(PACL pACL) reflect_as({ self, pACL });
-	/* R */ inline const xACL<false> Discretion() const reflect_to_self();
+	/* W */ inline xACL<false> Discretion(const AceList &acl) ret_as({ self, &acl });
+	/* W */ inline xACL<false> Discretion(PACL pACL) ret_as({ self, pACL });
+	/* R */ inline const xACL<false> Discretion() const retself;
 public: // Property - System
-	/* W */ inline xACL<true> System(const AceList &acl) reflect_as({ self, &acl });
-	/* W */ inline xACL<true> System(PACL pACL) reflect_as({ self, pACL });
-	/* R */ inline const xACL<true> System() const reflect_to_self();
+	/* W */ inline xACL<true> System(const AceList &acl) ret_as({ self, &acl });
+	/* W */ inline xACL<true> System(PACL pACL) ret_as({ self, pACL });
+	/* R */ inline const xACL<true> System() const retself;
 public: // Property - Group
-	/* W */ inline xSID<true> Group(const SecID &sid) reflect_as({ self, &sid });
-	/* W */ inline xSID<true> Group(PSID pSID) reflect_as({ self, pSID });
-	/* R */ inline const xSID<true> Group() const reflect_to_self();
+	/* W */ inline xSID<true> Group(const SecID &sid) ret_as({ self, &sid });
+	/* W */ inline xSID<true> Group(PSID pSID) ret_as({ self, pSID });
+	/* R */ inline const xSID<true> Group() const retself;
 public: // Property - Owner
-	/* W */ inline xSID<false> Owner(const SecID &sid) reflect_as({ self, &sid });
-	/* W */ inline xSID<false> Owner(PSID pSID) reflect_as({ self, pSID });
-	/* R */ inline const xSID<false> Owner() const reflect_to_self();
+	/* W */ inline xSID<false> Owner(const SecID &sid) ret_as({ self, &sid });
+	/* W */ inline xSID<false> Owner(PSID pSID) ret_as({ self, pSID });
+	/* R */ inline const xSID<false> Owner() const retself;
 #pragma endregion
 public:
-	inline PSECURITY_DESCRIPTOR operator&() const reflect_as(pSD);
-	inline operator bool() const reflect_as(pSD ? IsValidSecurityDescriptor(pSD) : false);
+	inline PSECURITY_DESCRIPTOR operator&() const ret_as(pSD);
+	inline operator bool() const ret_as(pSD ? IsValidSecurityDescriptor(pSD) : false);
 };
 using SecDesc = SecurityDescriptor;
 #pragma endregion
 
 #pragma region Security Attributes
 struct SecurityAttributes : public StructShim<SECURITY_ATTRIBUTES> {
-	using super = StructShim<SECURITY_ATTRIBUTES>;
+	using Super = StructShim<SECURITY_ATTRIBUTES>;
 public:
-	SecurityAttributes() reflect_to(self->nLength = sizeof(self));
-	SecurityAttributes(const SECURITY_ATTRIBUTES &sa) : super(sa) {}
+	SecurityAttributes() ret_to(self->nLength = sizeof(self));
+	SecurityAttributes(const SECURITY_ATTRIBUTES &sa) : Super(sa) {}
 	SecurityAttributes(bool bInherit, PSECURITY_DESCRIPTOR pSD = O) : 
-		super(SECURITY_ATTRIBUTES{ sizeof(self), pSD, bInherit }) {}
+		Super(SECURITY_ATTRIBUTES{ sizeof(self), pSD, bInherit }) {}
 #pragma region Properties
-public: // Property - Inherit
-	/* W */ inline auto&Inherit(bool bInheritHandle) reflect_to_self(self->bInheritHandle = bInheritHandle);
-	/* R */ inline bool Inherit() const reflect_as(self->bInheritHandle);
+	proxy_prop_sync(Inherit,bInheritHandle,bool);
 public: // Property - Descriptor
-	/* W */ inline auto &Descriptor(const void *lpDesc) reflect_to_self(self->lpSecurityDescriptor = const_cast<LPVOID>(lpDesc));
-	/* W */ inline auto &Descriptor(const SecDesc &sd) reflect_to_self(self->lpSecurityDescriptor = &sd);
-	/* R */ inline SecDesc &Descriptor() const reflect_as(ref_as<SecDesc>(self->lpSecurityDescriptor));
+	/* W */ inline auto &Descriptor(const void *lpDesc) ret_to_self(self->lpSecurityDescriptor = const_cast<LPVOID>(lpDesc));
+	/* W */ inline auto &Descriptor(const SecDesc &sd) ret_to_self(self->lpSecurityDescriptor = &sd);
+	/* R */ inline SecDesc &Descriptor() const ret_as(ref_cast<SecDesc>(self->lpSecurityDescriptor));
 #pragma endregion
 public:
-	inline operator LPSECURITY_ATTRIBUTES() const reflect_as(reuse_as<LPSECURITY_ATTRIBUTES>(this));
+	inline operator LPSECURITY_ATTRIBUTES() const ret_as(reuse_cast<LPSECURITY_ATTRIBUTES>(this));
 };
 using SecAttr = SecurityAttributes;
 const SecurityAttributes InheritHandle = true;

@@ -27,7 +27,7 @@ extern WX::Module Module;
 #	include DLL_INL_LIST
 #	undef REG_FUNC
 #	undef REG_VAR
-size_t LoadDll(LPCTSTR lpFilenameDLL);
+SizeT LoadDll(LPCTSTR lpFilenameDLL);
 void CloseDll();
 #	ifdef DLL_IMPORTS
 #	undef DLL_IMPORTS
@@ -36,9 +36,9 @@ WX::Module Module = O;
 #	include DLL_INL_LIST
 #	undef REG_FUNC
 #	undef REG_VAR
-size_t LoadDll(LPCTSTR lpFilenameDLL) {
+SizeT LoadDll(LPCTSTR lpFilenameDLL) {
 	Module = WX::Module::Library(lpFilenameDLL);
-	size_t CountMembers = 0;
+	SizeT CountMembers = 0;
 #	define REG_FUNC(ret, name, ...) \
 	if ((name = Module.Symbol<ret(__VA_ARGS__)>(#name))) ++CountMembers;
 #	define REG_VAR(type, name) \
