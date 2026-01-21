@@ -117,28 +117,28 @@ inline void EnumResourceNames(HMODULE hModule, LPCWSTR lpType, ENUMRESNAMEPROCW 
 
 export namespace WX {
 
-enum_class(ResourceTypes, LPTSTR,
-	Cursor        = RT_CURSOR,
-	Bitmap        = RT_BITMAP,
-	Icon          = RT_ICON,
-	Menu          = RT_MENU,
-	Dialog        = RT_DIALOG,
-	String        = RT_STRING,
-	FontDir       = RT_FONTDIR,
-	Font          = RT_FONT,
-	Accelerator   = RT_ACCELERATOR,
-	RCDATA        = RT_RCDATA,
-	MessageTable  = RT_MESSAGETABLE,
-	GroupCursor   = RT_GROUP_CURSOR,
-	GroupIcon     = RT_GROUP_ICON,
-	Version       = RT_VERSION,
-	DlgInclude    = RT_DLGINCLUDE,
-	PlugPlay      = RT_PLUGPLAY,
-	VXD           = RT_VXD,
-	AniCursor     = RT_ANICURSOR,
-	AniIcon       = RT_ANIICON,
-	HTML          = RT_HTML,
-	Manifest      = RT_MANIFEST);
+enum_class(ResourceTypes , LPTSTR          ,
+		   Cursor        = RT_CURSOR       ,
+		   Bitmap        = RT_BITMAP       ,
+		   Icon          = RT_ICON         ,
+		   Menu          = RT_MENU         ,
+		   Dialog        = RT_DIALOG       ,
+		   String        = RT_STRING       ,
+		   FontDir       = RT_FONTDIR      ,
+		   Font          = RT_FONT         ,
+		   Accelerator   = RT_ACCELERATOR  ,
+		   RCDATA        = RT_RCDATA       ,
+		   MessageTable  = RT_MESSAGETABLE ,
+		   GroupCursor   = RT_GROUP_CURSOR ,
+		   GroupIcon     = RT_GROUP_ICON   ,
+		   Version       = RT_VERSION      ,
+		   DlgInclude    = RT_DLGINCLUDE   ,
+		   PlugPlay      = RT_PLUGPLAY     ,
+		   VXD           = RT_VXD          ,
+		   AniCursor     = RT_ANICURSOR    ,
+		   AniIcon       = RT_ANIICON      ,
+		   HTML          = RT_HTML         ,
+		   Manifest      = RT_MANIFEST     );
 
 #pragma region Icon
 class IconInfo : public StructShim<ICONINFO> {
@@ -349,11 +349,11 @@ public:
 #pragma endregion
 
 #pragma region Accelerators
-enum_flags(VirtualKey, BYTE,
-	NoInvert = FNOINVERT,
-	Shift    = FSHIFT,
-	Control  = FCONTROL,
-	Alt      = FALT);
+enum_flags(VirtualKey , BYTE      ,
+		   NoInvert   = FNOINVERT ,
+		   Shift      = FSHIFT    ,
+		   Control    = FCONTROL  ,
+		   Alt        = FALT      );
 class AccelEntry : public StructShim<ACCEL> {
 public:
 	using Super = StructShim<ACCEL>;
@@ -410,32 +410,32 @@ using CMenu = ProxyView<Menu>;
 //	PopupRestore  = HBMMENU_POPUP_RESTORE,
 //	PopupMaximize = HBMMENU_POPUP_MAXIMIZE,
 //	PopupMinimize = HBMMENU_POPUP_MINIMIZE);
-enum_flags(MenuItemType, UINT,
-	String        = MFT_STRING,
-	Bitmap        = MFT_BITMAP,
-	BarBreak      = MFT_MENUBARBREAK,
-	Break         = MFT_MENUBREAK,
-	OwnerDraw     = MFT_OWNERDRAW,
-	RadioCheck    = MFT_RADIOCHECK,
-	Separator     = MFT_SEPARATOR,
-	RightOrder    = MFT_RIGHTORDER,
-	RightJustify  = MFT_RIGHTJUSTIFY);
-enum_flags(MenuItemState, UINT,
-	Default       = MFS_DEFAULT,
-	Grayed        = MFS_GRAYED,
-	Enabled       = MFS_ENABLED,
-	Disabled      = MFS_DISABLED,
-	Checked       = MFS_CHECKED,
-	Unchecked     = MFS_UNCHECKED,
-	Hilite        = MFS_HILITE,
-	Unhilite      = MFS_UNHILITE);
-enum_flags(MenuStyle, DWORD,
-	NoCheck       = MNS_NOCHECK,
-	Modeless      = MNS_MODELESS,
-	DragDrop      = MNS_DRAGDROP,
-	AutoDismiss   = MNS_AUTODISMISS,
-	NotifyByPos   = MNS_NOTIFYBYPOS,
-	CheckOrBmp    = MNS_CHECKORBMP);
+enum_flags(MenuItemType  , UINT             ,
+		   String        = MFT_STRING       ,
+		   Bitmap        = MFT_BITMAP       ,
+		   BarBreak      = MFT_MENUBARBREAK ,
+		   Break         = MFT_MENUBREAK    ,
+		   OwnerDraw     = MFT_OWNERDRAW    ,
+		   RadioCheck    = MFT_RADIOCHECK   ,
+		   Separator     = MFT_SEPARATOR    ,
+		   RightOrder    = MFT_RIGHTORDER   ,
+		   RightJustify  = MFT_RIGHTJUSTIFY );
+enum_flags(MenuItemState , UINT             ,
+		   Default       = MFS_DEFAULT      ,
+		   Grayed        = MFS_GRAYED       ,
+		   Enabled       = MFS_ENABLED      ,
+		   Disabled      = MFS_DISABLED     ,
+		   Checked       = MFS_CHECKED      ,
+		   Unchecked     = MFS_UNCHECKED    ,
+		   Hilite        = MFS_HILITE       ,
+		   Unhilite      = MFS_UNHILITE     );
+enum_flags(MenuStyle     , DWORD            ,
+		   NoCheck       = MNS_NOCHECK      ,
+		   Modeless      = MNS_MODELESS     ,
+		   DragDrop      = MNS_DRAGDROP     ,
+		   AutoDismiss   = MNS_AUTODISMISS  ,
+		   NotifyByPos   = MNS_NOTIFYBYPOS  ,
+		   CheckOrBmp    = MNS_CHECKORBMP   );
 class MenuIItems {
 	friend class Menu;
 	HMENU hMenu;
@@ -454,6 +454,27 @@ public: // Property - Count
 //public: // Property - Check
 //	/* W */ inline auto &Check(bool bChecked) ret_to_self(WX::CheckMenuItem(hMenu, uID, flags | (bChecked ? MF_CHECKED : MF_UNCHECKED)));
 };
+enum_flags(MenuTrack        , UINT                ,
+		   LeftButton       = TPM_LEFTBUTTON      ,
+		   RightButton      = TPM_RIGHTBUTTON     ,
+		   LeftAlign        = TPM_LEFTALIGN       ,
+		   CenterAlign      = TPM_CENTERALIGN     ,
+		   RightAlign       = TPM_RIGHTALIGN      ,
+		   TopAlign         = TPM_TOPALIGN        ,
+		   VCenterAlign     = TPM_VCENTERALIGN    ,
+		   BottomAlign      = TPM_BOTTOMALIGN     ,
+		   Horizontal       = TPM_HORIZONTAL      ,
+		   Vertical         = TPM_VERTICAL        ,
+		   NoNotify         = TPM_NONOTIFY        ,
+		   ReturnCmd        = TPM_RETURNCMD       ,
+		   Recurse          = TPM_RECURSE         ,
+		   HorPosAnimation  = TPM_HORPOSANIMATION ,
+		   HorNegAnimation  = TPM_HORNEGANIMATION ,
+		   VerPosAnimation  = TPM_VERPOSANIMATION ,
+		   VerNegAnimation  = TPM_VERNEGANIMATION ,
+		   NoAnimation      = TPM_NOANIMATION     ,
+		   LayoutRtl        = TPM_LAYOUTRTL       ,
+		   WorkArea         = TPM_WORKAREA        );
 class Menu {
 protected:
 	mutable HMENU hMenu = O;
@@ -491,28 +512,7 @@ public:
 	inline auto&Radio(UINT idFirst, UINT idLast, UINT idCheck) ret_to_self(WX::CheckMenuRadioItem(hMenu, idFirst, idLast, idCheck, MF_BYCOMMAND));
 	inline auto&RadioIndex(UINT indFirst, UINT indLast, UINT indCheck) ret_to_self(WX::CheckMenuRadioItem(hMenu, indFirst, indLast, indCheck, MF_BYPOSITION));
 public:	
-	enum_flags(Tracks, UINT,
-		LeftButton          = TPM_LEFTBUTTON,
-		RightButton         = TPM_RIGHTBUTTON,
-		LeftAlign           = TPM_LEFTALIGN,
-		CenterAlign         = TPM_CENTERALIGN,
-		RightAlign          = TPM_RIGHTALIGN,
-		TopAlign            = TPM_TOPALIGN,
-		VCenterAlign        = TPM_VCENTERALIGN,
-		BottomAlign         = TPM_BOTTOMALIGN,
-		Horizontal          = TPM_HORIZONTAL,
-		Vertical            = TPM_VERTICAL,
-		NoNotify            = TPM_NONOTIFY,
-		ReturnCmd           = TPM_RETURNCMD,
-		Recurse             = TPM_RECURSE,
-		HorPosAnimation     = TPM_HORPOSANIMATION,
-		HorNegAnimation     = TPM_HORNEGANIMATION,
-		VerPosAnimation     = TPM_VERPOSANIMATION,
-		VerNegAnimation     = TPM_VERNEGANIMATION,
-		NoAnimation         = TPM_NOANIMATION,
-		LayoutRtl           = TPM_LAYOUTRTL,
-		WorkArea            = TPM_WORKAREA);
-	inline void Track(Tracks tt, POINT pt, HWND hParent) const ret_to(WX::TrackPopupMenu(hMenu, tt.yield(), pt.x, pt.y, 0, hParent, O));
+	inline void Track(MenuTrack tt, POINT pt, HWND hParent) const ret_to(WX::TrackPopupMenu(hMenu, tt.yield(), pt.x, pt.y, 0, hParent, O));
 	//inline auto Modify(UINT uID) ret_as(ModifyMenu(hMenu, uID, MF_BYCOMMAND, ));
 
 public:

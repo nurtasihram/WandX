@@ -82,6 +82,9 @@
     <ClCompile Include="..\wx.window.cppm">
       <Filter>wx_library\modules</Filter>
     </ClCompile>
+    <ClCompile Include="..\wx.radix.cppm">
+      <Filter>wx_library\modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="make.bat" />

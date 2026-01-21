@@ -1098,13 +1098,13 @@ using CGObject = ProxyView<GObject>;
 #pragma endregion
 
 #pragma region Bitmap
-enum_class(BitmapCompressions, DWORD,
-	RGB       = BI_RGB,
-	RLE8      = BI_RLE8,
-	RLE4      = BI_RLE4,
-	BitFields = BI_BITFIELDS,
-	JPEG      = BI_JPEG,
-	PNG       = BI_PNG);
+enum_class(BitmapCompressions , DWORD        ,
+		   RGB                = BI_RGB       ,
+		   RLE8               = BI_RLE8      ,
+		   RLE4               = BI_RLE4      ,
+		   BitFields          = BI_BITFIELDS ,
+		   JPEG               = BI_JPEG      ,
+		   PNG                = BI_PNG       );
 #pragma pack(2)
 class BitmapHeader : protected BITMAPFILEHEADER, protected BITMAPINFO {
 public:
@@ -1254,79 +1254,79 @@ using CBitmap = ProxyView<Bitmap>;
 #pragma endregion
 
 #pragma region Font
-enum_flags(FontType, WORD,
-	Simulated    = SIMULATED_FONTTYPE,
-	Printer      = PRINTER_FONTTYPE,
-	Screen       = SCREEN_FONTTYPE,
-	Bold         = BOLD_FONTTYPE,
-	Italic       = ITALIC_FONTTYPE,
-	Regular      = REGULAR_FONTTYPE/*,
-	PS_OpenType  = PS_OPENTYPE_FONTTYPE,
-	TT_OpenType  = TT_OPENTYPE_FONTTYPE,
-	Type1        = TYPE1_FONTTYPE,
-	Symbol       = SYMBOL_FONTTYPE*/);
-enum_class(CharSets, BYTE,
-	ANSI           = ANSI_CHARSET,
-	Default        = DEFAULT_CHARSET,
-	Symbol         = SYMBOL_CHARSET,
-	ShiftJIS       = SHIFTJIS_CHARSET,
-	Hangeul        = HANGEUL_CHARSET,
-	Hangul         = HANGUL_CHARSET,
-	GB2312         = GB2312_CHARSET,
-	ChineseBig5    = CHINESEBIG5_CHARSET,
-	OEM            = OEM_CHARSET,
-	Johab          = JOHAB_CHARSET,
-	Hebrew         = HEBREW_CHARSET,
-	Arabic         = ARABIC_CHARSET,
-	Greek          = GREEK_CHARSET,
-	Turkish        = TURKISH_CHARSET,
-	Vietnamese     = VIETNAMESE_CHARSET,
-	Thai           = THAI_CHARSET,
-	EastEurope     = EASTEUROPE_CHARSET,
-	Russian        = RUSSIAN_CHARSET,
-	Mac            = MAC_CHARSET,
-	Baltic         = BALTIC_CHARSET);
-enum_class(OutPrecis, BYTE, 
-	Default        = OUT_DEFAULT_PRECIS,
-	String         = OUT_STRING_PRECIS,
-	Character      = OUT_CHARACTER_PRECIS,
-	Stroke         = OUT_STROKE_PRECIS,
-	TrueType       = OUT_TT_PRECIS,
-	Device         = OUT_DEVICE_PRECIS,
-	Raster         = OUT_RASTER_PRECIS,
-	TrueTypeOnly   = OUT_TT_ONLY_PRECIS,
-	Outline        = OUT_OUTLINE_PRECIS,
-	ScreenOutline  = OUT_SCREEN_OUTLINE_PRECIS,
-	PostScriptOnly = OUT_PS_ONLY_PRECIS);
-enum_flags(ClipPrecis, BYTE,
-	Default        = CLIP_DEFAULT_PRECIS,
-	Character      = CLIP_CHARACTER_PRECIS,
-	Stroke         = CLIP_STROKE_PRECIS,
-	Mask           = CLIP_MASK,
-	LH_Angles      = CLIP_LH_ANGLES,
-	TT_Always      = CLIP_TT_ALWAYS,
-	DFA_Disable    = CLIP_DFA_DISABLE,
-	Embedded       = CLIP_EMBEDDED);
-enum_class(Qualities, BYTE,
-	Default          = DEFAULT_QUALITY,
-	Draf             = DRAFT_QUALITY,
-	Proof            = PROOF_QUALITY,
-	NonAntiAliased   = NONANTIALIASED_QUALITY,
-	AntiAliased      = ANTIALIASED_QUALITY,
-	ClearType        = CLEARTYPE_QUALITY,
-	ClearTypeNatural = CLEARTYPE_NATURAL_QUALITY);
-enum_class(FontPitches, BYTE,
-	Default  = DEFAULT_PITCH,
-	Fixed    = FIXED_PITCH,
-	Variable = VARIABLE_PITCH,
-	Mono     = MONO_FONT);
-enum_class(FontFamilies, BYTE,
-	DontCare   = FF_DONTCARE,
-	Roman      = FF_ROMAN,
-	Swiss      = FF_SWISS,
-	Modern     = FF_MODERN,
-	Script     = FF_SCRIPT,
-	Decorative = FF_DECORATIVE);
+enum_flags(FontType         , WORD                        ,
+		   Simulated        = SIMULATED_FONTTYPE          ,
+		   Printer          = PRINTER_FONTTYPE            ,
+		   Screen           = SCREEN_FONTTYPE             ,
+		   Bold             = BOLD_FONTTYPE               ,
+		   Italic           = ITALIC_FONTTYPE             ,
+		   Regular          = REGULAR_FONTTYPE          /*,
+		   PS_OpenType      = PS_OPENTYPE_FONTTYPE        ,
+		   TT_OpenType      = TT_OPENTYPE_FONTTYPE        ,
+		   Type1            = TYPE1_FONTTYPE              ,
+		   Symbol           = SYMBOL_FONTTYPE           */);
+enum_class(CharSets         , BYTE                        ,
+		   ANSI             = ANSI_CHARSET                ,
+		   Default          = DEFAULT_CHARSET             ,
+		   Symbol           = SYMBOL_CHARSET              ,
+		   ShiftJIS         = SHIFTJIS_CHARSET            ,
+		   Hangeul          = HANGEUL_CHARSET             ,
+		   Hangul           = HANGUL_CHARSET              ,
+		   GB2312           = GB2312_CHARSET              ,
+		   ChineseBig5      = CHINESEBIG5_CHARSET         ,
+		   OEM              = OEM_CHARSET                 ,
+		   Johab            = JOHAB_CHARSET               ,
+		   Hebrew           = HEBREW_CHARSET              ,
+		   Arabic           = ARABIC_CHARSET              ,
+		   Greek            = GREEK_CHARSET               ,
+		   Turkish          = TURKISH_CHARSET             ,
+		   Vietnamese       = VIETNAMESE_CHARSET          ,
+		   Thai             = THAI_CHARSET                ,
+		   EastEurope       = EASTEUROPE_CHARSET          ,
+		   Russian          = RUSSIAN_CHARSET             ,
+		   Mac              = MAC_CHARSET                 ,
+		   Baltic           = BALTIC_CHARSET              );
+enum_class(OutPrecis        , BYTE                        , 
+		   Default          = OUT_DEFAULT_PRECIS          ,
+		   String           = OUT_STRING_PRECIS           ,
+		   Character        = OUT_CHARACTER_PRECIS        ,
+		   Stroke           = OUT_STROKE_PRECIS           ,
+		   TrueType         = OUT_TT_PRECIS               ,
+		   Device           = OUT_DEVICE_PRECIS           ,
+		   Raster           = OUT_RASTER_PRECIS           ,
+		   TrueTypeOnly     = OUT_TT_ONLY_PRECIS          ,
+		   Outline          = OUT_OUTLINE_PRECIS          ,
+		   ScreenOutline    = OUT_SCREEN_OUTLINE_PRECIS   ,
+		   PostScriptOnly   = OUT_PS_ONLY_PRECIS          );
+enum_flags(ClipPrecis       , BYTE                        ,
+		   Default          = CLIP_DEFAULT_PRECIS         ,
+		   Character        = CLIP_CHARACTER_PRECIS       ,
+		   Stroke           = CLIP_STROKE_PRECIS          ,
+		   Mask             = CLIP_MASK                   ,
+		   LH_Angles        = CLIP_LH_ANGLES              ,
+		   TT_Always        = CLIP_TT_ALWAYS              ,
+		   DFA_Disable      = CLIP_DFA_DISABLE            ,
+		   Embedded         = CLIP_EMBEDDED               );
+enum_class(Qualities        , BYTE                        ,
+		   Default          = DEFAULT_QUALITY             ,
+		   Draf             = DRAFT_QUALITY               ,
+		   Proof            = PROOF_QUALITY               ,
+		   NonAntiAliased   = NONANTIALIASED_QUALITY      ,
+		   AntiAliased      = ANTIALIASED_QUALITY         ,
+		   ClearType        = CLEARTYPE_QUALITY           ,
+		   ClearTypeNatural = CLEARTYPE_NATURAL_QUALITY   );
+enum_class(FontPitches      , BYTE                        ,
+		   Default          = DEFAULT_PITCH               ,
+		   Fixed            = FIXED_PITCH                 ,
+		   Variable         = VARIABLE_PITCH              ,
+		   Mono             = MONO_FONT                   );
+enum_class(FontFamilies     , BYTE                        ,
+		   DontCare         = FF_DONTCARE                 ,
+		   Roman            = FF_ROMAN                    ,
+		   Swiss            = FF_SWISS                    ,
+		   Modern           = FF_MODERN                   ,
+		   Script           = FF_SCRIPT                   ,
+		   Decorative       = FF_DECORATIVE               );
 template<bool IsUnicode>
 class FontLogicX : public StructShim<structx(LOGFONT)> {
 	using_structx(LOGFONT);
@@ -1421,16 +1421,16 @@ using CFont = ProxyView<Font>;
 #pragma endregion
 
 #pragma region Pen
-enum_flags(PenStyles, int,
-	Solid       = PS_SOLID,
-	Dash        = PS_DASH,
-	Dot         = PS_DOT,
-	DashDot     = PS_DASHDOT,
-	DashDotDot  = PS_DASHDOTDOT,
-	Nu        = PS_NULL,
-	InsideFrame = PS_INSIDEFRAME,
-	UserStyle   = PS_USERSTYLE,
-	Alternate   = PS_ALTERNATE);
+enum_flags(PenStyles    , int            ,
+		   Solid        = PS_SOLID       ,
+		   Dash         = PS_DASH        ,
+		   Dot          = PS_DOT         ,
+		   DashDot      = PS_DASHDOT     ,
+		   DashDotDot   = PS_DASHDOTDOT  ,
+		   Null         = PS_NULL        ,
+		   InsideFrame  = PS_INSIDEFRAME ,
+		   UserStyle    = PS_USERSTYLE   ,
+		   Alternate    = PS_ALTERNATE   );
 class PenLogic : public StructShim<LOGPEN> {
 public:
 	using Super = StructShim<LOGPEN>;
@@ -1487,44 +1487,44 @@ using CPen = ProxyView<Pen>;
 #pragma endregion
 
 #pragma region Brush
-enum_class(SysColor, IntP,
-	ScrollBar               = COLOR_SCROLLBAR,
-	Background              = COLOR_BACKGROUND,
-	ActiveCaption           = COLOR_ACTIVECAPTION,
-	InactiveCaption         = COLOR_INACTIVECAPTION,
-	Menu                    = COLOR_MENU,
-	Window                  = COLOR_WINDOW,
-	WindowFrame             = COLOR_WINDOWFRAME,
-	MenuText                = COLOR_MENUTEXT,
-	WindowText              = COLOR_WINDOWTEXT,
-	CaptionText             = COLOR_CAPTIONTEXT,
-	ActiveBorder            = COLOR_ACTIVEBORDER,
-	InactiveBorder          = COLOR_INACTIVEBORDER,
-	AppWorkspace            = COLOR_APPWORKSPACE,
-	HighLight               = COLOR_HIGHLIGHT,
-	HighLightText           = COLOR_HIGHLIGHTTEXT,
-	BtnFace                 = COLOR_BTNFACE,
-	BtnShadow               = COLOR_BTNSHADOW,
-	GrayText                = COLOR_GRAYTEXT,
-	BtnText                 = COLOR_BTNTEXT,
-	InactiveCaptionText     = COLOR_INACTIVECAPTIONTEXT,
-	BtnHighlight            = COLOR_BTNHIGHLIGHT,
-	DkShadow3D              = COLOR_3DDKSHADOW,
-	Light3D                 = COLOR_3DLIGHT,
-	InfoText                = COLOR_INFOTEXT,
-	InfoBk                  = COLOR_INFOBK,
-	HotLight                = COLOR_HOTLIGHT,
-	GradientActiveCaption   = COLOR_GRADIENTACTIVECAPTION,
-	GradientInactiveCaption = COLOR_GRADIENTINACTIVECAPTION,
-	MenuHiLight             = COLOR_MENUHILIGHT,
-	MenuBar                 = COLOR_MENUBAR);
-enum_class(HatchStyles, int,
-	Horizontal              = HS_HORIZONTAL,    /* ----- */
-	Vertical                = HS_VERTICAL,      /* ||||| */
-	FDiagonal               = HS_FDIAGONAL,     /* \\\\\ */
-	BDiagonal               = HS_BDIAGONAL,     /* ///// */
-	Cross                   = HS_CROSS,         /* +++++ */
-	DiagCross               = HS_DIAGCROSS      /* xxxxx */);
+enum_class(SysColor                 , IntP                          ,
+		   ScrollBar                = COLOR_SCROLLBAR               ,
+		   Background               = COLOR_BACKGROUND              ,
+		   ActiveCaption            = COLOR_ACTIVECAPTION           ,
+		   InactiveCaption          = COLOR_INACTIVECAPTION         ,
+		   Menu                     = COLOR_MENU                    ,
+		   Window                   = COLOR_WINDOW                  ,
+		   WindowFrame              = COLOR_WINDOWFRAME             ,
+		   MenuText                 = COLOR_MENUTEXT                ,
+		   WindowText               = COLOR_WINDOWTEXT              ,
+		   CaptionText              = COLOR_CAPTIONTEXT             ,
+		   ActiveBorder             = COLOR_ACTIVEBORDER            ,
+		   InactiveBorder           = COLOR_INACTIVEBORDER          ,
+		   AppWorkspace             = COLOR_APPWORKSPACE            ,
+		   HighLight                = COLOR_HIGHLIGHT               ,
+		   HighLightText            = COLOR_HIGHLIGHTTEXT           ,
+		   BtnFace                  = COLOR_BTNFACE                 ,
+		   BtnShadow                = COLOR_BTNSHADOW               ,
+		   GrayText                 = COLOR_GRAYTEXT                ,
+		   BtnText                  = COLOR_BTNTEXT                 ,
+		   InactiveCaptionText      = COLOR_INACTIVECAPTIONTEXT     ,
+		   BtnHighlight             = COLOR_BTNHIGHLIGHT            ,
+		   DkShadow3D               = COLOR_3DDKSHADOW              ,
+		   Light3D                  = COLOR_3DLIGHT                 ,
+		   InfoText                 = COLOR_INFOTEXT                ,
+		   InfoBk                   = COLOR_INFOBK                  ,
+		   HotLight                 = COLOR_HOTLIGHT                ,
+		   GradientActiveCaption    = COLOR_GRADIENTACTIVECAPTION   ,
+		   GradientInactiveCaption  = COLOR_GRADIENTINACTIVECAPTION ,
+		   MenuHiLight              = COLOR_MENUHILIGHT             ,
+		   MenuBar                  = COLOR_MENUBAR                 );
+enum_class(HatchStyles , int           ,
+		   Horizontal  = HS_HORIZONTAL ,   /* ----- */
+		   Vertical    = HS_VERTICAL   ,   /* ||||| */
+		   FDiagonal   = HS_FDIAGONAL  ,   /* \\\\\ */
+		   BDiagonal   = HS_BDIAGONAL  ,   /* ///// */
+		   Cross       = HS_CROSS      ,   /* +++++ */
+		   DiagCross   = HS_DIAGCROSS  );  /* xxxxx */
 class BaseOf_GDI(Brush, HBRUSH) {
 public:
 	using Super = GObjectBase<Brush, HBRUSH>;
@@ -1642,14 +1642,14 @@ using CPalette = ProxyView<Palette>;
 #pragma endregion
 
 #pragma region Region
-enum_class(PolyFillModes, int,
-	Default   = 0,
-	Alternate = ALTERNATE,
-	Winding   = WINDING);
-enum_class(BkModes, int,
-	Default     = 0,
-	Transparent = TRANSPARENT,
-	Opaque      = OPAQUE);
+enum_class(PolyFillModes , int         ,
+		   Default       = 0           ,
+		   Alternate     = ALTERNATE   ,
+		   Winding       = WINDING     );
+enum_class(BkModes       , int         ,
+		   Default       = 0           ,
+		   Transparent   = TRANSPARENT ,
+		   Opaque        = OPAQUE      );
 class BaseOf_GDI(Region, HRGN) {
 public:
 	using Super = GObjectBase<Region, HRGN>;
@@ -1722,96 +1722,91 @@ using CMetaFile = ProxyView<MetaFile>;
 #pragma region DevCap
 
 #pragma region ColorSpace
-enum_class(MapModes, int,
-	Text           = MM_TEXT,
-	LoMetric       = MM_LOMETRIC,
-	HiMetric       = MM_HIMETRIC,
-	LoEnglish      = MM_LOENGLISH,
-	HiEnglish      = MM_HIENGLISH,
-	Twips          = MM_TWIPS,
-	Isotropic      = MM_ISOTROPIC,
-	Anisotropic    = MM_ANISOTROPIC);
-enum_flags(Rop, DWORD,
-	SrcCopy        = SRCCOPY,     /* dest = source                   */
-	SrcPaint       = SRCPAINT,    /* dest = source OR dest           */
-	SrcAnd         = SRCAND,      /* dest = source AND dest          */
-	SrcInvert      = SRCINVERT,   /* dest = source XOR dest          */
-	SrcErase       = SRCERASE,    /* dest = source AND (NOT dest )   */
-	SrcCopyNot     = NOTSRCCOPY,  /* dest = (NOT source)             */
-	SrcEraseNot    = NOTSRCERASE, /* dest = (NOT src) AND (NOT dest) */
-	MergeCopy      = MERGECOPY,   /* dest = (source AND pattern)     */
-	MergePaint     = MERGEPAINT,  /* dest = (NOT source) OR dest     */
-	PatCopy        = PATCOPY,     /* dest = pattern                  */
-	PatPaint       = PATPAINT,    /* dest = DPSnoo                   */
-	PatInvert      = PATINVERT,   /* dest = pattern XOR dest         */
-	DstInvert      = DSTINVERT,   /* dest = (NOT dest)               */
-	Blackness      = BLACKNESS,   /* dest = BLACK                    */
-	Whiteness      = WHITENESS,   /* dest = WHITE                    */
-	NoMirrorBitmap = NOMIRRORBITMAP,  /* Do not Mirror the bitmap in this call */
-	CaptureBlt     = CAPTUREBLT       /* Include layered windows */);
-enum_flags(Rop2, int,
-	Black          = R2_BLACK,
-	NotMergePen    = R2_NOTMERGEPEN,
-	MaskNotPen     = R2_MASKNOTPEN,
-	NotCopyPen     = R2_NOTCOPYPEN,
-	MaskPenNot     = R2_MASKPENNOT,
-	Not            = R2_NOT,
-	XorPen         = R2_XORPEN,
-	NotMaskPen     = R2_NOTMASKPEN,
-	MaskPen        = R2_MASKPEN,
-	NotXorPen      = R2_NOTXORPEN,
-	Nop            = R2_NOP,
-	MergeNotPen    = R2_MERGENOTPEN,
-	CopyPen        = R2_COPYPEN,
-	MergePenNot    = R2_MERGEPENNOT,
-	MergePen       = R2_MERGEPEN,
-	White          = R2_WHITE);
-enum_class(StretcheModes, int,
-	And            = BLACKONWHITE,
-	Or             = WHITEONBLACK,
-	Del            = COLORONCOLOR,
-	Half           = HALFTONE);
-enum_flags(TextAlign, UINT, 
-	NoUpDateCP     = TA_NOUPDATECP,
-	UpDateCP       = TA_UPDATECP,
-	Left           = TA_LEFT,
-	Right          = TA_RIGHT,
-	Center         = TA_CENTER,
-	Top            = TA_TOP,
-	Bottom         = TA_BOTTOM,
-	Baseline       = TA_BASELINE,
-	RTLReading     = TA_RTLREADING);
-enum_flags(Illuminants, WORD,
-	Default        = ILLUMINANT_DEVICE_DEFAULT,
-	A              = ILLUMINANT_A,
-	B              = ILLUMINANT_B,
-	C              = ILLUMINANT_C,
-	D50            = ILLUMINANT_D50,
-	D55            = ILLUMINANT_D55,
-	D65            = ILLUMINANT_D65,
-	D75            = ILLUMINANT_D75,
-	F2             = ILLUMINANT_F2,
-	Tungsten       = ILLUMINANT_TUNGSTEN,
-	DayLight       = ILLUMINANT_DAYLIGHT,
-	Fluorescent    = ILLUMINANT_FLUORESCENT,
-	NTSC           = ILLUMINANT_NTSC);
-class ColorAdjustment : public StructShim<COLORADJUSTMENT> {
-public:
-	using Super = StructShim<COLORADJUSTMENT>;
-public:
+enum_class(MapModes       , int            ,
+		   Text           = MM_TEXT        ,
+		   LoMetric       = MM_LOMETRIC    ,
+		   HiMetric       = MM_HIMETRIC    ,
+		   LoEnglish      = MM_LOENGLISH   ,
+		   HiEnglish      = MM_HIENGLISH   ,
+		   Twips          = MM_TWIPS       ,
+		   Isotropic      = MM_ISOTROPIC   ,
+		   Anisotropic    = MM_ANISOTROPIC );
+enum_flags(Rop            , DWORD          ,
+		   SrcCopy        = SRCCOPY        ,  /* dest = source                   */
+		   SrcPaint       = SRCPAINT       ,  /* dest = source OR dest           */
+		   SrcAnd         = SRCAND         ,  /* dest = source AND dest          */
+		   SrcInvert      = SRCINVERT      ,  /* dest = source XOR dest          */
+		   SrcErase       = SRCERASE       ,  /* dest = source AND (NOT dest )   */
+		   SrcCopyNot     = NOTSRCCOPY     ,  /* dest = (NOT source)             */
+		   SrcEraseNot    = NOTSRCERASE    ,  /* dest = (NOT src) AND (NOT dest) */
+		   MergeCopy      = MERGECOPY      ,  /* dest = (source AND pattern)     */
+		   MergePaint     = MERGEPAINT     ,  /* dest = (NOT source) OR dest     */
+		   PatCopy        = PATCOPY        ,  /* dest = pattern                  */
+		   PatPaint       = PATPAINT       ,  /* dest = DPSnoo                   */
+		   PatInvert      = PATINVERT      ,  /* dest = pattern XOR dest         */
+		   DstInvert      = DSTINVERT      ,  /* dest = (NOT dest)               */
+		   Blackness      = BLACKNESS      ,  /* dest = BLACK                    */
+		   Whiteness      = WHITENESS      ,  /* dest = WHITE                    */
+		   NoMirrorBitmap = NOMIRRORBITMAP ,  /* Do not Mirror the bitmap in this call */
+		   CaptureBlt     = CAPTUREBLT     ); /* Include layered windows              */
+enum_flags(Rop2           , int            ,
+		   Black          = R2_BLACK       ,
+		   NotMergePen    = R2_NOTMERGEPEN ,
+		   MaskNotPen     = R2_MASKNOTPEN  ,
+		   NotCopyPen     = R2_NOTCOPYPEN  ,
+		   MaskPenNot     = R2_MASKPENNOT  ,
+		   Not            = R2_NOT         ,
+		   XorPen         = R2_XORPEN      ,
+		   NotMaskPen     = R2_NOTMASKPEN  ,
+		   MaskPen        = R2_MASKPEN     ,
+		   NotXorPen      = R2_NOTXORPEN   ,
+		   Nop            = R2_NOP         ,
+		   MergeNotPen    = R2_MERGENOTPEN ,
+		   CopyPen        = R2_COPYPEN     ,
+		   MergePenNot    = R2_MERGEPENNOT ,
+		   MergePen       = R2_MERGEPEN    ,
+		   White          = R2_WHITE       );
+enum_class(StretcheModes  , int            ,
+		   And            = BLACKONWHITE   ,
+		   Or             = WHITEONBLACK   ,
+		   Del            = COLORONCOLOR   ,
+		   Half           = HALFTONE       );
+enum_flags(TextAlign      , UINT           , 
+		   NoUpDateCP     = TA_NOUPDATECP  ,
+		   UpDateCP       = TA_UPDATECP    ,
+		   Left           = TA_LEFT        ,
+		   Right          = TA_RIGHT       ,
+		   Center         = TA_CENTER      ,
+		   Top            = TA_TOP         ,
+		   Bottom         = TA_BOTTOM      ,
+		   Baseline       = TA_BASELINE    ,
+		   RTLReading     = TA_RTLREADING  );
+enum_flags(Illuminants    , WORD                      ,
+		   Default        = ILLUMINANT_DEVICE_DEFAULT ,
+		   A              = ILLUMINANT_A              ,
+		   B              = ILLUMINANT_B              ,
+		   C              = ILLUMINANT_C              ,
+		   D50            = ILLUMINANT_D50            ,
+		   D55            = ILLUMINANT_D55            ,
+		   D65            = ILLUMINANT_D65            ,
+		   D75            = ILLUMINANT_D75            ,
+		   F2             = ILLUMINANT_F2             ,
+		   Tungsten       = ILLUMINANT_TUNGSTEN       ,
+		   DayLight       = ILLUMINANT_DAYLIGHT       ,
+		   Fluorescent    = ILLUMINANT_FLUORESCENT    ,
+		   NTSC           = ILLUMINANT_NTSC           );
+proxy_struct       (ColorAdjustment , COLORADJUSTMENT                  ) {
 	ColorAdjustment() ret_to(self->caSize = sizeof(COLORADJUSTMENT));
-	ColorAdjustment(const COLORADJUSTMENT &ca) : Super(ca) {}
-proxy_prop_sync(Illuminant,caIlluminantIndex,Illuminants);
-	proxy_prop_sync(RedGamma,caRedGamma,WORD);
-	proxy_prop_sync(GreenGamma,caGreenGamma,WORD);
-	proxy_prop_sync(BlueGamma,caBlueGamma,WORD);
-	proxy_prop_sync(ReferenceBlack,caReferenceBlack,WORD);
-	proxy_prop_sync(ReferenceWhite,caReferenceWhite,WORD);
-	proxy_prop_sync(Contrast,caContrast,SHORT);
-	proxy_prop_sync(Brightness,caBrightness,SHORT);
-	proxy_prop_sync(Colorfulness,caColorfulness,SHORT);
-	proxy_prop_sync(RedGreenTint,caRedGreenTint,SHORT);
-};
+	proxy_prop_sync(Illuminant      , caIlluminantIndex  , Illuminants );
+	proxy_prop_sync(RedGamma        , caRedGamma         , WORD        );
+	proxy_prop_sync(GreenGamma      , caGreenGamma       , WORD        );
+	proxy_prop_sync(BlueGamma       , caBlueGamma        , WORD        );
+	proxy_prop_sync(ReferenceBlack  , caReferenceBlack   , WORD        );
+	proxy_prop_sync(ReferenceWhite  , caReferenceWhite   , WORD        );
+	proxy_prop_sync(Contrast        , caContrast         , SHORT       );
+	proxy_prop_sync(Brightness      , caBrightness       , SHORT       );
+	proxy_prop_sync(Colorfulness    , caColorfulness     , SHORT       );
+	proxy_prop_sync(RedGreenTint    , caRedGreenTint     , SHORT       );};
 class RGBIndex : public StructShim<CIEXYZ> {
 public:
 	using Super = StructShim<CIEXYZ>;

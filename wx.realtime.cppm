@@ -10,57 +10,27 @@ import wx.win32;
 #pragma region Win32 Prototype Includes
 namespace WX {
 
+constexpr auto ThisFile = LiString("wx.realtimec");
+
 #pragma region ProcessEnv.h
 #undef SetEnvironmentStrings
-// from WinBase.h
-inline void SetEnvironmentStrings(LPSTR lpszEnvironmentBlock)
-	safe_ret_as(::SetEnvironmentStringsA(lpszEnvironmentBlock));
-inline void SetEnvironmentStrings(LPWSTR lpszEnvironmentBlock)
-	safe_ret_as(::SetEnvironmentStringsW(lpszEnvironmentBlock));
+wapi_reflect_bool_WAO(SetEnvironmentStrings); // SetEnvironmentStringsA from WinBase.h
 #undef GetCommandLine
-template<bool IsUnicode = WX::IsUnicode>
-inline auto GetCommandLine() {
-	if_c (IsUnicode)
-		 safe_ret_as(auto p = ::GetCommandLineW(), p)
-	else safe_ret_as(auto p = ::GetCommandLineA(), p)
-}
+wapi_reflect_bool_WAT(GetCommandLine);
 #undef GetEnvironmentStrings
-template<bool IsUnicode = WX::IsUnicode>
-inline auto GetEnvironmentStrings() {
-	if_c (IsUnicode)
-		 safe_ret_as(auto p = ::GetEnvironmentStringsW(), p)
-	else safe_ret_as(auto p = ::GetEnvironmentStringsA(), p)
-}
+//wapi_reflect_bool_WAT(GetEnvironmentStrings);
 #undef FreeEnvironmentStrings
-inline void FreeEnvironmentStrings(LPCH lpszEnvironmentBlock)
-	safe_ret_as(::FreeEnvironmentStringsA(lpszEnvironmentBlock));
-inline void FreeEnvironmentStrings(LPWCH lpszEnvironmentBlock)
-	safe_ret_as(::FreeEnvironmentStringsW(lpszEnvironmentBlock));
+wapi_reflect_bool_WAO(FreeEnvironmentStrings);
 #undef GetEnvironmentVariable
-inline DWORD GetEnvironmentVariable(LPCSTR lpName, LPSTR lpBuffer, DWORD nSize)
-	safe_ret_as(auto n = ::GetEnvironmentVariableA(lpName, lpBuffer, nSize); n > 0, n);
-inline DWORD GetEnvironmentVariable(LPCWSTR lpName, LPWSTR lpBuffer, DWORD nSize)
-	safe_ret_as(auto n = ::GetEnvironmentVariableW(lpName, lpBuffer, nSize), n);
+wapi_reflect_bool_WAO(GetEnvironmentVariable, DWORD);
 #undef SetEnvironmentVariable
-inline void SetEnvironmentVariable(LPCSTR lpName, LPCSTR lpValue)
-	safe_ret_as(::SetEnvironmentVariableA(lpName, lpValue));
-inline void SetEnvironmentVariable(LPCWSTR lpName, LPCWSTR lpValue)
-	safe_ret_as(::SetEnvironmentVariableW(lpName, lpValue));
+wapi_reflect_bool_WAO(SetEnvironmentVariable);
 #undef ExpandEnvironmentStrings
-inline DWORD ExpandEnvironmentStrings(LPCSTR lpSrc, LPSTR lpDst, DWORD nSize)
-	safe_ret_as(auto n = ::ExpandEnvironmentStringsA(lpSrc, lpDst, nSize); n > 0, n);
-inline DWORD ExpandEnvironmentStrings(LPCWSTR lpSrc, LPWSTR lpDst, DWORD nSize)
-	safe_ret_as(auto n = ::ExpandEnvironmentStringsW(lpSrc, lpDst, nSize), n);
-// SetCurrentDirectory
-inline void SetCurrentDirectory(LPCSTR lpPathName) 
-	safe_ret_as(::SetCurrentDirectoryA(lpPathName));
-inline void SetCurrentDirectory(LPCWSTR lpPathName) 
-	safe_ret_as(::SetCurrentDirectoryW(lpPathName));
+wapi_reflect_bool_WAO(ExpandEnvironmentStrings, DWORD);
+#undef SetCurrentDirectory
+wapi_reflect_bool_WAO(SetCurrentDirectory);
 #undef GetCurrentDirectory
-inline DWORD GetCurrentDirectory(DWORD nBufferLength, LPSTR lpBuffer)
-	safe_ret_as(auto n = ::GetCurrentDirectoryA(nBufferLength, lpBuffer); n > 0, n);
-inline DWORD  GetCurrentDirectory(DWORD nBufferLength, LPWSTR lpBuffer)
-	safe_ret_as(auto n = ::GetCurrentDirectoryW(nBufferLength, lpBuffer), n);
+wapi_reflect_bool_WAO(GetCurrentDirectory, DWORD);
 //#undef SearchPath
 //inline DWORD SearchPath(LPCSTR lpPath, LPCSTR lpFileName, LPCSTR lpExtension,
 //						DWORD nBufferLength, LPSTR lpBuffer, LPSTR *lpFilePart);
@@ -71,25 +41,15 @@ inline DWORD  GetCurrentDirectory(DWORD nBufferLength, LPWSTR lpBuffer)
 //	safe_ret_as(::SearchPathW(lpPath, lpFileName, lpExtension, nBufferLength,
 //									 lpBuffer, lpFilePart));
 #undef NeedCurrentDirectoryForExePath
-inline void NeedCurrentDirectoryForExePath(LPCSTR ExeName)
-	safe_ret_as(NeedCurrentDirectoryForExePathA(ExeName));
-inline void NeedCurrentDirectoryForExePath(LPCWSTR ExeName)
-	safe_ret_as(NeedCurrentDirectoryForExePathW(ExeName));
+wapi_reflect_bool_WAO(NeedCurrentDirectoryForExePath);
 #pragma endregion
 
 #pragma region ProcessThreadsApi.h
-// QueueUserAPC
-inline void QueueUserAPC(PAPCFUNC pfnAPC, HANDLE hThread, ULONG_PTR dwData)
-	safe_ret_as(::QueueUserAPC(pfnAPC, hThread, dwData));
+wapi_reflect_bool(QueueUserAPC);
 #if (NTDDI_VERSION >= NTDDI_WIN10_MN)
-// QueueUserAPC2
-inline void QueueUserAPC2(PAPCFUNC pfnAPC, HANDLE hThread, ULONG_PTR dwData, QUEUE_USER_APC_FLAGS Flags)
-	safe_ret_as(::QueueUserAPC2(pfnAPC, hThread, dwData, Flags));
+wapi_reflect_bool(QueueUserAPC2);
 #endif
-// GetProcessTimes
-inline void GetProcessTimes(HANDLE hProcess, LPFILETIME lpCreationTime, LPFILETIME lpExitTime,
-							LPFILETIME lpKernelTime, LPFILETIME lpUserTime)
-	safe_ret_as(::GetProcessTimes(hProcess, lpCreationTime, lpExitTime, lpKernelTime, lpUserTime));
+wapi_reflect_bool(GetProcessTimes);
 // GetCurrentProcess
 inline HANDLE GetCurrentProcess()
 	ret_as(::GetCurrentProcess());
@@ -99,55 +59,28 @@ inline DWORD GetCurrentProcessId()
 // ExitProcess
 inline void ExitProcess(UINT uExitCode)
 	ret_to(::ExitProcess(uExitCode));
-// TerminateProcess
-inline void TerminateProcess(HANDLE hProcess, UINT uExitCode)
-	safe_ret_as(::TerminateProcess(hProcess, uExitCode));
-// GetExitCodeProcess
-inline void GetExitCodeProcess(HANDLE hProcess, LPDWORD lpExitCode)
-	safe_ret_as(::GetExitCodeProcess(hProcess, lpExitCode));
-// SwitchToThread
-inline void SwitchToThread()
-	safe_ret_as(::SwitchToThread());
-// CreateThread
-inline HANDLE CreateThread(LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T dwStackSize,
-						   LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter, DWORD dwCreationFlags,
-						   LPDWORD lpThreadId)
-	safe_ret_as(auto h = ::CreateThread(lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId), h);
-// CreateRemoteThread
-inline HANDLE CreateRemoteThread(HANDLE hProcess, LPSECURITY_ATTRIBUTES lpThreadAttributes,
-								 SIZE_T dwStackSize, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter,
-								 DWORD dwCreationFlags, LPDWORD lpThreadId)
-	safe_ret_as(auto h = ::CreateRemoteThread(hProcess, lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId), h);
+wapi_reflect_bool(TerminateProcess);
+wapi_reflect_bool(GetExitCodeProcess);
+wapi_reflect_bool(SwitchToThread);
+wapi_reflect_bool(CreateThread, HANDLE);
+wapi_reflect_bool(CreateRemoteThread, HANDLE);
 // GetCurrentThread
 inline HANDLE GetCurrentThread()
 	ret_as(::GetCurrentThread());
 // GetCurrentThreadId
 inline DWORD GetCurrentThreadId()
 	ret_as(::GetCurrentThreadId());
-// OpenThread
-inline HANDLE OpenThread(DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwThreadId)
-	safe_ret_as(auto h = ::OpenThread(dwDesiredAccess, bInheritHandle, dwThreadId); h != NULL, h);
-// SetThreadPriority
-inline void SetThreadPriority(HANDLE hThread, int nPriority)
-	safe_ret_as(::SetThreadPriority(hThread, nPriority));
-// SetThreadPriorityBoost
-inline void SetThreadPriorityBoost(HANDLE hThread, BOOL bEnable)
-	safe_ret_as(::SetThreadPriorityBoost(hThread, bEnable));
-// GetThreadPriorityBoost
-inline void GetThreadPriorityBoost(HANDLE hThread, PBOOL pEnable)
-	safe_ret_as(::GetThreadPriorityBoost(hThread, pEnable));
-// GetThreadPriority
+wapi_reflect_bool(OpenThread, HANDLE);
+wapi_reflect_bool(SetThreadPriority);
+wapi_reflect_bool(SetThreadPriorityBoost);
+wapi_reflect_bool(GetThreadPriorityBoost);
 inline int GetThreadPriority(HANDLE hThread)
 	safe_ret_as(auto res = ::GetThreadPriority(hThread); res != THREAD_PRIORITY_ERROR_RETURN, res);
 // ExitThread
 inline void ExitThread(DWORD dwExitCode)
 	ret_as(::ExitThread(dwExitCode));
-// TerminateThread
-inline void TerminateThread(HANDLE hThread, DWORD dwExitCode)
-	safe_ret_as(::TerminateThread(hThread, dwExitCode));
-// GetExitCodeThread
-inline void GetExitCodeThread(HANDLE hThread, LPDWORD lpExitCode)
-	safe_ret_as(::GetExitCodeThread(hThread, lpExitCode));
+wapi_reflect_bool(TerminateThread);
+wapi_reflect_bool(GetExitCodeThread);
 // SuspendThread
 inline DWORD SuspendThread(HANDLE hThread)
 	safe_ret_as(auto res = ::SuspendThread(hThread); res >= 0, res);
@@ -157,61 +90,17 @@ inline DWORD ResumeThread(HANDLE hThread)
 // TlsAlloc
 inline DWORD TlsAlloc()
 	safe_ret_as(auto n = ::TlsAlloc(); n != TLS_OUT_OF_INDEXES, n);
-// TlsGetValue
-inline LPVOID TlsGetValue(DWORD dwTlsIndex)
-	ret_safe_to(auto p = ::TlsGetValue(dwTlsIndex), p);
-// TlsSetValue
-inline void TlsSetValue(DWORD dwTlsIndex, LPVOID lpTlsValue)
-	safe_ret_as(::TlsSetValue(dwTlsIndex, lpTlsValue));
-// TlsFree
-inline void TlsFree(DWORD dwTlsIndex)
-	safe_ret_as(::TlsFree(dwTlsIndex));
+wapi_reflect_bool(TlsGetValue, LPVOID);
+wapi_reflect_bool(TlsSetValue);
+wapi_reflect_bool(TlsFree);
 #undef CreateProcess
-inline void CreateProcess(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
-						  LPSECURITY_ATTRIBUTES lpThreadAttributes, BOOL bInheritHandles, DWORD dwCreationFlags,
-						  LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
-						  LPPROCESS_INFORMATION lpProcessInformation)
-	safe_ret_as(::CreateProcessA(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes,
-										bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory,
-										lpStartupInfo, lpProcessInformation));
-inline void CreateProcess(LPCWSTR lpApplicationName, LPWSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
-						  LPSECURITY_ATTRIBUTES lpThreadAttributes, BOOL bInheritHandles, DWORD dwCreationFlags,
-						  LPVOID lpEnvironment, LPCWSTR lpCurrentDirectory, LPSTARTUPINFOW lpStartupInfo,
-						  LPPROCESS_INFORMATION lpProcessInformation)
-	safe_ret_as(::CreateProcessW(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes,
-										bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory,
-										lpStartupInfo, lpProcessInformation));
+wapi_reflect_bool_WAO(CreateProcess);
 #undef GetStartupInfo
-// from WinBase.h
-inline void GetStartupInfo(LPSTARTUPINFOA lpStartupInfo)
-	 ret_as(::GetStartupInfoA(lpStartupInfo));
-inline void GetStartupInfo(LPSTARTUPINFOW lpStartupInfo)
-	 ret_as(::GetStartupInfoW(lpStartupInfo));
-// SetProcessShutdownParameters
-inline void SetProcessShutdownParameters(DWORD dwLevel, DWORD dwFlags)
-	safe_ret_as(::SetProcessShutdownParameters(dwLevel, dwFlags));
-// GetProcessVersion
-inline DWORD GetProcessVersion(DWORD ProcessId)
-	safe_ret_as(auto n = ::GetProcessVersion(ProcessId), n);
+// wapi_reflect_bool_WAO(GetStartupInfo); // GetStartupInfoA from WinBase.h
+wapi_reflect_bool(SetProcessShutdownParameters);
+wapi_reflect_bool(GetProcessVersion, DWORD);
 #undef CreateProcessAsUser
-inline void CreateProcessAsUser(HANDLE hToken, LPCSTR lpApplicationName, LPSTR lpCommandLine,
-								LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes,
-								BOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment,
-								LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
-								LPPROCESS_INFORMATION lpProcessInformation)
-	safe_ret_as(::CreateProcessAsUserA(hToken, lpApplicationName, lpCommandLine,
-											  lpProcessAttributes, lpThreadAttributes, bInheritHandles,
-											  dwCreationFlags, lpEnvironment, lpCurrentDirectory,
-											  lpStartupInfo, lpProcessInformation));
-inline void CreateProcessAsUser(HANDLE hToken, LPCWSTR lpApplicationName, LPWSTR lpCommandLine,
-								LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes,
-								BOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment,
-								LPCWSTR lpCurrentDirectory, LPSTARTUPINFOW lpStartupInfo,
-								LPPROCESS_INFORMATION lpProcessInformation)
-	safe_ret_as(::CreateProcessAsUserW(hToken, lpApplicationName, lpCommandLine,
-											  lpProcessAttributes, lpThreadAttributes, bInheritHandles,
-											  dwCreationFlags, lpEnvironment, lpCurrentDirectory,
-											  lpStartupInfo, lpProcessInformation));
+wapi_reflect_bool_WAO(CreateProcessAsUser);
 // GetCurrentProcessToken
 inline HANDLE GetCurrentProcessToken()
 	ret_as(::GetCurrentProcessToken());
@@ -221,148 +110,62 @@ inline HANDLE GetCurrentThreadToken()
 // GetCurrentThreadEffectiveToken
 inline HANDLE GetCurrentThreadEffectiveToken()
 	ret_as(::GetCurrentThreadEffectiveToken());
-// SetThreadToken
-inline void SetThreadToken(PHANDLE ThreadToken, HANDLE hToken)
-	safe_ret_as(::SetThreadToken(ThreadToken, hToken));
-// OpenProcessToken
-inline void OpenProcessToken(HANDLE hProcess, DWORD dwDesiredAccess, PHANDLE lpToken)
-	safe_ret_as(::OpenProcessToken(hProcess, dwDesiredAccess, lpToken));
-// OpenThreadToken
-inline void OpenThreadToken(HANDLE hThread, DWORD dwDesiredAccess, BOOL bOpenAsSelf, PHANDLE lpToken)
-	safe_ret_as(::OpenThreadToken(hThread, dwDesiredAccess, bOpenAsSelf, lpToken));
-// SetPriorityClass
-inline void SetPriorityClass(HANDLE hProcess, DWORD dwPriorityClass)
-	safe_ret_as(::SetPriorityClass(hProcess, dwPriorityClass));
-// GetPriorityClass
-inline DWORD GetPriorityClass(HANDLE hProcess)
-	safe_ret_as(auto res = ::GetPriorityClass(hProcess), res);
-// SetThreadStackGuarantee
-inline void SetThreadStackGuarantee(PULONG StackSizeInBytes)
-	safe_ret_as(::SetThreadStackGuarantee(StackSizeInBytes));
-// ProcessIdToSessionId
-inline void ProcessIdToSessionId(DWORD dwProcessId, DWORD* pSessionId)
-	safe_ret_as(::ProcessIdToSessionId(dwProcessId, pSessionId));
-// GetProcessId
-inline DWORD GetProcessId(HANDLE hProcess)
-	safe_ret_as(auto res = ::GetProcessId(hProcess), res);
-// GetThreadId
-inline DWORD GetThreadId(HANDLE hThread)
-	safe_ret_as(auto res = ::GetThreadId(hThread), res);
-// FlushProcessWriteBuffers
-inline void FlushProcessWriteBuffers()
-	ret_as(::FlushProcessWriteBuffers());
-// GetProcessIdOfThread
-inline DWORD GetProcessIdOfThread(HANDLE hThread)
-	safe_ret_as(auto res = ::GetProcessIdOfThread(hThread); res != 0, res);
-// InitializeProcThreadAttributeList
-inline void InitializeProcThreadAttributeList(LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList, DWORD dwAttributeCount, DWORD dwFlags, PSIZE_T lpSize)
-	safe_ret_as(::InitializeProcThreadAttributeList(lpAttributeList, dwAttributeCount, dwFlags, lpSize));
-// DeleteProcThreadAttributeList
-inline void DeleteProcThreadAttributeList(LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList)
-	ret_as(::DeleteProcThreadAttributeList(lpAttributeList));
-// UpdateProcThreadAttribute
-inline void UpdateProcThreadAttribute(LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList, DWORD dwFlags, DWORD_PTR Attribute, PVOID lpValue, SIZE_T cbSize, PVOID lpPreviousValue, PSIZE_T lpReturnSize)
-	safe_ret_as(::UpdateProcThreadAttribute(lpAttributeList, dwFlags, Attribute, lpValue, cbSize, lpPreviousValue, lpReturnSize));
+wapi_reflect_bool(SetThreadToken);
+wapi_reflect_bool(OpenProcessToken);
+wapi_reflect_bool(OpenThreadToken);
+wapi_reflect_bool(SetPriorityClass);
+wapi_reflect_bool(GetPriorityClass, DWORD);
+wapi_reflect_bool(SetThreadStackGuarantee);
+wapi_reflect_bool(ProcessIdToSessionId);
+wapi_reflect_bool(GetProcessId, DWORD);
+wapi_reflect_bool(GetThreadId, DWORD);
+// wapi_reflect_void(FlushProcessWriteBuffers);
+wapi_reflect_bool(GetProcessIdOfThread, DWORD);
+wapi_reflect_bool(InitializeProcThreadAttributeList);
+// wapi_reflect_void(DeleteProcThreadAttributeList);
+wapi_reflect_bool(UpdateProcThreadAttribute);
 #if (NTDDI_VERSION >= NTDDI_WIN10_VB)
-// SetProcessDynamicEHContinuationTargets
-inline void SetProcessDynamicEHContinuationTargets(HANDLE hProcess, USHORT NumberOfTargets, PPROCESS_DYNAMIC_EH_CONTINUATION_TARGET pTargets)
-	safe_ret_as(::SetProcessDynamicEHContinuationTargets(hProcess, NumberOfTargets, pTargets));
+wapi_reflect_bool(SetProcessDynamicEHContinuationTargets);
 #endif
 #if (NTDDI_VERSION >= NTDDI_WIN10_FE)
-// SetProcessDynamicEnforcedCetCompatibleRanges
-inline void SetProcessDynamicEnforcedCetCompatibleRanges(HANDLE hProcess, USHORT NumberOfRanges, PPROCESS_DYNAMIC_ENFORCED_ADDRESS_RANGE pRanges)
-	safe_ret_as(::SetProcessDynamicEnforcedCetCompatibleRanges(hProcess, NumberOfRanges, pRanges));
+wapi_reflect_bool(SetProcessDynamicEnforcedCetCompatibleRanges);
 #endif
-// SetProcessAffinityUpdateMode
-inline void SetProcessAffinityUpdateMode(HANDLE hProcess, DWORD dwFlags)
-	safe_ret_as(::SetProcessAffinityUpdateMode(hProcess, dwFlags));
-// QueryProcessAffinityUpdateMode
-inline void QueryProcessAffinityUpdateMode(HANDLE hProcess, LPDWORD lpdwFlags)
-	safe_ret_as(::QueryProcessAffinityUpdateMode(hProcess, lpdwFlags));
-// CreateRemoteThreadEx
-inline HANDLE CreateRemoteThreadEx(HANDLE hProcess, LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T dwStackSize, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter, DWORD dwCreationFlags, LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList, LPDWORD lpThreadId)
-	safe_ret_as(auto h = ::CreateRemoteThreadEx(hProcess, lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpAttributeList, lpThreadId), h);
-// GetCurrentThreadStackLimits
-inline void GetCurrentThreadStackLimits(PULONG_PTR LowLimit, PULONG_PTR HighLimit)
-	ret_as(::GetCurrentThreadStackLimits(LowLimit, HighLimit));
-// GetThreadContext
-inline void GetThreadContext(HANDLE hThread, LPCONTEXT lpContext)
-	safe_ret_as(::GetThreadContext(hThread, lpContext));
-// GetProcessMitigationPolicy
-inline void GetProcessMitigationPolicy(HANDLE hProcess, PROCESS_MITIGATION_POLICY MitigationPolicy, PVOID lpBuffer, SIZE_T dwLength)
-	safe_ret_as(::GetProcessMitigationPolicy(hProcess, MitigationPolicy, lpBuffer, dwLength));
-// SetThreadContext
-inline void SetThreadContext(HANDLE hThread, const CONTEXT* lpContext)
-	safe_ret_as(::SetThreadContext(hThread, lpContext));
-// SetProcessMitigationPolicy
-inline void SetProcessMitigationPolicy(PROCESS_MITIGATION_POLICY MitigationPolicy, PVOID lpBuffer, SIZE_T dwLength)
-	safe_ret_as(::SetProcessMitigationPolicy(MitigationPolicy, lpBuffer, dwLength));
-// FlushInstructionCache
-inline void FlushInstructionCache(HANDLE hProcess, LPCVOID lpBaseAddress, SIZE_T dwSize)
-	safe_ret_as(::FlushInstructionCache(hProcess, lpBaseAddress, dwSize));
-// GetThreadTimes
-inline void GetThreadTimes(HANDLE hThread, LPFILETIME lpCreationTime, LPFILETIME lpExitTime, LPFILETIME lpKernelTime, LPFILETIME lpUserTime)
-	safe_ret_as(::GetThreadTimes(hThread, lpCreationTime, lpExitTime, lpKernelTime, lpUserTime));
-// OpenProcess
-inline HANDLE OpenProcess(DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwProcessId)
-	safe_ret_as(auto h = ::OpenProcess(dwDesiredAccess, bInheritHandle, dwProcessId), h);
+wapi_reflect_bool(SetProcessAffinityUpdateMode);
+wapi_reflect_bool(QueryProcessAffinityUpdateMode);
+wapi_reflect_bool(CreateRemoteThreadEx, HANDLE);
+// wapi_reflect_void(GetCurrentThreadStackLimits);
+wapi_reflect_bool(GetThreadContext);
+wapi_reflect_bool(GetProcessMitigationPolicy);
+wapi_reflect_bool(SetThreadContext);
+wapi_reflect_bool(SetProcessMitigationPolicy);
+wapi_reflect_bool(FlushInstructionCache);
+wapi_reflect_bool(GetThreadTimes);
+wapi_reflect_bool(OpenProcess, HANDLE);
 // IsProcessorFeaturePresent
 inline bool IsProcessorFeaturePresent(DWORD ProcessorFeature)
 	ret_as(::IsProcessorFeaturePresent(ProcessorFeature));
-// GetProcessHandleCount
-inline void GetProcessHandleCount(HANDLE hProcess, PDWORD pdwHandleCount)
-	safe_ret_as(::GetProcessHandleCount(hProcess, pdwHandleCount));
+wapi_reflect_bool(GetProcessHandleCount);
 // GetCurrentProcessorNumber
 inline DWORD GetCurrentProcessorNumber()
 	ret_as(::GetCurrentProcessorNumber());
-// SetThreadIdealProcessorEx
-inline void SetThreadIdealProcessorEx(HANDLE hThread, PPROCESSOR_NUMBER lpIdealProcessor, PPROCESSOR_NUMBER lpPreviousProcessor)
-	safe_ret_as(::SetThreadIdealProcessorEx(hThread, lpIdealProcessor, lpPreviousProcessor));
-// GetThreadIdealProcessorEx
-inline void GetThreadIdealProcessorEx(HANDLE hThread, PPROCESSOR_NUMBER lpIdealProcessor)
-	safe_ret_as(::GetThreadIdealProcessorEx(hThread, lpIdealProcessor));
-// GetCurrentProcessorNumberEx
-inline void GetCurrentProcessorNumber(PPROCESSOR_NUMBER lpProcessorNumber)
-	ret_as(::GetCurrentProcessorNumberEx(lpProcessorNumber));
-// GetProcessPriorityBoost
-inline void GetProcessPriorityBoost(HANDLE hProcess, PBOOL pDisablePriorityBoost)
-	safe_ret_as(::GetProcessPriorityBoost(hProcess, pDisablePriorityBoost));
-// SetProcessPriorityBoost
-inline void SetProcessPriorityBoost(HANDLE hProcess, BOOL bDisablePriorityBoost)
-	safe_ret_as(::SetProcessPriorityBoost(hProcess, bDisablePriorityBoost));
-// GetThreadIOPendingFlag
-inline void GetThreadIOPendingFlag(HANDLE hThread, PBOOL lpIOIsPending)
-	safe_ret_as(::GetThreadIOPendingFlag(hThread, lpIOIsPending));
-// GetSystemTimes
-inline void GetSystemTimes(LPFILETIME lpIdleTime, LPFILETIME lpKernelTime, LPFILETIME lpUserTime)
-	safe_ret_as(::GetSystemTimes(lpIdleTime, lpKernelTime, lpUserTime));
-// GetThreadInformation
-inline void GetThreadInformation(HANDLE hThread, THREAD_INFORMATION_CLASS ThreadInformationClass, LPVOID lpThreadInformation, DWORD dwThreadInformationSize)
-	safe_ret_as(::GetThreadInformation(hThread, ThreadInformationClass, lpThreadInformation, dwThreadInformationSize));
-// SetThreadInformation
-inline void SetThreadInformation(HANDLE hThread, THREAD_INFORMATION_CLASS ThreadInformationClass, LPVOID lpThreadInformation, DWORD dwThreadInformationSize)
-	safe_ret_as(::SetThreadInformation(hThread, ThreadInformationClass, lpThreadInformation, dwThreadInformationSize));
-// IsProcessCritical
-inline void IsProcessCritical(HANDLE hProcess, PBOOL Critical)
-	safe_ret_as(::IsProcessCritical(hProcess, Critical));
-// SetProtectedPolicy
-inline void SetProtectedPolicy(LPCGUID PolicyGuid, ULONG_PTR PolicyData, PULONG_PTR OldPolicyValue)
-	safe_ret_as(::SetProtectedPolicy(PolicyGuid, PolicyData, OldPolicyValue));
-// QueryProtectedPolicy
-inline bool QueryProtectedPolicy(LPCGUID PolicyGuid, PULONG_PTR PolicyValue)
-	ret_as(::QueryProtectedPolicy(PolicyGuid, PolicyValue));
+wapi_reflect_bool(SetThreadIdealProcessorEx);
+wapi_reflect_bool(GetThreadIdealProcessorEx);
+// wapi_reflect_void(GetCurrentProcessorNumberEx);
+wapi_reflect_bool(GetProcessPriorityBoost);
+wapi_reflect_bool(SetProcessPriorityBoost);
+wapi_reflect_bool(GetThreadIOPendingFlag);
+wapi_reflect_bool(GetSystemTimes);
+wapi_reflect_bool(GetThreadInformation);
+wapi_reflect_bool(SetThreadInformation);
+wapi_reflect_bool(IsProcessCritical);
+wapi_reflect_bool(SetProtectedPolicy);
+wapi_reflect_bool(QueryProtectedPolicy);
 // SetThreadIdealProcessor
 inline DWORD SetThreadIdealProcessor(HANDLE hThread, DWORD dwIdealProcessor)
 	safe_ret_as(auto res = ::SetThreadIdealProcessor(hThread, dwIdealProcessor); res >= 0, res);
-// SetProcessInformation
-inline void SetProcessInformation(HANDLE hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass, LPVOID lpProcessInformation, DWORD dwProcessInformationSize)
-	safe_ret_as(::SetProcessInformation(hProcess, ProcessInformationClass, lpProcessInformation, dwProcessInformationSize));
-// GetProcessInformation
-inline void GetProcessInformation(HANDLE hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass, LPVOID lpProcessInformation, DWORD dwProcessInformationSize)
-	safe_ret_as(::GetProcessInformation(hProcess, ProcessInformationClass, lpProcessInformation, dwProcessInformationSize));
-// GetProcessShutdownParameters
-inline void GetProcessShutdownParameters(LPDWORD lpdwLevel, LPDWORD lpdwFlags)
-	safe_ret_as(::GetProcessShutdownParameters(lpdwLevel, lpdwFlags));
+wapi_reflect_bool(SetProcessInformation);
+wapi_reflect_bool(GetProcessInformation);
+wapi_reflect_bool(GetProcessShutdownParameters);
 //// SetThreadDescription
 //inline void SetThreadDescription(HANDLE hThread, PCWSTR lpDescription)
 //	safe_ret_as(::SetThreadDescription(hThread, lpDescription));
@@ -406,12 +209,8 @@ inline void EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 // LeaveCriticalSection
 inline void LeaveCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 	ret_to(::LeaveCriticalSection(lpCriticalSection));
-// InitializeCriticalSectionAndSpinCount
-inline void InitializeCriticalSectionAndSpinCount(LPCRITICAL_SECTION lpCriticalSection, DWORD dwSpinCount)
-	safe_ret_as(::InitializeCriticalSectionAndSpinCount(lpCriticalSection, dwSpinCount));
-// InitializeCriticalSectionEx
-inline void InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection, DWORD dwSpinCount, DWORD Flags)
-	safe_ret_as(::InitializeCriticalSectionEx(lpCriticalSection, dwSpinCount, Flags));
+wapi_reflect_bool(InitializeCriticalSectionAndSpinCount);
+wapi_reflect_bool(InitializeCriticalSectionEx);
 // SetCriticalSectionSpinCount
 inline DWORD SetCriticalSectionSpinCount(LPCRITICAL_SECTION lpCriticalSection, DWORD dwSpinCount)
 	ret_as(::SetCriticalSectionSpinCount(lpCriticalSection, dwSpinCount));
@@ -424,15 +223,9 @@ inline void DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 // InitOnceInitialize
 inline void InitOnceInitialize(PINIT_ONCE InitOnce)
 	ret_to(::InitOnceInitialize(InitOnce));
-// InitOnceExecuteOnce
-inline void InitOnceExecuteOnce(PINIT_ONCE InitOnce, PINIT_ONCE_FN InitFn, PVOID Parameter, LPVOID *Context)
-	safe_ret_as(::InitOnceExecuteOnce(InitOnce, InitFn, Parameter, Context));
-// InitOnceBeginInitialize
-inline void InitOnceBeginInitialize(PINIT_ONCE InitOnce, DWORD Flags, PBOOL Pending, LPVOID *Context)
-	safe_ret_as(::InitOnceBeginInitialize(InitOnce, Flags, Pending, Context));
-// InitOnceComplete
-inline void InitOnceComplete(PINIT_ONCE InitOnce, DWORD Flags, LPVOID Context)
-	safe_ret_as(::InitOnceComplete(InitOnce, Flags, Context));
+wapi_reflect_bool(InitOnceExecuteOnce);
+wapi_reflect_bool(InitOnceBeginInitialize);
+wapi_reflect_bool(InitOnceComplete);
 // InitializeConditionVariable
 inline void InitializeConditionVariable(PCONDITION_VARIABLE ConditionVariable)
 	ret_to(::InitializeConditionVariable(ConditionVariable));
@@ -442,12 +235,8 @@ inline void WakeConditionVariable(PCONDITION_VARIABLE ConditionVariable)
 // WakeAllConditionVariable
 inline void WakeAllConditionVariable(PCONDITION_VARIABLE ConditionVariable)
 	ret_to(::WakeAllConditionVariable(ConditionVariable));
-// SleepConditionVariableCS
-inline void SleepConditionVariableCS(PCONDITION_VARIABLE ConditionVariable, PCRITICAL_SECTION CriticalSection, DWORD dwMilliseconds)
-	safe_ret_as(::SleepConditionVariableCS(ConditionVariable, CriticalSection, dwMilliseconds));
-// SleepConditionVariableSRW
-inline void SleepConditionVariableSRW(PCONDITION_VARIABLE ConditionVariable, PSRWLOCK SRWLock, DWORD dwMilliseconds, ULONG Flags)
-	safe_ret_as(::SleepConditionVariableSRW(ConditionVariable, SRWLock, dwMilliseconds, Flags));
+wapi_reflect_bool(SleepConditionVariableCS);
+wapi_reflect_bool(SleepConditionVariableSRW);
 // SetEvent
 inline void SetEvent(HANDLE hEvent)
 	ret_to(::SetEvent(hEvent));
@@ -473,54 +262,21 @@ inline DWORD WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds, BOOL bAle
 inline DWORD WaitForMultipleObjects(DWORD nCount, const HANDLE *lpHandles, BOOL bWaitAll, DWORD dwMilliseconds, BOOL bAlertable)
 	safe_ret_as(auto res = ::WaitForMultipleObjectsEx(nCount, lpHandles, bWaitAll, dwMilliseconds, bAlertable); res != WAIT_FAILED, res);
 #undef CreateMutex
-inline HANDLE CreateMutex(LPSECURITY_ATTRIBUTES lpMutexAttributes, BOOL bInitialOwner, LPCSTR lpName)
-	safe_ret_as(auto h = ::CreateMutexA(lpMutexAttributes, bInitialOwner, lpName), h);
-inline HANDLE CreateMutex(LPSECURITY_ATTRIBUTES lpMutexAttributes, BOOL bInitialOwner, LPCWSTR lpName)
-	safe_ret_as(auto h = ::CreateMutexW(lpMutexAttributes, bInitialOwner, lpName), h);
+wapi_reflect_bool_WAO(CreateMutex);
 #undef OpenMutex
-// from WinBase.h
-inline HANDLE OpenMutex(DWORD dwDesiredAccess, BOOL bInheritHandle, LPCSTR lpName)
-	safe_ret_as(auto h = ::OpenMutexA(dwDesiredAccess, bInheritHandle, lpName), h);
-inline HANDLE OpenMutex(DWORD dwDesiredAccess, BOOL bInheritHandle, LPCWSTR lpName)
-	safe_ret_as(auto h = ::OpenMutexW(dwDesiredAccess, bInheritHandle, lpName), h);
+wapi_reflect_bool_WAO(OpenMutex); // OpenMutexA from WinBase.h
 #undef CreateEvent
-inline HANDLE CreateEvent(LPSECURITY_ATTRIBUTES lpEventAttributes, BOOL bManualReset, BOOL bInitialState, LPCSTR lpName)
-	safe_ret_as(auto h = ::CreateEventA(lpEventAttributes, bManualReset, bInitialState, lpName), h);
-inline HANDLE CreateEvent(LPSECURITY_ATTRIBUTES lpEventAttributes, BOOL bManualReset, BOOL bInitialState, LPCWSTR lpName)
-	safe_ret_as(auto h = ::CreateEventW(lpEventAttributes, bManualReset, bInitialState, lpName), h);
-#undef OpenEvent
-inline HANDLE OpenEvent(DWORD dwDesiredAccess, BOOL bInheritHandle, LPCSTR lpName)
-	safe_ret_as(auto h = ::OpenEventA(dwDesiredAccess, bInheritHandle, lpName), h);
-inline HANDLE OpenEvent(DWORD dwDesiredAccess, BOOL bInheritHandle, LPCWSTR lpName)
-	safe_ret_as(auto h = ::OpenEventW(dwDesiredAccess, bInheritHandle, lpName), h);
+wapi_reflect_bool_WAO(CreateEvent);
 #undef OpenSemaphore
-// from WinBase.h
-inline HANDLE OpenSemaphore(DWORD dwDesiredAccess, BOOL bInheritHandle, LPCSTR lpName)
-	safe_ret_as(auto h = ::OpenSemaphoreA(dwDesiredAccess, bInheritHandle, lpName), h);
-inline HANDLE OpenSemaphore(DWORD dwDesiredAccess, BOOL bInheritHandle, LPCWSTR lpName)
-	safe_ret_as(auto h = ::OpenSemaphoreW(dwDesiredAccess, bInheritHandle, lpName), h);
+wapi_reflect_bool_WAO(OpenSemaphore); // OpenSemaphoreA from WinBase.h
 #undef OpenWaitableTimer
-// from WinBase.h
-inline HANDLE OpenWaitableTimer(DWORD dwDesiredAccess, BOOL bInheritHandle, LPCSTR lpTimerName)
-	safe_ret_as(auto h = ::OpenWaitableTimerA(dwDesiredAccess, bInheritHandle, lpTimerName), h);
-inline HANDLE OpenWaitableTimer(DWORD dwDesiredAccess, BOOL bInheritHandle, LPCWSTR lpTimerName)
-	safe_ret_as(auto h = ::OpenWaitableTimerW(dwDesiredAccess, bInheritHandle, lpTimerName), h);
-// SetWaitableTimer
-inline void SetWaitableTimer(HANDLE hTimer, const LARGE_INTEGER *lpDueTime, LONG lPeriod, PTIMERAPCROUTINE pfnCompletionRoutine, LPVOID lpArgToCompletionRoutine, BOOL fResume)
-	safe_ret_as(::SetWaitableTimer(hTimer, lpDueTime, lPeriod, pfnCompletionRoutine, lpArgToCompletionRoutine, fResume));
-// CancelWaitableTimer
-inline void CancelWaitableTimer(HANDLE hTimer)
-	safe_ret_as(::CancelWaitableTimer(hTimer));
+wapi_reflect_bool_WAO(OpenWaitableTimer); // OpenWaitableTimerA from WinBase.h
+wapi_reflect_bool(SetWaitableTimer);
+wapi_reflect_bool(CancelWaitableTimer);
 #undef CreateMutexEx
-inline HANDLE CreateMutex(LPSECURITY_ATTRIBUTES lpMutexAttributes, LPCSTR lpName, DWORD dwFlags, DWORD dwDesiredAccess)
-	safe_ret_as(auto h = ::CreateMutexExA(lpMutexAttributes, lpName, dwFlags, dwDesiredAccess), h);
-inline HANDLE CreateMutex(LPSECURITY_ATTRIBUTES lpMutexAttributes, LPCWSTR lpName, DWORD dwFlags, DWORD dwDesiredAccess)
-	safe_ret_as(auto h = ::CreateMutexExW(lpMutexAttributes, lpName, dwFlags, dwDesiredAccess), h);
+wapi_reflect_bool_WAO(CreateMutexEx, HANDLE);
 #undef CreateEventEx
-inline HANDLE CreateEvent(LPSECURITY_ATTRIBUTES lpEventAttributes, LPCSTR lpName, DWORD dwFlags, DWORD dwDesiredAccess)
-	safe_ret_as(auto h = ::CreateEventExA(lpEventAttributes, lpName, dwFlags, dwDesiredAccess), h);
-inline HANDLE CreateEvent(LPSECURITY_ATTRIBUTES lpEventAttributes, LPCWSTR lpName, DWORD dwFlags, DWORD dwDesiredAccess)
-	safe_ret_as(auto h = ::CreateEventExW(lpEventAttributes, lpName, dwFlags, dwDesiredAccess), h);
+wapi_reflect_bool_WAO(CreateEventEx, HANDLE);
 // Sleep
 inline void Sleep(DWORD dwMilliseconds)
 	ret_to(::Sleep(dwMilliseconds));
@@ -531,38 +287,19 @@ inline DWORD SignalObjectAndWait(HANDLE hObjectToSignal, HANDLE hObjectToWaitOn,
 inline DWORD WaitForMultipleObjects(DWORD nCount, const HANDLE *lpHandles, BOOL bWaitAll, DWORD dwMilliseconds)
 	safe_ret_as(auto res = ::WaitForMultipleObjects(nCount, lpHandles, bWaitAll, dwMilliseconds); res != WAIT_FAILED, res);
 #undef CreateSemaphore
-// from WinBase.h
-inline HANDLE CreateSemaphore(LPSECURITY_ATTRIBUTES lpSemaphoreAttributes, LONG lInitialCount, LONG lMaximumCount, LPCSTR lpName)
-	safe_ret_as(auto h = ::CreateSemaphoreA(lpSemaphoreAttributes, lInitialCount, lMaximumCount, lpName), h);
-inline HANDLE CreateSemaphore(LPSECURITY_ATTRIBUTES lpSemaphoreAttributes, LONG lInitialCount, LONG lMaximumCount, LPCWSTR lpName)
-	safe_ret_as(auto h = ::CreateSemaphoreW(lpSemaphoreAttributes, lInitialCount, lMaximumCount, lpName), h);	
+wapi_reflect_bool_WAO(CreateSemaphore); // CreateSemaphoreA from WinBase.h
 #undef CreateSemaphoreEx
-// from WinBase.h
-inline HANDLE CreateSemaphore(LPSECURITY_ATTRIBUTES lpSemaphoreAttributes, LONG lInitialCount, LONG lMaximumCount,
-							  LPCSTR lpName, DWORD dwFlags, DWORD dwDesiredAccess)
-	safe_ret_as(auto h = ::CreateSemaphoreExA(lpSemaphoreAttributes, lInitialCount, lMaximumCount, lpName, dwFlags, dwDesiredAccess), h);
-inline HANDLE CreateSemaphore(LPSECURITY_ATTRIBUTES lpSemaphoreAttributes, LONG lInitialCount, LONG lMaximumCount,
-							  LPCWSTR lpName, DWORD dwFlags, DWORD dwDesiredAccess)
-	safe_ret_as(auto h = ::CreateSemaphoreExW(lpSemaphoreAttributes, lInitialCount, lMaximumCount, lpName, dwFlags, dwDesiredAccess), h);
+wapi_reflect_bool_WAO(CreateSemaphoreEx); // CreateSemaphoreExA from WinBase.h
 #undef CreateWaitableTimer
-// from WinBase.h
-inline HANDLE CreateWaitableTimer(LPSECURITY_ATTRIBUTES lpTimerAttributes, BOOL bManualReset, LPCSTR lpTimerName)
-	safe_ret_as(auto h = ::CreateWaitableTimerA(lpTimerAttributes, bManualReset, lpTimerName), h);
-inline HANDLE CreateWaitableTimer(LPSECURITY_ATTRIBUTES lpTimerAttributes, BOOL bManualReset, LPCWSTR lpTimerName)
-	safe_ret_as(auto h = ::CreateWaitableTimerW(lpTimerAttributes, bManualReset, lpTimerName), h);
+wapi_reflect_bool_WAO(CreateWaitableTimer); // CreateWaitableTimerA from WinBase.h
 #undef CreateWaitableTimerEx
-// from WinBase.h
-inline HANDLE CreateWaitableTimer(LPSECURITY_ATTRIBUTES lpTimerAttributes, BOOL bManualReset, LPCSTR lpTimerName,
-								  DWORD dwFlags, DWORD dwDesiredAccess)
-	safe_ret_as(auto h = ::CreateWaitableTimerExA(lpTimerAttributes, lpTimerName, dwFlags, dwDesiredAccess), h);
-inline HANDLE CreateWaitableTimer(LPSECURITY_ATTRIBUTES lpTimerAttributes, BOOL bManualReset, LPCWSTR lpTimerName,
-								  DWORD dwFlags, DWORD dwDesiredAccess)
-	safe_ret_as(auto h = ::CreateWaitableTimerExW(lpTimerAttributes, lpTimerName, dwFlags, dwDesiredAccess), h);
+wapi_reflect_bool_WAO(CreateWaitableTimerEx); // CreateWaitableTimerExA from WinBase.h
 #pragma endregion
 
 }
 #pragma endregion
 
+#if 0
 export namespace WX {
 
 template<class AnyChild>
@@ -580,9 +317,9 @@ public:
 };
 
 #pragma region Event
-enum_flags(EventAccess, HandleAccess,
-	All    = EVENT_ALL_ACCESS,
-	Modify = EVENT_MODIFY_STATE);
+enum_flags(EventAccess , HandleAccess       ,
+		   All         = EVENT_ALL_ACCESS   ,
+		   Modify      = EVENT_MODIFY_STATE );
 class BaseOf_Waitable(Event) {
 public:
 	using Super = WaitableBase<Event>;
@@ -646,9 +383,9 @@ using CEvent = ProxyView<Event>;
 #pragma endregion
 
 #pragma region Mutex
-enum_flags(MutexAccess, HandleAccess,
-	All    = MUTEX_ALL_ACCESS,
-	Modify = MUTEX_MODIFY_STATE);
+enum_flags(MutexAccess  , HandleAccess       ,
+		   All          = MUTEX_ALL_ACCESS   ,
+		   Modify       = MUTEX_MODIFY_STATE );
 class BaseOf_Waitable(Mutex) {
 public:
 	using Super = WaitableBase<Mutex>;
@@ -708,9 +445,9 @@ using CMutex = ProxyView<Mutex>;
 #pragma endregion
 
 #pragma region Semaphore
-enum_flags(SemaphoreAccess, HandleAccess,
-	All    = SEMAPHORE_ALL_ACCESS,
-	Modify = SEMAPHORE_MODIFY_STATE);
+enum_flags(SemaphoreAccess , HandleAccess           ,
+		   All             = SEMAPHORE_ALL_ACCESS   ,
+		   Modify          = SEMAPHORE_MODIFY_STATE );
 class BaseOf_Waitable(Semaphore) {
 public:
 	using Super = WaitableBase<Semaphore>;
@@ -771,9 +508,9 @@ public:
 #pragma endregion
 
 #pragma region WaitableTimer
-enum_flags(TimerAccess, HandleAccess,
-	All    = TIMER_ALL_ACCESS,
-	Modify = TIMER_MODIFY_STATE);
+enum_flags(TimerAccess , HandleAccess       ,
+		   All         = TIMER_ALL_ACCESS   ,
+		   Modify      = TIMER_MODIFY_STATE );
 using WaitableTimerAccess = TimerAccess;
 class BaseOf_Waitable(WaitableTimer) {
 public:
@@ -851,20 +588,20 @@ using Namespace = PrivateNamespace;
 struct PTTimes { FileTime CreationTime, ExitTime, KernelTime, UserTime; };
 
 #pragma region ThreadBase
-enum_flags(ThreadAccess, Handle::Access,
-	Resume            = THREAD_RESUME,
-	Terminate         = THREAD_TERMINATE,
-	SuspendResume     = THREAD_SUSPEND_RESUME,
-	GetContext        = THREAD_GET_CONTEXT,
-	SetContext        = THREAD_SET_CONTEXT,
-	QueryInfo         = THREAD_QUERY_INFORMATION,
-	QueryInfoLimit    = THREAD_QUERY_LIMITED_INFORMATION,
-	SetInfo           = THREAD_SET_INFORMATION,
-	SetInfoLimit      = THREAD_SET_LIMITED_INFORMATION,
-	SetToken          = THREAD_SET_THREAD_TOKEN,
-	Impersonate       = THREAD_IMPERSONATE,
-	ImpersonateDirect = THREAD_DIRECT_IMPERSONATION,
-	All               = THREAD_ALL_ACCESS);
+enum_flags(ThreadAccess       , HandleAccess                     ,
+		   Resume             = THREAD_RESUME                    ,
+		   Terminate          = THREAD_TERMINATE                 ,
+		   SuspendResume      = THREAD_SUSPEND_RESUME            ,
+		   GetContext         = THREAD_GET_CONTEXT               ,
+		   SetContext         = THREAD_SET_CONTEXT               ,
+		   QueryInfo          = THREAD_QUERY_INFORMATION         ,
+		   QueryInfoLimit     = THREAD_QUERY_LIMITED_INFORMATION ,
+		   SetInfo            = THREAD_SET_INFORMATION           ,
+		   SetInfoLimit       = THREAD_SET_LIMITED_INFORMATION   ,
+		   SetToken           = THREAD_SET_THREAD_TOKEN          ,
+		   Impersonate        = THREAD_IMPERSONATE               ,
+		   ImpersonateDirect  = THREAD_DIRECT_IMPERSONATION      ,
+		   All                = THREAD_ALL_ACCESS                );
 template<class AnyChild = void>
 class ThreadBase;
 using Thread = ThreadBase<>;
@@ -1307,21 +1044,21 @@ public:
 #pragma endregion
 
 #pragma region Process
-enum_flags(StartupFlag, DWORD,
-	UseShowWindow       = STARTF_USESHOWWINDOW,
-	UseSize             = STARTF_USESIZE,
-	UsePosition         = STARTF_USEPOSITION,
-	UseCountChars       = STARTF_USECOUNTCHARS,
-	UseFillAttribute    = STARTF_USEFILLATTRIBUTE,
-	UseStdHandles       = STARTF_USESTDHANDLES,
-	UseHotKey           = STARTF_USEHOTKEY,
-	RunFullScreen       = STARTF_RUNFULLSCREEN,
-	ForceOnFeedback     = STARTF_FORCEONFEEDBACK,
-	ForceOffFeedback    = STARTF_FORCEOFFFEEDBACK,
-	TitleIsLinkName     = STARTF_TITLEISLINKNAME,
-	TitleIsAppID        = STARTF_TITLEISAPPID,
-	PreventPinning      = STARTF_PREVENTPINNING,
-	UntrustedSource     = STARTF_UNTRUSTEDSOURCE);
+enum_flags(StartupFlag       , DWORD                   ,
+		   UseShowWindow     = STARTF_USESHOWWINDOW    ,
+		   UseSize           = STARTF_USESIZE          ,
+		   UsePosition       = STARTF_USEPOSITION      ,
+		   UseCountChars     = STARTF_USECOUNTCHARS    ,
+		   UseFillAttribute  = STARTF_USEFILLATTRIBUTE ,
+		   UseStdHandles     = STARTF_USESTDHANDLES    ,
+		   UseHotKey         = STARTF_USEHOTKEY        ,
+		   RunFullScreen     = STARTF_RUNFULLSCREEN    ,
+		   ForceOnFeedback   = STARTF_FORCEONFEEDBACK  ,
+		   ForceOffFeedback  = STARTF_FORCEOFFFEEDBACK ,
+		   TitleIsLinkName   = STARTF_TITLEISLINKNAME  ,
+		   TitleIsAppID      = STARTF_TITLEISAPPID     ,
+		   PreventPinning    = STARTF_PREVENTPINNING   ,
+		   UntrustedSource   = STARTF_UNTRUSTEDSOURCE  );
 template<bool IsUnicode = WX::IsUnicode>
 class StartupInfoX : public StructShim<structx(STARTUPINFO)> {
 	using_structx(WNDCLASSEX);
@@ -1371,55 +1108,55 @@ proxy_prop_get(StdError,hStdError, Handle);
 using StartupInfo = StartupInfoX<IsUnicode>;
 using StartupInfoA = StartupInfoX<false>;
 using StartupInfoW = StartupInfoX<true>;
-enum_flags(ProcessCreateFlag, DWORD,
-	Default         = 0,
-	DebugProcess                 = DEBUG_PROCESS,
-	DebugOnlyThisProcess         = DEBUG_ONLY_THIS_PROCESS,
-	CreateSuspended              = CREATE_SUSPENDED,
-	DetachedProcess              = DETACHED_PROCESS,
-	CreateNewConsole             = CREATE_NEW_CONSOLE,
-	NormalPriorityClass          = NORMAL_PRIORITY_CLASS,
-	IdlePriorityClass            = IDLE_PRIORITY_CLASS,
-	HighPriorityClass            = HIGH_PRIORITY_CLASS,
-	RealtimePriorityClass        = REALTIME_PRIORITY_CLASS,
-	CreateNewProcessGroup        = CREATE_NEW_PROCESS_GROUP,
-	CreateUnicodeEnvironment     = CREATE_UNICODE_ENVIRONMENT,
-	CreateSeparateWowVdm         = CREATE_SEPARATE_WOW_VDM,
-	CreateSharedWowVdm           = CREATE_SHARED_WOW_VDM,
-	CreateForceDos               = CREATE_FORCEDOS,
-	BelowNormalPriorityClass     = BELOW_NORMAL_PRIORITY_CLASS,
-	AboveNormalPriorityClass     = ABOVE_NORMAL_PRIORITY_CLASS,
-	InheritParentAffinity        = INHERIT_PARENT_AFFINITY,
-	InheritCallerPriority        = INHERIT_CALLER_PRIORITY,
-	CreateProtectedProcess       = CREATE_PROTECTED_PROCESS,
-	ExtendedStartupInfoPresent   = EXTENDED_STARTUPINFO_PRESENT,
-	ProcessModeBackgroundBegin   = PROCESS_MODE_BACKGROUND_BEGIN,
-	ProcessModeBackgroundEnd     = PROCESS_MODE_BACKGROUND_END,
-	CreateSecureProcess          = CREATE_SECURE_PROCESS,
-	CreateBreakawayFromJob       = CREATE_BREAKAWAY_FROM_JOB,
-	CreatePreserveCodeAuthzLevel = CREATE_PRESERVE_CODE_AUTHZ_LEVEL,
-	CreateDefaultErrorMode       = CREATE_DEFAULT_ERROR_MODE,
-	CreateNoWindow               = CREATE_NO_WINDOW,
-	ProfileUser                  = PROFILE_USER,
-	ProfileKernel                = PROFILE_KERNEL,
-	ProfileServer                = PROFILE_SERVER,
-	CreateIgnoreSystemDefault    = CREATE_IGNORE_SYSTEM_DEFAULT);
-enum_flags(ProcessAccess, DWORD,
-	Terminate                 = PROCESS_TERMINATE,
-	CreateThread              = PROCESS_CREATE_THREAD,
-	SetSessionid              = PROCESS_SET_SESSIONID,
-	VmOperation               = PROCESS_VM_OPERATION,
-	VmRead                    = PROCESS_VM_READ,
-	VmWrite                   = PROCESS_VM_WRITE,
-	DupHandle                 = PROCESS_DUP_HANDLE,
-	CreateProcess             = PROCESS_CREATE_PROCESS,
-	SetQuota                  = PROCESS_SET_QUOTA,
-	SetInformation            = PROCESS_SET_INFORMATION,
-	QueryInformation          = PROCESS_QUERY_INFORMATION,
-	SuspendResume             = PROCESS_SUSPEND_RESUME,
-	QueryLimitedInformation   = PROCESS_QUERY_LIMITED_INFORMATION,
-	SetLimitedInformation     = PROCESS_SET_LIMITED_INFORMATION,
-	All          = PROCESS_ALL_ACCESS);
+enum_flags(ProcessCreateFlag            , DWORD                            ,
+		   Default                      = 0                                ,
+		   DebugProcess                 = DEBUG_PROCESS                    ,
+		   DebugOnlyThisProcess         = DEBUG_ONLY_THIS_PROCESS          ,
+		   CreateSuspended              = CREATE_SUSPENDED                 ,
+		   DetachedProcess              = DETACHED_PROCESS                 ,
+		   CreateNewConsole             = CREATE_NEW_CONSOLE               ,
+		   NormalPriorityClass          = NORMAL_PRIORITY_CLASS            ,
+		   IdlePriorityClass            = IDLE_PRIORITY_CLASS              ,
+		   HighPriorityClass            = HIGH_PRIORITY_CLASS              ,
+		   RealtimePriorityClass        = REALTIME_PRIORITY_CLASS          ,
+		   CreateNewProcessGroup        = CREATE_NEW_PROCESS_GROUP         ,
+		   CreateUnicodeEnvironment     = CREATE_UNICODE_ENVIRONMENT       ,
+		   CreateSeparateWowVdm         = CREATE_SEPARATE_WOW_VDM          ,
+		   CreateSharedWowVdm           = CREATE_SHARED_WOW_VDM            ,
+		   CreateForceDos               = CREATE_FORCEDOS                  ,
+		   BelowNormalPriorityClass     = BELOW_NORMAL_PRIORITY_CLASS      ,
+		   AboveNormalPriorityClass     = ABOVE_NORMAL_PRIORITY_CLASS      ,
+		   InheritParentAffinity        = INHERIT_PARENT_AFFINITY          ,
+		   InheritCallerPriority        = INHERIT_CALLER_PRIORITY          ,
+		   CreateProtectedProcess       = CREATE_PROTECTED_PROCESS         ,
+		   ExtendedStartupInfoPresent   = EXTENDED_STARTUPINFO_PRESENT     ,
+		   ProcessModeBackgroundBegin   = PROCESS_MODE_BACKGROUND_BEGIN    ,
+		   ProcessModeBackgroundEnd     = PROCESS_MODE_BACKGROUND_END      ,
+		   CreateSecureProcess          = CREATE_SECURE_PROCESS            ,
+		   CreateBreakawayFromJob       = CREATE_BREAKAWAY_FROM_JOB        ,
+		   CreatePreserveCodeAuthzLevel = CREATE_PRESERVE_CODE_AUTHZ_LEVEL ,
+		   CreateDefaultErrorMode       = CREATE_DEFAULT_ERROR_MODE        ,
+		   CreateNoWindow               = CREATE_NO_WINDOW                 ,
+		   ProfileUser                  = PROFILE_USER                     ,
+		   ProfileKernel                = PROFILE_KERNEL                   ,
+		   ProfileServer                = PROFILE_SERVER                   ,
+		   CreateIgnoreSystemDefault    = CREATE_IGNORE_SYSTEM_DEFAULT     );
+enum_flags(ProcessAccess            , DWORD                             ,
+		   Terminate                = PROCESS_TERMINATE                 ,
+		   CreateThread             = PROCESS_CREATE_THREAD             ,
+		   SetSessionid             = PROCESS_SET_SESSIONID             ,
+		   VmOperation              = PROCESS_VM_OPERATION              ,
+		   VmRead                   = PROCESS_VM_READ                   ,
+		   VmWrite                  = PROCESS_VM_WRITE                  ,
+		   DupHandle                = PROCESS_DUP_HANDLE                ,
+		   CreateProcess            = PROCESS_CREATE_PROCESS            ,
+		   SetQuota                 = PROCESS_SET_QUOTA                 ,
+		   SetInformation           = PROCESS_SET_INFORMATION           ,
+		   QueryInformation         = PROCESS_QUERY_INFORMATION         ,
+		   SuspendResume            = PROCESS_SUSPEND_RESUME            ,
+		   QueryLimitedInformation  = PROCESS_QUERY_LIMITED_INFORMATION ,
+		   SetLimitedInformation    = PROCESS_SET_LIMITED_INFORMATION   ,
+		   All                      = PROCESS_ALL_ACCESS                );
 class BaseOf_Waitable(Process) {
 public:
 	using Super = WaitableBase<Process>;
@@ -1596,3 +1333,4 @@ template<bool IsUnicode>
 /* R */ inline DWORD CurrentThreadID() ret_as(GetCurrentThreadId());
 
 }
+#endif

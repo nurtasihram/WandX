@@ -9,37 +9,37 @@ import wx.win32;
 
 export namespace WX {
 
-enum_flags(SystemState, DWORD,
-	Unavailable       = STATE_SYSTEM_UNAVAILABLE,
-	Selected          = STATE_SYSTEM_SELECTED,
-	Focused           = STATE_SYSTEM_FOCUSED,
-	Pushed            = STATE_SYSTEM_PRESSED,
-	Checked           = STATE_SYSTEM_CHECKED,
-	Mixed             = STATE_SYSTEM_MIXED,
-	ReadOnly          = STATE_SYSTEM_READONLY,
-	HotTracked        = STATE_SYSTEM_HOTTRACKED,
-	Defaulted         = STATE_SYSTEM_DEFAULT,
-	Expanded          = STATE_SYSTEM_EXPANDED,
-	Collapsed         = STATE_SYSTEM_COLLAPSED,
-	Busy              = STATE_SYSTEM_BUSY,
-	Floating          = STATE_SYSTEM_FLOATING,
-	Marqueed          = STATE_SYSTEM_MARQUEED,
-	Animated          = STATE_SYSTEM_ANIMATED,
-	Invisible         = STATE_SYSTEM_INVISIBLE,
-	Offscreen         = STATE_SYSTEM_OFFSCREEN,
-	Sizeable          = STATE_SYSTEM_SIZEABLE,
-	Moveable          = STATE_SYSTEM_MOVEABLE,
-	SelfVoicing       = STATE_SYSTEM_SELFVOICING,
-	Focusable         = STATE_SYSTEM_FOCUSABLE,
-	Selectable        = STATE_SYSTEM_SELECTABLE,
-	Linked            = STATE_SYSTEM_LINKED,
-	Traversed         = STATE_SYSTEM_TRAVERSED,
-	MultiSelectable   = STATE_SYSTEM_MULTISELECTABLE,
-	ExtSelectable     = STATE_SYSTEM_EXTSELECTABLE,
-	AlertLow          = STATE_SYSTEM_ALERT_LOW,
-	AlertMedium       = STATE_SYSTEM_ALERT_MEDIUM,
-	AlertHigh         = STATE_SYSTEM_ALERT_HIGH,
-	Protected         = STATE_SYSTEM_PROTECTED);
+enum_flags(SystemState      , DWORD                        ,
+		   Unavailable      = STATE_SYSTEM_UNAVAILABLE     ,
+		   Selected         = STATE_SYSTEM_SELECTED        ,
+		   Focused          = STATE_SYSTEM_FOCUSED         ,
+		   Pushed           = STATE_SYSTEM_PRESSED         ,
+		   Checked          = STATE_SYSTEM_CHECKED         ,
+		   Mixed            = STATE_SYSTEM_MIXED           ,
+		   ReadOnly         = STATE_SYSTEM_READONLY        ,
+		   HotTracked       = STATE_SYSTEM_HOTTRACKED      ,
+		   Defaulted        = STATE_SYSTEM_DEFAULT         ,
+		   Expanded         = STATE_SYSTEM_EXPANDED        ,
+		   Collapsed        = STATE_SYSTEM_COLLAPSED       ,
+		   Busy             = STATE_SYSTEM_BUSY            ,
+		   Floating         = STATE_SYSTEM_FLOATING        ,
+		   Marqueed         = STATE_SYSTEM_MARQUEED        ,
+		   Animated         = STATE_SYSTEM_ANIMATED        ,
+		   Invisible        = STATE_SYSTEM_INVISIBLE       ,
+		   Offscreen        = STATE_SYSTEM_OFFSCREEN       ,
+		   Sizeable         = STATE_SYSTEM_SIZEABLE        ,
+		   Moveable         = STATE_SYSTEM_MOVEABLE        ,
+		   SelfVoicing      = STATE_SYSTEM_SELFVOICING     ,
+		   Focusable        = STATE_SYSTEM_FOCUSABLE       ,
+		   Selectable       = STATE_SYSTEM_SELECTABLE      ,
+		   Linked           = STATE_SYSTEM_LINKED          ,
+		   Traversed        = STATE_SYSTEM_TRAVERSED       ,
+		   MultiSelectable  = STATE_SYSTEM_MULTISELECTABLE ,
+		   ExtSelectable    = STATE_SYSTEM_EXTSELECTABLE   ,
+		   AlertLow         = STATE_SYSTEM_ALERT_LOW       ,
+		   AlertMedium      = STATE_SYSTEM_ALERT_MEDIUM    ,
+		   AlertHigh        = STATE_SYSTEM_ALERT_HIGH      ,
+		   Protected        = STATE_SYSTEM_PROTECTED       );
 
 #pragma region ImageList
 class ImageList {
@@ -58,18 +58,18 @@ using CImageList = ProxyView<ImageList>;
 #pragma endregion
 
 #pragma region ControlCommon
-enum_flags(ControlCommonStyle, WStyle,
-	Top                     = CCS_TOP,
-	NoMoveY                 = CCS_NOMOVEY,
-	Bottom                  = CCS_BOTTOM,
-	NoResize                = CCS_NORESIZE,
-	NoParentAlign           = CCS_NOPARENTALIGN,
-	Adjustable              = CCS_ADJUSTABLE,
-	NoDivider               = CCS_NODIVIDER,
-	Vert                    = CCS_VERT,
-	Left                    = CCS_LEFT,
-	Right                   = CCS_RIGHT,
-	NoMoveX                 = CCS_NOMOVEX);
+enum_flags(ControlCommonStyle , WStyle            ,
+		   Top                = CCS_TOP           ,
+		   NoMoveY            = CCS_NOMOVEY       ,
+		   Bottom             = CCS_BOTTOM        ,
+		   NoResize           = CCS_NORESIZE      ,
+		   NoParentAlign      = CCS_NOPARENTALIGN ,
+		   Adjustable         = CCS_ADJUSTABLE    ,
+		   NoDivider          = CCS_NODIVIDER     ,
+		   Vert               = CCS_VERT          ,
+		   Left               = CCS_LEFT          ,
+		   Right              = CCS_RIGHT         ,
+		   NoMoveX            = CCS_NOMOVEX       );
 using CCStyle = ControlCommonStyle;
 template<class AnyChild>
 class ControlCommon : public WindowBase<AnyChild> {
@@ -121,40 +121,40 @@ WndProc ControlCommon<AnyChild>::DefProc;
 #pragma endregion
 
 #pragma region Control Header
-enum_flags(HeaderStyle, CCStyle,
-	Horz            = HDS_HORZ,
-	Buttons         = HDS_BUTTONS,
-	HotTrack        = HDS_HOTTRACK,
-	Hidden          = HDS_HIDDEN,
-	DragDrop        = HDS_DRAGDROP,
-	FullDrag        = HDS_FULLDRAG,
-	FilterBar       = HDS_FILTERBAR,
-	Flat            = HDS_FLAT,
-	CheckBoxes      = HDS_CHECKBOXES,
-	NoSizing        = HDS_NOSIZING,
-	Overflow        = HDS_OVERFLOW);
-enum_flags(HeaderFormat, int,
-	Left            = HDF_LEFT,
-	Right           = HDF_RIGHT,
-	Center          = HDF_CENTER,
-	JustifyMask     = HDF_JUSTIFYMASK,
-	RTLReading      = HDF_RTLREADING,
-	Bitmap          = HDF_BITMAP,
-	String          = HDF_STRING,
-	OwnerDraw       = HDF_OWNERDRAW,
-	Image           = HDF_IMAGE,
-	BitmapOnRight   = HDF_BITMAP_ON_RIGHT,
-	SortUp          = HDF_SORTUP,
-	SortDown        = HDF_SORTDOWN,
-	CheckBox        = HDF_CHECKBOX,
-	Checked         = HDF_CHECKED,
-	FixedWidth      = HDF_FIXEDWIDTH,
-	SplitButton     = HDF_SPLITBUTTON);
-enum_class(HeaderFilterType, UINT,
-	String  = HDFT_ISSTRING,
-	Number  = HDFT_ISNUMBER,
-	Date    = HDFT_ISDATE,
-	NoValue = HDFT_HASNOVALUE);
+enum_flags(HeaderStyle      , CCStyle             ,
+		   Horz             = HDS_HORZ            ,
+		   Buttons          = HDS_BUTTONS         ,
+		   HotTrack         = HDS_HOTTRACK        ,
+		   Hidden           = HDS_HIDDEN          ,
+		   DragDrop         = HDS_DRAGDROP        ,
+		   FullDrag         = HDS_FULLDRAG        ,
+		   FilterBar        = HDS_FILTERBAR       ,
+		   Flat             = HDS_FLAT            ,
+		   CheckBoxes       = HDS_CHECKBOXES      ,
+		   NoSizing         = HDS_NOSIZING        ,
+		   Overflow         = HDS_OVERFLOW        );
+enum_flags(HeaderFormat     , int                 ,
+		   Left             = HDF_LEFT            ,
+		   Right            = HDF_RIGHT           ,
+		   Center           = HDF_CENTER          ,
+		   JustifyMask      = HDF_JUSTIFYMASK     ,
+		   RTLReading       = HDF_RTLREADING      ,
+		   Bitmap           = HDF_BITMAP          ,
+		   String           = HDF_STRING          ,
+		   OwnerDraw        = HDF_OWNERDRAW       ,
+		   Image            = HDF_IMAGE           ,
+		   BitmapOnRight    = HDF_BITMAP_ON_RIGHT ,
+		   SortUp           = HDF_SORTUP          ,
+		   SortDown         = HDF_SORTDOWN        ,
+		   CheckBox         = HDF_CHECKBOX        ,
+		   Checked          = HDF_CHECKED         ,
+		   FixedWidth       = HDF_FIXEDWIDTH      ,
+		   SplitButton      = HDF_SPLITBUTTON     );
+enum_class(HeaderFilterType , UINT                ,
+		   String           = HDFT_ISSTRING       ,
+		   Number           = HDFT_ISNUMBER       ,
+		   Date             = HDFT_ISDATE         ,
+		   NoValue          = HDFT_HASNOVALUE     );
 enum_flags(HeaderItemState, UINT,
 	Focussed = HDIS_FOCUSED);
 template<bool IsUnicode>
@@ -240,50 +240,50 @@ using CHeader = ProxyView<Header>;
 #pragma endregion
 
 #pragma region Control ToolBar
-enum_flags(ToolBarStyle, CCStyle,
-	Buttons         = TBSTYLE_BUTTON,
-	Sep             = TBSTYLE_SEP,
-	Check           = TBSTYLE_CHECK,
-	Group           = TBSTYLE_GROUP,
-	CheckGroup      = TBSTYLE_CHECKGROUP,
-	DropDown        = TBSTYLE_DROPDOWN,
-	AutoSize        = TBSTYLE_AUTOSIZE,
-	NoPrefix        = TBSTYLE_NOPREFIX,
-	ToolTips        = TBSTYLE_TOOLTIPS,
-	Wrapable        = TBSTYLE_WRAPABLE,
-	AltDrag         = TBSTYLE_ALTDRAG,
-	Flat            = TBSTYLE_FLAT,
-	List            = TBSTYLE_LIST,
-	CustomErase     = TBSTYLE_CUSTOMERASE,
-	RegisterDrop    = TBSTYLE_REGISTERDROP,
-	Transparent     = TBSTYLE_TRANSPARENT);
-enum_flags(ToolBarStyleEx, WStyleEx,
-	DrawDDArrows              = TBSTYLE_EX_DRAWDDARROWS,
-	MultiColumn               = TBSTYLE_EX_MULTICOLUMN,
-	Vertical                  = TBSTYLE_EX_VERTICAL,
-	MixedButtons              = TBSTYLE_EX_MIXEDBUTTONS,
-	DoubleBuffer              = TBSTYLE_EX_DOUBLEBUFFER,
-	HideClippedButtons        = TBSTYLE_EX_HIDECLIPPEDBUTTONS);
-enum_flags(ToolBarState, BYTE,
-	Checked         = TBSTATE_CHECKED,
-	Pressed         = TBSTATE_PRESSED,
-	Enabled         = TBSTATE_ENABLED,
-	Hidden          = TBSTATE_HIDDEN,
-	Indeterminate   = TBSTATE_INDETERMINATE,
-	Wrap            = TBSTATE_WRAP,
-	Ellipses        = TBSTATE_ELLIPSES,
-	Marked          = TBSTATE_MARKED);
-enum_flags(ToolBarButtonStyle, BYTE,
-	Button          = BTNS_BUTTON,
-	Sep             = BTNS_SEP,
-	Check           = BTNS_CHECK,
-	Group           = BTNS_GROUP,
-	CheckGroup      = BTNS_CHECKGROUP,
-	DropDown        = BTNS_DROPDOWN,
-	AutoSize        = BTNS_AUTOSIZE,
-	NoPrefix        = BTNS_NOPREFIX,
-	ShowText        = BTNS_SHOWTEXT,
-	WholeDropDown   = BTNS_WHOLEDROPDOWN);
+enum_flags(ToolBarStyle        , CCStyle                       ,
+		   Buttons             = TBSTYLE_BUTTON                ,
+		   Sep                 = TBSTYLE_SEP                   ,
+		   Check               = TBSTYLE_CHECK                 ,
+		   Group               = TBSTYLE_GROUP                 ,
+		   CheckGroup          = TBSTYLE_CHECKGROUP            ,
+		   DropDown            = TBSTYLE_DROPDOWN              ,
+		   AutoSize            = TBSTYLE_AUTOSIZE              ,
+		   NoPrefix            = TBSTYLE_NOPREFIX              ,
+		   ToolTips            = TBSTYLE_TOOLTIPS              ,
+		   Wrapable            = TBSTYLE_WRAPABLE              ,
+		   AltDrag             = TBSTYLE_ALTDRAG               ,
+		   Flat                = TBSTYLE_FLAT                  ,
+		   List                = TBSTYLE_LIST                  ,
+		   CustomErase         = TBSTYLE_CUSTOMERASE           ,
+		   RegisterDrop        = TBSTYLE_REGISTERDROP          ,
+		   Transparent         = TBSTYLE_TRANSPARENT           );
+enum_flags(ToolBarStyleEx      , WStyleEx                      ,
+		   DrawDDArrows        = TBSTYLE_EX_DRAWDDARROWS       ,
+		   MultiColumn         = TBSTYLE_EX_MULTICOLUMN        ,
+		   Vertical            = TBSTYLE_EX_VERTICAL           ,
+		   MixedButtons        = TBSTYLE_EX_MIXEDBUTTONS       ,
+		   DoubleBuffer        = TBSTYLE_EX_DOUBLEBUFFER       ,
+		   HideClippedButtons  = TBSTYLE_EX_HIDECLIPPEDBUTTONS );
+enum_flags(ToolBarState        , BYTE                          ,
+		   Checked             = TBSTATE_CHECKED               ,
+		   Pressed             = TBSTATE_PRESSED               ,
+		   Enabled             = TBSTATE_ENABLED               ,
+		   Hidden              = TBSTATE_HIDDEN                ,
+		   Indeterminate       = TBSTATE_INDETERMINATE         ,
+		   Wrap                = TBSTATE_WRAP                  ,
+		   Ellipses            = TBSTATE_ELLIPSES              ,
+		   Marked              = TBSTATE_MARKED                );
+enum_flags(ToolBarButtonStyle  , BYTE                          ,
+		   Button              = BTNS_BUTTON                   ,
+		   Sep                 = BTNS_SEP                      ,
+		   Check               = BTNS_CHECK                    ,
+		   Group               = BTNS_GROUP                    ,
+		   CheckGroup          = BTNS_CHECKGROUP               ,
+		   DropDown            = BTNS_DROPDOWN                 ,
+		   AutoSize            = BTNS_AUTOSIZE                 ,
+		   NoPrefix            = BTNS_NOPREFIX                 ,
+		   ShowText            = BTNS_SHOWTEXT                 ,
+		   WholeDropDown       = BTNS_WHOLEDROPDOWN            );
 struct ToolBarButton : public StructShim<TBBUTTON> {
 	using Super = StructShim<TBBUTTON>;
 public:
@@ -326,39 +326,39 @@ using CToolBar = ProxyView<ToolBar>;
 #pragma endregion
 
 #pragma region Control ReBar
-enum_flags(ReBarStyle, CCStyle,
-	ToolTips          = RBS_TOOLTIPS,
-	VarHeight         = RBS_VARHEIGHT,
-	NoBorders         = RBS_BANDBORDERS,
-	FixedOrder        = RBS_FIXEDORDER,
-	RegisterDrop      = RBS_REGISTERDROP,
-	AutoSize          = RBS_AUTOSIZE,
-	VerticalGripper   = RBS_VERTICALGRIPPER,
-	DoubleClickToggle = RBS_DBLCLKTOGGLE);
+enum_flags(ReBarStyle        , CCStyle             ,
+		   ToolTips          = RBS_TOOLTIPS        ,
+		   VarHeight         = RBS_VARHEIGHT       ,
+		   NoBorders         = RBS_BANDBORDERS     ,
+		   FixedOrder        = RBS_FIXEDORDER      ,
+		   RegisterDrop      = RBS_REGISTERDROP    ,
+		   AutoSize          = RBS_AUTOSIZE        ,
+		   VerticalGripper   = RBS_VERTICALGRIPPER ,
+		   DoubleClickToggle = RBS_DBLCLKTOGGLE    );
 #pragma endregion
 
 #pragma region Control ToolTips
-enum_flags(ToolTipStyle, CCStyle,
-	AlwaysTip        = TTS_ALWAYSTIP,
-	NoPrefix         = TTS_NOPREFIX,
-	NoAnimate        = TTS_NOANIMATE,
-	NoFade           = TTS_NOFADE,
-	Balloon          = TTS_BALLOON,
-	Close            = TTS_CLOSE,
-	UseVisualStyle   = TTS_USEVISUALSTYLE);
+enum_flags(ToolTipStyle     , CCStyle            ,
+		   AlwaysTip        = TTS_ALWAYSTIP      ,
+		   NoPrefix         = TTS_NOPREFIX       ,
+		   NoAnimate        = TTS_NOANIMATE      ,
+		   NoFade           = TTS_NOFADE         ,
+		   Balloon          = TTS_BALLOON        ,
+		   Close            = TTS_CLOSE          ,
+		   UseVisualStyle   = TTS_USEVISUALSTYLE );
 #pragma endregion
 
 #pragma region Control StatusBar
-enum_flags(StatusBarStyle, WStyle,
-	SizeGripb    = SBARS_SIZEGRIP,
-	ToolTips     = SBARS_TOOLTIPS);
-enum_flags(StatusBarTextStyle, Int16U,
-	Default      = 0,
-	OwnerDraw    = SBT_OWNERDRAW,
-	NoBorders    = SBT_NOBORDERS,
-	PopOut       = SBT_POPOUT,
-	RTLReading   = SBT_RTLREADING,
-	NoTabParsing = SBT_NOTABPARSING);
+enum_flags(StatusBarStyle     , WStyle           ,
+		   SizeGripb          = SBARS_SIZEGRIP   ,
+		   ToolTips           = SBARS_TOOLTIPS   );
+enum_flags(StatusBarTextStyle , Int16U,
+		   Default            = 0                ,
+		   OwnerDraw          = SBT_OWNERDRAW    ,
+		   NoBorders          = SBT_NOBORDERS    ,
+		   PopOut             = SBT_POPOUT       ,
+		   RTLReading         = SBT_RTLREADING   ,
+		   NoTabParsing       = SBT_NOTABPARSING );
 template<bool IsUnicode = WX::IsUnicode>
 class StatusBarTextX {
 	using String = StringX<IsUnicode>;
@@ -460,40 +460,40 @@ using CStatusBar = ProxyView<StatusBar>;
 #pragma endregion
 
 #pragma region Control TrackBar
-enum_flags(TrackBarStyle, CCStyle,
-	AutoTicks          = TBS_AUTOTICKS,
-	Vert               = TBS_VERT,
-	Horz               = TBS_HORZ,
-	Top                = TBS_TOP,
-	Bottom             = TBS_BOTTOM,
-	Left               = TBS_LEFT,
-	Right              = TBS_RIGHT,
-	Both               = TBS_BOTH,
-	NoTicks            = TBS_NOTICKS,
-	EnableSelRange     = TBS_ENABLESELRANGE,
-	FixedLength        = TBS_FIXEDLENGTH,
-	NoThumb            = TBS_NOTHUMB,
-	ToolTips           = TBS_TOOLTIPS,
-	Reversed           = TBS_REVERSED,
-	DownIsLeft         = TBS_DOWNISLEFT,
-//	NotifyBeforeMove   = TBS_NOTIFYBEFOREMOVE,
-	TransparentBkgnd   = TBS_TRANSPARENTBKGND);
+enum_flags(TrackBarStyle      , CCStyle              ,
+		   AutoTicks          = TBS_AUTOTICKS        ,
+		   Vert               = TBS_VERT             ,
+		   Horz               = TBS_HORZ             ,
+		   Top                = TBS_TOP              ,
+		   Bottom             = TBS_BOTTOM           ,
+		   Left               = TBS_LEFT             ,
+		   Right              = TBS_RIGHT            ,
+		   Both               = TBS_BOTH             ,
+		   NoTicks            = TBS_NOTICKS          ,
+		   EnableSelRange     = TBS_ENABLESELRANGE   ,
+		   FixedLength        = TBS_FIXEDLENGTH      ,
+		   NoThumb            = TBS_NOTHUMB          ,
+		   ToolTips           = TBS_TOOLTIPS         ,
+		   Reversed           = TBS_REVERSED         ,
+		   DownIsLeft         = TBS_DOWNISLEFT       ,
+		/* NotifyBeforeMove   = TBS_NOTIFYBEFOREMOVE , */
+		   TransparentBkgnd   = TBS_TRANSPARENTBKGND );
 #pragma endregion
 
 #pragma region Control DragList
 #pragma endregion
 
 #pragma region Control UpDown
-enum_flags(UpDownStyle, CCStyle,
-	Wrap                = UDS_WRAP,
-	SetBuddyInt         = UDS_SETBUDDYINT,
-	AlignRight          = UDS_ALIGNRIGHT,
-	AlignLeft           = UDS_ALIGNLEFT,
-	AutoBuddy           = UDS_AUTOBUDDY,
-	ArrowKeys           = UDS_ARROWKEYS,
-	Horz                = UDS_HORZ,
-	NoThousands         = UDS_NOTHOUSANDS,
-	HotTrack            = UDS_HOTTRACK);
+enum_flags(UpDownStyle  , CCStyle         ,
+		   Wrap         = UDS_WRAP        ,
+		   SetBuddyInt  = UDS_SETBUDDYINT ,
+		   AlignRight   = UDS_ALIGNRIGHT  ,
+		   AlignLeft    = UDS_ALIGNLEFT   ,
+		   AutoBuddy    = UDS_AUTOBUDDY   ,
+		   ArrowKeys    = UDS_ARROWKEYS   ,
+		   Horz         = UDS_HORZ        ,
+		   NoThousands  = UDS_NOTHOUSANDS ,
+		   HotTrack     = UDS_HOTTRACK    );
 BaseOf_CommCtl(class UpDownBase) {
 	SFINAE_CommCtl(UpDownBase);
 public:
@@ -508,15 +508,15 @@ using CUpDown = ProxyView<UpDown>;
 #pragma endregion
 
 #pragma region Control Progress Bar
-enum_flags(ProgBarStyle, CCStyle, 
-	Smooth              = PBS_SMOOTH,
-	Vertical            = PBS_VERTICAL,
-	Marquee             = PBS_MARQUEE,
-	SmoothReverse       = PBS_SMOOTHREVERSE);
-enum_class(ProgBarState, DWORD,
-	Normal              = PBST_NORMAL,
-	Error               = PBST_ERROR,
-	Paused              = PBST_PAUSED);
+enum_flags(ProgBarStyle   , CCStyle           , 
+		   Smooth         = PBS_SMOOTH        ,
+		   Vertical       = PBS_VERTICAL      ,
+		   Marquee        = PBS_MARQUEE       ,
+		   SmoothReverse  = PBS_SMOOTHREVERSE );
+enum_class(ProgBarState   , DWORD             ,
+		   Normal         = PBST_NORMAL       ,
+		   Error          = PBST_ERROR        ,
+		   Paused         = PBST_PAUSED       );
 BaseOf_CommCtl(class ProgBarBase) {
 	SFINAE_CommCtl(ProgBarBase);
 public:
@@ -559,21 +559,21 @@ using CProgBar = ProxyView<ProgBar>;
 #pragma endregion
 
 #pragma region Control HotKey
-enum_flags(HotKeyFlag, BYTE,
-	None                = 0,
-	Shift               = HOTKEYF_SHIFT,
-	Control             = HOTKEYF_CONTROL,
-	Alt                 = HOTKEYF_ALT,
-	Ext                 = HOTKEYF_EXT);
-enum_flags(HotKeyRule, WORD,
-	None                = HKCOMB_NONE,
-	Shift               = HKCOMB_S,
-	Control             = HKCOMB_C,
-	Alt                 = HKCOMB_A,
-	ShiftControl        = HKCOMB_SC,
-	ShiftAlt            = HKCOMB_SA,
-	ControlAlt          = HKCOMB_CA,
-	ShiftControlAlt     = HKCOMB_SCA);
+enum_flags(HotKeyFlag       , BYTE            ,
+		   None             = 0               ,
+		   Shift            = HOTKEYF_SHIFT   ,
+		   Control          = HOTKEYF_CONTROL ,
+		   Alt              = HOTKEYF_ALT     ,
+		   Ext              = HOTKEYF_EXT     );
+enum_flags(HotKeyRule       , WORD            ,
+		   None             = HKCOMB_NONE     ,
+		   Shift            = HKCOMB_S        ,
+		   Control          = HKCOMB_C        ,
+		   Alt              = HKCOMB_A        ,
+		   ShiftControl     = HKCOMB_SC       ,
+		   ShiftAlt         = HKCOMB_SA       ,
+		   ControlAlt       = HKCOMB_CA       ,
+		   ShiftControlAlt  = HKCOMB_SCA      );
 class HotKeyInfo {
 	HotKeyFlag mod;
 	BYTE vk;
@@ -612,13 +612,13 @@ using CHotKey = ProxyView<HotKey>;
 #pragma endregion
 
 #pragma region Control SysLink
-enum_flags(SysLinkStyle, CCStyle,
-	Transparent         = LWS_TRANSPARENT,
-	IgnoreReturn        = LWS_IGNORERETURN,
-	NoPrefix            = LWS_NOPREFIX,
-	UseVisualStyle      = LWS_USEVISUALSTYLE,
-	UseCustomText       = LWS_USECUSTOMTEXT,
-	Right               = LWS_RIGHT);
+enum_flags(SysLinkStyle    , CCStyle            ,
+		   Transparent     = LWS_TRANSPARENT    ,
+		   IgnoreReturn    = LWS_IGNORERETURN   ,
+		   NoPrefix        = LWS_NOPREFIX       ,
+		   UseVisualStyle  = LWS_USEVISUALSTYLE ,
+		   UseCustomText   = LWS_USECUSTOMTEXT  ,
+		   Right           = LWS_RIGHT          );
 //BaseOf_CommCtl(class SysLinkBase) {
 //	SFINAE_CommCtl(SysLinkBase);
 //public:
@@ -633,28 +633,28 @@ enum_flags(SysLinkStyle, CCStyle,
 #pragma endregion
 
 #pragma region Control ListView
-enum_flags(ListViewStyle, CCStyle,
-	Icon                = LVS_ICON,
-	Report              = LVS_REPORT,
-	SmallIcon           = LVS_SMALLICON,
-	List                = LVS_LIST,
-	TypeMask            = LVS_TYPEMASK,
-	SingleSel           = LVS_SINGLESEL,
-	ShowSelAlways       = LVS_SHOWSELALWAYS,
-	SortAscending       = LVS_SORTASCENDING,
-	SortDescending      = LVS_SORTDESCENDING,
-	ShareImageLists     = LVS_SHAREIMAGELISTS,
-	NoLabelWrap         = LVS_NOLABELWRAP,
-	AutoArrange         = LVS_AUTOARRANGE,
-	EditLabels          = LVS_EDITLABELS,
-	OwnerData           = LVS_OWNERDATA,
-	NoScroll            = LVS_NOSCROLL,
-	AlignTop            = LVS_ALIGNTOP,
-	AlignLeft           = LVS_ALIGNLEFT,
-	AlignMask           = LVS_ALIGNMASK,
-	OwnerDrawFixed      = LVS_OWNERDRAWFIXED,
-	NoColumnHeader      = LVS_NOCOLUMNHEADER,
-	NoSortHeader        = LVS_NOSORTHEADER);
+enum_flags(ListViewStyle    , CCStyle             ,
+		   Icon             = LVS_ICON            ,
+		   Report           = LVS_REPORT          ,
+		   SmallIcon        = LVS_SMALLICON       ,
+		   List             = LVS_LIST            ,
+		   TypeMask         = LVS_TYPEMASK        ,
+		   SingleSel        = LVS_SINGLESEL       ,
+		   ShowSelAlways    = LVS_SHOWSELALWAYS   ,
+		   SortAscending    = LVS_SORTASCENDING   ,
+		   SortDescending   = LVS_SORTDESCENDING  ,
+		   ShareImageLists  = LVS_SHAREIMAGELISTS ,
+		   NoLabelWrap      = LVS_NOLABELWRAP     ,
+		   AutoArrange      = LVS_AUTOARRANGE     ,
+		   EditLabels       = LVS_EDITLABELS      ,
+		   OwnerData        = LVS_OWNERDATA       ,
+		   NoScroll         = LVS_NOSCROLL        ,
+		   AlignTop         = LVS_ALIGNTOP        ,
+		   AlignLeft        = LVS_ALIGNLEFT       ,
+		   AlignMask        = LVS_ALIGNMASK       ,
+		   OwnerDrawFixed   = LVS_OWNERDRAWFIXED  ,
+		   NoColumnHeader   = LVS_NOCOLUMNHEADER  ,
+		   NoSortHeader     = LVS_NOSORTHEADER    );
 template<bool IsUnicode>
 class ListViewIndex : public StructShim<LVFINDINFO> {
 	using_structx(LVFINDINFO);
@@ -722,35 +722,35 @@ using CListView = ProxyView<ListView>;
 #pragma endregion
 
 #pragma region Control TreeView
-enum_flags(TreeViewStyle, CCStyle,
-	HasButtons          = TVS_HASBUTTONS,
-	HasLines            = TVS_HASLINES,
-	LinesAtRoot         = TVS_LINESATROOT,
-	EditLabels          = TVS_EDITLABELS,
-	DisabledDragDrop    = TVS_DISABLEDRAGDROP,
-	ShowSelAlways       = TVS_SHOWSELALWAYS,
-	RTLReading          = TVS_RTLREADING,
-	NoToolTips          = TVS_NOTOOLTIPS,
-	CheckBoxes          = TVS_CHECKBOXES,
-	TrackSelect         = TVS_TRACKSELECT,
-	SingleExpand        = TVS_SINGLEEXPAND,
-	InfoTip             = TVS_INFOTIP,
-	FullRowSelect       = TVS_FULLROWSELECT,
-	NoScroll            = TVS_NOSCROLL,
-	NoEvenHeight        = TVS_NONEVENHEIGHT,
-	NoHScroll           = TVS_NOHSCROLL);
-enum_flags(TreeViewStyleEx, WStyleEx,
-	NoSingleCollapse     = TVS_EX_NOSINGLECOLLAPSE,
-	MultiSelect          = TVS_EX_MULTISELECT,
-	DoubleBuffer         = TVS_EX_DOUBLEBUFFER,
-	NoIndentState        = TVS_EX_NOINDENTSTATE,
-	RichToolTip          = TVS_EX_RICHTOOLTIP,
-	AutoHScroll          = TVS_EX_AUTOHSCROLL,
-	FadeInOutExpandos    = TVS_EX_FADEINOUTEXPANDOS,
-	PartialCheckBoxes    = TVS_EX_PARTIALCHECKBOXES,
-	ExclusionCheckBoxes  = TVS_EX_EXCLUSIONCHECKBOXES,
-	DimmedCheckBoxes     = TVS_EX_DIMMEDCHECKBOXES,
-	DrawImageAsync       = TVS_EX_DRAWIMAGEASYNC);
+enum_flags(TreeViewStyle        , CCStyle                    ,
+		   HasButtons           = TVS_HASBUTTONS             ,
+		   HasLines             = TVS_HASLINES               ,
+		   LinesAtRoot          = TVS_LINESATROOT            ,
+		   EditLabels           = TVS_EDITLABELS             ,
+		   DisabledDragDrop     = TVS_DISABLEDRAGDROP        ,
+		   ShowSelAlways        = TVS_SHOWSELALWAYS          ,
+		   RTLReading           = TVS_RTLREADING             ,
+		   NoToolTips           = TVS_NOTOOLTIPS             ,
+		   CheckBoxes           = TVS_CHECKBOXES             ,
+		   TrackSelect          = TVS_TRACKSELECT            ,
+		   SingleExpand         = TVS_SINGLEEXPAND           ,
+		   InfoTip              = TVS_INFOTIP                ,
+		   FullRowSelect        = TVS_FULLROWSELECT          ,
+		   NoScroll             = TVS_NOSCROLL               ,
+		   NoEvenHeight         = TVS_NONEVENHEIGHT          ,
+		   NoHScroll            = TVS_NOHSCROLL              );
+enum_flags(TreeViewStyleEx      , WStyleEx                   ,
+		   NoSingleCollapse     = TVS_EX_NOSINGLECOLLAPSE    ,
+		   MultiSelect          = TVS_EX_MULTISELECT         ,
+		   DoubleBuffer         = TVS_EX_DOUBLEBUFFER        ,
+		   NoIndentState        = TVS_EX_NOINDENTSTATE       ,
+		   RichToolTip          = TVS_EX_RICHTOOLTIP         ,
+		   AutoHScroll          = TVS_EX_AUTOHSCROLL         ,
+		   FadeInOutExpandos    = TVS_EX_FADEINOUTEXPANDOS   ,
+		   PartialCheckBoxes    = TVS_EX_PARTIALCHECKBOXES   ,
+		   ExclusionCheckBoxes  = TVS_EX_EXCLUSIONCHECKBOXES ,
+		   DimmedCheckBoxes     = TVS_EX_DIMMEDCHECKBOXES    ,
+		   DrawImageAsync       = TVS_EX_DRAWIMAGEASYNC      );
 BaseOf_CommCtl(class TreeViewBase) {
 	SFINAE_CommCtl(TreeViewBase);
 public:
@@ -766,27 +766,27 @@ using CTreeView = ProxyView<TreeView>;
 #pragma endregion
 
 #pragma region Control Tab Control
-enum_flags(TabControlStyle, CCStyle,
-	ScrollOpposite      = TCS_SCROLLOPPOSITE,
-	Bottom              = TCS_BOTTOM,
-	Right               = TCS_RIGHT,
-	MultiSelect         = TCS_MULTISELECT,
-	FlatButtons         = TCS_FLATBUTTONS,
-	ForceIconLeft       = TCS_FORCEICONLEFT,
-	ForceLabelLeft      = TCS_FORCELABELLEFT,
-	HotTrack            = TCS_HOTTRACK,
-	Vertical            = TCS_VERTICAL,
-	Tabs                = TCS_TABS,
-	Buttons             = TCS_BUTTONS,
-	SingleLine          = TCS_SINGLELINE,
-	MultiLine           = TCS_MULTILINE,
-	RightJustify        = TCS_RIGHTJUSTIFY,
-	FixedWidth          = TCS_FIXEDWIDTH,
-	RaggedRight         = TCS_RAGGEDRIGHT,
-	FocusOnButtonDown   = TCS_FOCUSONBUTTONDOWN,
-	OwnerDrawFixed      = TCS_OWNERDRAWFIXED,
-	ToolTips            = TCS_TOOLTIPS,
-	FocusNever          = TCS_FOCUSNEVER);
+enum_flags(TabControlStyle     , CCStyle               ,
+		   ScrollOpposite      = TCS_SCROLLOPPOSITE    ,
+		   Bottom              = TCS_BOTTOM            ,
+		   Right               = TCS_RIGHT             ,
+		   MultiSelect         = TCS_MULTISELECT       ,
+		   FlatButtons         = TCS_FLATBUTTONS       ,
+		   ForceIconLeft       = TCS_FORCEICONLEFT     ,
+		   ForceLabelLeft      = TCS_FORCELABELLEFT    ,
+		   HotTrack            = TCS_HOTTRACK          ,
+		   Vertical            = TCS_VERTICAL          ,
+		   Tabs                = TCS_TABS              ,
+		   Buttons             = TCS_BUTTONS           ,
+		   SingleLine          = TCS_SINGLELINE        ,
+		   MultiLine           = TCS_MULTILINE         ,
+		   RightJustify        = TCS_RIGHTJUSTIFY      ,
+		   FixedWidth          = TCS_FIXEDWIDTH        ,
+		   RaggedRight         = TCS_RAGGEDRIGHT       ,
+		   FocusOnButtonDown   = TCS_FOCUSONBUTTONDOWN ,
+		   OwnerDrawFixed      = TCS_OWNERDRAWFIXED    ,
+		   ToolTips            = TCS_TOOLTIPS          ,
+		   FocusNever          = TCS_FOCUSNEVER        );
 BaseOf_CommCtl(class TabControlBase) {
 	SFINAE_CommCtl(TabControlBase);
 public:
@@ -802,10 +802,10 @@ using CTabControl = ProxyView<TabControl>;
 
 #pragma region Control Animate
 enum_flags(AnimateStyle, CCStyle,
-	Center              = ACS_CENTER,
-	Transparent         = ACS_TRANSPARENT,
-	AutoPlay            = ACS_AUTOPLAY,
-	Timer               = ACS_TIMER);
+		   Center              = ACS_CENTER,
+		   Transparent         = ACS_TRANSPARENT,
+		   AutoPlay            = ACS_AUTOPLAY,
+		   Timer               = ACS_TIMER);
 BaseOf_CommCtl(class AnimateBase) {
 	SFINAE_CommCtl(AnimateBase);
 public:
@@ -827,35 +827,35 @@ using CAnimate = ProxyView<Animate>;
 #pragma endregion
 
 #pragma region Control Calendar
-enum_flags(CalendarStyle, CCStyle,
-	DayState          = MCS_DAYSTATE,
-	MultiSelect       = MCS_MULTISELECT,
-	WeekNumbers       = MCS_WEEKNUMBERS,
-	NoTodayCircle     = MCS_NOTODAYCIRCLE,
-	NoToday           = MCS_NOTODAY,
-	NoTrailingDates   = MCS_NOTRAILINGDATES,
-	ShortDaysOfWeek   = MCS_SHORTDAYSOFWEEK,
-	NoSelChangeOnNav  = MCS_NOSELCHANGEONNAV);
-enum_class(CalendarView, UINT,
-	Month             = MCMV_MONTH,
-	Year              = MCMV_YEAR,
-	Decade            = MCMV_DECADE,
-	Century           = MCMV_CENTURY);
-enum_class(CalendarID, UINT,
-	Gregorian                  = CAL_GREGORIAN,
-	Gregorian_US               = CAL_GREGORIAN_US,
-	Japan                      = CAL_JAPAN,
-	Taiwan                     = CAL_TAIWAN,
-	Korea                      = CAL_KOREA,
-	Hijri                      = CAL_HIJRI,
-	Thai                       = CAL_THAI,
-	Hebrew                     = CAL_HEBREW,
-	Gregorian_ME_French        = CAL_GREGORIAN_ME_FRENCH,
-	Gregorian_Arabic           = CAL_GREGORIAN_ARABIC,
-	Gregorian_XLit_English     = CAL_GREGORIAN_XLIT_ENGLISH,
-	Gregorian_XLit_French      = CAL_GREGORIAN_XLIT_FRENCH,
-//	Persian                    = CAL_PERSIAN,
-	UmAlQura                   = CAL_UMALQURA);
+enum_flags(CalendarStyle     , CCStyle              ,
+		   DayState          = MCS_DAYSTATE         ,
+		   MultiSelect       = MCS_MULTISELECT      ,
+		   WeekNumbers       = MCS_WEEKNUMBERS      ,
+		   NoTodayCircle     = MCS_NOTODAYCIRCLE    ,
+		   NoToday           = MCS_NOTODAY          ,
+		   NoTrailingDates   = MCS_NOTRAILINGDATES  ,
+		   ShortDaysOfWeek   = MCS_SHORTDAYSOFWEEK  ,
+		   NoSelChangeOnNav  = MCS_NOSELCHANGEONNAV );
+enum_class(CalendarView      , UINT         ,
+		   Month             = MCMV_MONTH   ,
+		   Year              = MCMV_YEAR    ,
+		   Decade            = MCMV_DECADE  ,
+		   Century           = MCMV_CENTURY );
+enum_class(CalendarID        , UINT,
+		   Gregorian               = CAL_GREGORIAN              ,
+		   Gregorian_US            = CAL_GREGORIAN_US           ,
+		   Japan                   = CAL_JAPAN                  ,
+		   Taiwan                  = CAL_TAIWAN                 ,
+		   Korea                   = CAL_KOREA                  ,
+		   Hijri                   = CAL_HIJRI                  ,
+		   Thai                    = CAL_THAI                   ,
+		   Hebrew                  = CAL_HEBREW                 ,
+		   Gregorian_ME_French     = CAL_GREGORIAN_ME_FRENCH    ,
+		   Gregorian_Arabic        = CAL_GREGORIAN_ARABIC       ,
+		   Gregorian_XLit_English  = CAL_GREGORIAN_XLIT_ENGLISH ,
+		   Gregorian_XLit_French   = CAL_GREGORIAN_XLIT_FRENCH  ,
+		/* Persian                 = CAL_PERSIAN                , */
+		   UmAlQura                = CAL_UMALQURA               );
 struct CalendarGridInfo : public StructShim<MCGRIDINFO> {
 	using Super = StructShim<MCGRIDINFO>;
 public:
@@ -934,19 +934,19 @@ using CCalendar = ProxyView<Calendar>;
 #pragma endregion
 
 #pragma region Control DateTimePick
-enum_flags(DateTimePickStyle, CCStyle,
-	UpDown                 = DTS_UPDOWN,
-	ShowNone               = DTS_SHOWNONE,
-	ShortDateFormat        = DTS_SHORTDATEFORMAT,
-	LongDateFormat         = DTS_LONGDATEFORMAT,
-	ShortDateCenturyFormat = DTS_SHORTDATECENTURYFORMAT,
-	TimeFormat             = DTS_TIMEFORMAT,
-	AppCanParse            = DTS_APPCANPARSE,
-	RightAlign             = DTS_RIGHTALIGN);
-enum_class(DateTimePickFlags, DWORD,
-	Error = GDT_ERROR,
-	Valid = GDT_VALID,
-	None  = GDT_NONE);
+enum_flags(DateTimePickStyle      , CCStyle                    ,
+		   UpDown                 = DTS_UPDOWN                 ,
+		   ShowNone               = DTS_SHOWNONE               ,
+		   ShortDateFormat        = DTS_SHORTDATEFORMAT        ,
+		   LongDateFormat         = DTS_LONGDATEFORMAT         ,
+		   ShortDateCenturyFormat = DTS_SHORTDATECENTURYFORMAT ,
+		   TimeFormat             = DTS_TIMEFORMAT             ,
+		   AppCanParse            = DTS_APPCANPARSE            ,
+		   RightAlign             = DTS_RIGHTALIGN             );
+enum_class(DateTimePickFlags      , DWORD     ,
+		   Error                  = GDT_ERROR ,
+		   Valid                  = GDT_VALID ,
+		   None                   = GDT_NONE  );
 struct DateTimePickInfo : public StructShim<DATETIMEPICKERINFO> {
 	using Super = StructShim<DATETIMEPICKERINFO>;
 public:
@@ -1003,63 +1003,63 @@ using CDateTimePick = ProxyView<DateTimePick>;
 #pragma endregion
 
 #pragma region Control Pager
-enum_flags(PagerStyle, CCStyle,
-	Vert                = PGS_VERT,
-	Horz                = PGS_HORZ,
-	AutoScroll          = PGS_AUTOSCROLL,
-	DragNDrop           = PGS_DRAGNDROP);
+enum_flags(PagerStyle , CCStyle        ,
+		   Vert       = PGS_VERT       ,
+		   Horz       = PGS_HORZ       ,
+		   AutoScroll = PGS_AUTOSCROLL ,
+		   DragNDrop  = PGS_DRAGNDROP  );
 #pragma endregion
 
 #pragma region Control NativeFont
-enum_flags(NativeFontStyle, CCStyle,
-	Edit                = NFS_EDIT,
-	Static              = NFS_STATIC,
-	ListCombo           = NFS_LISTCOMBO,
-	Button              = NFS_BUTTON,
-	All                 = NFS_ALL,
-	UseFontAssoc        = NFS_USEFONTASSOC);
+enum_flags(NativeFontStyle , CCStyle          ,
+		   Edit            = NFS_EDIT         ,
+		   Static          = NFS_STATIC       ,
+		   ListCombo       = NFS_LISTCOMBO    ,
+		   Button          = NFS_BUTTON       ,
+		   All             = NFS_ALL          ,
+		   UseFontAssoc    = NFS_USEFONTASSOC );
 #pragma endregion
 
 #pragma region Control Button
-enum_flags(ButtonStyle, CCStyle,
-	PushButton       = BS_PUSHBUTTON,
-	DefPushButton    = BS_DEFPUSHBUTTON,
-	CheckBox         = BS_CHECKBOX,
-	AutoCheckBox     = BS_AUTOCHECKBOX,
-	RadioButton      = BS_RADIOBUTTON,
-	State3           = BS_3STATE,
-	AutoState3       = BS_AUTO3STATE,
-	GroupBox         = BS_GROUPBOX,
-	UserButton       = BS_USERBUTTON,
-	AutoRadioButton  = BS_AUTORADIOBUTTON,
-	PushBox          = BS_PUSHBOX,
-	OwnerDraw        = BS_OWNERDRAW,
-	TypeMask         = BS_TYPEMASK,
-	LeftText         = BS_LEFTTEXT,
-	Text             = BS_TEXT,
-	Icon             = BS_ICON,
-	Bitmap           = BS_BITMAP,
-	Left             = BS_LEFT,
-	Right            = BS_RIGHT,
-	Center           = BS_CENTER,
-	Top              = BS_TOP,
-	Bottom           = BS_BOTTOM,
-	VCenter          = BS_VCENTER,
-	PushLike         = BS_PUSHLIKE,
-	MultiLine        = BS_MULTILINE,
-	Notify           = BS_NOTIFY,
-	Flat             = BS_FLAT);
-enum_flags(ButtonState, SHORT,
-	Unchecked     = BST_UNCHECKED,
-	Checked       = BST_CHECKED,
-	Indeterminate = BST_INDETERMINATE,
-	Pushed        = BST_PUSHED,
-	Focus         = BST_FOCUS);
-enum_flags(ButtonSplitStyle, UINT,
-	NoSplit   = BCSS_NOSPLIT,
-	Stretch   = BCSS_STRETCH,
-	AlignLeft = BCSS_ALIGNLEFT,
-	Image     = BCSS_IMAGE);
+enum_flags(ButtonStyle      , CCStyle            ,
+		   PushButton       = BS_PUSHBUTTON      ,
+		   DefPushButton    = BS_DEFPUSHBUTTON   ,
+		   CheckBox         = BS_CHECKBOX        ,
+		   AutoCheckBox     = BS_AUTOCHECKBOX    ,
+		   RadioButton      = BS_RADIOBUTTON     ,
+		   State3           = BS_3STATE          ,
+		   AutoState3       = BS_AUTO3STATE      ,
+		   GroupBox         = BS_GROUPBOX        ,
+		   UserButton       = BS_USERBUTTON      ,
+		   AutoRadioButton  = BS_AUTORADIOBUTTON ,
+		   PushBox          = BS_PUSHBOX         ,
+		   OwnerDraw        = BS_OWNERDRAW       ,
+		   TypeMask         = BS_TYPEMASK        ,
+		   LeftText         = BS_LEFTTEXT        ,
+		   Text             = BS_TEXT            ,
+		   Icon             = BS_ICON            ,
+		   Bitmap           = BS_BITMAP          ,
+		   Left             = BS_LEFT            ,
+		   Right            = BS_RIGHT           ,
+		   Center           = BS_CENTER          ,
+		   Top              = BS_TOP             ,
+		   Bottom           = BS_BOTTOM          ,
+		   VCenter          = BS_VCENTER         ,
+		   PushLike         = BS_PUSHLIKE        ,
+		   MultiLine        = BS_MULTILINE       ,
+		   Notify           = BS_NOTIFY          ,
+		   Flat             = BS_FLAT            );
+enum_flags(ButtonState      , SHORT              ,
+		   Unchecked        = BST_UNCHECKED      ,
+		   Checked          = BST_CHECKED        ,
+		   Indeterminate    = BST_INDETERMINATE  ,
+		   Pushed           = BST_PUSHED         ,
+		   Focus            = BST_FOCUS          );
+enum_flags(ButtonSplitStyle , UINT               ,
+		   NoSplit          = BCSS_NOSPLIT       ,
+		   Stretch          = BCSS_STRETCH       ,
+		   AlignLeft        = BCSS_ALIGNLEFT     ,
+		   Image            = BCSS_IMAGE         );
 struct ButtonSplitInfo : public StructShim<BUTTON_SPLITINFO> {
 	using Super = StructShim<BUTTON_SPLITINFO>;
 public:
@@ -1154,39 +1154,39 @@ using CButton = ProxyView<Button>;
 #pragma endregion
 
 #pragma region Control Static
-enum_flags(StaticStyle, CCStyle,
-	Left            = SS_LEFT,
-	Center          = SS_CENTER,
-	Right           = SS_RIGHT,
-	Icon            = SS_ICON,
-	BlackRect       = SS_BLACKRECT,
-	GrayRect        = SS_GRAYRECT,
-	WhiteRect       = SS_WHITERECT,
-	BlackFrame      = SS_BLACKFRAME,
-	GrayFrame       = SS_GRAYFRAME,
-	WhiteFrame      = SS_WHITEFRAME,
-	UserItem        = SS_USERITEM,
-	Simple          = SS_SIMPLE,
-	LeftNoWordWrap  = SS_LEFTNOWORDWRAP,
-	OwnerDraw       = SS_OWNERDRAW,
-	Bitmap          = SS_BITMAP,
-	EnhMetaFile     = SS_ENHMETAFILE,
-	EtchedHorz      = SS_ETCHEDHORZ,
-	EtchedVert      = SS_ETCHEDVERT,
-	EtchedFrame     = SS_ETCHEDFRAME,
-	TypeMask        = SS_TYPEMASK,
-	RealSizeControl = SS_REALSIZECONTROL,
-	NoPrefix        = SS_NOPREFIX,
-	Notify          = SS_NOTIFY,
-	CenterImage     = SS_CENTERIMAGE,
-	RightJust       = SS_RIGHTJUST,
-	RealSizeImage   = SS_REALSIZEIMAGE,
-	Sunken          = SS_SUNKEN,
-	EditControl     = SS_EDITCONTROL,
-	EndEllipsis     = SS_ENDELLIPSIS,
-	PathEllipsis    = SS_PATHELLIPSIS,
-	WordEllipsis    = SS_WORDELLIPSIS,
-	EllipsisMask    = SS_ELLIPSISMASK);
+enum_flags(StaticStyle     , CCStyle            ,
+		   Left            = SS_LEFT            ,
+		   Center          = SS_CENTER          ,
+		   Right           = SS_RIGHT           ,
+		   Icon            = SS_ICON            ,
+		   BlackRect       = SS_BLACKRECT       ,
+		   GrayRect        = SS_GRAYRECT        ,
+		   WhiteRect       = SS_WHITERECT       ,
+		   BlackFrame      = SS_BLACKFRAME      ,
+		   GrayFrame       = SS_GRAYFRAME       ,
+		   WhiteFrame      = SS_WHITEFRAME      ,
+		   UserItem        = SS_USERITEM        ,
+		   Simple          = SS_SIMPLE          ,
+		   LeftNoWordWrap  = SS_LEFTNOWORDWRAP  ,
+		   OwnerDraw       = SS_OWNERDRAW       ,
+		   Bitmap          = SS_BITMAP          ,
+		   EnhMetaFile     = SS_ENHMETAFILE     ,
+		   EtchedHorz      = SS_ETCHEDHORZ      ,
+		   EtchedVert      = SS_ETCHEDVERT      ,
+		   EtchedFrame     = SS_ETCHEDFRAME     ,
+		   TypeMask        = SS_TYPEMASK        ,
+		   RealSizeControl = SS_REALSIZECONTROL ,
+		   NoPrefix        = SS_NOPREFIX        ,
+		   Notify          = SS_NOTIFY          ,
+		   CenterImage     = SS_CENTERIMAGE     ,
+		   RightJust       = SS_RIGHTJUST       ,
+		   RealSizeImage   = SS_REALSIZEIMAGE   ,
+		   Sunken          = SS_SUNKEN          ,
+		   EditControl     = SS_EDITCONTROL     ,
+		   EndEllipsis     = SS_ENDELLIPSIS     ,
+		   PathEllipsis    = SS_PATHELLIPSIS    ,
+		   WordEllipsis    = SS_WORDELLIPSIS    ,
+		   EllipsisMask    = SS_ELLIPSISMASK    );
 BaseOf_CommCtl(class StaticBase) {
 	SFINAE_CommCtl(StaticBase);
 public:
@@ -1219,25 +1219,25 @@ using CStatic = ProxyView<Static>;
 #pragma endregion
 
 #pragma region Control Edit
-enum_flags(EditStyle, CCStyle,
-	Left        = ES_LEFT,
-	Center      = ES_CENTER,
-	Right       = ES_RIGHT,
-	MultiLine   = ES_MULTILINE,
-	UpperCase   = ES_UPPERCASE,
-	LowerCase   = ES_LOWERCASE,
-	Password    = ES_PASSWORD,
-	AutoVScroll = ES_AUTOVSCROLL,
-	AutoHScroll = ES_AUTOHSCROLL,
-	NoHideSel   = ES_NOHIDESEL,
-	OEMConvert  = ES_OEMCONVERT,
-	ReadOnly    = ES_READONLY,
-	WantReturn  = ES_WANTRETURN,
-	Number      = ES_NUMBER);
-enum_flags(EditMargin, UINT,
-	Left     = EC_LEFTMARGIN,
-	Right    = EC_RIGHTMARGIN,
-	FontInfo = EC_USEFONTINFO);
+enum_flags(EditStyle   , CCStyle        ,
+		   Left        = ES_LEFT        ,
+		   Center      = ES_CENTER      ,
+		   Right       = ES_RIGHT       ,
+		   MultiLine   = ES_MULTILINE   ,
+		   UpperCase   = ES_UPPERCASE   ,
+		   LowerCase   = ES_LOWERCASE   ,
+		   Password    = ES_PASSWORD    ,
+		   AutoVScroll = ES_AUTOVSCROLL ,
+		   AutoHScroll = ES_AUTOHSCROLL ,
+		   NoHideSel   = ES_NOHIDESEL   ,
+		   OEMConvert  = ES_OEMCONVERT  ,
+		   ReadOnly    = ES_READONLY    ,
+		   WantReturn  = ES_WANTRETURN  ,
+		   Number      = ES_NUMBER      );
+enum_flags(EditMargin  , UINT           ,
+		   Left        = EC_LEFTMARGIN  ,
+		   Right       = EC_RIGHTMARGIN ,
+		   FontInfo    = EC_USEFONTINFO );
 struct EditBalloonTip : public StructShim<EDITBALLOONTIP> {
 	using Super = StructShim<EDITBALLOONTIP>;
 };
@@ -1341,24 +1341,24 @@ using CEdit = ProxyView<Edit>;
 #pragma endregion
 
 #pragma region Control ListBox
-enum_flags(ListBoxStyle, CCStyle,
-	Notify            = LBS_NOTIFY,
-	Sort              = LBS_SORT,
-	NoRedraw          = LBS_NOREDRAW,
-	MultipleSel       = LBS_MULTIPLESEL,
-	OwnerDrawFixed    = LBS_OWNERDRAWFIXED,
-	OwnerDrawVariable = LBS_OWNERDRAWVARIABLE,
-	HasStrings        = LBS_HASSTRINGS,
-	UseTabStops       = LBS_USETABSTOPS,
-	NoIntegralHeight  = LBS_NOINTEGRALHEIGHT,
-	MultiColumn       = LBS_MULTICOLUMN,
-	WantKeyboardInput = LBS_WANTKEYBOARDINPUT,
-	ExtendedSel       = LBS_EXTENDEDSEL,
-	DisableNoScroll   = LBS_DISABLENOSCROLL,
-	NoData            = LBS_NODATA,
-	NoSel             = LBS_NOSEL,
-	ComboBox          = LBS_COMBOBOX,
-	Standard          = LBS_STANDARD);
+enum_flags(ListBoxStyle      , CCStyle               ,
+		   Notify            = LBS_NOTIFY            ,
+		   Sort              = LBS_SORT              ,
+		   NoRedraw          = LBS_NOREDRAW          ,
+		   MultipleSel       = LBS_MULTIPLESEL       ,
+		   OwnerDrawFixed    = LBS_OWNERDRAWFIXED    ,
+		   OwnerDrawVariable = LBS_OWNERDRAWVARIABLE ,
+		   HasStrings        = LBS_HASSTRINGS        ,
+		   UseTabStops       = LBS_USETABSTOPS       ,
+		   NoIntegralHeight  = LBS_NOINTEGRALHEIGHT  ,
+		   MultiColumn       = LBS_MULTICOLUMN       ,
+		   WantKeyboardInput = LBS_WANTKEYBOARDINPUT ,
+		   ExtendedSel       = LBS_EXTENDEDSEL       ,
+		   DisableNoScroll   = LBS_DISABLENOSCROLL   ,
+		   NoData            = LBS_NODATA            ,
+		   NoSel             = LBS_NOSEL             ,
+		   ComboBox          = LBS_COMBOBOX          ,
+		   Standard          = LBS_STANDARD          );
 //#define LB_OKAY             0
 //#define LB_ERR              (-1)
 //#define LB_ERRSPACE         (-2)
@@ -1412,20 +1412,20 @@ using CListBox = ProxyView<ListBox>;
 #pragma endregion
 
 #pragma region Control ComboBox
-enum_flags(ComboBoxStyle, CCStyle,
-	Simple             = CBS_SIMPLE,
-	DropDown           = CBS_DROPDOWN,
-	DropDownList       = CBS_DROPDOWNLIST,
-	OwnerDrawFixed     = CBS_OWNERDRAWFIXED,
-	OwnerDrawVariable  = CBS_OWNERDRAWVARIABLE,
-	AutoHScroll        = CBS_AUTOHSCROLL,
-	OEMConvert         = CBS_OEMCONVERT,
-	Sort               = CBS_SORT,
-	HasStrings         = CBS_HASSTRINGS,
-	NoIntegralHeight   = CBS_NOINTEGRALHEIGHT,
-	DisableNoScroll    = CBS_DISABLENOSCROLL,
-	UpperCase          = CBS_UPPERCASE,
-	LowerCase          = CBS_LOWERCASE);
+enum_flags(ComboBoxStyle      , CCStyle               ,
+		   Simple             = CBS_SIMPLE            ,
+		   DropDown           = CBS_DROPDOWN          ,
+		   DropDownList       = CBS_DROPDOWNLIST      ,
+		   OwnerDrawFixed     = CBS_OWNERDRAWFIXED    ,
+		   OwnerDrawVariable  = CBS_OWNERDRAWVARIABLE ,
+		   AutoHScroll        = CBS_AUTOHSCROLL       ,
+		   OEMConvert         = CBS_OEMCONVERT        ,
+		   Sort               = CBS_SORT              ,
+		   HasStrings         = CBS_HASSTRINGS        ,
+		   NoIntegralHeight   = CBS_NOINTEGRALHEIGHT  ,
+		   DisableNoScroll    = CBS_DISABLENOSCROLL   ,
+		   UpperCase          = CBS_UPPERCASE         ,
+		   LowerCase          = CBS_LOWERCASE         );
 BaseOf_CommCtl(class ComboBoxBase) {
 	SFINAE_CommCtl(ComboBoxBase);
 public:
@@ -1440,17 +1440,17 @@ using CComboBox = ProxyView<ComboBox>;
 #pragma endregion
 
 #pragma region Control ScrollBar
-enum_flags(ScrollBarStyle, CCStyle,
-	Horz                    = SBS_HORZ,
-	Vert                    = SBS_VERT,
-	TopAlign                = SBS_TOPALIGN,
-	LeftAlign               = SBS_LEFTALIGN,
-	BottomAlign             = SBS_BOTTOMALIGN,
-	RightAlign              = SBS_RIGHTALIGN,
-	SizeBoxTopLeftAlign     = SBS_SIZEBOXTOPLEFTALIGN,
-	SizeBoxBottomRightAlign = SBS_SIZEBOXBOTTOMRIGHTALIGN,
-	SizeBox                 = SBS_SIZEBOX,
-	SizeGrip                = SBS_SIZEGRIP);
+enum_flags(ScrollBarStyle          , CCStyle                     ,
+		   Horz                    = SBS_HORZ                    ,
+		   Vert                    = SBS_VERT                    ,
+		   TopAlign                = SBS_TOPALIGN                ,
+		   LeftAlign               = SBS_LEFTALIGN               ,
+		   BottomAlign             = SBS_BOTTOMALIGN             ,
+		   RightAlign              = SBS_RIGHTALIGN              ,
+		   SizeBoxTopLeftAlign     = SBS_SIZEBOXTOPLEFTALIGN     ,
+		   SizeBoxBottomRightAlign = SBS_SIZEBOXBOTTOMRIGHTALIGN ,
+		   SizeBox                 = SBS_SIZEBOX                 ,
+		   SizeGrip                = SBS_SIZEGRIP                );
 struct ScrollBarInfo : public StructShim<SCROLLBARINFO> {
 	using Super = StructShim<SCROLLBARINFO>;
 public:

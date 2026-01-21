@@ -262,19 +262,19 @@ concept IsCharW = IsSame<TCHAR, WCHAR> || IsSame<TCHAR, LPWSTR> || IsSame<TCHAR,
 
 template<bool IsUnicode, class AnyTypeW, class AnyTypeA>
 constexpr auto AnyX(AnyTypeW *w, AnyTypeA *a) {
-	if_c(IsUnicode)
+	if_c (IsUnicode)
 		 return w;
 	else return a;
 }
 template<bool IsUnicode, class AnyTypeW, class AnyTypeA>
 constexpr auto &AnyX(AnyTypeW &w, AnyTypeA &a) {
-	if_c(IsUnicode)
+	if_c (IsUnicode)
 		 return w;
 	else return a;
 }
 template<bool IsUnicode, class AnyTypeW, class AnyTypeA>
 constexpr auto AnyX(AnyTypeW &&w, AnyTypeA &&a) {
-	if_c(IsUnicode)
+	if_c (IsUnicode)
 		 return w;
 	else return a;
 }

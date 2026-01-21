@@ -24,7 +24,7 @@ concept Extendable = std::is_class_v<AnyType> && !std::is_final_v<AnyType>;
 
 // real address retrievers
 
-constexpr auto *address_cast(auto &obj) ret_as(std::addressof(obj));
+constexpr auto *address_cast(auto &obj) noexcept ret_as(std::addressof(obj));
 
 // type name retrievers
 
@@ -74,18 +74,40 @@ template<class Type1, class Type2> concept          SameSizeType = IsSameSize<Ty
 template<class AnyType> constexpr SizeT SizeOf        = sizeof(AnyType);
 template<             > constexpr SizeT SizeOf<void>  = 0;
 
-/* Same Type Helpers */
+/* Same Type & Value Helpers */
 
-template<class Type1, class Type2>         constexpr bool IsSame               = false;
-template<class Type0>                      constexpr bool IsSame<Type0, Type0> = true;
+// Types
 
-template<class AnyType, class...OtherType> constexpr bool IsOneOf    = (IsSame<AnyType, OtherType> || ...);
+template<class Type1, class Type2>         constexpr bool  IsSame               = false;
+template<class Type0>                      constexpr bool  IsSame<Type0, Type0> = true;
+template<class Type1, class Type2>         constexpr bool NotSame               = !IsSame<Type1, Type2>;
 
-template<class Type1, class Type2> concept           SameAs =  IsSame <Type1, Type2>;
-template<class Type1, class Type2> constexpr bool NotSame   = !IsSame <Type1, Type2>;
-template<class Type1, class Type2> concept        NotSameAs = NotSame <Type1, Type2>;
-template<class AnyType, class...OtherType> concept           OneOf =  IsOneOf <AnyType, OtherType...>;
-template<class AnyType, class...OtherType> constexpr bool NotOneOf = !IsOneOf <AnyType, OtherType...>;
+template<class AnyType, class...TypeN> constexpr bool  AllSame = ( IsSame<AnyType, TypeN> && ...);
+
+template<class AnyType, class...TypeN> constexpr bool  IsOneOf = ( IsSame<AnyType, TypeN> || ...);
+template<class AnyType, class...TypeN> constexpr bool IsNoneOf = (NotSame<AnyType, TypeN> && ...);
+
+template<class Type1, class Type2> concept       SameAs =  IsSame<Type1, Type2>;
+template<class Type1, class Type2> concept    NotSameAs = NotSame<Type1, Type2>;
+
+template<class AnyType, class...TypeN> concept    OneOf =  IsOneOf<AnyType, TypeN...>;
+template<class AnyType, class...TypeN> concept   NoneOf = IsNoneOf<AnyType, TypeN...>;
+
+// Values
+
+template<auto val1, auto val2> constexpr bool  IsSameValue = val1 == val2;
+template<auto val1, auto val2> constexpr bool NotSameValue = val1 != val2;
+
+template<auto val, auto...other_valN> constexpr bool  AllSameValue = ( IsSameValue<val, other_valN> && ...);
+
+template<auto val, auto...other_valN> constexpr bool  IsOneOfValue = ( IsSameValue<val, other_valN> || ...);
+template<auto val, auto...other_valN> constexpr bool IsNoneOfValue = (NotSameValue<val, other_valN> && ...);
+
+template<auto val1, auto val2> concept          SameAsValue =  IsSameValue<val1, val2>;
+template<auto val1, auto val2> concept       NotSameAsValue = NotSameValue<val1, val2>;
+
+template<auto val, auto...other_valN> concept    OneOfValue =  IsOneOfValue<val, other_valN...>;
+template<auto val, auto...other_valN> concept   NoneOfValue = IsNoneOfValue<val, other_valN...>;
 
 /* Numeric Types */
 
@@ -100,15 +122,63 @@ template<class AnyType> concept FloatType = OneOf<AnyType, float, double/*, long
 template<class AnyType> concept SignedAllType = FloatType<AnyType> || SignedIntagerType<AnyType>;
 template<class AnyType> concept NumberType    = FloatType<AnyType> || Numeral<AnyType>;
 
-/* Condition Type Selectors */
+/* Condition Type & Value Selectors */
+
+// Types
 
 template<bool  , class TrueType, class FalseType> struct ConditionType;
 template<        class TrueType, class FalseType> struct ConditionType<true,  TrueType, FalseType> { using type = TrueType;  };
 template<        class TrueType, class FalseType> struct ConditionType<false, TrueType, FalseType> { using type = FalseType; };
 template<bool b, class TrueType, class FalseType>  using ConditionOf = typename ConditionType<b, TrueType, FalseType>::type;
 
+template<class AnyType, class...SwitchTypeN> struct SwitchType;
+template<class AnyType, class Type1, class TypeRet, class...SwitchTypeN>
+struct SwitchType<AnyType, Type1, TypeRet, SwitchTypeN...> {
+	using type = ConditionOf<
+		IsSame<AnyType, Type1>,
+		TypeRet,
+		SwitchType<AnyType, SwitchTypeN...>
+	>;
+};
+template<class AnyType, class Type1, class TypeRet>
+struct SwitchType<AnyType, Type1, TypeRet> {
+	static_assert(!IsSame<AnyType, Type1>, "SwitchType Error: No matching type found.");
+	using type = TypeRet;
+};
+template<class AnyType, class TypeDefault>
+struct SwitchType<AnyType, TypeDefault> {
+	using type = TypeDefault;
+};
+template<class AnyType, class...SwitchTypeN>
+using SwitchOf = typename SwitchType<AnyType, SwitchTypeN...>::type;
+
 template<class AnyType, class AnyDefault>
 using VoidChain = ConditionOf<IsVoid<AnyType>, AnyDefault, AnyType>;
+
+// Values
+
+template<bool b, auto true_val, auto false_val> constexpr auto ConditionOfValue                             = false_val;
+template<        auto true_val, auto false_val> constexpr auto ConditionOfValue<false, true_val, false_val> =  true_val;
+
+template<auto key, auto...caseN> struct SwitchValueType;
+template<auto key, auto val, auto ret, auto...caseN>
+struct SwitchValueType<key, val, ret, caseN...> {
+	template<bool is_same, class = void>
+	static constexpr auto _value = ret;
+	template<class _>
+	static constexpr auto _value<false, _> = SwitchValueType<key, caseN...>::value;
+	static constexpr auto value = _value<IsSameValue<key, val>>;
+};
+template<auto key, auto val, auto ret>
+struct SwitchValueType<key, val, ret> {
+    static_assert(IsSameValue<key, val>, "SwitchValueType Error: No matching value found.");
+	static constexpr auto value = ret;
+};
+template<auto key, auto default_case> struct SwitchValueType<key, default_case> {
+	static constexpr auto value = default_case;
+};
+template<auto key, auto...caseN>
+constexpr auto SwitchValueOf = SwitchValueType<key, caseN...>::value;
 
 #pragma endregion
 
@@ -116,29 +186,29 @@ using VoidChain = ConditionOf<IsVoid<AnyType>, AnyDefault, AnyType>;
 
 /* Type filters */
 
-template<class AnyType> constexpr bool IsLeft                     = false;
-template<class AnyType> constexpr bool IsRight                    = false;
-template<class AnyType> constexpr bool IsPointer                  = false;
-template<class AnyType> constexpr bool IsConst                    = false;
-template<class AnyType> constexpr bool IsVolatile                 = false;
-template<class AnyType> constexpr bool IsArrayVariadic            = false;
-template<class AnyType> constexpr bool IsArrayInLength            = false;
-template<class AnyType> constexpr bool IsMemberPointer            = false;
-template<class AnyType> constexpr bool IsFuntionProto             = false;
-template<class AnyType> constexpr bool IsFuntionVariadicProto     = false;
+template<class AnyType> constexpr bool IsLeft                 = false;
+template<class AnyType> constexpr bool IsRight                = false;
+template<class AnyType> constexpr bool IsPointer              = false;
+template<class AnyType> constexpr bool IsConst                = false;
+template<class AnyType> constexpr bool IsVolatile             = false;
+template<class AnyType> constexpr bool IsArrayVariadic        = false;
+template<class AnyType> constexpr bool IsArrayInLength        = false;
+template<class AnyType> constexpr bool IsMemberPointer        = false;
+template<class AnyType> constexpr bool IsFuntionProto         = false;
+template<class AnyType> constexpr bool IsFuntionVariadicProto = false;
 
-template<class AnyType>                 constexpr bool IsLeft                     <AnyType &>             = true;
-template<class AnyType>                 constexpr bool IsRight                    <AnyType &&>            = true;
-template<class AnyType>                 constexpr bool IsPointer                  <AnyType *>             = true;
-template<class AnyType>                 constexpr bool IsConst                    <AnyType const>         = true;
-template<class AnyType>                 constexpr bool IsVolatile                 <AnyType volatile>      = true;
-template<class AnyType>                 constexpr bool IsArrayVariadic            <AnyType     [   ]>     = true;
-template<class AnyType, SizeT Len>      constexpr bool IsArrayInLength            <AnyType     [Len]>     = true;
-template<class AnyType, SizeT Len>      constexpr bool IsArrayInLength            <AnyType (& )[Len]>     = true;
-template<class AnyType, SizeT Len>      constexpr bool IsArrayInLength            <AnyType (&&)[Len]>     = true;
-template<class AnyType, class AnyOnwer> constexpr bool IsMemberPointer            <AnyType AnyOnwer:: *>     = true;
-template<class AnyType, class...AnyArg> constexpr bool IsFuntionProto             <AnyType (AnyArg...)>      = true;
-template<class AnyType, class...AnyArg> constexpr bool IsFuntionVariadicProto     <AnyType (AnyArg..., ...)> = true;
+template<class AnyType>                 constexpr bool IsLeft                         <AnyType &>             = true;
+template<class AnyType>                 constexpr bool IsRight                        <AnyType &&>            = true;
+template<class AnyType>                 constexpr bool IsPointer                      <AnyType *>             = true;
+template<class AnyType>                 constexpr bool IsConst                        <AnyType const>         = true;
+template<class AnyType>                 constexpr bool IsVolatile                     <AnyType volatile>      = true;
+template<class AnyType>                 constexpr bool IsArrayVariadic                <AnyType     [   ]>     = true;
+template<class AnyType, SizeT Len>      constexpr bool IsArrayInLength                <AnyType     [Len]>     = true;
+template<class AnyType, SizeT Len>      constexpr bool IsArrayInLength                <AnyType (& )[Len]>     = true;
+template<class AnyType, SizeT Len>      constexpr bool IsArrayInLength                <AnyType (&&)[Len]>     = true;
+template<class AnyType, class AnyOnwer> constexpr bool IsMemberPointer                <AnyType AnyOnwer:: *>     = true;
+template<class AnyType, class...ParaN>  constexpr bool IsFuntionProto                 <AnyType (ParaN...)>      = true;
+template<class AnyType, class...ParaN>  constexpr bool IsFuntionVariadicProto         <AnyType (ParaN..., ...)> = true;
 
 template<class AnyType> concept LeftType                    = IsLeft                  <AnyType>;
 template<class AnyType> concept RightType                   = IsRight                 <AnyType>;
@@ -210,22 +280,22 @@ template<class AnyType> constexpr auto ModOf = ProtoNodeOf<AnyType>::modificatio
 template<class...>
 class ParaList;
 
-template<class AnyRet, class...AnyPara>
-struct ProtoNodeOf<AnyRet(AnyPara...)> {
-	using proto       = AnyRet(AnyPara...);
+template<class AnyRet, class...ParaN>
+struct ProtoNodeOf<AnyRet(ParaN...)> {
+	using proto       = AnyRet(ParaN...);
 	using return_type = AnyRet;
 	template<template<class...> class AnyList = ParaList>
-	using para_list = AnyList<AnyPara...>;
-	static constexpr auto countof_para = sizeof...(AnyPara);
+	using para_list = AnyList<ParaN...>;
+	static constexpr auto countof_para = sizeof...(ParaN);
 	static constexpr Modifications modification = Modifications::FuntionProto;
 };
-template<class AnyRet, class...AnyPara>
-struct ProtoNodeOf<AnyRet(AnyPara..., ...)>  {
-	using proto       = AnyRet(AnyPara..., ...);
+template<class AnyRet, class...ParaN>
+struct ProtoNodeOf<AnyRet(ParaN..., ...)>  {
+	using proto       = AnyRet(ParaN..., ...);
 	using return_type = AnyRet;
 	template<template<class...> class AnyList = ParaList>
-	using listof_para = AnyList<AnyPara...>;
-	static constexpr bool countof_para = sizeof...(AnyPara);
+	using listof_para = AnyList<ParaN...>;
+	static constexpr bool countof_para = sizeof...(ParaN);
 	static constexpr Modifications modification = Modifications::FuntionVariadicProto;
 };
 
@@ -239,24 +309,24 @@ struct TypeShim : ProtoNodeOf<LastType> {
 	static constexpr Modifications modification = mod;
 };
 
-template<class AnyType>                 struct LeftShim              : TypeShim<AnyType, AnyType &        , Modifications::Left> {};
-template<class AnyType>                 struct RightShim             : TypeShim<AnyType, AnyType &&       , Modifications::Right> {};
-template<class AnyType>                 struct PointerShim           : TypeShim<AnyType, AnyType *        , Modifications::Pointer> {};
-template<class AnyType>                 struct ConstShim             : TypeShim<AnyType, AnyType const    , Modifications::Const> {};
-template<class AnyType>                 struct VolatileShim          : TypeShim<AnyType, AnyType volatile , Modifications::Volatile> {};
-template<class AnyType, SizeT Len = 0> struct ArrayShim              : TypeShim<AnyType, AnyType [Len]    , Modifications::ArrayInLength> {};
-template<class AnyType>                 struct ArrayShim<AnyType, 0> : TypeShim<AnyType, AnyType [   ]    , Modifications::ArrayVariadic> {};
-template<class AnyType, class Onwer>    struct MemberPointerShim     : TypeShim<AnyType, AnyType Onwer:: *, Modifications::MemberPointer> {}; ///////
+template<class AnyType>                struct LeftShim              : TypeShim<AnyType, AnyType &        , Modifications::Left> {};
+template<class AnyType>                struct RightShim             : TypeShim<AnyType, AnyType &&       , Modifications::Right> {};
+template<class AnyType>                struct PointerShim           : TypeShim<AnyType, AnyType *        , Modifications::Pointer> {};
+template<class AnyType>                struct ConstShim             : TypeShim<AnyType, AnyType const    , Modifications::Const> {};
+template<class AnyType>                struct VolatileShim          : TypeShim<AnyType, AnyType volatile , Modifications::Volatile> {};
+template<class AnyType, SizeT Len = 0> struct ArrayShim             : TypeShim<AnyType, AnyType [Len]    , Modifications::ArrayInLength> {};
+template<class AnyType>                struct ArrayShim<AnyType, 0> : TypeShim<AnyType, AnyType [   ]    , Modifications::ArrayVariadic> {};
+template<class AnyType, class Onwer>   struct MemberPointerShim     : TypeShim<AnyType, AnyType Onwer:: *, Modifications::MemberPointer> {}; ///////
 
 /* Prototype Nodes */
 
-template<class AnyType>              struct ProtoNodeOf<AnyType &>              : LeftShim          <AnyType>         {};
-template<class AnyType>              struct ProtoNodeOf<AnyType &&>             : RightShim         <AnyType>         {};
-template<class AnyType>              struct ProtoNodeOf<AnyType *>              : PointerShim       <AnyType>         {};
-template<class AnyType>              struct ProtoNodeOf<AnyType const>          : ConstShim         <AnyType>         {};
-template<class AnyType>              struct ProtoNodeOf<AnyType volatile>       : VolatileShim      <AnyType>         {};
-template<class AnyType, class Owner> struct ProtoNodeOf<AnyType Owner:: *>      : MemberPointerShim <AnyType, Owner>  { using owner = Owner; };
-template<class AnyType>              struct ProtoNodeOf<AnyType          [   ]> : ArrayShim         <AnyType>         { static constexpr auto length = 0; };
+template<class AnyType>              struct ProtoNodeOf<AnyType &>               : LeftShim          <AnyType>         {};
+template<class AnyType>              struct ProtoNodeOf<AnyType &&>              : RightShim         <AnyType>         {};
+template<class AnyType>              struct ProtoNodeOf<AnyType *>               : PointerShim       <AnyType>         {};
+template<class AnyType>              struct ProtoNodeOf<AnyType const>           : ConstShim         <AnyType>         {};
+template<class AnyType>              struct ProtoNodeOf<AnyType volatile>        : VolatileShim      <AnyType>         {};
+template<class AnyType, class Owner> struct ProtoNodeOf<AnyType Owner:: *>       : MemberPointerShim <AnyType, Owner>  { using owner = Owner; };
+template<class AnyType>              struct ProtoNodeOf<AnyType           [   ]> : ArrayShim         <AnyType>         { static constexpr auto length = 0; };
 template<class AnyType, SizeT Len>   struct ProtoNodeOf<AnyType           [Len]> : ArrayShim         <AnyType, Len>    { static constexpr auto length = Len; };
 template<class AnyType, SizeT Len>   struct ProtoNodeOf<AnyType (&)       [Len]> : LeftShim          <AnyType [Len]>   {};
 template<class AnyType, SizeT Len>   struct ProtoNodeOf<AnyType (&&)      [Len]> : RightShim         <AnyType [Len]>   {};
@@ -293,11 +363,11 @@ template<              template<class> class ShimType, class AnyType> struct Con
 template<              template<class> class ShimType, class AnyType> struct CondShim<false, ShimType, AnyType> { using type = AnyType; };
 template<bool UseShim, template<class> class ShimType, class AnyType> using  CondShimFor = typename CondShim<UseShim, ShimType, AnyType>::type;
 
-template<class AnyType> using LeftFor      = CondShimFor<!IsLeft     <AnyType> , LeftShim       , AnyType>;
-template<class AnyType> using RightFor     = CondShimFor<!IsRight    <AnyType> , RightShim      , AnyType>;
-template<class AnyType> using PointerFor   = CondShimFor<!IsPointer  <AnyType> , PointerShim    , AnyType>;
-template<class AnyType> using ConstFor     = CondShimFor<!IsConst    <AnyType> , ConstShim      , AnyType>;
-template<class AnyType> using VolatileFor  = CondShimFor<!IsVolatile <AnyType> , VolatileShim   , AnyType>;
+template<class AnyType> using LeftFor      = CondShimFor<!IsLeft    <AnyType>, LeftShim    , AnyType>;
+template<class AnyType> using RightFor     = CondShimFor<!IsRight   <AnyType>, RightShim   , AnyType>;
+template<class AnyType> using PointerFor   = CondShimFor<!IsPointer <AnyType>, PointerShim , AnyType>;
+template<class AnyType> using ConstFor     = CondShimFor<!IsConst   <AnyType>, ConstShim   , AnyType>;
+template<class AnyType> using VolatileFor  = CondShimFor<!IsVolatile<AnyType>, VolatileShim, AnyType>;
 
 // array
 
@@ -306,9 +376,9 @@ template<              class AnyType, SizeT Len> struct CondArrayShim<false, Any
 template<              class AnyType, SizeT Len> struct CondArrayShim<true , AnyType, Len> { using type = typename ArrayShim<AnyType, Len>::type; };
 template<bool UseShim, class AnyType, SizeT Len>  using CondArrayShimFor = typename CondArrayShim<UseShim, AnyType, Len>::type;
 
-template<ArrayType AnyArray>                  using ArrayForVariadic  = ArrayOf<RemoveModOf<AnyArray>>;
-template<ArrayType AnyArray, SizeT Len>      using LengthForArray    = ArrayOf<RemoveModOf<AnyArray>, Len>;
-template<class     AnyType , SizeT Len = 0>  using ArrayFor          = CondArrayShimFor<!IsArray<AnyType>, AnyType, Len>;
+template<ArrayType AnyArray>                using ArrayForVariadic  = ArrayOf<RemoveModOf<AnyArray>>;
+template<ArrayType AnyArray, SizeT Len>     using LengthForArray    = ArrayOf<RemoveModOf<AnyArray>, Len>;
+template<class     AnyType , SizeT Len = 0> using ArrayFor          = CondArrayShimFor<!IsArray<AnyType>, AnyType, Len>;
 
 /* functional */
 
@@ -351,22 +421,22 @@ constexpr bool IsStaticFunctionType         (         StaticFunctionType auto) r
 constexpr bool IsStaticFunctionVariadicType ( StaticFunctionVariadicType auto) ret_as(true);
 constexpr bool IsStaticFunctionAllType      (      StaticFunctionAllType auto) ret_as(true);
 
-template<class AnyRet, class...AnyPara> using StaticFunctionProtoOf           = AnyRet   (AnyPara...);
-template<class AnyRet, class...AnyPara> using StaticFunctionVariadicProtoOf   = AnyRet   (AnyPara..., ...);
-template<class AnyRet, class...AnyPara> using StaticFunctionOf                = AnyRet(&)(AnyPara...);
-template<class AnyRet, class...AnyPara> using StaticFunctionPtrOf             = AnyRet(*)(AnyPara...);
-template<class AnyRet, class...AnyPara> using StaticFunctionPointerOf         = AnyRet(*)(AnyPara...);
-template<class AnyRet, class...AnyPara> using StaticFunctionVariadicOf        = AnyRet(&)(AnyPara..., ...);
-template<class AnyRet, class...AnyPara> using StaticFunctionVariadicPtrOf     = AnyRet(*)(AnyPara..., ...);
-template<class AnyRet, class...AnyPara> using StaticFunctionVariadicPointerOf = AnyRet(*)(AnyPara..., ...);
+template<class AnyRet, class...ParaN> using StaticFunctionProtoOf           = AnyRet   (ParaN...);
+template<class AnyRet, class...ParaN> using StaticFunctionVariadicProtoOf   = AnyRet   (ParaN..., ...);
+template<class AnyRet, class...ParaN> using StaticFunctionOf                = AnyRet(&)(ParaN...);
+template<class AnyRet, class...ParaN> using StaticFunctionPtrOf             = AnyRet(*)(ParaN...);
+template<class AnyRet, class...ParaN> using StaticFunctionPointerOf         = AnyRet(*)(ParaN...);
+template<class AnyRet, class...ParaN> using StaticFunctionVariadicOf        = AnyRet(&)(ParaN..., ...);
+template<class AnyRet, class...ParaN> using StaticFunctionVariadicPtrOf     = AnyRet(*)(ParaN..., ...);
+template<class AnyRet, class...ParaN> using StaticFunctionVariadicPointerOf = AnyRet(*)(ParaN..., ...);
 
 /* Others */
 
 template<ArrayType      AnyArray> constexpr SizeT CountOfArray = ProtoNodeOf<AnyArray>::length;
-template<FunctionAllType AnyFunc> constexpr SizeT CountOfPara = ProtoNodeOf<AnyFunc>::countof_para;
+template<FunctionAllType AnyFunc> constexpr SizeT CountOfPara  = ProtoNodeOf<AnyFunc>::countof_para;
 
-constexpr SizeT ArrayCountOf(ArrayType       auto & a) ret_as(CountOfArray<decltype(a)>);
-constexpr SizeT  ParaCountOf(FunctionAllType auto   f) ret_as( CountOfPara<decltype(f)>);
+template<ArrayType       auto arr> constexpr SizeT ArrayCountOf = CountOfArray<decltype(arr)>;
+template<FunctionAllType auto fun> constexpr SizeT  ParaCountOf = CountOfPara <decltype(fun)>;
 
 template<FunctionAllType AnyFunc> using ReturnOfType = typename ProtoNodeOf<AnyFunc>::return_type;
 template<FunctionAllType auto fn> using ReturnTypeOf = typename ProtoNodeOf<decltype(fn)>::return_type;
@@ -377,8 +447,8 @@ using ParaListTypeOf = typename ProtoNodeOf<decltype(fn)>::template listof_para<
 
 template<template<class, class...> class AnyFuncOf, class AnyRet, class AnyListOfPara>
 struct ListMake_expend {};
-template<template<class, class...> class AnyFuncOf, class AnyRet, template<class...> class ParaList, class...AnyPara>
-struct ListMake_expend<AnyFuncOf, AnyRet, ParaList<AnyPara...>> { using type = AnyFuncOf<AnyRet, AnyPara...>; };
+template<template<class, class...> class AnyFuncOf, class AnyRet, template<class...> class ParaList, class...ParaN>
+struct ListMake_expend<AnyFuncOf, AnyRet, ParaList<ParaN...>> { using type = AnyFuncOf<AnyRet, ParaN...>; };
 template<template<class, class...> class AnyFuncOf, class AnyRet, class AnyListOfPara>
 using ListMake = typename ListMake_expend<AnyFuncOf, AnyRet, AnyListOfPara>::type;
 
@@ -406,7 +476,7 @@ template<class AnyType, class AnyRet> concept StaticFunctionAllRetOf      = IsSt
 
 /* Require */
 
-template<class AnyRet, class...AnyPara> AnyRet any_require(AnyPara...) noexcept wx_uncallable;
+template<class AnyRet, class...ParaN> AnyRet any_require(ParaN...) noexcept wx_uncallable;
 
 /* Member Pointable test */
 
@@ -419,37 +489,37 @@ template<class AnyType> constexpr bool IsMemberPointableOfType(MemberPointableOf
 
 #pragma region Callables Invoke Helpers
 
-template<class AnyType, class...AnyPara> concept InvokableFrom             = requires(AnyType t, AnyPara...arg) { t                     (arg                    ...); };
-template<class AnyType, class...AnyPara> concept InvokableFromStrict       = requires(AnyType t               ) { t                     (any_require<AnyPara>() ...); };
-template<class AnyType, class...AnyPara> concept StrictInvokableFrom       = requires(           AnyPara...arg) { any_require<AnyType>()(arg                    ...); };
-template<class AnyType, class...AnyPara> concept StrictInvokableFromStrict = requires(                        ) { any_require<AnyType>()(any_require<AnyPara>() ...); };
+template<class AnyType, class...ParaN> concept InvokableFrom             = requires(AnyType t, ParaN...arg) { t                     (arg                    ...); };
+template<class AnyType, class...ParaN> concept InvokableFromStrict       = requires(AnyType t             ) { t                     (any_require<ParaN>() ...); };
+template<class AnyType, class...ParaN> concept StrictInvokableFrom       = requires(           ParaN...arg) { any_require<AnyType>()(arg                    ...); };
+template<class AnyType, class...ParaN> concept StrictInvokableFromStrict = requires(                      ) { any_require<AnyType>()(any_require<ParaN>() ...); };
 
-template<class AnyType, class...AnyPara> constexpr bool InvokableFromType(AnyPara...) ret_as(InvokableFrom<AnyType, AnyPara...>);
+template<class AnyType, class...ParaN> constexpr bool InvokableFromType(ParaN...) ret_as(InvokableFrom<AnyType, ParaN...>);
 
-template<class AnyType, class...AnyPara> auto InvokeReturnTypeTest(AnyPara...args) noexcept -> decltype(any_require<AnyType>()(args...)) wx_uncallable;
+template<class AnyType, class...ParaN> auto InvokeReturnTypeTest(ParaN...args) noexcept -> decltype(any_require<AnyType>()(args...)) wx_uncallable;
 
-template<class AnyType, class...AnyPara> using InvokedOfStrict = decltype(any_require<AnyType>()(any_require<AnyPara>()...));
-template<class AnyType, class...AnyPara> requires(InvokableFromStrict<AnyType, AnyPara...>)
-using InvokedOf = decltype(InvokeReturnTypeTest<AnyType, AnyPara...>(any_require<AnyPara>()...));
+template<class AnyType, class...ParaN> using InvokedOfStrict = decltype(any_require<AnyType>()(any_require<ParaN>()...));
+template<class AnyType, class...ParaN> requires(InvokableFromStrict<AnyType, ParaN...>)
+using InvokedOf = decltype(InvokeReturnTypeTest<AnyType, ParaN...>(any_require<ParaN>()...));
 
 #pragma endregion
 
 #pragma region Type Reference Helpers
 
-template<class OutType> constexpr       OutType &  ref_cast(      SameSizeType<OutType> auto & in) ret_as(*(      OutType *) address_cast(in));
-template<class OutType> constexpr const OutType &  ref_cast(const SameSizeType<OutType> auto & in) ret_as(*(const OutType *) address_cast(in));
-template<class OutType> constexpr       OutType  reuse_cast(      SameSizeType<OutType> auto   in) ret_as(*(      OutType *) address_cast(in));
-template<class OutType, class InType> requires(sizeof(OutType) <= sizeof(InType)) constexpr OutType   big_cast(InType in) ret_as(*(OutType *)address_cast(in));
-template<class OutType, class InType> requires(sizeof(OutType) >= sizeof(InType)) constexpr OutType small_cast(InType in) ret_as(*(OutType *)address_cast(in));
+template<class OutType> constexpr       OutType &  ref_cast(      SameSizeType<OutType> auto & in) noexcept  ret_as(*(      OutType *) address_cast(in));
+template<class OutType> constexpr const OutType &  ref_cast(const SameSizeType<OutType> auto & in) noexcept  ret_as(*(const OutType *) address_cast(in));
+template<class OutType> constexpr       OutType  reuse_cast(      SameSizeType<OutType> auto   in) noexcept  ret_as(*(      OutType *) address_cast(in));
+template<class OutType, class InType> requires(sizeof(OutType) <= sizeof(InType)) constexpr OutType   big_cast(InType in) noexcept ret_as(*(OutType *)address_cast(in));
+template<class OutType, class InType> requires(sizeof(OutType) >= sizeof(InType)) constexpr OutType small_cast(InType in) noexcept ret_as(*(OutType *)address_cast(in));
 
 /* --- Hand --- */
 
 template<class AnyType>
 struct Hand {
-	using left   = AnyType &;
-	using right  = AnyType &&;
-	using base   = AnyType;
-	using clap   = AnyType &&;
+	using base  = AnyType;
+	using left  = AnyType  &;
+	using right = AnyType &&;
+	using clap  = AnyType &&;
 	static constexpr bool is_left = false;
 	static constexpr bool is_right = false;
 };
@@ -458,55 +528,55 @@ struct Hand {
 
 template<class AnyType>
 struct Hand<AnyType &> {
-	using left   = AnyType &;
-	using right  = AnyType &&;
-	using base   = AnyType;
-	using clap   = AnyType &;
+	using base  = AnyType;
+	using left  = AnyType  &;
+	using right = AnyType &&;
+	using clap  = AnyType  &;
 	static constexpr bool is_left = true;
 	static constexpr bool is_right = false;
 };
-template<class AnyType>	constexpr AnyType && right_hand_cast(AnyType &a) ret_as(static_cast<AnyType &&>(a));
-template<class AnyType>	constexpr AnyType &   left_hand_cast(AnyType &a) ret_as(a);
+template<class AnyType>	constexpr AnyType && right_hand_cast(AnyType &a) noexcept ret_as(static_cast<AnyType &&>(a));
+template<class AnyType>	constexpr AnyType &   left_hand_cast(AnyType &a) noexcept ret_as(a);
 
 // Right Hand
 
 template<class AnyType>
 struct Hand<AnyType &&> {
-	using left   = AnyType &;
-	using right  = AnyType &&;
-	using base   = AnyType;
-	using clap   = AnyType &&;
+	using base  = AnyType;
+	using left  = AnyType  &;
+	using right = AnyType &&;
+	using clap  = AnyType &&;
 	static constexpr bool is_left = false;
 	static constexpr bool is_right = true;
 };
-template<class AnyType>	constexpr AnyType && right_hand_cast(AnyType &&a) ret_as(static_cast<AnyType &&>(a));
-template<class AnyType>	constexpr AnyType &   left_hand_cast(AnyType &&a) ret_as(a);
+template<class AnyType>	constexpr AnyType && right_hand_cast(AnyType &&a) noexcept ret_as(static_cast<AnyType &&>(a));
+template<class AnyType>	constexpr AnyType &   left_hand_cast(AnyType &&a) noexcept ret_as(a);
 
 // Clap Hand
 
 template<class AnyStrict, class AnyType> requires(IsSame<typename Hand<AnyStrict>::base, AnyType>)
-constexpr auto clap_hand_cast(AnyType &a) -> Hand<AnyStrict>::clap ret_as(static_cast<typename Hand<AnyStrict>::clap>(a));
+constexpr auto clap_hand_cast(AnyType &a) noexcept -> Hand<AnyStrict>::clap ret_as(static_cast<typename Hand<AnyStrict>::clap>(a));
 
 #pragma endregion
 
 #pragma region Any Functional Compatible test  ////////////////////////////////////
-template<class AnyCallable, class Ret, class... AnyPara>
-concept StaticCompatible = requires(AnyCallable f, AnyPara... args) { { f(args...) } -> std::convertible_to<Ret>; };
+template<class AnyCallable, class Ret, class... ParaN>
+concept StaticCompatible = requires(AnyCallable f, ParaN... args) { { f(args...) } -> std::convertible_to<Ret>; };
 template<class AnyCallable, class FuncType>
 constexpr bool static_compatible = false;
-template<class AnyCallable, class Ret, class... AnyPara>
-constexpr bool static_compatible<AnyCallable, Ret(AnyPara...)> = StaticCompatible<AnyCallable, Ret, AnyPara...>;
+template<class AnyCallable, class Ret, class... ParaN>
+constexpr bool static_compatible<AnyCallable, Ret(ParaN...)> = StaticCompatible<AnyCallable, Ret, ParaN...>;
 #pragma endregion
 
 #pragma region DConstructor Compatible test
 
 /* --- Single Constructor --- */
 
-template<class AnyType, class... AnyPara>
+template<class AnyType, class... ParaN>
 struct ConstructorOf {
-	static constexpr bool as_new        = requires(AnyPara... args) { new AnyType(args...); };
-	static constexpr bool as_placement  = requires(AnyPara... args) { new(any_require<void *>()) AnyType(args...); };
-	static constexpr bool as_static     = requires(AnyPara... args) { AnyType(args...); };
+	static constexpr bool as_new        = requires(ParaN... args) { new AnyType(args...); };
+	static constexpr bool as_placement  = requires(ParaN... args) { new(any_require<void *>()) AnyType(args...); };
+	static constexpr bool as_static     = requires(ParaN... args) { AnyType(args...); };
 	static constexpr bool any_ways      = as_new || as_placement || as_static;
 };
 template<class AnyType>
@@ -520,31 +590,31 @@ template<class AnyType>
 struct ConstructorsOf<AnyType> : ConstructorOf<AnyType> {};
 template<class AnyType, class OtherType>
 struct ConstructorsOf<AnyType, OtherType> : ConstructorOf<AnyType, OtherType> {};
-template<class AnyType, template<class...> class AnyList, class... AnyPara>
-struct ConstructorsOf<AnyType, AnyList<AnyPara...>> {};
+template<class AnyType, template<class...> class AnyList, class... ParaN>
+struct ConstructorsOf<AnyType, AnyList<ParaN...>> {};
 template<class AnyType, class OtherType, class... Others>
 struct ConstructorsOf<AnyType, OtherType, Others...> : ConstructorsOf<AnyType, ConstructorsOf<OtherType>, Others...> {};
-template<class AnyType, template<class...> class AnyList, class... AnyPara, class... Others>
-struct ConstructorsOf<AnyType, AnyList<AnyPara...>, Others...> {
-	static constexpr bool as_new       = ConstructorOf<AnyType, AnyPara...>::as_new       && ConstructorsOf<AnyType, Others...>::as_new;
-	static constexpr bool as_placement = ConstructorOf<AnyType, AnyPara...>::as_placement && ConstructorsOf<AnyType, Others...>::as_placement;
-	static constexpr bool as_static    = ConstructorOf<AnyType, AnyPara...>::as_static    && ConstructorsOf<AnyType, Others...>::as_static;
-	static constexpr bool any_ways     = ConstructorOf<AnyType, AnyPara...>::any_ways     && ConstructorsOf<AnyType, Others...>::any_ways;
+template<class AnyType, template<class...> class AnyList, class... ParaN, class... Others>
+struct ConstructorsOf<AnyType, AnyList<ParaN...>, Others...> {
+	static constexpr bool as_new       = ConstructorOf<AnyType, ParaN...>::as_new       && ConstructorsOf<AnyType, Others...>::as_new;
+	static constexpr bool as_placement = ConstructorOf<AnyType, ParaN...>::as_placement && ConstructorsOf<AnyType, Others...>::as_placement;
+	static constexpr bool as_static    = ConstructorOf<AnyType, ParaN...>::as_static    && ConstructorsOf<AnyType, Others...>::as_static;
+	static constexpr bool any_ways     = ConstructorOf<AnyType, ParaN...>::any_ways     && ConstructorsOf<AnyType, Others...>::any_ways;
 };
 
 /* --- Single Constructor Assertions --- */
 
-template<class AnyType, class... AnyPara> concept ConstructorNewAssert        = ConstructorOf<AnyType, AnyPara...>::as_new;
-template<class AnyType, class... AnyPara> concept ConstructorPlacementAssert  = ConstructorOf<AnyType, AnyPara...>::as_placement;
-template<class AnyType, class... AnyPara> concept ConstructorStaticAssert     = ConstructorOf<AnyType, AnyPara...>::as_static;
-template<class AnyType, class... AnyPara> concept ConstructorAssert           = ConstructorOf<AnyType, AnyPara...>::any_ways;
+template<class AnyType, class... ParaN> concept ConstructorNewAssert        = ConstructorOf<AnyType, ParaN...>::as_new;
+template<class AnyType, class... ParaN> concept ConstructorPlacementAssert  = ConstructorOf<AnyType, ParaN...>::as_placement;
+template<class AnyType, class... ParaN> concept ConstructorStaticAssert     = ConstructorOf<AnyType, ParaN...>::as_static;
+template<class AnyType, class... ParaN> concept ConstructorAssert           = ConstructorOf<AnyType, ParaN...>::any_ways;
 
 /* --- Multi Constructors - Assertions --- */
 
-template<class AnyType, class... AnyParaList> concept ConstructorsNewAssert        = ConstructorsOf<AnyType, AnyParaList...>::as_new;
-template<class AnyType, class... AnyParaList> concept ConstructorsPlacementAssert  = ConstructorsOf<AnyType, AnyParaList...>::as_placement;
-template<class AnyType, class... AnyParaList> concept ConstructorsStaticAssert     = ConstructorsOf<AnyType, AnyParaList...>::as_static;
-template<class AnyType, class... AnyParaList> concept ConstructorsAssert           = ConstructorsOf<AnyType, AnyParaList...>::any_ways;
+template<class AnyType, class... ParaNList> concept ConstructorsNewAssert        = ConstructorsOf<AnyType, ParaNList...>::as_new;
+template<class AnyType, class... ParaNList> concept ConstructorsPlacementAssert  = ConstructorsOf<AnyType, ParaNList...>::as_placement;
+template<class AnyType, class... ParaNList> concept ConstructorsStaticAssert     = ConstructorsOf<AnyType, ParaNList...>::as_static;
+template<class AnyType, class... ParaNList> concept ConstructorsAssert           = ConstructorsOf<AnyType, ParaNList...>::any_ways;
 
 /* --- Destructor --- */
 
@@ -565,7 +635,6 @@ struct LiteralString {
 public:
 	using CharType = AnyChar;
 public:
-	constexpr LiteralString(      AnyChar( s)[Len]) { for (SizeT i = 0; i < Len; ++i) data[i] = s[i]; }
 	constexpr LiteralString(const AnyChar(&s)[Len]) { for (SizeT i = 0; i < Len; ++i) data[i] = s[i]; }
 	constexpr SizeT Length() const ret_as(Len - 1);
 	constexpr operator const AnyChar *() const ret_as(data);
@@ -574,14 +643,27 @@ public:
 		AnyChar result[Len + Len1 - 1]{};
 		for (SizeT i = 0; i < Len - 1; ++i) result[i] = data[i];
 		for (SizeT j = 0; j < Len1; ++j) result[(Len - 1) + j] = s[j];
-		return LiteralString(result);
+		return LiteralString<AnyChar, Len + Len1 - 1>(result);
 	}
 	template<SizeT Len1> constexpr auto operator+(const LiteralString<AnyChar, Len1> &s) const 
-		ret_as(LiteralString(operator+(s.data)));
+		ret_as(operator+(s.data));
+	constexpr bool operator==(const AnyChar(&s)[Len]) const {
+		for (SizeT i = 0; i < Len; ++i)
+			if (data[i] != s[i])
+				return false;
+		return true;
+	}
+	constexpr bool operator!=(const AnyChar(&s)[Len]) const 
+		ret_as(!operator==(s));
+	constexpr bool operator==(const LiteralString<AnyChar, Len> &s) const 
+		ret_as(operator==(s.data));
+	constexpr bool operator!=(const LiteralString<AnyChar, Len> &s) const 
+		ret_as(operator!=(s.data));
 };
 template<class AnyChar, SizeT Len> using LiString = LiteralString<AnyChar, Len>;
 template<SizeT Len> using LiStringA = LiString< char  , Len>;
 template<SizeT Len> using LiStringW = LiString<wchar_t, Len>;
+constexpr auto LiStringO = LiString("");
 #pragma endregion
 
 #pragma region Arguments List
@@ -773,6 +855,9 @@ template<class AnyFrom, class AnyTo> concept         DownCastOf = IsExtendedOf<A
 template<class Type1  , class Type2> concept         SameCastOf = UpCastOf<Type1, Type2>   ||   DownCastOf<Type1, Type2>;
 template<class Type1  , class Type2> constexpr int  OrderCastOf = UpCastOf<Type1, Type2> ? +1 : DownCastOf<Type1, Type2> ? -1 : 0;
 
+template<Extendable...ExtensioN>
+struct ExtendsOf : ExtensioN... {};
+
 #pragma endregion
 
 #pragma region Proxy Shims
@@ -828,63 +913,42 @@ template<class RefType>   constexpr bool IsProxyViewOf<ProxyView<RefType>> = tru
 template<class AnyType> concept HasBaseType = requires { typename AnyType::BaseType; };
 template<HasBaseType AnyEnum> using BaseTypeOf = typename AnyEnum::BaseType;
 
-template<HasBaseType AnyChild>
-class TypeProxyPointer {
-	using BaseType = typename AnyChild::BaseType;
-	AnyChild *ptr;
-public:
-	TypeProxyPointer(AnyChild *p) : ptr(p) {}
-public:
-	constexpr AnyChild &operator*() ret_as(*ptr);
-	constexpr AnyChild *operator->() ret_as(ptr);
-	constexpr operator AnyChild *() ret_as(ptr);
-	constexpr operator BaseType *() ret_as(&(BaseType &)*ptr);
-	constexpr const AnyChild &operator*() const ret_as(*ptr);
-	constexpr const AnyChild *operator->() const ret_as(ptr);
-	constexpr operator const AnyChild *() const ret_as(ptr);
-	constexpr operator const BaseType *() const ret_as(&(const BaseType &)*ptr);
-};
-
 template<class OutType, class InType>
 constexpr auto safe_c_cast(const InType &c_value) {
 	if_c (HasBaseType<OutType>) {
-		misuse_assert(IsSame<mx_b0(BaseTypeOf<OutType>, InType)>, "Unsafe enum cast detected");
-		return reuse_cast<OutType>(c_value);
+		 misuse_assert(IsSame<mx_b0(BaseTypeOf<OutType>, InType)>, "Unsafe enum cast detected");
+		 return reuse_cast<OutType>(c_value);
 	}
-	else
-		return (OutType)c_value;
+	else return (OutType)c_value;
 }
+template<class SetType, class GetType>
+constexpr SetType &safe_setval(SetType &set, GetType &&get) noexcept ret_as((set = (SetType)get));
 
-template<class AnyChild, class AnyType, auto pSelfSize = O>
-struct CTypeProxyShim {
-	using Super = CTypeProxyShim;
-	using BaseType = AnyType;
+template<class AnyChild,  class AnyStruct>
+struct CStructProxy : protected AnyStruct {
+	using Super = CStructProxy;
+	using BaseType = AnyStruct;
 private:
-	AnyType value;
+	static constexpr bool has_self_size() ret_as(requires(AnyChild c) { c.SelfSize; });
 public:
-	constexpr CTypeProxyShim(BaseType &&s) : value(right_hand_cast(s)) {}
-	constexpr CTypeProxyShim(const BaseType &s) : value(s) {}
-	constexpr CTypeProxyShim(Nu) : value({ 0 }) {}
-	constexpr CTypeProxyShim() : CTypeProxyShim(O) {
-		if_c (pSelfSize != O) {
-			misuse_assert(IsMemberPointableOfType<BaseType>(pSelfSize),
-						  "Self size member pointer is not pointable on target struct");
-			using SizeType = MemberTypeOf<decltype(pSelfSize)>;
-			(value.*pSelfSize) = (SizeType)sizeof(BaseType);
-		}
+	constexpr CStructProxy(const BaseType &s) : BaseType(s) {}
+	constexpr CStructProxy(Nu) : BaseType({ 0 }) {}
+	constexpr CStructProxy() : BaseType({ 0 }) {
+		if_c (has_self_size())
+			 static_cast<AnyChild *>(this)->SelfSize(sizeof(AnyChild));
 	}
 public:
-	static constexpr AnyChild &view_cast(BaseType &s) requires(IsExtendedOf<AnyChild, Super>) ret_as(reuse_cast<AnyChild &>(s));
+	static constexpr       AnyChild &view_cast(      BaseType &s) requires(IsExtendedOf<AnyChild, Super>) ret_as(reuse_cast<      AnyChild &>(s));
 	static constexpr const AnyChild &view_cast(const BaseType &s) requires(IsExtendedOf<AnyChild, Super>) ret_as(reuse_cast<const AnyChild &>(s));
 public:
-	constexpr operator BaseType &() ret_as(value);
-	constexpr operator const BaseType &() const ret_as(value);
-	constexpr auto &operator*() ret_as(value);
-	constexpr auto &operator*() const ret_as(value);
-	constexpr auto *operator->() ret_as(&value);
-	constexpr auto *operator->() const ret_as(&value);
-	constexpr TypeProxyPointer<Super> operator&() ret_as(this);
-	constexpr const TypeProxyPointer<const Super> operator&() const ret_as(this);
+	constexpr operator         BaseType &()       noexcept ret_as(self);
+	constexpr operator   const BaseType &() const noexcept ret_as(self);
+	constexpr       BaseType & operator *()       noexcept ret_as(self);
+	constexpr const BaseType & operator *() const noexcept ret_as(self);
+	constexpr       BaseType * operator->()       noexcept ret_as(this);
+	constexpr const BaseType * operator->() const noexcept ret_as(this);
+	constexpr       BaseType * operator &()       noexcept ret_as(this);
+	constexpr const BaseType * operator &() const noexcept ret_as(this);
 };
 #pragma endregion
 
@@ -916,18 +980,18 @@ public:
 
 #pragma region Lambda ////////////////////////////////////
 /* --- LambdaBase --- */
-template<class RetType, class... AnyPara>
+template<class RetType, class... ParaN>
 struct LambdaBase {
 	virtual ~LambdaBase() = default;
-	virtual RetType operator()(AnyPara ...) = 0;
+	virtual RetType operator()(ParaN ...) = 0;
 };
-template<class PackType, class RetType, class... AnyPara>
-class FunctionPackage : public LambdaBase<RetType, AnyPara...> {
+template<class PackType, class RetType, class... ParaN>
+class FunctionPackage : public LambdaBase<RetType, ParaN...> {
 	mutable PackType func;
 public:
 	FunctionPackage(PackType &f) : func(f) {}
-	RetType operator()(AnyPara ...args) override {
-		static_assert(static_compatible<PackType, RetType(AnyPara...)>, "Argument list uncompatible");
+	RetType operator()(ParaN ...args) override {
+		static_assert(static_compatible<PackType, RetType(ParaN...)>, "Argument list uncompatible");
 		// if_c (IsPointer<PackType>)
 		return func(args...);
 	}
@@ -935,10 +999,10 @@ public:
 /* --- Lambda --- */
 template<class...>
 class Lambda;
-template<class RetType, class... AnyPara>
-class Lambda<RetType(AnyPara...)> final {
+template<class RetType, class... ParaN>
+class Lambda<RetType(ParaN...)> final {
 private:
-	mutable LambdaBase<RetType, AnyPara...> *func = O;
+	mutable LambdaBase<RetType, ParaN...> *func = O;
 	mutable bool bAllocated = false;
 public:
 	Lambda() {}
@@ -946,9 +1010,9 @@ public:
 	Lambda(const Lambda &f) : func(f.func) {}
 public:
 	template<class Type>
-	Lambda(Type &f) : func(new FunctionPackage<Type, RetType, AnyPara...>(f)), bAllocated(true) {}
+	Lambda(Type &f) : func(new FunctionPackage<Type, RetType, ParaN...>(f)), bAllocated(true) {}
 	template<class Type>
-	Lambda(Type f) : func(new FunctionPackage<Type, RetType, AnyPara...>(f)), bAllocated(true) {}
+	Lambda(Type f) : func(new FunctionPackage<Type, RetType, ParaN...>(f)), bAllocated(true) {}
 	~Lambda() { if (func && bAllocated) delete func, func = O; }
 public:
 	inline operator bool() const ret_as(!func);
@@ -956,7 +1020,7 @@ public:
 	inline bool operator==(Nu) const ret_as(!func);
 	inline Lambda operator&() retself;
 	inline const Lambda operator&() const retself;
-	inline RetType operator()(AnyPara...args) const ret_as(func(args...));
+	inline RetType operator()(ParaN...args) const ret_as(func(args...));
 	inline auto &operator=(const Lambda &f) const noexcept ret_to_self(func = f.func, bAllocated = false);
 	inline auto &operator=(const Lambda &f) noexcept ret_to_self(func = f.func, bAllocated = false);
 	inline auto &operator=(Lambda &&f) noexcept ret_to_self(func = f.func, f.func = O, bAllocated = true);
@@ -1023,11 +1087,11 @@ protected:
 	constexpr EnumClassShim(BaseType v) : value(v) {}
 	/* DUMMY, only for macro */ constexpr BaseType operator=(BaseType a) const ret_as(a);
 public:
-	constexpr BaseType yield() const ret_as(value);
+	constexpr BaseType yield() const noexcept ret_as(value);
 	static constexpr AnyChild value_cast(BaseType v) ret_as(v);
 public:
 	/* adjust atom into set */ constexpr operator AnyChild() const ret_as(value);
-	constexpr explicit operator BaseType() const ret_as(value);
+	constexpr explicit operator BaseType() const noexcept ret_as(value);
 	constexpr bool operator==(SameChainOfEnum<AnyChild> auto e) const ret_as(this->yield() == e.yield());
 	constexpr bool operator!=(SameChainOfEnum<AnyChild> auto e) const ret_as(this->yield() != e.yield());
 	inline AnyChild operator=(DownCastOfEnum<AnyChild> auto v) ret_as(this->value = v.yield());
