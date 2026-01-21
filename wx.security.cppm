@@ -639,50 +639,50 @@ using SecID = SecurityIdentifier;
 #pragma endregion
 
 #pragma region Access Control
-enum_flags(AccessPermission, DWORD,
-	QueryValue          = KEY_QUERY_VALUE,
-	Value               = KEY_SET_VALUE,
-	CreateSubKey        = KEY_CREATE_SUB_KEY,
-	EnumerateSubKeys    = KEY_ENUMERATE_SUB_KEYS,
-	Notify              = KEY_NOTIFY,
-	CreateLink          = KEY_CREATE_LINK,
-	Wow64Key32          = KEY_WOW64_32KEY,
-	Wow64Key64          = KEY_WOW64_64KEY,
-	Wow64Res            = KEY_WOW64_RES,
-	Read       = KEY_READ,
-	Write      = KEY_WRITE,
-	Execute    = KEY_EXECUTE,
-	AllAccess  = KEY_ALL_ACCESS);
-enum_class(TrustForms, TRUSTEE_FORM,
-	SID            = TRUSTEE_IS_SID,
-	Name           = TRUSTEE_IS_NAME,
-	BadForm        = TRUSTEE_BAD_FORM,
-	ObjectsAndSID  = TRUSTEE_IS_OBJECTS_AND_SID,
-	ObjectsAndName = TRUSTEE_IS_OBJECTS_AND_NAME);
-enum_class(TrustTypes, TRUSTEE_TYPE,
-	Unknown        = TRUSTEE_IS_UNKNOWN,
-	User           = TRUSTEE_IS_USER,
-	Group          = TRUSTEE_IS_GROUP,
-	Domain         = TRUSTEE_IS_DOMAIN,
-	Alias          = TRUSTEE_IS_ALIAS,
-	WellKnownGroup = TRUSTEE_IS_WELL_KNOWN_GROUP,
-	Deleted        = TRUSTEE_IS_DELETED,
-	Invalid        = TRUSTEE_IS_INVALID,
-	Computer       = TRUSTEE_IS_COMPUTER);
-enum_flags(AccessInherit, DWORD,
-	No          = NO_INHERITANCE,
-	Objects     = SUB_OBJECTS_ONLY_INHERIT,
-	Containers  = SUB_CONTAINERS_ONLY_INHERIT,
-	NoPropagate = INHERIT_NO_PROPAGATE,
-	Only        = INHERIT_ONLY);
-enum_class(AccessModes, ACCESS_MODE,
-	NoUsed          = NOT_USED_ACCESS,
-	Grant           = GRANT_ACCESS,
-	Set             = SET_ACCESS,
-	Deny            = DENY_ACCESS,
-	Revoke          = REVOKE_ACCESS,
-	SetAuditSuccess = SET_AUDIT_SUCCESS,
-	SetAuditFailure = SET_AUDIT_FAILURE);
+enum_flags(AccessPermission , DWORD                       ,
+		   QueryValue       = KEY_QUERY_VALUE             ,
+		   Value            = KEY_SET_VALUE               ,
+		   CreateSubKey     = KEY_CREATE_SUB_KEY          ,
+		   EnumerateSubKeys = KEY_ENUMERATE_SUB_KEYS      ,
+		   Notify           = KEY_NOTIFY                  ,
+		   CreateLink       = KEY_CREATE_LINK             ,
+		   Wow64Key32       = KEY_WOW64_32KEY             ,
+		   Wow64Key64       = KEY_WOW64_64KEY             ,
+		   Wow64Res         = KEY_WOW64_RES               ,
+		   Read             = KEY_READ                    ,
+		   Write            = KEY_WRITE                   ,
+		   Execute          = KEY_EXECUTE                 ,
+		   AllAccess        = KEY_ALL_ACCESS              );
+enum_class(TrustForms       , TRUSTEE_FORM                ,
+		   SID              = TRUSTEE_IS_SID              ,
+		   Name             = TRUSTEE_IS_NAME             ,
+		   BadForm          = TRUSTEE_BAD_FORM            ,
+		   ObjectsAndSID    = TRUSTEE_IS_OBJECTS_AND_SID  ,
+		   ObjectsAndName   = TRUSTEE_IS_OBJECTS_AND_NAME );
+enum_class(TrustTypes       , TRUSTEE_TYPE                ,
+		   Unknown          = TRUSTEE_IS_UNKNOWN          ,
+		   User             = TRUSTEE_IS_USER             ,
+		   Group            = TRUSTEE_IS_GROUP            ,
+		   Domain           = TRUSTEE_IS_DOMAIN           ,
+		   Alias            = TRUSTEE_IS_ALIAS            ,
+		   WellKnownGroup   = TRUSTEE_IS_WELL_KNOWN_GROUP ,
+		   Deleted          = TRUSTEE_IS_DELETED          ,
+		   Invalid          = TRUSTEE_IS_INVALID          ,
+		   Computer         = TRUSTEE_IS_COMPUTER         );
+enum_flags(AccessInherit    , DWORD                       ,
+		   No               = NO_INHERITANCE              ,
+		   Objects          = SUB_OBJECTS_ONLY_INHERIT    ,
+		   Containers       = SUB_CONTAINERS_ONLY_INHERIT ,
+		   NoPropagate      = INHERIT_NO_PROPAGATE        ,
+		   Only             = INHERIT_ONLY                );
+enum_class(AccessModes      , ACCESS_MODE                 ,
+		   NoUsed           = NOT_USED_ACCESS             ,
+		   Grant            = GRANT_ACCESS                ,
+		   Set              = SET_ACCESS                  ,
+		   Deny             = DENY_ACCESS                 ,
+		   Revoke           = REVOKE_ACCESS               ,
+		   SetAuditSuccess  = SET_AUDIT_SUCCESS           ,
+		   SetAuditFailure  = SET_AUDIT_FAILURE           );
 class AccessExplicit : protected EXPLICIT_ACCESS {
 	using Super = EXPLICIT_ACCESS;
 public:
@@ -703,42 +703,42 @@ public: // TrustBy
 };
 
 #pragma region Access Control Entry
-enum_class(AccessControlEntryTypes, BYTE,
-	AccessAllowed                   = ACCESS_ALLOWED_ACE_TYPE,
-	AccessDenied                    = ACCESS_DENIED_ACE_TYPE,
-	SystemAudit                     = SYSTEM_AUDIT_ACE_TYPE,
-	SystemAlarm                     = SYSTEM_ALARM_ACE_TYPE,
-	AccessAllowedCompound           = ACCESS_ALLOWED_COMPOUND_ACE_TYPE,
-	AccessAllowedObject             = ACCESS_ALLOWED_OBJECT_ACE_TYPE,
-	AccessDeniedObject              = ACCESS_DENIED_OBJECT_ACE_TYPE,
-	SystemAuditObject               = SYSTEM_AUDIT_OBJECT_ACE_TYPE,
-	SystemAlarmObject               = SYSTEM_ALARM_OBJECT_ACE_TYPE,
-	AccessAllowedCallback           = ACCESS_ALLOWED_CALLBACK_ACE_TYPE,
-	AccessDeniedCallback            = ACCESS_DENIED_CALLBACK_ACE_TYPE,
-	AccessAllowedCallbackObject     = ACCESS_ALLOWED_CALLBACK_OBJECT_ACE_TYPE,
-	AccessDeniedCallbackObject      = ACCESS_DENIED_CALLBACK_OBJECT_ACE_TYPE,
-	SystemAuditCallback             = SYSTEM_AUDIT_CALLBACK_ACE_TYPE,
-	SystemAlarmCallback             = SYSTEM_ALARM_CALLBACK_ACE_TYPE,
-	SystemAuditCallbackObject       = SYSTEM_AUDIT_CALLBACK_OBJECT_ACE_TYPE,
-	SystemAlarmCallbackObject       = SYSTEM_ALARM_CALLBACK_OBJECT_ACE_TYPE,
-	SystemMandatoryLabel            = SYSTEM_MANDATORY_LABEL_ACE_TYPE,
-	SystemResourceAttribute         = SYSTEM_RESOURCE_ATTRIBUTE_ACE_TYPE,
-	SystemScopedPolicyId            = SYSTEM_SCOPED_POLICY_ID_ACE_TYPE,
-	SystemProcessTrustLabel         = SYSTEM_PROCESS_TRUST_LABEL_ACE_TYPE,
-	SystemAccessFilter              = SYSTEM_ACCESS_FILTER_ACE_TYPE);
-using AceTypes = AccessControlEntryTypes;
-enum_class(AccessControlEntryFlag, BYTE,
-// Inherit
-	ObjectInherit                   = OBJECT_INHERIT_ACE,
-	ContainerInherit                = CONTAINER_INHERIT_ACE,
-	NoPropagateInherit              = NO_PROPAGATE_INHERIT_ACE,
-	InheritOnlyAce                  = INHERIT_ONLY_ACE,
-// Resd
-	InheritedAce                    = INHERITED_ACE,
-	Critical                        = CRITICAL_ACE_FLAG,
-	SuccessfulAccess                = SUCCESSFUL_ACCESS_ACE_FLAG,
-	FailedAccess                    = FAILED_ACCESS_ACE_FLAG,
-	TrustProtectedFilter            = TRUST_PROTECTED_FILTER_ACE_FLAG);
+enum_class(AccessControlEntryTypes         , BYTE                                    ,
+		   AccessAllowed                   = ACCESS_ALLOWED_ACE_TYPE                 ,
+		   AccessDenied                    = ACCESS_DENIED_ACE_TYPE                  ,
+		   SystemAudit                     = SYSTEM_AUDIT_ACE_TYPE                   ,
+		   SystemAlarm                     = SYSTEM_ALARM_ACE_TYPE                   ,
+		   AccessAllowedCompound           = ACCESS_ALLOWED_COMPOUND_ACE_TYPE        ,
+		   AccessAllowedObject             = ACCESS_ALLOWED_OBJECT_ACE_TYPE          ,
+		   AccessDeniedObject              = ACCESS_DENIED_OBJECT_ACE_TYPE           ,
+		   SystemAuditObject               = SYSTEM_AUDIT_OBJECT_ACE_TYPE            ,
+		   SystemAlarmObject               = SYSTEM_ALARM_OBJECT_ACE_TYPE            ,
+		   AccessAllowedCallback           = ACCESS_ALLOWED_CALLBACK_ACE_TYPE        ,
+		   AccessDeniedCallback            = ACCESS_DENIED_CALLBACK_ACE_TYPE         ,
+		   AccessAllowedCallbackObject     = ACCESS_ALLOWED_CALLBACK_OBJECT_ACE_TYPE ,
+		   AccessDeniedCallbackObject      = ACCESS_DENIED_CALLBACK_OBJECT_ACE_TYPE  ,
+		   SystemAuditCallback             = SYSTEM_AUDIT_CALLBACK_ACE_TYPE          ,
+		   SystemAlarmCallback             = SYSTEM_ALARM_CALLBACK_ACE_TYPE          ,
+		   SystemAuditCallbackObject       = SYSTEM_AUDIT_CALLBACK_OBJECT_ACE_TYPE   ,
+		   SystemAlarmCallbackObject       = SYSTEM_ALARM_CALLBACK_OBJECT_ACE_TYPE   ,
+		   SystemMandatoryLabel            = SYSTEM_MANDATORY_LABEL_ACE_TYPE         ,
+		   SystemResourceAttribute         = SYSTEM_RESOURCE_ATTRIBUTE_ACE_TYPE      ,
+		   SystemScopedPolicyId            = SYSTEM_SCOPED_POLICY_ID_ACE_TYPE        ,
+		   SystemProcessTrustLabel         = SYSTEM_PROCESS_TRUST_LABEL_ACE_TYPE     ,
+		   SystemAccessFilter              = SYSTEM_ACCESS_FILTER_ACE_TYPE           );
+alias_of_type(AceTypes, AccessControlEntryTypes);
+enum_class(AccessControlEntryFlag , BYTE                            ,
+		/* Inherit -------------- -------------------------------- */
+		   ObjectInherit          = OBJECT_INHERIT_ACE              ,
+		   ContainerInherit       = CONTAINER_INHERIT_ACE           ,
+		   NoPropagateInherit     = NO_PROPAGATE_INHERIT_ACE        ,
+		   InheritOnlyAce         = INHERIT_ONLY_ACE                ,
+		/* Resd ----------------- -------------------------------- */
+		   InheritedAce           = INHERITED_ACE                   ,
+		   Critical               = CRITICAL_ACE_FLAG               ,
+		   SuccessfulAccess       = SUCCESSFUL_ACCESS_ACE_FLAG      ,
+		   FailedAccess           = FAILED_ACCESS_ACE_FLAG          ,
+		   TrustProtectedFilter   = TRUST_PROTECTED_FILTER_ACE_FLAG );
 using AceFlag = AccessControlEntryFlag;
 struct AccessMask {
 public:

@@ -10,6 +10,8 @@ import wx.win32;
 #ifndef REMOVE_DEF_PROTO_API
 namespace WX {
 
+constexpr auto ThisFile = LiString("wx.type");
+
 #pragma region DateTimeApi.h
 #undef GetDateFormat
 // GetDateFormat
@@ -35,25 +37,13 @@ inline int GetDateFormat(LPCWSTR lpLocaleName, DWORD dwFlags, const SYSTEMTIME *
 #pragma endregion
 
 #pragma region HandleApi.h
-// CloseHandle
-inline void CloseHandle(HANDLE hObject)
-	safe_ret_as(::CloseHandle(hObject));
-// DuplicateHandle
-inline void DuplicateHandle(HANDLE hSourceProcessHandle, HANDLE hSourceHandle,
-							HANDLE hTargetProcessHandle, LPHANDLE lpTargetHandle,
-							DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwOptions)
-	safe_ret_as(::DuplicateHandle(hSourceProcessHandle, hSourceHandle,
-										 hTargetProcessHandle, lpTargetHandle,
-										 dwDesiredAccess, bInheritHandle, dwOptions));
+wapi_reflect_true(CloseHandle);
+wapi_reflect_true(DuplicateHandle);
 // CompareObjectHandles
 inline bool CompareObjectHandles(HANDLE hObject1, HANDLE hObject2)
 	ret_as(::CompareObjectHandles(hObject1, hObject2));
-// GetHandleInformation
-inline void GetHandleInformation(HANDLE hObject, LPDWORD lpdwFlags)
-	safe_ret_as(::GetHandleInformation(hObject, lpdwFlags));
-// SetHandleInformation
-inline void SetHandleInformation(HANDLE hObject, DWORD dwMask, DWORD dwFlags)
-	safe_ret_as(::SetHandleInformation(hObject, dwMask, dwFlags));
+wapi_reflect_true(GetHandleInformation);
+wapi_reflect_true(SetHandleInformation);
 #pragma endregion
 
 }
@@ -62,16 +52,16 @@ inline void SetHandleInformation(HANDLE hObject, DWORD dwMask, DWORD dwFlags)
 export namespace WX {
 
 #pragma region HandleBase
-enum_flags(HandleAccess, DWORD,
-	Delete         = DELETE,
-	ReadCtl        = READ_CONTROL,
-	WriteDAC       = WRITE_DAC,
-	WriteOwner     = WRITE_OWNER,
-	Sync           = SYNCHRONIZE,
-	GenericRead    = GENERIC_READ,
-	GenericWrite   = GENERIC_WRITE,
-	GenericExecute = GENERIC_EXECUTE,
-	GenericAll     = GENERIC_ALL);
+enum_flags(HandleAccess   , DWORD           ,
+	       Delete         = DELETE          ,
+	       ReadCtl        = READ_CONTROL    ,
+	       WriteDAC       = WRITE_DAC       ,
+	       WriteOwner     = WRITE_OWNER     ,
+	       Sync           = SYNCHRONIZE     ,
+	       GenericRead    = GENERIC_READ    ,
+	       GenericWrite   = GENERIC_WRITE   ,
+	       GenericExecute = GENERIC_EXECUTE ,
+	       GenericAll     = GENERIC_ALL     );
 template<class AnyChild>
 class HandleBase;
 using Handle = HandleBase<void>;
@@ -131,7 +121,7 @@ public:
 	//};
 	//inline Duplication Duplicate(HANDLE hTargetProcessHandle) ret_as({ hObject, hTargetProcessHandle });
 
-	inline auto Wait(DWORD dwMillisecond = INFINITE) ret_as(::WaitForSingleObject)
+	//inline auto Wait(DWORD dwMillisecond = INFINITE) ret_as(::WaitForSingleObject)
 
 public: // Property - Information
 	/* W */ inline auto &Information(DWORD dwMask, DWORD dwFlags) ret_to_child(WX::SetHandleInformation(self, dwMask, dwFlags));
@@ -152,11 +142,11 @@ public:
 
 #pragma region Heaps
 #pragma region Local
-enum_flags(LocalAllocFlags, UINT,
-	Fixed    = LMEM_FIXED,
-	Modify   = LMEM_MODIFY,
-	Moveable = LMEM_MOVEABLE,
-	ZeroInit = LMEM_ZEROINIT);
+enum_flags(LocalAllocFlags, UINT          ,
+		   Fixed          = LMEM_FIXED    ,
+		   Modify         = LMEM_MODIFY   ,
+		   Moveable       = LMEM_MOVEABLE ,
+		   ZeroInit       = LMEM_ZEROINIT );
 using LAF = LocalAllocFlags;
 class Local {
 public:
@@ -176,17 +166,19 @@ public:
 #pragma endregion
 
 #pragma region Heap
-proxy_struct(HeapSummaries, HEAP_SUMMARY, cb) {
-	proxy_prop_sync(Allocated, cbAllocated, SizeT);
-	proxy_prop_sync(Committed, cbCommitted, SizeT);
-	proxy_prop_sync(Reserved, cbReserved, SizeT);
-	proxy_prop_sync(MaxReserve, cbMaxReserve, SizeT);
+
+proxy_struct       (HeapSummaries, HEAP_SUMMARY        ) {
+	proxy_prop_size(               cb           , DWORD);
+	proxy_prop_sync(Allocated    , cbAllocated  , SizeT);
+	proxy_prop_sync(Committed    , cbCommitted  , SizeT);
+	proxy_prop_sync(Reserved     , cbReserved   , SizeT);
+	proxy_prop_sync(MaxReserve   , cbMaxReserve , SizeT);
 };
-enum_flags(HeapAllocFlag, UINT,
-	Fixed              = 0,
-	GenerateExceptions = HEAP_GENERATE_EXCEPTIONS,
-	NoSerialize        = HEAP_NO_SERIALIZE,
-	ZeroInit           = HEAP_ZERO_MEMORY);
+enum_flags(HeapAllocFlag      , UINT                     ,
+		   Fixed              = 0                        ,
+		   GenerateExceptions = HEAP_GENERATE_EXCEPTIONS ,
+		   NoSerialize        = HEAP_NO_SERIALIZE        ,
+		   ZeroInit           = HEAP_ZERO_MEMORY         );
 using HAF = HeapAllocFlag;
 class BaseOf_Handle(Heap) {
 public:
@@ -297,40 +289,40 @@ using HeapPointer = AutoPointer<Heap, AnyType>;
 #pragma endregion
 
 #pragma region Time Types
-enum_class(Locales, LCID,
-	Default                = LOCALE_CUSTOM_DEFAULT,
-	Unspecified            = LOCALE_CUSTOM_UNSPECIFIED,
-	UIDefault              = LOCALE_CUSTOM_UI_DEFAULT,
-	Neutral                = LOCALE_NEUTRAL,
-	Invariant              = LOCALE_INVARIANT);
-enum_flags(TimeFormat, DWORD,
-	Default                = 0,
-	NoMinutesOrSeconds     = TIME_NOMINUTESORSECONDS,
-	NoSecond               = TIME_NOSECONDS,
-	NoTimeMarker           = TIME_NOTIMEMARKER,
-	Force24H               = TIME_FORCE24HOURFORMAT);
-enum_flags(DateFormat, DWORD,
-	Default                = 0,
-	ShortDate              = DATE_SHORTDATE,
-	LongDate               = DATE_LONGDATE,
-	UseAltCalendar         = DATE_USE_ALT_CALENDAR,
-	YearMonth              = DATE_YEARMONTH,
-	LTRReading             = DATE_LTRREADING,
-	RTLReading             = DATE_RTLREADING,
-	AutoLayout             = DATE_AUTOLAYOUT,
-	MonthDay               = DATE_MONTHDAY);
+enum_class(Locales                , LCID                      ,
+		   Default                = LOCALE_CUSTOM_DEFAULT     ,
+		   Unspecified            = LOCALE_CUSTOM_UNSPECIFIED ,
+		   UIDefault              = LOCALE_CUSTOM_UI_DEFAULT  ,
+		   Neutral                = LOCALE_NEUTRAL            ,
+		   Invariant              = LOCALE_INVARIANT          );
+enum_flags(TimeFormat             , DWORD                     ,
+		   Default                = 0                         ,
+		   NoMinutesOrSeconds     = TIME_NOMINUTESORSECONDS   ,
+		   NoSecond               = TIME_NOSECONDS            ,
+		   NoTimeMarker           = TIME_NOTIMEMARKER         ,
+		   Force24H               = TIME_FORCE24HOURFORMAT    );
+enum_flags(DateFormat             , DWORD                     ,
+		   Default                = 0                         ,
+		   ShortDate              = DATE_SHORTDATE            ,
+		   LongDate               = DATE_LONGDATE             ,
+		   UseAltCalendar         = DATE_USE_ALT_CALENDAR     ,
+		   YearMonth              = DATE_YEARMONTH            ,
+		   LTRReading             = DATE_LTRREADING           ,
+		   RTLReading             = DATE_RTLREADING           ,
+		   AutoLayout             = DATE_AUTOLAYOUT           ,
+		   MonthDay               = DATE_MONTHDAY             );
 proxy_struct(SystemTime, SYSTEMTIME) {
 	SystemTime(Nu) {}
 	SystemTime() ret_to(GetSystemTime(&self));
 	SystemTime(const SYSTEMTIME &st) : Super(st) {}
 public:
-	proxy_prop_sync(Year,wYear,WORD);
-	proxy_prop_sync(Month,wMonth,WORD);
-	proxy_prop_sync(Day,wDay,WORD);
-	proxy_prop_sync(Hour,wHour,WORD);
-	proxy_prop_sync(Minute,wMinute,WORD);
-	proxy_prop_sync(Second,wSecond,WORD);
-	proxy_prop_sync(MilliSeconds,wMilliseconds,WORD);
+	proxy_prop_sync(Year         , wYear         , WORD);
+	proxy_prop_sync(Month        , wMonth        , WORD);
+	proxy_prop_sync(Day          , wDay          , WORD);
+	proxy_prop_sync(Hour         , wHour         , WORD);
+	proxy_prop_sync(Minute       , wMinute       , WORD);
+	proxy_prop_sync(Second       , wSecond       , WORD);
+	proxy_prop_sync(MilliSeconds , wMilliseconds , WORD);
 public:
 	static inline SystemTime LocalTime() ret_to(SystemTime st; GetLocalTime(&st), st);
 public: // FormatDate
@@ -488,14 +480,14 @@ public:
 	inline bool   operator==(LSize sz) const ret_as(sz.cx == cx && sz.cy == cy);
 	inline bool   operator!=(LSize sz) const ret_as(sz.cx != cx || sz.cy != cy);
 };
-enum_flags(LAlign, BYTE,
-	Left	= 1 << 0,
-	Right	= 2 << 0,
-	HCenter = 3 << 0,
-	Top		= 1 << 2,
-	Bottom  = 2 << 2,
-	VCenter = 3 << 2);
-struct LRect : public RECT {
+enum_flags(LAlign   , BYTE   ,
+		   Left     = 1 << 0 ,
+		   Right    = 2 << 0 ,
+		   HCenter  = 3 << 0 ,
+		   Top      = 1 << 2 ,
+		   Bottom   = 2 << 2 ,
+		   VCenter  = 3 << 2 );
+struct LRect : public RECT { 
 public:
 	LRect() : RECT{ 0 } {}
 	LRect(const RECT &rc) : RECT(rc) {}
@@ -738,22 +730,22 @@ inline int MsgBox(LPCWSTR lpCaption, const Exception &err, HWND hParent = O)
 	ret_as(MsgBox(lpCaption, toStringW(err), MB::IconError | MB::AbortRetryIgnore, hParent));
 #pragma endregion
 
-enum_class(WindowShowFlags, int,
-	Hide             = SW_HIDE,
-	ShowNormal       = SW_SHOWNORMAL,
-	Normal           = SW_NORMAL,
-	ShowMinimized    = SW_SHOWMINIMIZED,
-	ShowMaximized    = SW_SHOWMAXIMIZED,
-	Maximize         = SW_MAXIMIZE,
-	ShowNoActivate   = SW_SHOWNOACTIVATE,
-	Show             = SW_SHOW,
-	Minimize         = SW_MINIMIZE,
-	ShowMinNoActive  = SW_SHOWMINNOACTIVE,
-	ShowNA           = SW_SHOWNA,
-	Restore          = SW_RESTORE,
-	ShowDefault      = SW_SHOWDEFAULT,
-	ForceMinimize    = SW_FORCEMINIMIZE,
-	Max              = SW_MAX);
+enum_class(WindowShowFlags  , int                ,
+		   Hide             = SW_HIDE            ,
+		   ShowNormal       = SW_SHOWNORMAL      ,
+		   Normal           = SW_NORMAL          ,
+		   ShowMinimized    = SW_SHOWMINIMIZED   ,
+		   ShowMaximized    = SW_SHOWMAXIMIZED   ,
+		   Maximize         = SW_MAXIMIZE        ,
+		   ShowNoActivate   = SW_SHOWNOACTIVATE  ,
+		   Show             = SW_SHOW            ,
+		   Minimize         = SW_MINIMIZE        ,
+		   ShowMinNoActive  = SW_SHOWMINNOACTIVE ,
+		   ShowNA           = SW_SHOWNA          ,
+		   Restore          = SW_RESTORE         ,
+		   ShowDefault      = SW_SHOWDEFAULT     ,
+		   ForceMinimize    = SW_FORCEMINIMIZE   ,
+		   Max              = SW_MAX             );
 using SW = WindowShowFlags;
 
 class RGBColor {

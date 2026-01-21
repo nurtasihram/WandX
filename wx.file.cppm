@@ -163,94 +163,94 @@ inline void DeleteFile(LPCWSTR lpFileName, DWORD Flags)
 export namespace WX {
 
 #pragma region File
-enum_flags(FileAccess, HandleAccess,
-	Default = 0,
-	ReadData             = FILE_READ_DATA,        // file & pipe
-	ListDirectory        = FILE_LIST_DIRECTORY,   // directory
-	WriteData            = FILE_WRITE_DATA,       // file & pipe
-	AddFile              = FILE_ADD_FILE,         // directory
-	AppendData           = FILE_APPEND_DATA,      // file
-	AddSubdirectory      = FILE_ADD_SUBDIRECTORY, // directory
-	CreatePipeInstance   = FILE_CREATE_PIPE_INSTANCE, // named pipe
-	ReadEA               = FILE_READ_EA,  // file & directory
-	WriteEA              = FILE_WRITE_EA, // file & directory
-	Execute              = FILE_EXECUTE,  // file
-	Traverse             = FILE_TRAVERSE, // directory
-	DeleteChild          = FILE_DELETE_CHILD,     // directory
-	ReadAttributes       = FILE_READ_ATTRIBUTES,  // all
-	WriteAttributes      = FILE_WRITE_ATTRIBUTES, // all
-	GenericRead    = FILE_GENERIC_READ,
-	GenericWrite   = FILE_GENERIC_WRITE,
-	GenericExecute = FILE_GENERIC_EXECUTE,
-	All            = FILE_ALL_ACCESS);
-enum_flags(FileAttribute, DWORD,
-	No = 0,
-	ReadOnly              = FILE_ATTRIBUTE_READONLY,
-	Hidden                = FILE_ATTRIBUTE_HIDDEN,
-	System                = FILE_ATTRIBUTE_SYSTEM,
-	Directory             = FILE_ATTRIBUTE_DIRECTORY,
-	Archive               = FILE_ATTRIBUTE_ARCHIVE,
-	Device                = FILE_ATTRIBUTE_DEVICE,
-	Normal                = FILE_ATTRIBUTE_NORMAL,
-	Temporary             = FILE_ATTRIBUTE_TEMPORARY,
-	SparseFile            = FILE_ATTRIBUTE_SPARSE_FILE,
-	ReparsePoint          = FILE_ATTRIBUTE_REPARSE_POINT,
-	Compressed            = FILE_ATTRIBUTE_COMPRESSED,
-	Offline               = FILE_ATTRIBUTE_OFFLINE,
-	NotContentIndexed     = FILE_ATTRIBUTE_NOT_CONTENT_INDEXED,
-	Encrypted             = FILE_ATTRIBUTE_ENCRYPTED,
-	IntegrityStream       = FILE_ATTRIBUTE_INTEGRITY_STREAM,
-	Virtual               = FILE_ATTRIBUTE_VIRTUAL,
-	NoScrubData           = FILE_ATTRIBUTE_NO_SCRUB_DATA,
-	EA                    = FILE_ATTRIBUTE_EA,
-	Pinned                = FILE_ATTRIBUTE_PINNED,
-	Unpinned              = FILE_ATTRIBUTE_UNPINNED,
-	RecallOnOpen          = FILE_ATTRIBUTE_RECALL_ON_OPEN,
-	RecallOnDataAccess    = FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS);
-enum_flags(FileFlag, DWORD,
-	WriteThrough          = FILE_FLAG_WRITE_THROUGH,
-	Overlapped            = FILE_FLAG_OVERLAPPED,
-	NoBuffering           = FILE_FLAG_NO_BUFFERING,
-	RandomAccess          = FILE_FLAG_RANDOM_ACCESS,
-	SequentialScan        = FILE_FLAG_SEQUENTIAL_SCAN,
-	DeleteOnClose         = FILE_FLAG_DELETE_ON_CLOSE,
-	BackupSemantics       = FILE_FLAG_BACKUP_SEMANTICS,
-	PosixSemantics        = FILE_FLAG_POSIX_SEMANTICS,
-	SessionAware          = FILE_FLAG_SESSION_AWARE,
-	OpenReparsePoint      = FILE_FLAG_OPEN_REPARSE_POINT,
-	OpenNoRecall          = FILE_FLAG_OPEN_NO_RECALL,
-	FirstPipeInstance     = FILE_FLAG_FIRST_PIPE_INSTANCE,
-	OpenRequiringOplock   = FILE_FLAG_OPEN_REQUIRING_OPLOCK);//,
-//	IgnoreImpersonatedDevicemap  = FILE_FLAG_IGNORE_IMPERSONATED_DEVICEMAP);
-enum_flags(FileShares, DWORD,
-	No = 0,
-	Read   = FILE_SHARE_READ,
-	Write  = FILE_SHARE_WRITE,
-	Delete = FILE_SHARE_DELETE);
-enum_class(FileTypes, DWORD, 
-	Unknown = FILE_TYPE_UNKNOWN,
-	Disk      = FILE_TYPE_DISK,
-	Char      = FILE_TYPE_CHAR,
-	Pipe      = FILE_TYPE_PIPE,
-	Remote    = FILE_TYPE_REMOTE);
-enum_flags(PageProtect, DWORD,
-	NoAccess           = PAGE_NOACCESS,
-	ReadOnly           = PAGE_READONLY,
-	ReadWrite          = PAGE_READWRITE,
-	WriteCopy          = PAGE_WRITECOPY,
-	Execute            = PAGE_EXECUTE,
-	ExecuteRead        = PAGE_EXECUTE_READ,
-	ExecuteReadWrite   = PAGE_EXECUTE_READWRITE,
-	ExecuteWriteCopy   = PAGE_EXECUTE_WRITECOPY);
-enum_flags(MapAccess, DWORD,
-	Write      = FILE_MAP_WRITE,
-	Read       = FILE_MAP_READ,
-	All        = FILE_MAP_ALL_ACCESS,
-	Execute    = FILE_MAP_EXECUTE,
-	Copy       = FILE_MAP_COPY,
-	Targets    = FILE_MAP_TARGETS_INVALID,
-	LargePages = FILE_MAP_LARGE_PAGES,
-	ReadWrite = FILE_MAP_WRITE | FILE_MAP_READ);
+enum_flags(FileAccess          , HandleAccess              ,
+		   Default             = 0                         ,
+		   ReadData            = FILE_READ_DATA            , // file & pipe
+		   ListDirectory       = FILE_LIST_DIRECTORY       , // directory
+		   WriteData           = FILE_WRITE_DATA           , // file & pipe
+		   AddFile             = FILE_ADD_FILE             , // directory
+		   AppendData          = FILE_APPEND_DATA          , // file
+		   AddSubdirectory     = FILE_ADD_SUBDIRECTORY     , // directory
+		   CreatePipeInstance  = FILE_CREATE_PIPE_INSTANCE , // named pipe
+		   ReadEA              = FILE_READ_EA              , // file & directory
+		   WriteEA             = FILE_WRITE_EA             , // file & directory
+		   Execute             = FILE_EXECUTE              , // file
+		   Traverse            = FILE_TRAVERSE             , // directory
+		   DeleteChild         = FILE_DELETE_CHILD         , // directory
+		   ReadAttributes      = FILE_READ_ATTRIBUTES      , // all
+		   WriteAttributes     = FILE_WRITE_ATTRIBUTES     , // all
+		   GenericRead         = FILE_GENERIC_READ         ,
+		   GenericWrite        = FILE_GENERIC_WRITE        ,
+		   GenericExecute      = FILE_GENERIC_EXECUTE      ,
+		   All                 = FILE_ALL_ACCESS           );
+enum_flags(FileAttribute       , DWORD                                ,
+		   No                  = 0                                    ,
+		   ReadOnly            = FILE_ATTRIBUTE_READONLY              ,
+		   Hidden              = FILE_ATTRIBUTE_HIDDEN                ,
+		   System              = FILE_ATTRIBUTE_SYSTEM                ,
+		   Directory           = FILE_ATTRIBUTE_DIRECTORY             ,
+		   Archive             = FILE_ATTRIBUTE_ARCHIVE               ,
+		   Device              = FILE_ATTRIBUTE_DEVICE                ,
+		   Normal              = FILE_ATTRIBUTE_NORMAL                ,
+		   Temporary           = FILE_ATTRIBUTE_TEMPORARY             ,
+		   SparseFile          = FILE_ATTRIBUTE_SPARSE_FILE           ,
+		   ReparsePoint        = FILE_ATTRIBUTE_REPARSE_POINT         ,
+		   Compressed          = FILE_ATTRIBUTE_COMPRESSED            ,
+		   Offline             = FILE_ATTRIBUTE_OFFLINE               ,
+		   NotContentIndexed   = FILE_ATTRIBUTE_NOT_CONTENT_INDEXED   ,
+		   Encrypted           = FILE_ATTRIBUTE_ENCRYPTED             ,
+		   IntegrityStream     = FILE_ATTRIBUTE_INTEGRITY_STREAM      ,
+		   Virtual             = FILE_ATTRIBUTE_VIRTUAL               ,
+		   NoScrubData         = FILE_ATTRIBUTE_NO_SCRUB_DATA         ,
+		   EA                  = FILE_ATTRIBUTE_EA                    ,
+		   Pinned              = FILE_ATTRIBUTE_PINNED                ,
+		   Unpinned            = FILE_ATTRIBUTE_UNPINNED              ,
+		   RecallOnOpen        = FILE_ATTRIBUTE_RECALL_ON_OPEN        ,
+		   RecallOnDataAccess  = FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS );
+enum_flags(FileFlag                     , DWORD                                     ,
+		   WriteThrough                 = FILE_FLAG_WRITE_THROUGH                   ,
+		   Overlapped                   = FILE_FLAG_OVERLAPPED                      ,
+		   NoBuffering                  = FILE_FLAG_NO_BUFFERING                    ,
+		   RandomAccess                 = FILE_FLAG_RANDOM_ACCESS                   ,
+		   SequentialScan               = FILE_FLAG_SEQUENTIAL_SCAN                 ,
+		   DeleteOnClose                = FILE_FLAG_DELETE_ON_CLOSE                 ,
+		   BackupSemantics              = FILE_FLAG_BACKUP_SEMANTICS                ,
+		   PosixSemantics               = FILE_FLAG_POSIX_SEMANTICS                 ,
+		   SessionAware                 = FILE_FLAG_SESSION_AWARE                   ,
+		   OpenReparsePoint             = FILE_FLAG_OPEN_REPARSE_POINT              ,
+		   OpenNoRecall                 = FILE_FLAG_OPEN_NO_RECALL                  ,
+		   FirstPipeInstance            = FILE_FLAG_FIRST_PIPE_INSTANCE             ,
+		   OpenRequiringOplock          = FILE_FLAG_OPEN_REQUIRING_OPLOCK         /*,
+		   IgnoreImpersonatedDevicemap  = FILE_FLAG_IGNORE_IMPERSONATED_DEVICEMAP */); 
+enum_flags(FileShares        , DWORD                          ,
+		   No                = 0                              ,
+		   Read              = FILE_SHARE_READ                ,
+		   Write             = FILE_SHARE_WRITE               ,
+		   Delete            = FILE_SHARE_DELETE              );
+enum_class(FileTypes         , DWORD                          , 
+		   Unknown           = FILE_TYPE_UNKNOWN              ,
+		   Disk              = FILE_TYPE_DISK                 ,
+		   Char              = FILE_TYPE_CHAR                 ,
+		   Pipe              = FILE_TYPE_PIPE                 ,
+		   Remote            = FILE_TYPE_REMOTE               );
+enum_flags(PageProtect       , DWORD                          ,
+		   NoAccess          = PAGE_NOACCESS                  ,
+		   ReadOnly          = PAGE_READONLY                  ,
+		   ReadWrite         = PAGE_READWRITE                 ,
+		   WriteCopy         = PAGE_WRITECOPY                 ,
+		   Execute           = PAGE_EXECUTE                   ,
+		   ExecuteRead       = PAGE_EXECUTE_READ              ,
+		   ExecuteReadWrite  = PAGE_EXECUTE_READWRITE         ,
+		   ExecuteWriteCopy  = PAGE_EXECUTE_WRITECOPY         );
+enum_flags(MapAccess         , DWORD                          ,
+		   Write             = FILE_MAP_WRITE                 ,
+		   Read              = FILE_MAP_READ                  ,
+		   All               = FILE_MAP_ALL_ACCESS            ,
+		   Execute           = FILE_MAP_EXECUTE               ,
+		   Copy              = FILE_MAP_COPY                  ,
+		   Targets           = FILE_MAP_TARGETS_INVALID       ,
+		   LargePages        = FILE_MAP_LARGE_PAGES           ,
+		   ReadWrite         = FILE_MAP_WRITE | FILE_MAP_READ );
 //enum_flags(FileDispose)
 struct FileTimes { FileTime Creation, LastAccess, LastWrite; };
 class FileBaseInfo : public StructShim<FILE_BASIC_INFO> {
@@ -410,120 +410,123 @@ using CFile = ProxyView<File>;
 #pragma endregion
 
 #pragma region Comm
-enum_class(Parities, BYTE,
-	No        = NOPARITY,
-	Odd       = ODDPARITY,
-	Even      = EVENPARITY,
-	Mark      = MARKPARITY,
-	Space     = SPACEPARITY);
-enum_class(StopBits, BYTE,
-	One  = ONESTOPBIT,
-	One5 = ONE5STOPBITS,
-	Two  = TWOSTOPBITS);
-enum_class(DtrCtrl, DWORD,
-	Disable   = DTR_CONTROL_DISABLE,
-	Enable    = DTR_CONTROL_ENABLE,
-	HandShake = DTR_CONTROL_HANDSHAKE);
-enum_class(RtsCtrl, DWORD,
-	Disable   = RTS_CONTROL_DISABLE,
-	Enable    = RTS_CONTROL_ENABLE,
-	HandShake = RTS_CONTROL_HANDSHAKE,
-	Toggle    = RTS_CONTROL_TOGGLE);
-enum_flags(CommPurge, DWORD,
-	TxAbort   = PURGE_TXABORT,
-	RxAbort   = PURGE_RXABORT,
-	TxClear   = PURGE_TXCLEAR,
-	RxClear   = PURGE_RXCLEAR,
-	All       = PURGE_TXABORT | PURGE_RXABORT | PURGE_TXCLEAR | PURGE_RXCLEAR);
-enum_flags(ModemStatus, DWORD,
-	CTS       = MS_CTS_ON,
-	DSR       = MS_DSR_ON,
-	Ring      = MS_RING_ON,
-	RLSD      = MS_RLSD_ON);
-enum_flags(CommEvent, DWORD,
-	RxChar    = EV_RXCHAR,
-	RxFlag    = EV_RXFLAG,
-	TxEmpty   = EV_TXEMPTY,
-	Cts       = EV_CTS,
-	Dsr       = EV_DSR,
-	Rlsd      = EV_RLSD,
-	Break     = EV_BREAK,
-	Err       = EV_ERR,
-	Ring      = EV_RING,
-	PErr      = EV_PERR,
-	Rx80Full  = EV_RX80FULL,
-	Event1    = EV_EVENT1,
-	Event2    = EV_EVENT2);
-enum_class(CommSubTypes, DWORD,
-	Unspecified      = PST_UNSPECIFIED,
-	RS232            = PST_RS232,
-	ParallelPort     = PST_PARALLELPORT,
-	RS422            = PST_RS422,
-	RS423            = PST_RS423,
-	RS449            = PST_RS449,
-	Modem            = PST_MODEM,
-	Fax              = PST_FAX,
-	Scanner          = PST_SCANNER,
-	NetworkBridge    = PST_NETWORK_BRIDGE,
-	Lat              = PST_LAT,
-	TcpIpTelnet      = PST_TCPIP_TELNET,
-	X25              = PST_X25);
-enum_flags(CommCapability, DWORD,
-	DTRDSR        = PCF_DTRDSR,
-	RTSCTS        = PCF_RTSCTS,
-	RLSD          = PCF_RLSD,
-	ParityCheck   = PCF_PARITY_CHECK,
-	XONXOFF       = PCF_XONXOFF,
-	SetXChar      = PCF_SETXCHAR,
-	Totaltimeouts = PCF_TOTALTIMEOUTS,
-	IntTimeouts   = PCF_INTTIMEOUTS,
-	SpecialChars  = PCF_SPECIALCHARS,
-	_16BitMode    = PCF_16BITMODE);
-enum_flags(CommBaud, DWORD,
-	_075             = BAUD_075,
-	_110             = BAUD_110,
-	_134_5           = BAUD_134_5,
-	_150             = BAUD_150,
-	_300             = BAUD_300,
-	_600             = BAUD_600,
-	_1200            = BAUD_1200,
-	_1800            = BAUD_1800,
-	_2400            = BAUD_2400,
-	_4800            = BAUD_4800,
-	_7200            = BAUD_7200,
-	_9600            = BAUD_9600,
-	_14400           = BAUD_14400,
-	_19200           = BAUD_19200,
-	_38400           = BAUD_38400,
-	_56K             = BAUD_56K,
-	_128K            = BAUD_128K,
-	_115200          = BAUD_115200,
-	_57600           = BAUD_57600,
-	_User            = BAUD_USER);
-enum_flags(CommDataBit, WORD,
-	_5               = DATABITS_5,
-	_6               = DATABITS_6,
-	_7               = DATABITS_7,
-	_8               = DATABITS_8,
-	_16              = DATABITS_16,
-	_16X             = DATABITS_16X);
-enum_flags(CommStopParity, WORD,
-	_1               = STOPBITS_10,
-	_15              = STOPBITS_15,
-	_2               = STOPBITS_20,
-	None             = PARITY_NONE,
-	Odd              = PARITY_ODD,
-	Even             = PARITY_EVEN,
-	Mark             = PARITY_MARK,
-	Space            = PARITY_SPACE);
-enum_flags(CommParam, DWORD,
-	Parity          = SP_PARITY,
-	Baud            = SP_BAUD,
-	DataBits        = SP_DATABITS,
-	StopBits        = SP_STOPBITS,
-	Handshaking     = SP_HANDSHAKING,
-	ParityCheck     = SP_PARITY_CHECK,
-	RLSD            = SP_RLSD);
+enum_class(Parities        , BYTE          ,
+		   No              = NOPARITY      ,
+		   Odd             = ODDPARITY     ,
+		   Even            = EVENPARITY    ,
+		   Mark            = MARKPARITY    ,
+		   Space           = SPACEPARITY   );
+enum_class(StopBits        , BYTE          ,
+		   One             = ONESTOPBIT    ,
+		   One5            = ONE5STOPBITS  ,
+		   Two             = TWOSTOPBITS   );
+enum_flags(CommDataBit     , WORD          ,
+		   _5              = DATABITS_5    ,
+		   _6              = DATABITS_6    ,
+		   _7              = DATABITS_7    ,
+		   _8              = DATABITS_8    ,
+		   _16             = DATABITS_16   ,
+		   _16X            = DATABITS_16X  ;
+enum_flags(CommStopParity  , WORD         ,
+		   _1              = STOPBITS_10  ,
+		   _15             = STOPBITS_15  ,
+		   _2              = STOPBITS_20  ,
+		   None            = PARITY_NONE  ,
+		   Odd             = PARITY_ODD   ,
+		   Even            = PARITY_EVEN  ,
+		   Mark            = PARITY_MARK  ,
+		   Space           = PARITY_SPACE );
+enum_class(DtrCtrl         , DWORD                 ,
+		   Disable         = DTR_CONTROL_DISABLE   ,
+		   Enable          = DTR_CONTROL_ENABLE    ,
+		   HandShake       = DTR_CONTROL_HANDSHAKE );
+enum_class(RtsCtrl         , DWORD                 ,
+		   Disable         = RTS_CONTROL_DISABLE   ,
+		   Enable          = RTS_CONTROL_ENABLE    ,
+		   HandShake       = RTS_CONTROL_HANDSHAKE ,
+		   Toggle          = RTS_CONTROL_TOGGLE    );
+enum_flags(ModemStatus     , DWORD                 ,
+		   CTS             = MS_CTS_ON             ,
+		   DSR             = MS_DSR_ON             ,
+		   Ring            = MS_RING_ON            ,
+		   RLSD            = MS_RLSD_ON            );
+enum_flags(CommPurge       , DWORD                 ,
+		   TxAbort         = PURGE_TXABORT         ,
+		   RxAbort         = PURGE_RXABORT         ,
+		   TxClear         = PURGE_TXCLEAR         ,
+		   RxClear         = PURGE_RXCLEAR         ,
+		   All             = PURGE_TXABORT         |
+		   				     PURGE_RXABORT         |
+						     PURGE_TXCLEAR         |
+						     PURGE_RXCLEAR         );
+enum_flags(CommEvent       , DWORD                 ,
+		   RxChar          = EV_RXCHAR             ,
+		   RxFlag          = EV_RXFLAG             ,
+		   TxEmpty         = EV_TXEMPTY            ,
+		   Cts             = EV_CTS                ,
+		   Dsr             = EV_DSR                ,
+		   Rlsd            = EV_RLSD               ,
+		   Break           = EV_BREAK              ,
+		   Err             = EV_ERR                ,
+		   Ring            = EV_RING               ,
+		   PErr            = EV_PERR               ,
+		   Rx80Full        = EV_RX80FULL           ,
+		   Event1          = EV_EVENT1             ,
+		   Event2          = EV_EVENT2             );
+enum_class(CommSubTypes    , DWORD                 ,
+		   Unspecified     = PST_UNSPECIFIED       ,
+		   RS232           = PST_RS232             ,
+		   ParallelPort    = PST_PARALLELPORT      ,
+		   RS422           = PST_RS422             ,
+		   RS423           = PST_RS423             ,
+		   RS449           = PST_RS449             ,
+		   Modem           = PST_MODEM             ,
+		   Fax             = PST_FAX               ,
+		   Scanner         = PST_SCANNER           ,
+		   NetworkBridge   = PST_NETWORK_BRIDGE    ,
+		   Lat             = PST_LAT               ,
+		   TcpIpTelnet     = PST_TCPIP_TELNET      ,
+		   X25             = PST_X25               );
+enum_flags(CommCapability  , DWORD                 ,
+		   DTRDSR          = PCF_DTRDSR            ,
+		   RTSCTS          = PCF_RTSCTS            ,
+		   RLSD            = PCF_RLSD              ,
+		   ParityCheck     = PCF_PARITY_CHECK      ,
+		   XONXOFF         = PCF_XONXOFF           ,
+		   SetXChar        = PCF_SETXCHAR          ,
+		   Totaltimeouts   = PCF_TOTALTIMEOUTS     ,
+		   IntTimeouts     = PCF_INTTIMEOUTS       ,
+		   SpecialChars    = PCF_SPECIALCHARS      ,
+		   _16BitMode      = PCF_16BITMODE         );
+enum_flags(CommBaud     , DWORD           ,
+		   _075         = BAUD_075        ,
+		   _110         = BAUD_110        ,
+		   _134_5       = BAUD_134_5      ,
+		   _150         = BAUD_150        ,
+		   _300         = BAUD_300        ,
+		   _600         = BAUD_600        ,
+		   _1200        = BAUD_1200       ,
+		   _1800        = BAUD_1800       ,
+		   _2400        = BAUD_2400       ,
+		   _4800        = BAUD_4800       ,
+		   _7200        = BAUD_7200       ,
+		   _9600        = BAUD_9600       ,
+		   _14400       = BAUD_14400      ,
+		   _19200       = BAUD_19200      ,
+		   _38400       = BAUD_38400      ,
+		   _56K         = BAUD_56K        ,
+		   _128K        = BAUD_128K       ,
+		   _115200      = BAUD_115200     ,
+		   _57600       = BAUD_57600      ,
+		   _User        = BAUD_USER       );
+enum_flags(CommParam    , DWORD           ,
+		   Parity       = SP_PARITY       ,
+		   Baud         = SP_BAUD         ,
+		   DataBits     = SP_DATABITS     ,
+		   StopBits     = SP_STOPBITS     ,
+		   Handshaking  = SP_HANDSHAKING  ,
+		   ParityCheck  = SP_PARITY_CHECK ,
+		   RLSD         = SP_RLSD         );
 struct CommStates : public StructShim<DCB> {
 	using Super = StructShim<DCB>;
 public:

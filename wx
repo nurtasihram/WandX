@@ -84,16 +84,16 @@ public: \
 
 #pragma region Macros Of Proxy Shim
 // proxy struct
-#define proxy_struct1(name)                                struct name : WX::CTypeProxyShim<name>
-#define proxy_struct2(name, struct_name)                   struct name : WX::CTypeProxyShim<name, struct_name>
-#define proxy_struct3(name, struct_name, self_size_member) struct name : WX::CTypeProxyShim<name, struct_name, &struct_name::self_size_member>
-#define proxy_struct(...)                                  mx_funcN(proxy_struct, __VA_ARGS__)
+#define proxy_struct(name, struct_name)                   struct name final : WX::CStructProxy<name, struct_name>
 // proxy property
-#define proxy_prop_set(name, proto_name, type)            inline auto&name(type value) ret_to_self(self->proto_name = (decltype(self->proto_name))value)
-#define proxy_prop_get(name, proto_name, type)            inline auto name(          ) const ret_as(WX::safe_c_cast<type>(self->proto_name))
-#define proxy_prop(name, proto_name, type_in, type_out)   proxy_prop_set(name, proto_name, type_in   ) \
+#define proxy_prop_set(name, proto_name, type)            inline auto&name(type value) ret_to_self(safe_setval(this->proto_name, value))
+#define proxy_prop_get(name, proto_name, type)            inline auto name(          ) const ret_as(WX::safe_c_cast<type>(this->proto_name))
+#define proxy_prop(name, proto_name, type_in, type_out)   proxy_prop_set(name, proto_name, type_in   ); \
 														  proxy_prop_get(name, proto_name, type_out  )
-#define proxy_prop_sync(name, proto_name, type) 		  proxy_prop    (name, proto_name, type, type)
+#define proxy_prop_sync(name, proto_name, type)           proxy_prop    (name, proto_name, type, type)
+// proxy self-size
+#define proxy_prop_size(proto_name, type)                 protected: proxy_prop_set(SelfSize, proto_name, size_t); friend Super; \
+														  public:    proxy_prop_get(SelfSize, proto_name, type)
 // proxy view
 #define friend_to_proxy(name) friend union WX::ProxyView<name>
 #pragma endregion
@@ -109,8 +109,7 @@ struct name : public enum_shim(type, name, base) {                 \
 	static constexpr ShimType                      __VA_ARGS__   ; \
 	static constexpr BaseType EnumEntries     []{  __VA_ARGS__ } ; \
 	static constexpr char     EnumProtoString []{ #__VA_ARGS__ } ; \
-	static constexpr char     EnumName        []{  #name       } ; \
-}
+	static constexpr char     EnumName        []{  #name       } ; }
 #define enum_class(name, base, ...) enum_base(Class, name, base, __VA_ARGS__)
 #define enum_flags(name, base, ...) enum_base(Flags, name, base, __VA_ARGS__)
 #pragma endregion
