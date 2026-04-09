@@ -44,6 +44,8 @@ wapi_reflect_true(SetConsoleCtrlHandler);
 #pragma endregion
 
 #pragma region ConsoleApi2.h
+static_assert(NotSame<ProtoOf<decltype(FillConsoleOutputCharacterA)>,
+                      ProtoOf<decltype(FillConsoleOutputCharacterW)>>);
 #undef FillConsoleOutputCharacter
 wapi_reflect_true_WAO(FillConsoleOutputCharacter);
 wapi_reflect_true(FillConsoleOutputAttribute);

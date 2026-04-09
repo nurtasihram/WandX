@@ -217,6 +217,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\wx.radix.cppm" />
     <ClCompile Include="..\wx.win32.cppm" />
     <ClCompile Include="..\wx.realtime.cppm" />
     <ClCompile Include="..\wx.resource.cppm">
