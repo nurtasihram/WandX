@@ -331,7 +331,7 @@ public: // FormatDate
 		int len = WX::GetDateFormat(locale.yield(), df.yield(), &self, lpFormat, O, 0);
 		StringX<IsUnicode> str((SizeT)len - 1);
 		WX::GetDateFormat(locale.yield(), df.yield(), &self, lpFormat, str, len);
-		return right_hand_cast(str);
+		return right_cast(str);
 	}
 	inline StringA FormatDate(Locales locale, DateFormat df, LPCSTR lpFormat) const ret_as(FormatDate<false>(locale, df, lpFormat));
 	inline StringW FormatDate(Locales locale, DateFormat df, LPCWSTR lpFormat) const ret_as(FormatDate<true>(locale, df, lpFormat));
@@ -341,7 +341,7 @@ public: // FormatDate
 		int len = WX::GetDateFormat(lpLocaleName, df.yield(), &self, lpFormat, O, 0, O);
 		StringW str((SizeT)len - 1);
 		WX::GetDateFormat(lpLocaleName, df.yield(), &self, lpFormat, str, len, O);
-		return right_hand_cast(str);
+		return right_cast(str);
 	}
 public: // FormatTime
 	template<bool IsUnicode = WX::IsUnicode>
@@ -349,7 +349,7 @@ public: // FormatTime
 		int len = WX::GetTimeFormat(locale.yield(), tf.yield(), &self, lpFormat, O, 0);
 		StringX<IsUnicode> str((SizeT)len - 1);
 		GetTimeFormat(locale.yield(), tf.yield(), &self, lpFormat, str, len);
-		return right_hand_cast(str);
+		return right_cast(str);
 	}
 	inline StringA FormatTime(Locales locale, TimeFormat tf, LPCSTR lpFormat) const ret_as(FormatTime<false>(locale, tf, lpFormat));
 	inline StringW FormatTime(Locales locale, TimeFormat tf, LPCWSTR lpFormat) const ret_as(FormatTime<true>(locale, tf, lpFormat));
@@ -359,7 +359,7 @@ public: // FormatTime
 		int len = WX::GetTimeFormat(lpLocaleName, tf.yield(), &self, lpFormat, O, 0);
 		StringW str((SizeT)len - 1);
 		WX::GetTimeFormat(lpLocaleName, tf.yield(), &self, lpFormat, str, len);
-		return right_hand_cast(str);
+		return right_cast(str);
 	}
 public:
 	template<bool IsUnicode = WX::IsUnicode>
@@ -370,7 +370,7 @@ public:
 		WX::GetDateFormat(LOCALE_CUSTOM_DEFAULT, 0, &self, O, str, lenDate);
 		WX::GetTimeFormat(LOCALE_CUSTOM_DEFAULT, 0, &self, O, ((LPXSTR<IsUnicode>)str) + lenDate, lenTime);
 		str[lenDate - 1] = ' ';
-		return right_hand_cast(str);
+		return right_cast(str);
 	}
 	inline StringA toStringA() const ret_as(toString<false>());
 	inline StringW toStringW() const ret_as(toString<true>());

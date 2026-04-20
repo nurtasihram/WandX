@@ -55,10 +55,16 @@ using SizeT  = std::size_t;
 
 export namespace WX {
 
+#pragma region Basic Type Traits & Helpers System
+
+/* Nullptr Type & Value */
+
 using Nu = decltype(nullptr);
 constexpr Nu O = nullptr;
 
-#pragma region Basic Type Traits & Helpers System
+template<class AnyType> constexpr bool IsNu     = false;
+template<             > constexpr bool IsNu<Nu> = true;
+template<class AnyType> concept NotNu = !IsNu<AnyType>;
 
 /* Void Type Helpers */
 
@@ -74,111 +80,160 @@ template<class Type1, class Type2> concept          SameSizeType = IsSameSize<Ty
 template<class AnyType> constexpr SizeT SizeOf        = sizeof(AnyType);
 template<             > constexpr SizeT SizeOf<void>  = 0;
 
-/* Same Type & Value Helpers */
+/* Same / Equal Helpers */
+
+// Values Equalities
+
+template<auto val1, auto val2> constexpr bool IsEqualValue = val1 == val2;
+template<auto val1, auto val2> constexpr bool UnequalValue = val1 != val2;
+
+template<auto val0, auto...valN> constexpr bool AllEqualValue = (IsEqualValue<val0, valN> && ...);
+template<auto val0, auto...valN> constexpr bool  IsEqualityIn = (IsEqualValue<val0, valN> || ...);
+template<auto val0, auto...valN> constexpr bool  UnequalityIn = (UnequalValue<val0, valN> && ...);
+
+template<auto val1, auto val2> concept  EqualToValue = IsEqualValue<val1, val2>;
+template<auto val1, auto val2> concept NequalToValue = UnequalValue<val1, val2>;
+
+template<auto val0, auto...valN> concept  EqualityIn = IsEqualityIn<val0, valN...>;
+template<auto val0, auto...valN> concept NequalityIn = UnequalityIn<val0, valN...>;
+
+// Values Same
+
+template<auto val1, auto val2> constexpr bool IsSameValue             = false;
+template<auto val0>            constexpr bool IsSameValue<val0, val0> = true;
+template<auto val1, auto val2> constexpr bool NoSameValue             = IsSameValue<val1, val2>;
+
+template<auto val0, auto...valN> constexpr bool  AllSameValue = (IsSameValue<val0, valN> && ...);
+template<auto val0, auto...valN> constexpr bool  IsOneOfValue = (IsSameValue<val0, valN> || ...);
+template<auto val0, auto...valN> constexpr bool IsNoneOfValue = (NoSameValue<val0, valN> && ...);
+
+template<auto val1, auto val2> concept   SameAsValue = IsSameValue<val1, val2>;
+template<auto val1, auto val2> concept NoSameAsValue = NoSameValue<val1, val2>;
+
+template<auto val0, auto...valN> concept  OneOfValue =  IsOneOfValue<val0, valN...>;
+template<auto val0, auto...valN> concept NoneOfValue = IsNoneOfValue<val0, valN...>;
 
 // Types
 
-template<class Type1, class Type2>         constexpr bool  IsSame               = false;
-template<class Type0>                      constexpr bool  IsSame<Type0, Type0> = true;
-template<class Type1, class Type2>         constexpr bool NotSame               = !IsSame<Type1, Type2>;
+template<class Type1, class Type2> constexpr bool IsSame               = false;
+template<class Type0>              constexpr bool IsSame<Type0, Type0> = true;
+template<class Type1, class Type2> constexpr bool NoSame               = !IsSame<Type1, Type2>;
 
-template<class AnyType, class...TypeN> constexpr bool  AllSame = ( IsSame<AnyType, TypeN> && ...);
+template<class Type0, class...TypeN> constexpr bool  AllSame = (IsSame<Type0, TypeN> && ...);
+template<class Type0, class...TypeN> constexpr bool  IsOneOf = (IsSame<Type0, TypeN> || ...);
+template<class Type0, class...TypeN> constexpr bool IsNoneOf = (NoSame<Type0, TypeN> && ...);
 
-template<class AnyType, class...TypeN> constexpr bool  IsOneOf = ( IsSame<AnyType, TypeN> || ...);
-template<class AnyType, class...TypeN> constexpr bool IsNoneOf = (NotSame<AnyType, TypeN> && ...);
+template<class Type1, class Type2> concept   SameAs = IsSame<Type1, Type2>;
+template<class Type1, class Type2> concept NoSameAs = NoSame<Type1, Type2>;
 
-template<class Type1, class Type2> concept       SameAs =  IsSame<Type1, Type2>;
-template<class Type1, class Type2> concept    NotSameAs = NotSame<Type1, Type2>;
+template<class Type0, class...TypeN> concept  OneOf =  IsOneOf<Type0, TypeN...>;
+template<class Type0, class...TypeN> concept NoneOf = IsNoneOf<Type0, TypeN...>;
 
-template<class AnyType, class...TypeN> concept    OneOf =  IsOneOf<AnyType, TypeN...>;
-template<class AnyType, class...TypeN> concept   NoneOf = IsNoneOf<AnyType, TypeN...>;
+/* Wrap Of Type & Value */
 
-// Values
+template<auto           val> struct         OfValue { static constexpr auto value = val; };
+template<class      AnyType> concept        OfValuable = requires{ AnyType::value; };
+template<OfValuable AnyType> constexpr auto ValueOf    =           AnyType::value;
 
-template<auto val1, auto val2> constexpr bool  IsSameValue = val1 == val2;
-template<auto val1, auto val2> constexpr bool NotSameValue = val1 != val2;
+template<class     AnyType> struct  OfType              { using   type = AnyType; };
+template<class     AnyType> concept OfTypical = requires{ typename AnyType::type; };
+template<OfTypical AnyType> using   TypeOf    =           typename AnyType::type;
 
-template<auto val, auto...other_valN> constexpr bool  AllSameValue = ( IsSameValue<val, other_valN> && ...);
+// Ifs
 
-template<auto val, auto...other_valN> constexpr bool  IsOneOfValue = ( IsSameValue<val, other_valN> || ...);
-template<auto val, auto...other_valN> constexpr bool IsNoneOfValue = (NotSameValue<val, other_valN> && ...);
+template<bool b, auto true_val, auto false_val> constexpr auto ValueIf                            = false_val;
+template<        auto true_val, auto false_val> constexpr auto ValueIf<true, true_val, false_val> =  true_val;
 
-template<auto val1, auto val2> concept          SameAsValue =  IsSameValue<val1, val2>;
-template<auto val1, auto val2> concept       NotSameAsValue = NotSameValue<val1, val2>;
+template<bool,   class TrueType, class FalseType> struct TypeIfProto                             : OfType<FalseType> {};
+template<        class TrueType, class FalseType> struct TypeIfProto<true,  TrueType, FalseType> : OfType< TrueType> {};
+template<bool b, class TrueType, class FalseType> using  TypeIf = TypeOf<TypeIfProto<b, TrueType, FalseType>>;
 
-template<auto val, auto...other_valN> concept    OneOfValue =  IsOneOfValue<val, other_valN...>;
-template<auto val, auto...other_valN> concept   NoneOfValue = IsNoneOfValue<val, other_valN...>;
+template<class AnyType, class AnyDefault> using VoidChain = TypeIf<IsVoid<AnyType>, AnyDefault, AnyType>;
+
+// ValueMap
+
+template<auto...caseN>                                            struct ValueMapProto;
+template<auto key_val>                                            struct ValueMapProto<key_val>                              : OfValue<key_val>                 {};
+template<auto key_val, auto default_val>                          struct ValueMapProto<key_val, default_val>                 : OfValue<default_val>             {};
+template<auto key_val, auto case_val, auto ret_val, auto...caseN> struct ValueMapProto<key_val, case_val, ret_val, caseN...> {
+	template<class = void, bool = IsEqualValue<key_val, case_val>>
+	struct Selector : ValueMapProto<key_val, caseN...> {};
+	template<class _>
+	struct Selector<_, true> : OfValue<ret_val> {};
+	static constexpr auto value = ValueOf<Selector<>>;
+	 
+};
+template<auto key_val, auto case_val, auto ret_val>               struct ValueMapProto<key_val, case_val, ret_val>           : OfValue<ret_val>
+{ static_assert(IsSameValue<key_val, case_val>, "ValueMapProto Error: No matching value found."); };
+template<auto...caseN> constexpr auto ValueMap = ValueOf<ValueMapProto<caseN...>>;
+
+// ValueSwitch
+
+template<auto...caseN>            struct ValueSwitchProto;
+template<auto default_val>        struct ValueSwitchProto<default_val>           : OfValue<default_val>       {};
+template<auto val1, auto...caseN> struct ValueSwitchProto< true, val1, caseN...> : OfValue<val1>              {};
+template<auto val1, auto...caseN> struct ValueSwitchProto<false, val1, caseN...> : ValueSwitchProto<caseN...> {};
+template<bool case0, auto val1>   struct ValueSwitchProto<case0, val1>           : OfValue<val1>
+{ static_assert(case0, "ValueSwitchProto Error: No matching case found."); };
+template<auto...caseN> constexpr auto ValueSwitch = ValueOf<ValueSwitchProto<caseN...>>;
+
+// TypeMap
+
+template<class...CaseN>                                               struct TypeMapProto;
+template<class KeyType>                                               struct TypeMapProto<KeyType>                              : OfType<KeyType>                 {};
+template<class KeyType, class DefaultType>                            struct TypeMapProto<KeyType, DefaultType>                 : OfType<DefaultType>             {};
+template<class KeyType, class  RetType               , class...CaseN> struct TypeMapProto<KeyType,  KeyType, RetType, CaseN...> : OfType<RetType>                 {};
+template<class KeyType, class CaseType, class TypeRet, class...CaseN> struct TypeMapProto<KeyType, CaseType, TypeRet, CaseN...> : TypeMapProto<KeyType, CaseN...> {};
+template<class KeyType, class CaseType, class TypeRet>                struct TypeMapProto<KeyType, CaseType, TypeRet>           : OfType<TypeRet>
+{ static_assert(IsSame<KeyType, CaseType>, "TypeMapProto Error: No matching type found."); };
+template<class...CaseN> using TypeMap = TypeOf<TypeMapProto<CaseN...>>;
+
+// TypeSwitch
+
+template<bool, class> struct TypeCase;
+template<class AnyType>           constexpr bool IsTypeCase = false;
+template<bool caseN, class TypeN> constexpr bool IsTypeCase<TypeCase<caseN, TypeN>> = true;
+template<class AnyType>           concept TypeCaseType = IsTypeCase<AnyType>;
+
+template<class...CaseN>              struct TypeSwitchProto;
+template<class DefaultType>          struct TypeSwitchProto<DefaultType>                      : OfType<DefaultType>       {};
+template<class Type1, class...CaseN> struct TypeSwitchProto<TypeCase<true , Type1>, CaseN...> : OfType<Type1>             {};
+template<class Type1, class...CaseN> struct TypeSwitchProto<TypeCase<false, Type1>, CaseN...> : TypeSwitchProto<CaseN...> {};
+template<class TypeX, class...CaseN> struct TypeSwitchProto<TypeX, CaseN...> 
+{ static_assert(TypeCaseType<TypeX>, "TypeSwitchProto Error: Invalid TypeCase provided."); };
+template<bool case0, class Type0>    struct TypeSwitchProto<TypeCase<case0, Type0>>           : OfType<Type0>
+{ static_assert(case0, "TypeSwitchProto Error: No matching case found."); };
+template<class...CaseN> using TypeSwitch = TypeOf<TypeSwitchProto<CaseN...>>;
 
 /* Numeric Types */
 
 // Int8 and Int16 may duplicated with char or wchar_t, so they are excluded in Numeral
 template<class AnyType> concept Numeral             = OneOf<AnyType, Int8U, Int16U, Int32U, Int64U, Int32, Int64>;
 template<class AnyType> concept PositiveNumeral     = OneOf<AnyType, Int8U, Int16U, Int32U, Int64U>;
-template<class AnyType> concept SignedIntagerType   = OneOf<AnyType,  Int8,  Int16,  Int32,  Int64>;
+template<class AnyType> concept SignedIntagerType   = OneOf<AnyType, Int8 , Int16,  Int32,  Int64 >;
 template<class AnyType> concept UnsignedIntagerType = PositiveNumeral<AnyType>;
+template<class AnyType> concept IntagerType         = SignedIntagerType<AnyType> || UnsignedIntagerType<AnyType>;
 
 template<class AnyType> concept FloatType = OneOf<AnyType, float, double/*, long double*/>;
 
 template<class AnyType> concept SignedAllType = FloatType<AnyType> || SignedIntagerType<AnyType>;
 template<class AnyType> concept NumberType    = FloatType<AnyType> || Numeral<AnyType>;
 
-/* Condition Type & Value Selectors */
+template<Int8U bits>
+using IntXU = TypeSwitch<
+	TypeCase<bits <=  8,  Int8U>,
+	TypeCase<bits <= 16, Int16U>,
+	TypeCase<bits <= 32, Int32U>,
+	TypeCase<bits <= 64, Int64U>
+>;
 
-// Types
-
-template<bool  , class TrueType, class FalseType> struct ConditionType;
-template<        class TrueType, class FalseType> struct ConditionType<true,  TrueType, FalseType> { using type = TrueType;  };
-template<        class TrueType, class FalseType> struct ConditionType<false, TrueType, FalseType> { using type = FalseType; };
-template<bool b, class TrueType, class FalseType>  using ConditionOf = typename ConditionType<b, TrueType, FalseType>::type;
-
-template<class AnyType, class...SwitchTypeN> struct SwitchType;
-template<class AnyType, class Type1, class TypeRet, class...SwitchTypeN>
-struct SwitchType<AnyType, Type1, TypeRet, SwitchTypeN...> {
-	using type = ConditionOf<
-		IsSame<AnyType, Type1>,
-		TypeRet,
-		SwitchType<AnyType, SwitchTypeN...>
-	>;
-};
-template<class AnyType, class Type1, class TypeRet>
-struct SwitchType<AnyType, Type1, TypeRet> {
-	static_assert(!IsSame<AnyType, Type1>, "SwitchType Error: No matching type found.");
-	using type = TypeRet;
-};
-template<class AnyType, class TypeDefault>
-struct SwitchType<AnyType, TypeDefault> {
-	using type = TypeDefault;
-};
-template<class AnyType, class...SwitchTypeN>
-using SwitchOf = typename SwitchType<AnyType, SwitchTypeN...>::type;
-
-template<class AnyType, class AnyDefault>
-using VoidChain = ConditionOf<IsVoid<AnyType>, AnyDefault, AnyType>;
-
-// Values
-
-template<bool b, auto true_val, auto false_val> constexpr auto ConditionOfValue                             = false_val;
-template<        auto true_val, auto false_val> constexpr auto ConditionOfValue<false, true_val, false_val> =  true_val;
-
-template<auto key, auto...caseN> struct SwitchValueType;
-template<auto key, auto val, auto ret, auto...caseN>
-struct SwitchValueType<key, val, ret, caseN...> {
-	template<bool is_same, class = void>
-	static constexpr auto _value = ret;
-	template<class _>
-	static constexpr auto _value<false, _> = SwitchValueType<key, caseN...>::value;
-	static constexpr auto value = _value<IsSameValue<key, val>>;
-};
-template<auto key, auto val, auto ret>
-struct SwitchValueType<key, val, ret> {
-    static_assert(IsSameValue<key, val>, "SwitchValueType Error: No matching value found.");
-	static constexpr auto value = ret;
-};
-template<auto key, auto default_case> struct SwitchValueType<key, default_case> {
-	static constexpr auto value = default_case;
-};
-template<auto key, auto...caseN>
-constexpr auto SwitchValueOf = SwitchValueType<key, caseN...>::value;
+template<Int8U bits>
+using IntX = TypeSwitch<
+	TypeCase<bits <=  8,  Int8>,
+	TypeCase<bits <= 16, Int16>,
+	TypeCase<bits <= 32, Int32>,
+	TypeCase<bits <= 64, Int64>
+>;
 
 #pragma endregion
 
@@ -206,7 +261,7 @@ template<class AnyType>                 constexpr bool IsArrayVariadic          
 template<class AnyType, SizeT Len>      constexpr bool IsArrayInLength                <AnyType     [Len]>     = true;
 template<class AnyType, SizeT Len>      constexpr bool IsArrayInLength                <AnyType (& )[Len]>     = true;
 template<class AnyType, SizeT Len>      constexpr bool IsArrayInLength                <AnyType (&&)[Len]>     = true;
-template<class AnyType, class AnyOnwer> constexpr bool IsMemberPointer                <AnyType AnyOnwer:: *>     = true;
+template<class AnyType, class AnyOnwer> constexpr bool IsMemberPointer                <AnyType AnyOnwer:: *>    = true;
 template<class AnyType, class...ParaN>  constexpr bool IsFuntionProto                 <AnyType (ParaN...)>      = true;
 template<class AnyType, class...ParaN>  constexpr bool IsFuntionVariadicProto         <AnyType (ParaN..., ...)> = true;
 
@@ -263,17 +318,46 @@ enum class Modifications {
 	FuntionProto          = 1 << 8,
 	FuntionVariadicProto  = 1 << 9
 };
+using TypeNodes = Modifications;
 
 template<class AnyType>
 struct ProtoNodeOf {
 	using proto = AnyType;
 	using remove = AnyType;
+	static constexpr Modifications modification = Modifications::No;
 };
-template<class AnyType> using ProtoOf = typename ProtoNodeOf<AnyType>::proto;
+template<class AnyType> using     ProtoOf = typename ProtoNodeOf<AnyType>::proto;
 template<class AnyType> using RemoveModOf = typename ProtoNodeOf<AnyType>::remove;
 
 template<class AnyType> constexpr bool IsProto = IsSame<AnyType, ProtoOf<AnyType>>;
 template<class AnyType> constexpr auto ModOf = ProtoNodeOf<AnyType>::modification;
+
+template<class AnyType, Modifications mod> constexpr bool HasMod = 
+	ProtoNodeOf<AnyType>::modification == mod ? true :
+	IsProto<AnyType> ? false :
+	HasMod<RemoveModOf<AnyType>, mod>;
+template<class AnyType, Modifications mod> concept ModOn = HasMod<AnyType, mod>;
+
+template<Modifications mod, ModOn<mod> AnyType> constexpr auto IndexProtoNodeValue = [](){
+	using node = ProtoNodeOf<AnyType>;
+	if_c (node::modification == mod)
+		 return node{};
+	else return IndexProtoNodeValue<mod, RemoveModOf<AnyType>>;
+}();
+template<Modifications mod, class AnyType> using IndexProtoNode = decltype(IndexProtoNodeValue<mod, AnyType>);
+
+template<class AnyType> concept ModOnRight                = ModOn<AnyType, Modifications::Right                >;
+template<class AnyType> concept ModOnConst                = ModOn<AnyType, Modifications::Const                >;
+template<class AnyType> concept ModOnVolatile             = ModOn<AnyType, Modifications::Volatile             >;
+template<class AnyType> concept ModOnPointer              = ModOn<AnyType, Modifications::Pointer              >;
+template<class AnyType> concept ModOnArrayVariadic        = ModOn<AnyType, Modifications::ArrayVariadic        >;
+template<class AnyType> concept ModOnArrayInLength        = ModOn<AnyType, Modifications::ArrayInLength        >;
+template<class AnyType> concept ModOnMemberPointer        = ModOn<AnyType, Modifications::MemberPointer        >;
+template<class AnyType> concept ModOnFuntionProto         = ModOn<AnyType, Modifications::FuntionProto         >;
+template<class AnyType> concept ModOnFuntionVariadicProto = ModOn<AnyType, Modifications::FuntionVariadicProto >;
+
+template<class AnyType> concept ModOnArray            = ModOnArrayVariadic<AnyType> || ModOnArrayInLength       <AnyType>;
+template<class AnyType> concept ModOnFunctionAllProto = ModOnFuntionProto <AnyType> || ModOnFuntionVariadicProto<AnyType>;
 
 /* functionals */
 
@@ -283,6 +367,7 @@ class ParaList;
 template<class AnyRet, class...ParaN>
 struct ProtoNodeOf<AnyRet(ParaN...)> {
 	using proto       = AnyRet(ParaN...);
+	using remove      = proto;
 	using return_type = AnyRet;
 	template<template<class...> class AnyList = ParaList>
 	using para_list = AnyList<ParaN...>;
@@ -292,6 +377,7 @@ struct ProtoNodeOf<AnyRet(ParaN...)> {
 template<class AnyRet, class...ParaN>
 struct ProtoNodeOf<AnyRet(ParaN..., ...)>  {
 	using proto       = AnyRet(ParaN..., ...);
+	using remove      = proto;
 	using return_type = AnyRet;
 	template<template<class...> class AnyList = ParaList>
 	using listof_para = AnyList<ParaN...>;
@@ -302,30 +388,30 @@ struct ProtoNodeOf<AnyRet(ParaN..., ...)>  {
 /** Prototype Shims **/
 
 template<class LastType, class NextType, Modifications mod>
-	requires(NotSame<LastType, NextType>)
+	requires(NoSame<LastType, NextType>)
 struct TypeShim : ProtoNodeOf<LastType> {
 	using remove = LastType;
-	using type = NextType;
+	using type   = NextType;
 	static constexpr Modifications modification = mod;
 };
 
-template<class AnyType>                struct LeftShim              : TypeShim<AnyType, AnyType &        , Modifications::Left> {};
-template<class AnyType>                struct RightShim             : TypeShim<AnyType, AnyType &&       , Modifications::Right> {};
-template<class AnyType>                struct PointerShim           : TypeShim<AnyType, AnyType *        , Modifications::Pointer> {};
-template<class AnyType>                struct ConstShim             : TypeShim<AnyType, AnyType const    , Modifications::Const> {};
-template<class AnyType>                struct VolatileShim          : TypeShim<AnyType, AnyType volatile , Modifications::Volatile> {};
+template<class AnyType>                struct LeftShim              : TypeShim<AnyType, AnyType &        , Modifications::Left         > {};
+template<class AnyType>                struct RightShim             : TypeShim<AnyType, AnyType &&       , Modifications::Right        > {};
+template<class AnyType>                struct PointerShim           : TypeShim<AnyType, AnyType *        , Modifications::Pointer      > {};
+template<class AnyType>                struct ConstShim             : TypeShim<AnyType, AnyType const    , Modifications::Const        > {};
+template<class AnyType>                struct VolatileShim          : TypeShim<AnyType, AnyType volatile , Modifications::Volatile     > {};
 template<class AnyType, SizeT Len = 0> struct ArrayShim             : TypeShim<AnyType, AnyType [Len]    , Modifications::ArrayInLength> {};
 template<class AnyType>                struct ArrayShim<AnyType, 0> : TypeShim<AnyType, AnyType [   ]    , Modifications::ArrayVariadic> {};
 template<class AnyType, class Onwer>   struct MemberPointerShim     : TypeShim<AnyType, AnyType Onwer:: *, Modifications::MemberPointer> {}; ///////
 
 /* Prototype Nodes */
 
-template<class AnyType>              struct ProtoNodeOf<AnyType &>               : LeftShim          <AnyType>         {};
-template<class AnyType>              struct ProtoNodeOf<AnyType &&>              : RightShim         <AnyType>         {};
-template<class AnyType>              struct ProtoNodeOf<AnyType *>               : PointerShim       <AnyType>         {};
-template<class AnyType>              struct ProtoNodeOf<AnyType const>           : ConstShim         <AnyType>         {};
-template<class AnyType>              struct ProtoNodeOf<AnyType volatile>        : VolatileShim      <AnyType>         {};
-template<class AnyType, class Owner> struct ProtoNodeOf<AnyType Owner:: *>       : MemberPointerShim <AnyType, Owner>  { using owner = Owner; };
+template<class AnyType>              struct ProtoNodeOf<AnyType &              > : LeftShim          <AnyType>         {};
+template<class AnyType>              struct ProtoNodeOf<AnyType &&             > : RightShim         <AnyType>         {};
+template<class AnyType>              struct ProtoNodeOf<AnyType *              > : PointerShim       <AnyType>         {};
+template<class AnyType>              struct ProtoNodeOf<AnyType const          > : ConstShim         <AnyType>         {};
+template<class AnyType>              struct ProtoNodeOf<AnyType volatile       > : VolatileShim      <AnyType>         {};
+template<class AnyType, class Owner> struct ProtoNodeOf<AnyType Owner:: *      > : MemberPointerShim <AnyType, Owner>  { using owner = Owner; };
 template<class AnyType>              struct ProtoNodeOf<AnyType           [   ]> : ArrayShim         <AnyType>         { static constexpr auto length = 0; };
 template<class AnyType, SizeT Len>   struct ProtoNodeOf<AnyType           [Len]> : ArrayShim         <AnyType, Len>    { static constexpr auto length = Len; };
 template<class AnyType, SizeT Len>   struct ProtoNodeOf<AnyType (&)       [Len]> : LeftShim          <AnyType [Len]>   {};
@@ -336,14 +422,14 @@ template<class AnyType, SizeT Len>   struct ProtoNodeOf<AnyType  volatile [Len]>
 
 /* add modifications */
 
-template<class AnyType>                using LeftOf           = typename LeftShim          <AnyType>       ::type;
-template<class AnyType>                using RightOf          = typename RightShim         <AnyType>       ::type;
-template<class AnyType>                using ConstOf          = typename ConstShim         <AnyType>       ::type;
-template<class AnyType>                using VolatileOf       = typename VolatileShim      <AnyType>       ::type;
-template<class AnyType>                using PointerOf        = typename PointerShim       <AnyType>       ::type;
-template<class AnyType>                using ArrayVariadicOf  = typename ArrayShim         <AnyType>       ::type;
-template<class AnyType, class Onwer>   using MemberPointerOf  = typename MemberPointerShim <AnyType, Onwer>::type;
-template<class AnyType, SizeT Len = 0> using ArrayOf          = typename ArrayShim         <AnyType, Len>  ::type;
+template<class AnyType>                using LeftOf           = TypeOf<LeftShim          <AnyType>       >;
+template<class AnyType>                using RightOf          = TypeOf<RightShim         <AnyType>       >;
+template<class AnyType>                using ConstOf          = TypeOf<ConstShim         <AnyType>       >;
+template<class AnyType>                using VolatileOf       = TypeOf<VolatileShim      <AnyType>       >;
+template<class AnyType>                using PointerOf        = TypeOf<PointerShim       <AnyType>       >;
+template<class AnyType>                using ArrayVariadicOf  = TypeOf<ArrayShim         <AnyType>       >;
+template<class AnyType, class Onwer>   using MemberPointerOf  = TypeOf<MemberPointerShim <AnyType, Onwer>>;
+template<class AnyType, SizeT Len = 0> using ArrayOf          = TypeOf<ArrayShim         <AnyType, Len>  >;
 
 /* remove modifications */
 
@@ -359,9 +445,9 @@ template<MemberPointerType AnyMemberPointer> using OwnerTypeOf      = typename P
 /* conditional modifications */
 
 template<bool UseShim, template<class> class ShimType, class AnyType> struct CondShim;
-template<              template<class> class ShimType, class AnyType> struct CondShim<true , ShimType, AnyType> { using type = typename ShimType<AnyType>::type; };
-template<              template<class> class ShimType, class AnyType> struct CondShim<false, ShimType, AnyType> { using type = AnyType; };
-template<bool UseShim, template<class> class ShimType, class AnyType> using  CondShimFor = typename CondShim<UseShim, ShimType, AnyType>::type;
+template<              template<class> class ShimType, class AnyType> struct CondShim<true , ShimType, AnyType> : OfType<ShimType<AnyType>> {};
+template<              template<class> class ShimType, class AnyType> struct CondShim<false, ShimType, AnyType> : OfType<AnyType> {};
+template<bool UseShim, template<class> class ShimType, class AnyType> using  CondShimFor = TypeOf<CondShim<UseShim, ShimType, AnyType>>;
 
 template<class AnyType> using LeftFor      = CondShimFor<!IsLeft    <AnyType>, LeftShim    , AnyType>;
 template<class AnyType> using RightFor     = CondShimFor<!IsRight   <AnyType>, RightShim   , AnyType>;
@@ -372,9 +458,9 @@ template<class AnyType> using VolatileFor  = CondShimFor<!IsVolatile<AnyType>, V
 // array
 
 template<bool UseShim, class AnyType, SizeT Len> struct CondArrayShim;
-template<              class AnyType, SizeT Len> struct CondArrayShim<false, AnyType, Len> { using type = AnyType; };
-template<              class AnyType, SizeT Len> struct CondArrayShim<true , AnyType, Len> { using type = typename ArrayShim<AnyType, Len>::type; };
-template<bool UseShim, class AnyType, SizeT Len>  using CondArrayShimFor = typename CondArrayShim<UseShim, AnyType, Len>::type;
+template<              class AnyType, SizeT Len> struct CondArrayShim<false, AnyType, Len> : OfType<AnyType> {};
+template<              class AnyType, SizeT Len> struct CondArrayShim<true , AnyType, Len> : ArrayShim<AnyType, Len> {};
+template<bool UseShim, class AnyType, SizeT Len>  using CondArrayShimFor = TypeOf<CondArrayShim<UseShim, AnyType, Len>>;
 
 template<ArrayType AnyArray>                using ArrayForVariadic  = ArrayOf<RemoveModOf<AnyArray>>;
 template<ArrayType AnyArray, SizeT Len>     using LengthForArray    = ArrayOf<RemoveModOf<AnyArray>, Len>;
@@ -435,8 +521,10 @@ template<class AnyRet, class...ParaN> using StaticFunctionVariadicPointerOf = An
 template<ArrayType      AnyArray> constexpr SizeT CountOfArray = ProtoNodeOf<AnyArray>::length;
 template<FunctionAllType AnyFunc> constexpr SizeT CountOfPara  = ProtoNodeOf<AnyFunc>::countof_para;
 
-template<ArrayType       auto arr> constexpr SizeT ArrayCountOf = CountOfArray<decltype(arr)>;
-template<FunctionAllType auto fun> constexpr SizeT  ParaCountOf = CountOfPara <decltype(fun)>;
+template<ModOnArray AnyArray>
+constexpr SizeT ArrayCountOf(AnyArray) ret_as(IndexProtoNode<Modifications::ArrayInLength, AnyArray>::length);
+template<ModOnFunctionAllProto AnyFunc>
+constexpr SizeT ParaCountOf(AnyFunc) ret_as(IndexProtoNode<Modifications::FuntionProto, AnyFunc>::countof_para);
 
 template<FunctionAllType AnyFunc> using ReturnOfType = typename ProtoNodeOf<AnyFunc>::return_type;
 template<FunctionAllType auto fn> using ReturnTypeOf = typename ProtoNodeOf<decltype(fn)>::return_type;
@@ -450,7 +538,7 @@ struct ListMake_expend {};
 template<template<class, class...> class AnyFuncOf, class AnyRet, template<class...> class ParaList, class...ParaN>
 struct ListMake_expend<AnyFuncOf, AnyRet, ParaList<ParaN...>> { using type = AnyFuncOf<AnyRet, ParaN...>; };
 template<template<class, class...> class AnyFuncOf, class AnyRet, class AnyListOfPara>
-using ListMake = typename ListMake_expend<AnyFuncOf, AnyRet, AnyListOfPara>::type;
+using ListMake = TypeOf<ListMake_expend<AnyFuncOf, AnyRet, AnyListOfPara>>;
 
 /* Bound return type */
 
@@ -487,30 +575,42 @@ template<class AnyType> constexpr bool IsMemberPointableOfType(MemberPointableOf
 
 #pragma endregion
 
-#pragma region Callables Invoke Helpers
+#pragma region Invokable Cube Helpers
 
-template<class AnyType, class...ParaN> concept InvokableFrom             = requires(AnyType t, ParaN...arg) { t                     (arg                    ...); };
-template<class AnyType, class...ParaN> concept InvokableFromStrict       = requires(AnyType t             ) { t                     (any_require<ParaN>() ...); };
-template<class AnyType, class...ParaN> concept StrictInvokableFrom       = requires(           ParaN...arg) { any_require<AnyType>()(arg                    ...); };
-template<class AnyType, class...ParaN> concept StrictInvokableFromStrict = requires(                      ) { any_require<AnyType>()(any_require<ParaN>() ...); };
+template<auto  fn     , auto ...arg  > concept InvokableFrom = requires()                        { fn(arg...); }; // implicit
+template<class AnyType, class...ParaN> concept InvokableTo   = requires(AnyType fn, ParaN...arg) { fn(arg...); }; // implicit
 
-template<class AnyType, class...ParaN> constexpr bool InvokableFromType(ParaN...) ret_as(InvokableFrom<AnyType, ParaN...>);
+template<auto fn, class...ParaN> concept InvokableFromLeft        = requires(ParaN...arg) { fn(arg                  ...); }; // implicit arg
+template<auto fn, class...ParaN> concept InvokableFromLeftToRight = requires(           ) { fn(any_require<ParaN>() ...); }; // explicit arg
+template<auto fn, class...ParaN> concept InvokableFromLeftToHand  = InvokableFromLeft<fn, ParaN...> && InvokableFromLeftToRight<fn, ParaN...>;	// 
 
-template<class AnyType, class...ParaN> auto InvokeReturnTypeTest(ParaN...args) noexcept -> decltype(any_require<AnyType>()(args...)) wx_uncallable;
+template<class AnyType, auto...arg> concept InvokableFromRight       = requires(AnyType fn) {                     fn(arg ...); }; // implicit functor
+template<class AnyType, auto...arg> concept InvokableFromRightToLeft = requires(          ) { any_require<AnyType>()(arg ...); }; // explicit functor
+template<class AnyType, auto...arg> concept InvokableFromRightToHand = InvokableFromRight<AnyType, arg...> && InvokableFromRight<AnyType, arg...>; // 
 
-template<class AnyType, class...ParaN> using InvokedOfStrict = decltype(any_require<AnyType>()(any_require<ParaN>()...));
-template<class AnyType, class...ParaN> requires(InvokableFromStrict<AnyType, ParaN...>)
-using InvokedOf = decltype(InvokeReturnTypeTest<AnyType, ParaN...>(any_require<ParaN>()...));
+template<class AnyType, class...ParaN> concept InvokableToRight = requires(ParaN...arg) { any_require<AnyType>()(arg                  ...); }; // explicit functor implicit arg
+template<class AnyType, class...ParaN> concept InvokableToLeft  = requires(AnyType  fn) { fn                    (any_require<ParaN>() ...); }; // implicit functor explicit arg	  
+template<class AnyType, class...ParaN> concept InvokableToHand  = requires(           ) { any_require<AnyType>()(any_require<ParaN>() ...); }; // explicit functor explicit arg
+
+template<auto fn_up, auto fn_down> constexpr bool InvokableDownTo      = false;
+template<auto fn_up, auto fn_down> constexpr bool InvokableDownToRight = false;
+template<auto fn_up, auto fn_down> constexpr bool InvokableDownToHand  = false;
+
+template<auto fn_up, class Ret, class...ParaN, Ret(*fn_down)(ParaN...)> constexpr bool InvokableDownTo     <fn_up, fn_down> = InvokableFromLeft       <fn_up, ParaN...>;
+template<auto fn_up, class Ret, class...ParaN, Ret(*fn_down)(ParaN...)>	constexpr bool InvokableDownToRight<fn_up, fn_down> = InvokableFromLeftToRight<fn_up, ParaN...>;
+template<auto fn_up, class Ret, class...ParaN, Ret(*fn_down)(ParaN...)>	constexpr bool InvokableDownToHand <fn_up, fn_down> = InvokableFromLeftToHand <fn_up, ParaN...>;
+
+template<auto fn1, auto fn2> constexpr bool InvokableAmbiguous = InvokableDownTo<fn1, fn2> || InvokableDownTo<fn2, fn1>;
 
 #pragma endregion
 
 #pragma region Type Reference Helpers
 
-template<class OutType> constexpr       OutType &  ref_cast(      SameSizeType<OutType> auto & in) noexcept  ret_as(*(      OutType *) address_cast(in));
-template<class OutType> constexpr const OutType &  ref_cast(const SameSizeType<OutType> auto & in) noexcept  ret_as(*(const OutType *) address_cast(in));
-template<class OutType> constexpr       OutType  reuse_cast(      SameSizeType<OutType> auto   in) noexcept  ret_as(*(      OutType *) address_cast(in));
-template<class OutType, class InType> requires(sizeof(OutType) <= sizeof(InType)) constexpr OutType   big_cast(InType in) noexcept ret_as(*(OutType *)address_cast(in));
-template<class OutType, class InType> requires(sizeof(OutType) >= sizeof(InType)) constexpr OutType small_cast(InType in) noexcept ret_as(*(OutType *)address_cast(in));
+template<class OutType> constexpr       OutType &  ref_cast(      SameSizeType<OutType> auto & in) noexcept  ret_as(*(      OutType *)&in);
+template<class OutType> constexpr const OutType &  ref_cast(const SameSizeType<OutType> auto & in) noexcept  ret_as(*(const OutType *)&in);
+template<class OutType> constexpr       OutType  reuse_cast(      SameSizeType<OutType> auto   in) noexcept  ret_as(*(      OutType *)&in);
+template<class OutType, class InType> requires(sizeof(OutType) <= sizeof(InType)) constexpr OutType   big_cast(InType in) noexcept ret_as(*(OutType *)&in);
+template<class OutType, class InType> requires(sizeof(OutType) >= sizeof(InType)) constexpr OutType small_cast(InType in) noexcept ret_as(*(OutType *)&in);
 
 /* --- Hand --- */
 
@@ -535,8 +635,8 @@ struct Hand<AnyType &> {
 	static constexpr bool is_left = true;
 	static constexpr bool is_right = false;
 };
-template<class AnyType>	constexpr AnyType && right_hand_cast(AnyType &a) noexcept ret_as(static_cast<AnyType &&>(a));
-template<class AnyType>	constexpr AnyType &   left_hand_cast(AnyType &a) noexcept ret_as(a);
+template<class AnyType>	constexpr AnyType && right_cast(AnyType &a) noexcept ret_as(static_cast<AnyType &&>(a));
+template<class AnyType>	constexpr AnyType &   left_cast(AnyType &a) noexcept ret_as(a);
 
 // Right Hand
 
@@ -549,13 +649,13 @@ struct Hand<AnyType &&> {
 	static constexpr bool is_left = false;
 	static constexpr bool is_right = true;
 };
-template<class AnyType>	constexpr AnyType && right_hand_cast(AnyType &&a) noexcept ret_as(static_cast<AnyType &&>(a));
-template<class AnyType>	constexpr AnyType &   left_hand_cast(AnyType &&a) noexcept ret_as(a);
+template<class AnyType>	constexpr AnyType && right_cast(AnyType &&a) noexcept ret_as(static_cast<AnyType &&>(a));
+template<class AnyType>	constexpr AnyType &   left_cast(AnyType &&a) noexcept ret_as(a);
 
 // Clap Hand
 
 template<class AnyStrict, class AnyType> requires(IsSame<typename Hand<AnyStrict>::base, AnyType>)
-constexpr auto clap_hand_cast(AnyType &a) noexcept -> Hand<AnyStrict>::clap ret_as(static_cast<typename Hand<AnyStrict>::clap>(a));
+constexpr auto hand_cast(AnyType &a) noexcept -> Hand<AnyStrict>::clap ret_as(static_cast<typename Hand<AnyStrict>::clap>(a));
 
 #pragma endregion
 
@@ -628,39 +728,55 @@ concept DestructorEffective = !DestructorEffectless<AnyType>;
 
 #pragma endregion
 
-#pragma region LiteralString
-template<class AnyChar, SizeT Len>
-struct LiteralString {
-	AnyChar data[Len];
+#pragma region Array
+template<class AnyType, SizeT Len>
+struct Array {
+	AnyType data[Len]{ 0 };
 public:
-	using CharType = AnyChar;
+	using CharType = AnyType;
 public:
-	constexpr LiteralString(const AnyChar(&s)[Len]) { for (SizeT i = 0; i < Len; ++i) data[i] = s[i]; }
-	constexpr SizeT Length() const ret_as(Len - 1);
-	constexpr operator const AnyChar *() const ret_as(data);
-	constexpr const AnyChar &operator[](SizeT index) const ret_as(data[index]);
-	template<SizeT Len1> constexpr auto operator+(const AnyChar(&s)[Len1]) const {
-		AnyChar result[Len + Len1 - 1]{};
-		for (SizeT i = 0; i < Len - 1; ++i) result[i] = data[i];
-		for (SizeT j = 0; j < Len1; ++j) result[(Len - 1) + j] = s[j];
-		return LiteralString<AnyChar, Len + Len1 - 1>(result);
+	constexpr Array() {}
+	constexpr Array(Nu) {}
+	template<class...Para>
+	constexpr Array(Para...s) requires((sizeof...(Para)) == Len) : data{ s... } {}
+	constexpr Array(const AnyType(&s)[Len]) { for (SizeT i = 0; i < Len; ++i) data[i] = s[i]; }
+	constexpr Array(const Array &s) { for (SizeT i = 0; i < Len; ++i) data[i] = s.data[i]; }
+public:
+	constexpr SizeT Length() const ret_as(Len);
+	constexpr auto begin() ret_as(data);
+	constexpr auto begin() const ret_as(data);
+	constexpr auto end() ret_as(data + Len);
+	constexpr auto end() const ret_as(data + Len);
+	template<class NewType>
+	constexpr Array<NewType, Len> &cast() ret_as(ref_cast<Array<NewType, Len>>(self));
+	template<class NewType>
+	constexpr const Array<NewType, Len> &cast() const ret_as(ref_cast<const Array<NewType, Len>>(self));
+public:
+	constexpr operator const AnyType *() const ret_as(data);
+	constexpr auto &operator*() ret_as(data[0]);
+	constexpr auto &operator*() const ret_as(data[0]);
+	constexpr auto &operator[](SizeT index) ret_as(data[index]);
+	constexpr auto &operator[](SizeT index) const ret_as(data[index]);
+	template<SizeT Len1> constexpr auto operator+(const AnyType(&s)[Len1]) const {
+		AnyType result[Len + Len1]{};
+		for (SizeT i = 0; i < Len; ++i) result[i] = data[i];
+		for (SizeT j = 0; j < Len1; ++j) result[Len + j] = s[j];
+		return Array<AnyType, Len + Len1>(result);
 	}
-	template<SizeT Len1> constexpr auto operator+(const LiteralString<AnyChar, Len1> &s) const 
-		ret_as(operator+(s.data));
-	constexpr bool operator==(const AnyChar(&s)[Len]) const {
+	template<SizeT Len1> constexpr auto operator+(const Array<AnyType, Len1> &s) const ret_as(operator+(s.data));
+	constexpr bool operator==(const AnyType(&s)[Len]) const {
 		for (SizeT i = 0; i < Len; ++i)
 			if (data[i] != s[i])
 				return false;
 		return true;
 	}
-	constexpr bool operator!=(const AnyChar(&s)[Len]) const 
-		ret_as(!operator==(s));
-	constexpr bool operator==(const LiteralString<AnyChar, Len> &s) const 
-		ret_as(operator==(s.data));
-	constexpr bool operator!=(const LiteralString<AnyChar, Len> &s) const 
-		ret_as(operator!=(s.data));
+	constexpr bool operator!=(const AnyType(&s)[Len]) const ret_as(!operator==(s));
+	constexpr bool operator==(const Array<AnyType, Len> &s) const ret_as(operator==(s.data));
+	constexpr bool operator!=(const Array<AnyType, Len> &s) const ret_as(operator!=(s.data));
 };
-template<class AnyChar, SizeT Len> using LiString = LiteralString<AnyChar, Len>;
+template<class AnyType, SizeT Len>
+constexpr auto &ArrayProxy(AnyType(&s)[Len]) ret_as(ref_cast<Array<AnyType, Len>>(s));
+template<class AnyChar, SizeT Len> using LiString = Array<AnyChar, Len>;
 template<SizeT Len> using LiStringA = LiString< char  , Len>;
 template<SizeT Len> using LiStringW = LiString<wchar_t, Len>;
 constexpr auto LiStringO = LiString("");
@@ -696,7 +812,7 @@ class ParaList<Type0> {
 	using Clap0 = typename Hand0::clap;
 	Clap0 arg0;
 public:
-	ParaList(Type0 arg0) : arg0(clap_hand_cast<Type0>(arg0)) {}
+	ParaList(Type0 arg0) : arg0(hand_cast<Type0>(arg0)) {}
 public:
 	static constexpr SizeT Count = 1;
 public:
@@ -740,8 +856,8 @@ private:
 	TypeN args;
 public:
 	ParaList(Type0 arg0, Types... args) :
-		arg0(clap_hand_cast<Type0>(arg0)),
-		args(clap_hand_cast<Types>(args)...) {}
+		arg0(hand_cast<Type0>(arg0)),
+		args(hand_cast<Types>(args)...) {}
 public:
 	static constexpr SizeT Count = 1 + sizeof...(Types);
 private:
@@ -869,7 +985,7 @@ private:
 public:
 	ProxyView(auto &arg) : t(arg) {}
 	ProxyView(const auto &arg) : t(arg) {}
-	ProxyView(AnyRef &&arg) : t(right_hand_cast(arg)) {}
+	ProxyView(AnyRef &&arg) : t(right_cast(arg)) {}
 	~ProxyView() {}
 public:
 	template<class AnyType>
@@ -928,6 +1044,7 @@ template<class AnyChild,  class AnyStruct>
 struct CStructProxy : protected AnyStruct {
 	using Super = CStructProxy;
 	using BaseType = AnyStruct;
+	friend AnyChild;
 private:
 	static constexpr bool has_self_size() ret_as(requires(AnyChild c) { c.SelfSize; });
 public:
@@ -1058,6 +1175,13 @@ template<class AnyType> concept EnumType = IsEnum<AnyType>;
 template<EnumType AnyEnum>
 using SuperOfEnum = SuperOf<EnumTypeOf<AnyEnum>>;
 
+template<EnumType AnyEnum>
+constexpr bool HasSuperEnum = ([]() {
+	if_c (HasSuperType<AnyEnum>)
+		return IsEnumBased<SuperOfEnum<AnyEnum>>;
+	return false;
+})();
+
 template<class AnyEnum , class AnyBase > concept          UpCastOfEnum =    UpChainOf<EnumTypeOf<AnyEnum >, EnumTypeOf<AnyBase >>;
 template<class AnyEnum , class AnyBase > concept        DownCastOfEnum =  DownChainOf<EnumTypeOf<AnyEnum >, EnumTypeOf<AnyBase >>;
 template<class AnyEnum , class AnyBase > constexpr int OrderCastOfEnum = OrderChainOf<EnumTypeOf<AnyEnum >, EnumTypeOf<AnyBase >>;
@@ -1065,6 +1189,26 @@ template<class AnyEnum1, class AnyEnum2> concept       SameChainOfEnum =  SameCh
 
 template<EnumType AnyEnum> constexpr bool IsPureEnum = IsSameSize<AnyEnum, BaseTypeOf<AnyEnum>>;
 template<class AnyType> concept PureEnumType = IsPureEnum<AnyType>;
+
+template<EnumType AnyEnum>
+constexpr bool IsDefaultEnum = requires { AnyEnum::Default; };
+
+template<EnumType AnyEnum>
+constexpr bool HasDefaultEnum = ([]() {
+	if_c (IsDefaultEnum<AnyEnum>)
+		return true;
+	elif_c (HasSuperEnum<AnyEnum>)
+		return HasDefaultEnum<SuperOfEnum<AnyEnum>>;
+	else return false;
+})();
+
+template<EnumType AnyEnum>
+	requires(HasDefaultEnum<AnyEnum>)
+constexpr auto DefaultEnumAtom = AnyEnum::Default;
+
+template<EnumType AnyEnum>
+	requires(HasDefaultEnum<AnyEnum>)
+constexpr auto DefaultEnumValue = AnyEnum::Default.yield();
 
 template<EnumType AnyEnum1, EnumType AnyEnum2>
 constexpr auto enum_result_cast(BaseTypeOf<AnyEnum1> v) {
@@ -1087,9 +1231,12 @@ protected:
 	constexpr EnumClassShim(BaseType v) : value(v) {}
 	/* DUMMY, only for macro */ constexpr BaseType operator=(BaseType a) const ret_as(a);
 public:
+	constexpr EnumClassShim() : value(DefaultEnumValue<AnyChild>) {}
+public:
 	constexpr BaseType yield() const noexcept ret_as(value);
 	static constexpr AnyChild value_cast(BaseType v) ret_as(v);
 public:
+	inline auto *operator&() ret_as(&value);
 	/* adjust atom into set */ constexpr operator AnyChild() const ret_as(value);
 	constexpr explicit operator BaseType() const noexcept ret_as(value);
 	constexpr bool operator==(SameChainOfEnum<AnyChild> auto e) const ret_as(this->yield() == e.yield());
@@ -1109,11 +1256,13 @@ protected:
 public:
 	constexpr EnumClassShim(AnyBase v) : ShimType(v.yield()) {}
 	constexpr EnumClassShim(DownCastOfEnum<AnyChild> auto v) : ShimType(v.yield()) {}
+	constexpr EnumClassShim() : ShimType(DefaultEnumValue<AnyChild>) {}
 public:
 	static constexpr AnyChild value_cast(BaseType v) ret_as(v);
 	template<class AnyEnum> requires DownCastOfEnum<AnyEnum, AnyChild>
 	constexpr AnyEnum down_cast() const ret_as(AnyEnum::value_cast(this->yield()));
 public:
+	using ShimType::operator&;
 	/* adjust atom into set */ constexpr operator AnyChild() const ret_as(this->yield());
 };
 
@@ -1126,6 +1275,8 @@ protected:
 	using ShimType::ShimType;
 	using ShimType::operator=;
 public: // Flags operators
+	using ShimType::operator&;
+
 	constexpr bool operator<=(DownCastOfEnum<AnyChild> auto e) const ret_as(BaseType(this->yield() & e.yield()) == this->yield());
 	constexpr bool operator>=(DownCastOfEnum<AnyChild> auto e) const ret_as(BaseType(this->yield() & e.yield()) == e.yield());
 	constexpr auto operator~() const -> AnyChild ret_as(BaseType(~this->yield()));
@@ -1149,258 +1300,6 @@ struct EnumBase {
 	/*** flags analyser ***/
 };
 
-#pragma endregion
-
-#pragma region Numeral Format
-enum class Symbol : Int8U { Def = 0, Neg, Pos, Space };
-enum class Cap : Int8U { Small = 0, Big };
-enum class Align : Int8U { Space = 0, Zero };
-enum class Rad : Int8U { Dec = 0, Qua, Oct, Hex };
-struct fmt_word {
-	bool int_align : 1;
-	Align int_blank : 1;
-	bool int_trunc : 1;
-	Int8U int_calign : 5;
-
-	bool float_align : 1;
-	Align float_blank : 1;
-	bool float_force : 1;
-	Int8U float_calign : 5;
-
-	Symbol symbol : 2;
-	Cap alfa_type : 1;
-	bool right_dir : 1;
-	Rad radix_type : 2;
-
-	fmt_word() = default;
-	fmt_word(const fmt_word &) = default;
-	template<class CharType>
-	fmt_word(const CharType *format) {
-		auto ch = *format;
-		if (ch == ' ') {
-			right_dir = true;
-			symbol = Symbol::Space;
-			ch = *++format;
-		}
-		elif (ch == '*') {
-			symbol = Symbol::Space;
-			ch = *++format;
-		}
-		switch (ch) {
-			case '+':
-				symbol = Symbol::Pos;
-				ch = *++format;
-				break;
-		}
-		switch (ch) {
-			case '0':
-				int_blank = Align::Zero;
-				int_align = true;
-				ch = *++format;
-				break;
-			case ' ':
-				int_blank = Align::Space;
-				int_align = true;
-				ch = *++format;
-				break;
-		}
-		if (ch == '~') {
-			int_trunc = true;
-			ch = *++format;
-		}
-		auto align = 0;
-		while ('0' <= ch && ch <= '9') {
-			align *= 10;
-			align += ch - '0';
-			if (align > 32)
-				return; // overflow
-			ch = *++format;
-		}
-		int_calign = align;
-		if (ch == '.') {
-			float_force = true;
-			ch = *++format;
-		}
-		elif (ch == '0') {
-			float_blank = Align::Zero;
-			float_align = true;
-			ch = *++format;
-		}
-		align = 0;
-		while ('0' <= ch && ch <= '9') {
-			align *= 10;
-			align += ch - '0';
-			if (align > 32)
-				return; // overflow
-			ch = *++format;
-		}
-		float_calign = align;
-		if (ch == ' ') {
-			float_blank = Align::Space;
-			float_align = true;
-			ch = *++format;
-		}
-		switch (ch) {
-			case 'q':
-				radix_type = Rad::Qua;
-				ch = *++format;
-				break;
-			case 'o':
-				radix_type = Rad::Oct;
-				ch = *++format;
-				break;
-			case 'd':
-				radix_type = Rad::Dec;
-				ch = *++format;
-				break;
-			case 'X':
-				alfa_type = Cap::Big;
-				[[fallthrough]];
-			case 'x':
-				radix_type = Rad::Hex;
-				ch = *++format;
-				break;
-			default:
-				return; // Unknown
-		}
-		return;
-	}
-};
-class format_numeral : public fmt_word {
-public:
-	format_numeral() {}
-	format_numeral(fmt_word fmt) : fmt_word(fmt) {}
-	format_numeral(const char *lpFormat) : fmt_word(lpFormat) {}
-	format_numeral(const wchar_t *lpFormat) : fmt_word(lpFormat) {}
-private:
-	template<class AnyChar>
-	static inline auto __push(IntPU ui, AnyChar *hpString, AnyChar alfa, Int8U radix, Int8U int_trunc) {
-		Int8U len = 0;
-		do {
-			auto d_sm = ui / radix;
-			auto rbit = (AnyChar)(ui - d_sm * radix);
-			ui = d_sm;
-			*--hpString = rbit + (rbit < 10 ? '0' : alfa);
-		} while (ui && ++len < int_trunc);
-		return hpString;
-	}
-	template<class AnyChar>
-	static inline auto __push(double pure_float, AnyChar *lpString, AnyChar alfa, Int8U radix, Int8U float_trunc) {
-		Int8U len = 0;
-		while (pure_float > 0.f && len++ < float_trunc) {
-			pure_float *= radix;
-			auto rbit = (AnyChar)pure_float;
-			pure_float -= rbit;
-			*lpString++ = rbit + (rbit < 10 ? '0' : alfa);
-		}
-		return lpString;
-	}
-	template<class AnyChar>
-	static inline auto __moveH2L(AnyChar *lpString, AnyChar *hpString, int uLength) {
-		while (uLength--)
-			*lpString++ = *hpString++;
-		return lpString;
-	}
-private:
-	inline Int8U _radix() const ret_as((Int8U)radix_type == (Int8U)Rad::Dec ? 10 : (2 << (Int8U)radix_type));
-	template<class AnyChar>
-	inline AnyChar _alfa_char() const ret_as(((Int8U)alfa_type == (Int8U)Cap::Big ? 'A' : 'a') - 10);
-	template<class AnyChar>
-	inline AnyChar _fill_int_char() const ret_as((Int8U)int_blank == (Int8U)Align::Space ? ' ' : '0');
-	template<class AnyChar>
-	inline AnyChar _fill_float_char() const ret_as((Int8U)float_blank == (Int8U)Align::Space ? ' ' : '0');
-	template<class AnyChar>
-	inline auto _push(IntPU uint_part, AnyChar *hpBuffer, Int8U radix, AnyChar alfa, bool neg) const {
-		auto lpBuffer = __push(uint_part, hpBuffer, alfa, radix, int_trunc ? int_calign : 32);
-		auto int_len = hpBuffer - lpBuffer;
-		if (int_len < int_calign && int_align) {
-			auto fill = _fill_int_char<AnyChar>();
-			while (int_len++ < int_calign)
-				*--lpBuffer = fill;
-		}
-		if (neg)
-			*--lpBuffer = '-';
-		elif ((Int8U)symbol == (Int8U)Symbol::Pos)
-			*--lpBuffer = '+';
-		elif ((Int8U)symbol == (Int8U)Symbol::Space)
-			*--lpBuffer = ' ';
-		if (right_dir)
-			while (int_len++ < int_calign)
-				*--lpBuffer = ' ';
-		return lpBuffer;
-	}
-	template<class AnyChar>
-	inline auto _push(double float_part, AnyChar *lpBuffer, Int8U radix, AnyChar alfa) const {
-		auto hpBuffer = __push(
-			float_part, lpBuffer + 1,
-			alfa, radix, float_calign);
-		auto float_len = hpBuffer - lpBuffer - 1;
-		if (float_align) {
-			auto fill = _fill_float_char<AnyChar>();
-			while (float_len++ < int_calign)
-				*hpBuffer++ = fill;
-		}
-		if (float_len > 0)
-			*lpBuffer = '.';
-		elif (float_force)
-			*lpBuffer = '.';
-		elif (float_align)
-			*lpBuffer = ' ';
-		else --hpBuffer;
-		return hpBuffer;
-	}
-public:
-	template<class AnyChar>
-	inline auto push(IntPU uint_part, AnyChar *lpBuffer, AnyChar *&hpBuffer, SizeT maxLength) const {
-		hpBuffer = lpBuffer + maxLength - 2;
-		lpBuffer = _push(uint_part, hpBuffer, _radix(), _alfa_char<AnyChar>(), false);
-		return lpBuffer;
-	}
-	template<class AnyChar>
-	inline auto push(IntP int_part, AnyChar *lpBuffer, AnyChar *&hpBuffer, SizeT maxLength) const {
-		bool neg = int_part < 0;
-		if (neg) int_part = -int_part;
-		hpBuffer = lpBuffer + maxLength - 2;
-		lpBuffer = _push((IntPU)int_part, hpBuffer, _radix(), _alfa_char<AnyChar>(), neg);
-		return lpBuffer;
-	}
-	template<class AnyChar>
-	inline auto push(double float_part, AnyChar *lpBuffer, AnyChar *&hpBuffer, SizeT maxLength) const {
-		auto rad = _radix();
-		auto alfa = _alfa_char<AnyChar>();
-		bool neg = float_part < 0.;
-		if (neg) float_part = -float_part;
-		auto uint_part = (IntPU)float_part;
-		hpBuffer = lpBuffer + maxLength - 2;
-		lpBuffer = _push(uint_part, hpBuffer, rad, alfa, neg);
-		auto lpBufferNew = lpBuffer - float_calign;
-		hpBuffer = __moveH2L(lpBufferNew, lpBuffer, (int)(hpBuffer - lpBuffer));
-		lpBuffer = lpBufferNew;
-		hpBuffer = _push(float_part - uint_part, hpBuffer, rad, alfa);
-		return lpBuffer;
-	}
-public:
-	static constexpr SizeT MaxLen = 64;
-	template<class AnyChar, class AnyType>
-	inline SizeT push(AnyType i, AnyChar *pBuffer) const {
-		AnyChar lpBuffer[MaxLen] = { 0 }, *hpString, *lpString;
-		if_c (SignedIntagerType<AnyType>)
-			lpString = push((IntPU)i, lpBuffer, hpString, MaxLen);
-		elif_c (UnsignedIntagerType<AnyType>)
-			lpString = push((IntP)i, lpBuffer, hpString, MaxLen);
-		elif_c (FloatType<AnyType>)
-			lpString = push(i, lpBuffer, hpString, MaxLen);
-		auto size = (SizeT)(hpString - lpString);
-		if (pBuffer)
-			for (SizeT i = 0; i < size; i++)
-				pBuffer[i] = lpString[i];
-		return size;
-	}
-};
-const auto DEC = format_numeral("d");
-const auto FPT = format_numeral(".5d");
-inline format_numeral operator ""_nx(const char *format, SizeT n) ret_as(format);
-inline format_numeral operator ""_nx(const wchar_t *format, SizeT n) ret_as(format);
 #pragma endregion
 
 }

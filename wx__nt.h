@@ -142,33 +142,59 @@
               "NTDDI Version: "               _WX_NTDDI_NAME                              //
 #pragma endregion //////////////////////////////////////////////////////////////////////////
 
-/* Macro Windows API bool reflectors */
-#define wapi_reflect_bool1(name)              constexpr ReflectOfBool<ThisFile, LiString(#name), ::name> name
-#define wapi_reflect_bool2(name, new_ret)     constexpr ReflectOfBool<ThisFile, LiString(#name), ::name, new_ret> name
+/* Macro Windows API reflectors */
+
+#define wapi_reflect_pure(name)               constexpr ReflectOfPure<ThisFile, LiString(#name), ::name> name
+
+#define wapi_reflect_bool1(name)              constexpr ReflectOfReturnBool<ThisFile, LiString(#name), ::name> name
+#define wapi_reflect_bool2(name, new_ret)     constexpr ReflectOfReturnBool<ThisFile, LiString(#name), ::name, new_ret> name
 #define wapi_reflect_bool(...)                mx_funcN(wapi_reflect_bool, __VA_ARGS__)
 
-/* Macro Windows API bool reflectors W/A Overload In One */
-#define wapi_reflect_bool_WAO1(name)          constexpr WaReflectorOf<ThisFile, LiString(#name), ::name##W, ::name##A> name
-#define wapi_reflect_bool_WAO2(name, new_ret) constexpr WaReflectorOf<ThisFile, LiString(#name), ::name##W, ::name##A, new_ret> name
+#define wapi_reflect_handle(name)             constexpr ReflectOfReturnHandle<ThisFile, LiString(#name), ::name> name
+
+/* Macro Windows API reflectors W/A Overload In One */
+
+#define wapi_reflect_pure_WAO(name)           constexpr ReflectorOfPureWA<ThisFile, LiString(#name), ::name##W, ::name##A> name
+
+#define wapi_reflect_bool_WAO1(name)          constexpr ReflectorOfBoolReturnWA<ThisFile, LiString(#name), ::name##W, ::name##A> name
+#define wapi_reflect_bool_WAO2(name, new_ret) constexpr ReflectorOfBoolReturnWA<ThisFile, LiString(#name), ::name##W, ::name##A, new_ret> name
 #define wapi_reflect_bool_WAO(...)            mx_funcN(wapi_reflect_bool_WAO, __VA_ARGS__)
 
-/* Macro Windows API bool reflectors A Version */
+/* Macro Windows API reflectors A Version */
+
+#define wapi_reflect_pure_A(name)             wapi_reflect_pure(name##A)
+
 #define wapi_reflect_bool_A1(name)            wapi_reflect_bool1(name##A)
 #define wapi_reflect_bool_A2(name, new_ret)   wapi_reflect_bool2(name##A, new_ret)
 #define wapi_reflect_bool_A(...)              mx_funcN(wapi_reflect_bool_A, __VA_ARGS__)
-/* Macro Windows API bool reflectors W Version */
+
+/* Macro Windows API reflectors W Version */
+
+#define wapi_reflect_pure_W(name)             wapi_reflect_pure(name##W)
+
 #define wapi_reflect_bool_W1(name)            wapi_reflect_bool1(name##W)
 #define wapi_reflect_bool_W2(name, new_ret)   wapi_reflect_bool2(name##W, new_ret)
 #define wapi_reflect_bool_W(...)              mx_funcN(wapi_reflect_bool_W, __VA_ARGS__)
-/* Macro Windows API bool reflectors W&A Versions */
+
+/* Macro Windows API reflectors W&A Versions */
+
+#define wapi_reflect_pure_WA(name)            wapi_reflect_pure_W(name); \
+											  wapi_reflect_pure_A(name)
+
 #define wapi_reflect_bool_WA1(name)           wapi_reflect_bool1(name##W); \
 											  wapi_reflect_bool1(name##A)
 #define wapi_reflect_bool_WA2(name, new_ret)  wapi_reflect_bool2(name##W, new_ret); \
 											  wapi_reflect_bool2(name##A, new_ret)
 #define wapi_reflect_bool_WA(...)             mx_funcN(wapi_reflect_bool_WA, __VA_ARGS__)
-/* Macro Windows API bool reflectors W&A Versions With Template Selector */
+
+/* Macro Windows API reflectors W&A Versions With Template Selector */
+
 #define WAT_selector(name)					  template<bool IsUnicode = WX::IsUnicode> \
-											  constexpr auto name = ConditionOfValue<IsUnicode, name##A, name##W>;
+											  constexpr auto name = ValueIf<IsUnicode, name##W, name##A>;
+
+#define wapi_reflect_pure_WAT(name)           wapi_reflect_pure_WA(name); \
+											  WAT_selector(name)
+
 #define wapi_reflect_bool_WAT1(name)          wapi_reflect_bool_WA1(name); \
 											  WAT_selector(name)
 #define wapi_reflect_bool_WAT2(name, new_ret) wapi_reflect_bool_WA2(name, new_ret); \
@@ -176,6 +202,7 @@
 #define wapi_reflect_bool_WAT(...)            mx_funcN(wapi_reflect_bool_WAT, __VA_ARGS__)
 
 /* Macro exception system reflect for Windows */
+
 #define wx_throw_line_nt(sent) throw WX::Exception(__FILE__, __FUNCTION__, #sent, __LINE__, GetLastError())
 #define nt_assert(sent) { using namespace WX; if (!(sent)) wx_throw_line_nt(sent); }
 

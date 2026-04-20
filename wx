@@ -22,6 +22,9 @@
 #define mx_b3(...) < __VA_ARGS__ >
 // macro invoker
 #define mx_call(func, ...) mx_b0(func mx_b1(__VA_ARGS__))
+#define mx_ret(...)  __VA_ARGS__
+#define mx_void(...) 
+#define mx_kill_braces(arg) mx_b0(mx_b0 arg)
 // macro indirect operators
 #define mx_cat(a, b)  mx_call(_mx_cat_, a, b)
 #define mx_str(x)     mx_call(_mx_str_, x)
@@ -86,11 +89,16 @@ public: \
 // proxy struct
 #define proxy_struct(name, struct_name)                   struct name final : WX::CStructProxy<name, struct_name>
 // proxy property
-#define proxy_prop_set(name, proto_name, type)            inline auto&name(type value) ret_to_self(safe_setval(this->proto_name, value))
-#define proxy_prop_get(name, proto_name, type)            inline auto name(          ) const ret_as(WX::safe_c_cast<type>(this->proto_name))
+#define proxy_prop_set(name, proto_name, type)            inline auto&name(type value) ret_to_self(safe_setval(Super::proto_name, value))
+#define proxy_prop_get(name, proto_name, type)            inline auto name(          ) const ret_as(WX::safe_c_cast<type>(Super::proto_name))
 #define proxy_prop(name, proto_name, type_in, type_out)   proxy_prop_set(name, proto_name, type_in   ); \
 														  proxy_prop_get(name, proto_name, type_out  )
 #define proxy_prop_sync(name, proto_name, type)           proxy_prop    (name, proto_name, type, type)
+// proxy array property
+#define proxy_prop_set_arr(name, proto_name, type) inline auto &name(const Array<type, ArrayCountOf(&Super::proto_name)> &arr)  ret_to_self(ArrayProxy(Super::proto_name).cast<type>() = arr);
+#define proxy_prop_get_arr(name, proto_name, type) inline auto &name(                                                        ) const ret_as(ArrayProxy(Super::proto_name).cast<type>());
+#define proxy_prop_arrc(name, proto_name, type) proxy_prop_set_arr(name, proto_name, type); \
+												proxy_prop_get_arr(name, proto_name, type)
 // proxy self-size
 #define proxy_prop_size(proto_name, type)                 protected: proxy_prop_set(SelfSize, proto_name, size_t); friend Super; \
 														  public:    proxy_prop_get(SelfSize, proto_name, type)
@@ -152,8 +160,8 @@ struct name : public enum_shim(type, name, base) {                 \
 								 static constexpr auto name##W = L##str
 #define auto_stringx(name, str)  const_stringx(name, str); \
 								 locale_symbolx(name)
-#define structx(name)            ConditionOf<IsUnicode, name##W, name##A>
-#define using_structx(name)      using name = ConditionOf<IsUnicode, name##W, name##A>
+#define structx(name)            TypeIf<IsUnicode, name##W, name##A>
+#define using_structx(name)      using name = TypeIf<IsUnicode, name##W, name##A>
 
 #ifdef WX_CPPM_CORE
 #undef WX_CPPM_CORE

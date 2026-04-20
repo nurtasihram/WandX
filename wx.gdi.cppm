@@ -2095,7 +2095,7 @@ public: // Property - ICMProfile
 		WX::GetICMProfile(self, &len, (LPXSTR<IsUnicode>)O);
 		StringX<IsUnicode> str((SizeT)len);
 		WX::GetICMProfile(self, O, str);
-		return right_hand_cast(str);
+		return right_cast(str);
 	}
 #pragma endregion
 public:

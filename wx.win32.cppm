@@ -8,49 +8,59 @@ export module wx.win32;
 
 export namespace WX {
 
+#pragma region Strict Charset
+template<class CharT>
+class CharX {
+	CharT ch;
+public:
+	constexpr CharX(CharT ch) : ch(ch) {}
+	explicit operator CharT() const ret_as(ch);
+};
+#pragma endregion
+
 #pragma region AssertOperators
 enum class AssertOps {
-	Default      , // convert to bool
-	Bigger       , // arg >  var
-	Smaller      , // arg <  var
-	BigEqual     , // arg >= var
-	SmallEqual   , // arg <= var
-	Equal        , // arg == var
-	NotEqual     , // arg != var
-	ByErrorCode  , // var() == 0
-	CustomTest     // var(arg) == true
+	Default     , // arg => false  ( convert to bool )
+	Bigger      , // arg >  var
+	BigEqual    , // arg >= var
+	Smaller     , // arg <  var
+	SmallEqual  , // arg <= var
+	Equal       , // arg == var
+	Nequal      , // arg != var
+	ByErrorCode , // arg <=> var  ( var(   ) != 0    )
+	CustomTest    // arg  => var  ( var(arg) == true )
 };
 
 template<AssertOps ops>
-constexpr auto AssertFaultOps = SwitchValueOf<ops,
+constexpr auto AssertFaultMap = ValueMap<ops,
 	AssertOps::   Bigger  , LiString(" <= "),
-	AssertOps:: Smaller   , LiString(" >= "),
 	AssertOps::   BigEqual, LiString(" < " ),
+	AssertOps:: Smaller   , LiString(" >= "),
 	AssertOps:: SmallEqual, LiString(" > " ),
 	AssertOps::      Equal, LiString(" != "),
-	AssertOps::   NotEqual, LiString(" == "),
-	AssertOps::ByErrorCode, LiString(" got error code "),
+	AssertOps::     Nequal, LiString(" == "),
+	AssertOps::ByErrorCode, LiString(" <=> "),
 	AssertOps::CustomTest , LiString(""),
-	AssertOps::Default    , LiString(" test false ")
+	AssertOps::Default    , LiString(" => false ")
 >;
 
 template<class AnyType, AssertOps ops, auto var>
 constexpr bool assert_oeperator(AnyType arg) {
-	if_c (ops == AssertOps::   Bigger  ) return arg >  var;
-	if_c (ops == AssertOps:: Smaller   ) return arg <  var;
-	if_c (ops == AssertOps::   BigEqual) return arg >= var;
-	if_c (ops == AssertOps:: SmallEqual) return arg <= var;
-	if_c (ops == AssertOps::      Equal) return arg == var;
-	if_c (ops == AssertOps::   NotEqual) return arg != var;
-	if_c (ops == AssertOps::ByErrorCode) return var() != 0;
-	if_c (ops == AssertOps::CustomTest ) return var( arg );
-	else { static_assert(ops == AssertOps::Default); return (bool)arg; }
+	if_c                (ops == AssertOps::   Bigger  )  return arg >  var;
+	if_c                (ops == AssertOps::   BigEqual)  return arg >= var;
+	if_c                (ops == AssertOps:: Smaller   )  return arg <  var;
+	if_c                (ops == AssertOps:: SmallEqual)  return arg <= var;
+	if_c                (ops == AssertOps::      Equal)  return arg == var;
+	if_c                (ops == AssertOps::     Nequal)  return arg != var;
+	if_c                (ops == AssertOps::ByErrorCode)  return var() != 0;
+	if_c                (ops == AssertOps::CustomTest )  return var( arg );
+	else { static_assert(ops == AssertOps::Default    ); return (bool)arg; }
 }
 
 template<class AnyType, AssertOps ops, auto var = true, auto var_str = LiStringO>
 struct AssertOperator {
 	constexpr bool operator()(AnyType arg) const ret_as(assert_oeperator<AnyType, ops, var>(arg));
-	static constexpr auto FaultString = AssertFaultOps<ops> + var_str;
+	static constexpr auto FaultString = AssertFaultMap<ops> + var_str;
 };
 template<class AnyType> constexpr bool IsAssertOperatorType = false;
 template<class AnyType, AssertOps ops, auto var, auto var_str> 
@@ -60,18 +70,11 @@ template<auto assert> constexpr bool IsAssertOperator = IsAssertOperatorType<dec
 
 constexpr auto LiStringZero = LiString("0");
 
-template<class AnyType>
-constexpr auto AssertTrue = AssertOperator<AnyType, AssertOps::Default>();
-template<class AnyType>
-constexpr auto AssertPositive = AssertOperator<AnyType, AssertOps::Bigger, 0, LiStringZero>();
-template<class AnyType>
-constexpr auto AssertNotZero = AssertOperator<AnyType, AssertOps::NotEqual, 0, LiStringZero>();
+template<class AnyType>	constexpr auto AssertTrue     = AssertOperator<AnyType, AssertOps::Default                 >();
+template<class AnyType>	constexpr auto AssertPositive = AssertOperator<AnyType, AssertOps::Bigger , 0, LiStringZero>();
+template<class AnyType>	constexpr auto AssertNotZero  = AssertOperator<AnyType, AssertOps::Nequal , 0, LiStringZero>();
 template<class AnyType, auto fault_val, auto fault_str>
-constexpr auto AssertFaultValue = AssertOperator<AnyType, AssertOps::NotEqual, fault_val, fault_str>();
-
-constexpr AssertOps operator""_aos(const char *str, size_t) {
-	return AssertOps::Default;
-}
+constexpr auto AssertFaultValue = AssertOperator<AnyType, AssertOps::Nequal, fault_val, fault_str>();
 #pragma endregion
 
 template<auto file, auto name, class AnyType>
@@ -91,21 +94,27 @@ public:
 			constexpr NewAPI   operator&() const ret_as(NewAPI::Reflective);
 		};
 	public: // reflectors
-		struct Passby { constexpr AnyRet operator()(ParaN...args) const { return fn(args...); } };
-		struct NoReturn { [[noreturn]] constexpr void operator()(ParaN...args) const { fn(args...); } };
 		template<AssertOperatorType auto assert, class NewRet = AnyRet, auto GetLastError = O>
 			requires(NotVoid<AnyRet>)
 		struct AssertReturn {
 			static constexpr NewRet Reflective(ParaN...args) {
-				if (auto ret = fn(right_hand_cast(args)...); assert(ret))
+				if (auto ret = fn(right_cast(args)...); assert(ret))
 					return (NewRet)ret; /* can be void */
 				throw Exception(file, name, name + assert.FaultString, __LINE__,
 								GetLastError ? (Int32)GetLastError() : 0);
 			}
-			constexpr auto operator()(ParaN...args) const ret_as(Reflective(right_hand_cast(args)...));
-		};
+			constexpr auto operator()(ParaN...args) const ret_as(Reflective(right_cast(args)...));
+		};	 
+		struct Passby { constexpr AnyRet operator()(ParaN...args) const { return fn(args...); } };
+		struct NoReturn { [[noreturn]] constexpr void operator()(ParaN...args) const { fn(args...); } };
 	};
 };
+
+#pragma region 
+
+template<auto file, auto name, auto fn>
+using ReflectOfPure = BridgeAPI<file, name, decltype(fn)>
+	::template ReflectOf<fn>;
 
 template<auto file, auto name, auto fn,
 		 AssertOperatorType auto assert,
@@ -114,18 +123,53 @@ template<auto file, auto name, auto fn,
 using ReflectOfAssertReturn = BridgeAPI<file, name, decltype(fn)>
 	::template ReflectOf<fn>
 	::template AssertReturn<assert, NewRet, GetLastError>;
+
+constexpr bool HandleNotInvalid(HANDLE h) { return h != INVALID_HANDLE_VALUE; }
+template<class AnyType, auto fn, auto fault_str>
+constexpr auto AssertHandleNotInvalid = AssertOperator<AnyType, AssertOps::CustomTest, fn, fault_str>();
+template<auto file, auto name, auto fn,
+	auto GetLastError = ::GetLastError>
+using ReflectOfReturnHandle = ReflectOfAssertReturn<
+	file, name, fn,
+	AssertHandleNotInvalid<HANDLE, HandleNotInvalid, LiString(" == INVALID_HANDLE_VALUE")>,
+	HANDLE, GetLastError>;
+
 template<auto file, auto name, auto fn,
 		 class NewRet = void, auto GetLastError = ::GetLastError>
-using ReflectOfBool = ReflectOfAssertReturn<
+using ReflectOfReturnBool = ReflectOfAssertReturn<
 	file, name, fn,
 	AssertTrue<ReturnTypeOf<fn>>,
 	NewRet, GetLastError>;
+
+#pragma endregion
+
+#pragma region 
+
+template<auto fnW, auto fnA>
+concept WinAPIPair = IsSame<ReturnTypeOf<fnW>, ReturnTypeOf<fnA>> &&
+					 ParaCountOf(fnW) == ParaCountOf(fnA) &&
+					!InvokableAmbiguous<fnW, fnA>;
+
+template<auto file, auto name, auto fnW, auto fnA>
+	requires(WinAPIPair<fnW, fnA>)
+using ReflectorOfWA = ExtendsOf<
+	ReflectOfPure<file, name + "W", fnW>,
+	ReflectOfPure<file, name + "A", fnA>>;
+
+template<auto file, auto name, auto fnW, auto fnA,
+		 class NewRet = void, auto GetLastError = ::GetLastError>
+	requires(WinAPIPair<fnW, fnA>)
+using ReflectorOfBoolReturnWA = ExtendsOf<
+	ReflectOfReturnBool<file, name + "W", fnW, NewRet, GetLastError>,
+	ReflectOfReturnBool<file, name + "A", fnA, NewRet, GetLastError>>;
+
+#pragma endregion
 
 //template<auto name, auto fn,
 //		 class NewRet = void,
 //		 auto GetLastError = ::GetLastError>
 //struct WrapOverload {
-//	using Reflector = ReflectOfBool<
+//	using Reflector = ReflectOfReturnBool<
 //		file, name,
 //		fn, NewRet,
 //		GetLastError>;
@@ -144,15 +188,6 @@ constexpr bool IsUnicode =
 #else
 	false;
 #endif
-
-template<auto file, auto name, auto fnW, auto fnA,
-		 class NewRet = void, auto GetLastError = ::GetLastError>
-	requires(IsSame<ReturnTypeOf<fnW>, ReturnTypeOf<fnA>> &&
-//			 NotSame<ParaListOf<fnW>, ParaListOf<fnA>> &&
-			 ParaCountOf<fnW> == ParaCountOf<fnA>)
-using WaReflectorOf = ExtendsOf<
-	ReflectOfBool<file, name + "W", fnW, NewRet, GetLastError>,
-	ReflectOfBool<file, name + "A", fnA, NewRet, GetLastError>>;
 
 #pragma region WinBase.h
 // GlobalAlloc

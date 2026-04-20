@@ -101,7 +101,7 @@ public: // Property - Text
 	/* R */ inline StringX<IsUnicode> Text() const {
 		StringX<IsUnicode> str(MaxLen);
 		auto len = WX::GetDlgItemText(hDlg, nIDDlgItem, str, (int)MaxLen);
-		return right_hand_cast(str.Resize(len));
+		return right_cast(str.Resize(len));
 	}
 	template<SizeT MaxLen = MaxLenNotice>
 	/* R */ inline StringA TextA() const ret_as(Text<false, MaxLen>());
@@ -627,7 +627,7 @@ public: // Property - String
 		auto len = WX::GetDlgItemText(hDlg, nIDDlgItem, (LPXSTR<IsUnicode>)O, 0);
 		StringX<IsUnicode> str((SizeT)len);
 		WX::GetDlgItemText(hDlg, nIDDlgItem, str, len);
-		return right_hand_cast(str);
+		return right_cast(str);
 	}
 	/* R */ inline StringA TextA() const ret_as(Text<false>());
 	/* R */ inline StringW TextW() const ret_as(Text<true>());

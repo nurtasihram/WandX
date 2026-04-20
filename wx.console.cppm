@@ -1,5 +1,27 @@
 module;
 
+#define autor auto&
+
+#define wx_vprop_set(name, type, set)     inline auto&name(type value) ret_to_self(mx_kill_braces(set))
+#define wx_vprop_get(name, type, get)     inline type name(          ) const { mx_kill_braces(get); }
+
+#define wx_vprop_get_dir(name, type, get) wx_vprop_get(name, type, (return get))
+#define wx_vprop_get_def(name, type, get) wx_vprop_get(name, type, (type value; mx_kill_braces(get); return value))
+
+#define wx_vprop_map(name, type, set, get) \
+		wx_vprop_set(name, type, set); \
+		wx_vprop_get(name, type, get)
+#define wx_vprop_map_dir(name, type, set, get) \
+		wx_vprop_set(name, type, set); \
+		wx_vprop_get_dir(name, type, get)
+#define wx_vprop_map_def(name, type, set, get) \
+		wx_vprop_set(name, type, set); \
+		wx_vprop_get_def(name, type, get)
+
+#define wx_method
+
+#ifndef WX_IDL_IMPORT
+
 #define WX_CPPM_CONSOLE
 #include "wx_console"
 
@@ -7,15 +29,12 @@ export module wx.console;
 
 import wx.win32;
 
-#ifndef WX_REMOVE_WIN32_PROTOTYPES
 namespace WX {
 
 constexpr auto ThisFile = LiString("wx.console");
 
 #pragma region ProcessEnv.h (part)
-// GetStdHandle
-inline HANDLE GetStdHandle(DWORD nStdHandle)
-	safe_ret_as(auto h = ::GetStdHandle(nStdHandle); h != INVALID_HANDLE_VALUE, h);
+wapi_reflect_handle(GetStdHandle);
 wapi_reflect_bool(SetStdHandle);
 wapi_reflect_bool(SetStdHandleEx);
 #pragma endregion
@@ -37,24 +56,16 @@ wapi_reflect_bool_WAT(PeekConsoleInput);
 #undef ReadConsole
 wapi_reflect_bool_WAT(ReadConsole);
 #undef WriteConsole
-// WriteConsole
-inline void WriteConsole(HANDLE hConsoleOutput, LPCSTR lpBuffer, DWORD nNumberOfCharsToWrite, LPDWORD lpNumberOfCharsWritten, LPVOID lpReserved)
-	safe_ret_as(::WriteConsoleA(hConsoleOutput, lpBuffer, nNumberOfCharsToWrite, lpNumberOfCharsWritten, lpReserved));
-inline void WriteConsole(HANDLE hConsoleOutput, LPCWSTR lpBuffer, DWORD nNumberOfCharsToWrite, LPDWORD lpNumberOfCharsWritten, LPVOID lpReserved)
-	safe_ret_as(::WriteConsoleW(hConsoleOutput, lpBuffer, nNumberOfCharsToWrite, lpNumberOfCharsWritten, lpReserved));
+wapi_reflect_bool_WAT(WriteConsole);
 wapi_reflect_bool(SetConsoleCtrlHandler);
 #pragma endregion
 
 #pragma region ConsoleApi2.h
-static_assert(NotSame<ProtoOf<decltype(FillConsoleOutputCharacterA)>,
-                      ProtoOf<decltype(FillConsoleOutputCharacterW)>>);
 #undef FillConsoleOutputCharacter
-wapi_reflect_bool_WAO(FillConsoleOutputCharacter);
+wapi_reflect_bool_WAT(FillConsoleOutputCharacter);
 wapi_reflect_bool(FillConsoleOutputAttribute);
 wapi_reflect_bool(GenerateConsoleCtrlEvent);
-// CreateConsoleScreenBuffer
-inline HANDLE CreateConsoleScreenBuffer(DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwFlags, HANDLE *lpBuffer)
-	safe_ret_as(auto h = ::CreateConsoleScreenBuffer(dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwFlags, lpBuffer); h != INVALID_HANDLE_VALUE, h);
+wapi_reflect_handle(CreateConsoleScreenBuffer);
 wapi_reflect_bool(SetConsoleActiveScreenBuffer);
 wapi_reflect_bool(FlushConsoleInputBuffer);
 wapi_reflect_bool(SetConsoleCP);
@@ -106,9 +117,7 @@ wapi_reflect_bool(GetConsoleHistoryInfo);
 wapi_reflect_bool(SetConsoleHistoryInfo);
 wapi_reflect_bool(GetConsoleDisplayMode);
 wapi_reflect_bool(SetConsoleDisplayMode);
-// GetConsoleWindow
-inline HWND GetConsoleWindow()
-	ret_as(::GetConsoleWindow());
+wapi_reflect_pure(GetConsoleWindow);
 #undef AddConsoleAlias
 wapi_reflect_bool_WAO(AddConsoleAlias);
 #undef GetConsoleAlias
@@ -116,13 +125,7 @@ wapi_reflect_bool_WAO(GetConsoleAlias);
 #undef GetConsoleAliasesLength
 wapi_reflect_bool_WAO(GetConsoleAliasesLength);
 #undef GetConsoleAliasExesLength
-// GetConsoleAliasExesLength
-template<bool IsUnicode = WX::IsUnicode>
-inline DWORD GetConsoleAliasExesLength() {
-	if_c (IsUnicode)
-		 ret_as(::GetConsoleAliasExesLengthA())
-	else ret_as(::GetConsoleAliasExesLengthA())
-}
+wapi_reflect_pure_WAT(GetConsoleAliasExesLength);
 #undef GetConsoleAliases
 wapi_reflect_bool_WAO(GetConsoleAliases);
 #undef GetConsoleAliasExes
@@ -131,8 +134,10 @@ wapi_reflect_bool(GetConsoleProcessList, DWORD);
 #pragma endregion
 
 }
-#endif
+
+
 export namespace WX {
+#endif
 
 enum_flags(ConsoleAttribute       , WORD                                                                       ,
 		/* Foreground------------------------------------------------------------------------------------------*/
@@ -191,7 +196,6 @@ enum_flags(ConsoleSelectionFlag, DWORD                        ,
 		   NotEmpty            = CONSOLE_SELECTION_NOT_EMPTY  ,
 		   MouseSelection      = CONSOLE_MOUSE_SELECTION      ,
 		   MouseDown           = CONSOLE_MOUSE_DOWN           );
-static_assert(IsPureEnum<ConsoleSelectionFlag>);
 proxy_struct       (ConsoleSelectionInfo     , CONSOLE_SELECTION_INFO                             ) {
 	proxy_prop_sync(Flags                    , dwFlags                     , ConsoleSelectionFlag );
 	proxy_prop_sync(Anchor                   , dwSelectionAnchor           , LPoint               );
@@ -219,15 +223,9 @@ proxy_struct       (ConsoleScreenBufferInfoEx, CONSOLE_SCREEN_BUFFER_INFOEX     
 	proxy_prop_sync(MaximumWindowSize        , dwMaximumWindowSize         , LSize                );
 	proxy_prop_sync(PopupAttributes          , wPopupAttributes            , ConsoleAttribute     );
 	proxy_prop_sync(FullscreenSupported      , bFullscreenSupported        , bool                 );
-public: // Property      ColorTable
-	/* W */ inline auto &ColorTable (const COLORREF *lpColorTable) {
-		for (int i = 0; i < 16; ++i)
-			self->ColorTable[i] = lpColorTable[i];
-		return *this;
-	}
-	/* R */ inline const COLORREF *ColorTable () const { return self->ColorTable; }
-};
+	proxy_prop_arrc(ColorTable               , ColorTable                  , COLORREF             );};
 enum_flags(ConsoleMode            , DWORD                                          ,
+		   Default                = 0                                              ,
 		/* Input modes-------------------------------------------------------------*/
 		   InputProcessed         = ENABLE_PROCESSED_INPUT                         ,
 		   InputLine              = ENABLE_LINE_INPUT                              ,
@@ -244,7 +242,6 @@ enum_flags(ConsoleMode            , DWORD                                       
 		   OutputVirtualTerminal  = ENABLE_VIRTUAL_TERMINAL_PROCESSING             ,
 		   OutputLvbGridWorldwide = ENABLE_LVB_GRID_WORLDWIDE                     );
 
-#define autor auto&
 class ConsoleHandleOutput : public HandleBase<ConsoleHandleOutput> {
 public:
 	using Super = HandleBase<ConsoleHandleOutput>;
@@ -257,89 +254,100 @@ public:
 public:
 	inline void ActiveScreenBuffer() ret_to(WX::SetConsoleActiveScreenBuffer(self));
 public:
-	inline DWORD Fill(CHAR ch, DWORD len, LPoint pos = 0)                                          ret_as(WX::FillConsoleOutputCharacter(self, ch, len, pos, &len), len);
-	inline DWORD Fill(WCHAR ch, DWORD len, LPoint pos = 0)                                         ret_as(WX::FillConsoleOutputCharacter(self, ch, len, pos, &len), len);
+	inline DWORD Fill(char ch, DWORD len, LPoint pos = 0) ret_as(WX::FillConsoleOutputCharacter<false>(self, ch, len, pos, &len), len);
+	inline DWORD Fill(wchar_t ch, DWORD len, LPoint pos = 0) ret_as(WX::FillConsoleOutputCharacter<true>(self, ch, len, pos, &len), len);
 
-	inline DWORD FillAttributes(WORD attr, DWORD len, LPoint pos = 0)                              ret_as(WX::FillConsoleOutputAttribute(self, attr, len, pos, &len), len);
-	inline DWORD FillAttributes(ConsoleAttribute attr, DWORD len, LPoint pos = 0)                  ret_as(FillAttributes(attr, len, pos));
+	inline Int32 FillAttributes(Int16U attr, DWORD len, LPoint pos = 0) ret_as(WX::FillConsoleOutputAttribute(self, attr, len, pos, &len), len);
+	inline Int32 FillAttributes(ConsoleAttribute attr, DWORD len, LPoint pos = 0) ret_as(FillAttributes(attr, len, pos));
 
-	inline DWORD Write(LPCSTR pStr, DWORD len)                                                     ret_as(WX::WriteConsole(self, pStr, len, &len, O), len);
-	inline DWORD Write(LPCWSTR pStr, DWORD len)                                                    ret_as(WX::WriteConsole(self, pStr, len, &len, O), len);
-	inline DWORD Write(const StringA& str)                                                         ret_as(Write((LPCSTR)str, (DWORD)str.Length()));
-	inline DWORD Write(const StringW& str)                                                         ret_as(Write((LPCWSTR)str, (DWORD)str.Length()));
-	template<SizeT Len>
-	inline DWORD Write(const CHAR(&pStr)[Len])                                                     ret_as(Write(pStr, (DWORD)(Len - 1)));
-	template<SizeT Len>
-	inline DWORD Write(const WCHAR(&pStr)[Len])                                                    ret_as(Write(pStr, (DWORD)(Len - 1)));
-	inline DWORD Write(WCHAR ch)                                                                   ret_as(Write(&ch, 1));
-	inline DWORD Write(CHAR ch)                                                                    ret_as(Write(&ch, 1));
+	inline Int32 Write(const  char   *pStr, DWORD len) ret_as(WX::WriteConsole<false>(self, pStr, len, &len, O), len);
+	inline Int32 Write(const wchar_t *pStr, DWORD len) ret_as(WX::WriteConsole<true>(self, pStr, len, &len, O), len);
 
-	inline DWORD Write(LPCSTR pStr, DWORD len, LPoint pos)                                         ret_as(WX::WriteConsoleOutputCharacter(self, pStr, len, pos, &len), len);
-	inline DWORD Write(LPCWSTR pStr, DWORD len, LPoint pos)                                        ret_as(WX::WriteConsoleOutputCharacter(self, pStr, len, pos, &len), len);
-	inline DWORD Write(const StringA& str, LPoint pos)                                             ret_as(Write((LPCSTR)str, (DWORD)str.Length(), pos));
-	inline DWORD Write(const StringW& str, LPoint pos)                                             ret_as(Write((LPCWSTR)str, (DWORD)str.Length(), pos));
+	inline Int32 Write(const StringA& str) ret_as(Write((LPCSTR )str, (DWORD)str.Length()));
+	inline Int32 Write(const StringW& str) ret_as(Write((LPCWSTR)str, (DWORD)str.Length()));
+	
 	template<SizeT Len>
-	inline DWORD Write(const CHAR(&pStr)[Len], LPoint pos)                                         ret_as(Write(pStr, (DWORD)(Len - 1), pos));
+	inline Int32 Write(const  char  (&arr)[Len]) ret_as(Write(arr, (DWORD)(Len - 1)));
 	template<SizeT Len>
-	inline DWORD Write(const WCHAR(&pStr)[Len], LPoint pos)                                        ret_as(Write(pStr, (DWORD)(Len - 1), pos));
+	inline Int32 Write(const wchar_t(&arr)[Len]) ret_as(Write(arr, (DWORD)(Len - 1)));
 
-	inline DWORD WriteAttributes(const WORD* pAttr, DWORD len, LPoint pos = 0)                     ret_as(WX::WriteConsoleOutputAttribute(self, pAttr, len, pos, &len), len);
-	inline DWORD WriteAttributes(const ConsoleAttribute * pAttr, DWORD len, LPoint pos = 0)        ret_as(WriteAttributes((const WORD*)pAttr, len, pos));
 	template<SizeT Len>
-	inline DWORD WriteAttributes(const WORD(&pAttr)[Len], LPoint pos = 0)                          ret_as(WriteAttributes(pAttr, (DWORD)Len, pos));
+	inline Int32 Write(const LiString< char  , Len> &lis) ret_as(Write(lis, (DWORD)(Len - 1)));
 	template<SizeT Len>
-	inline DWORD WriteAttributes(const ConsoleAttribute(&pAttr)[Len], LPoint pos = 0)              ret_as(WriteAttributes((const WORD*)pAttr, (DWORD)Len, pos));
+	inline Int32 Write(const LiString<wchar_t, Len> &lis) ret_as(Write(lis, (DWORD)(Len - 1)));
 
-	inline DWORD Read(LPSTR pBuf, DWORD len, LPoint pos = 0)                                       ret_as(WX::ReadConsoleOutputCharacter(self, pBuf, len, pos, &len), len);
-	inline DWORD Read(LPWSTR pBuf, DWORD len, LPoint pos = 0)                                      ret_as(WX::ReadConsoleOutputCharacter(self, pBuf, len, pos, &len), len);
-	inline DWORD Read(StringA& str, LPoint pos = 0)                                                ret_as(Read(str, (DWORD)str.Length(), pos));
-	inline DWORD Read(StringW& str, LPoint pos = 0)                                                ret_as(Read(str, (DWORD)str.Length(), pos));
-	template<SizeT Len>
-	inline DWORD Read(CHAR(&pBuf)[Len], LPoint pos = 0)                                            ret_as(Read(pBuf, (DWORD)(Len - 1), pos));
-	template<SizeT Len>
-	inline DWORD Read(WCHAR(&pBuf)[Len], LPoint pos = 0)                                           ret_as(Read(pBuf, (DWORD)(Len - 1), pos));
+	inline Int32 Write( char   ch) ret_as(Write(&ch, 1));
+	inline Int32 Write(wchar_t ch) ret_as(Write(&ch, 1));
 
-	inline String  Read (DWORD len, LPoint pos = 0) ret_to(String buf{ (SizeT)len }; buf.Resize(Read(buf, pos)), right_hand_cast(buf));
-	inline StringA ReadA(DWORD len, LPoint pos = 0) ret_to(StringA buf{ (SizeT)len }; buf.Resize(Read(buf, pos)), right_hand_cast(buf));
-	inline StringW ReadW(DWORD len, LPoint pos = 0) ret_to(StringW buf{ (SizeT)len }; buf.Resize(Read(buf, pos)), right_hand_cast(buf));
+	//inline DWORD Write(LPCSTR pStr, DWORD len, LPoint pos) ret_as(WX::WriteConsoleOutputCharacter(self, pStr, len, pos, &len), len);
+	//inline DWORD Write(LPCWSTR pStr, DWORD len, LPoint pos) ret_as(WX::WriteConsoleOutputCharacter(self, pStr, len, pos, &len), len);
+	//inline DWORD Write(const StringA& str, LPoint pos) ret_as(Write((LPCSTR)str, (DWORD)str.Length(), pos));
+	//inline DWORD Write(const StringW& str, LPoint pos) ret_as(Write((LPCWSTR)str, (DWORD)str.Length(), pos));
+	//template<SizeT Len>
+	//inline DWORD Write(const char(&pStr)[Len], LPoint pos) ret_as(Write(pStr, (DWORD)(Len - 1), pos));
+	//template<SizeT Len>
+	//inline DWORD Write(const wchar_t(&pStr)[Len], LPoint pos) ret_as(Write(pStr, (DWORD)(Len - 1), pos));
 
-	inline DWORD Read(WORD* pAttr, DWORD len, LPoint pos = 0)                                      ret_as(WX::ReadConsoleOutputAttribute(self, pAttr, len, pos, &len), len);
-	inline DWORD Read(ConsoleAttribute * pAttr, DWORD len, LPoint pos = 0)                         ret_as(Read((WORD*)pAttr, len, pos));
+	inline DWORD WriteAttributes(const WORD* pAttr, DWORD len, LPoint pos = 0) ret_as(WX::WriteConsoleOutputAttribute(self, pAttr, len, pos, &len), len);
+	inline DWORD WriteAttributes(const ConsoleAttribute * pAttr, DWORD len, LPoint pos = 0) ret_as(WriteAttributes((const WORD*)pAttr, len, pos));
 	template<SizeT Len>
-	inline DWORD Read(WORD(&pAttr)[Len], LPoint pos = 0)                                           ret_as(Read(pAttr, (DWORD)Len, pos));
+	inline DWORD WriteAttributes(const WORD(&pAttr)[Len], LPoint pos = 0) ret_as(WriteAttributes(pAttr, (DWORD)Len, pos));
 	template<SizeT Len>
-	inline DWORD Read(ConsoleAttribute(&pAttr)[Len], LPoint pos = 0)                               ret_as(Read((WORD*)pAttr, (DWORD)Len, pos));
+	inline DWORD WriteAttributes(const ConsoleAttribute(&pAttr)[Len], LPoint pos = 0) ret_as(WriteAttributes((const WORD*)pAttr, (DWORD)Len, pos));
+
+	inline DWORD Log(const char *str, DWORD max_len = MaxLenNotice) ret_as(Write(CString(str, max_len)));
+	inline DWORD Log(const wchar_t *str, DWORD max_len = MaxLenNotice) ret_as(Write(CString(str, max_len)));
+
+	//inline DWORD Read(LPSTR pBuf, DWORD len, LPoint pos = 0) ret_as(WX::ReadConsoleOutputCharacter(self, pBuf, len, pos, &len), len);
+	//inline DWORD Read(LPWSTR pBuf, DWORD len, LPoint pos = 0) ret_as(WX::ReadConsoleOutputCharacter(self, pBuf, len, pos, &len), len);
+	//inline DWORD Read(StringA& str, LPoint pos = 0) ret_as(Read(str, (DWORD)str.Length(), pos));
+	//inline DWORD Read(StringW& str, LPoint pos = 0) ret_as(Read(str, (DWORD)str.Length(), pos));
+	//template<SizeT Len>
+	//inline DWORD Read(char(&pBuf)[Len], LPoint pos = 0) ret_as(Read(pBuf, (DWORD)(Len - 1), pos));
+	//template<SizeT Len>
+	//inline DWORD Read(wchar_t(&pBuf)[Len], LPoint pos = 0) ret_as(Read(pBuf, (DWORD)(Len - 1), pos));
+
+	//inline String  Read (DWORD len, LPoint pos = 0) ret_to(String buf{ (SizeT)len }; buf.Resize(Read(buf, pos)), right_cast(buf));
+	//inline StringA ReadA(DWORD len, LPoint pos = 0) ret_to(StringA buf{ (SizeT)len }; buf.Resize(Read(buf, pos)), right_cast(buf));
+	//inline StringW ReadW(DWORD len, LPoint pos = 0) ret_to(StringW buf{ (SizeT)len }; buf.Resize(Read(buf, pos)), right_cast(buf));
+
+	//inline DWORD Read(WORD* pAttr, DWORD len, LPoint pos = 0) ret_as(WX::ReadConsoleOutputAttribute(self, pAttr, len, pos, &len), len);
+	//inline DWORD Read(ConsoleAttribute * pAttr, DWORD len, LPoint pos = 0) ret_as(Read((WORD*)pAttr, len, pos));
+	//template<SizeT Len>
+	//inline DWORD Read(WORD(&pAttr)[Len], LPoint pos = 0) ret_as(Read(pAttr, (DWORD)Len, pos));
+	//template<SizeT Len>
+	//inline DWORD Read(ConsoleAttribute(&pAttr)[Len], LPoint pos = 0) ret_as(Read((WORD*)pAttr, (DWORD)Len, pos));
 
 #pragma region Properties
-public: // Property      WindowSize
-//	/ * W */ inline autor     WindowSize                                   (LRect rect) ret_to_self(SetConsoleWindowInfo(self, TRUE, ));
-//	/ * R */ inline auto  WindowSize            () const ret_as(ScreenBufferInfo().WindowRect().size());
-public: // Property      FullScreen
-//	/ * A */ inline autor     FullScreenHardware                                   () ret_to_self(WX::SetConsoleDisplayMode(self, CONSOLE_FULLSCREEN_HARDWARE, O));
-	/* W */ inline autor FullScreen            ( bool bFullScreen) ret_to_self(WX::SetConsoleDisplayMode(self, bFullScreen ? CONSOLE_FULLSCREEN_MODE : CONSOLE_WINDOWED_MODE, O));
-	/* R */ inline bool  FullScreen            () const ret_to(DWORD mode = 0; WX::GetConsoleDisplayMode(&mode), mode == CONSOLE_FULLSCREEN_MODE);
-public: // Property      Mode
-	/* W */ inline autor Modes                 ( ConsoleMode modes) ret_to_self(WX::SetConsoleMode(self, (DWORD)modes));
-	/* R */ inline auto  Modes                 () const ret_to(DWORD modes, WX::GetConsoleMode(self, &modes), reuse_cast<ConsoleMode>(modes));
-public: // Property      CursorInfo
-	/* W */ inline autor CursorInfo            ( ConsoleCursorInfo cci) ret_to_self(WX::SetConsoleCursorInfo(self, &cci));
-	/* R */ inline auto  CursorInfo            () const ret_to(ConsoleCursorInfo cci, WX::GetConsoleCursorInfo(self, &cci), cci);
-public: // Property      ScreenBufferInfo
-//    / * W */ inline autor ScreenBufferInfo      ( ConsoleScreenBufferInfoEx sbiex) ret_to_self(WX::SetConsoleScreenBufferInfo(self, &sbiex));
-	/* R */ inline auto  ScreenBufferInfo      () const ret_to(ConsoleScreenBufferInfo sbi, WX::GetConsoleScreenBufferInfo(self, &sbi), sbi);
-public: // Property      ScreenBufferInfoEx
-	/* R */ inline auto  ScreenBufferInfoEx    () const ret_to(ConsoleScreenBufferInfoEx sbiex, WX::GetConsoleScreenBufferInfoEx(self, &sbiex), sbiex);
-	
-#define wx_vprop_set(name, type, setter) inline auto&name(type) ret_to_self(setter)
-#define wx_vprop_get(name, getter) inline auto name(    ) const ret_as     (getter)
-#define wx_vprop_map(name, type, setter, getter) \
-		wx_vprop_set(name, type, setter); \
-		wx_vprop_get(name, getter)
+// WindowSize SetConsoleWindowInfo
 
-	wx_vprop_map(ScreenBufferSize, LSize                   size, WX::SetConsoleScreenBufferSize(self, size)          , ScreenBufferInfo().Size()          );
-	wx_vprop_map(Attributes      , ConsoleAttribute wAttributes, WX::SetConsoleTextAttribute(self, (WORD)wAttributes), ScreenBufferInfo().Attributes()    );
-	wx_vprop_map(CursorPosition  , LPoint                     p, WX::SetConsoleCursorPosition(self, p)               , ScreenBufferInfo().CursorPosition());
-	wx_vprop_map(CursorVisible   , bool                bVisible, CursorInfo(CursorInfo().Visible(bVisible))          , CursorInfo().Visible()             );
+public: // FullScreen
+//	/ * A */ inline autor FullScreenHardware() ret_to_self(WX::SetConsoleDisplayMode(self, CONSOLE_FULLSCREEN_HARDWARE, O));
+	/* W */ inline autor FullScreen( bool bFullScreen) ret_to_self(WX::SetConsoleDisplayMode(self, bFullScreen ? CONSOLE_FULLSCREEN_MODE : CONSOLE_WINDOWED_MODE, O));
+	/* R */ inline bool  FullScreen() const ret_to(DWORD mode = 0; WX::GetConsoleDisplayMode(&mode), mode == CONSOLE_FULLSCREEN_MODE);
+
+	wx_vprop_get_def(ScreenBufferInfo, ConsoleScreenBufferInfo,
+					 (WX::GetConsoleScreenBufferInfo(self, &value)));
+	wx_vprop_map_def(Modes, ConsoleMode,
+					 (WX::SetConsoleMode(self, (DWORD)value)),
+					 (WX::GetConsoleMode(self, &value)));
+	wx_vprop_map_def(CursorInfo, ConsoleCursorInfo,
+					 (WX::SetConsoleCursorInfo(self, &value)),
+					 (WX::GetConsoleCursorInfo(self, &value)));
+	wx_vprop_get_def(ScreenBufferInfoEx, ConsoleScreenBufferInfoEx,
+					 (WX::GetConsoleScreenBufferInfoEx(self, &value)));
+	wx_vprop_map_dir(ScreenBufferSize, LSize,
+					 (WX::SetConsoleScreenBufferSize(self, value)),
+					 (ScreenBufferInfo().Size()));
+	wx_vprop_map_dir(Attributes, ConsoleAttribute,
+					 (WX::SetConsoleTextAttribute(self, (WORD)value)),
+					 (ScreenBufferInfo().Attributes()));
+	wx_vprop_map_dir(CursorPosition, LPoint,
+					 (WX::SetConsoleCursorPosition(self, value)),
+					 (ScreenBufferInfo().CursorPosition()));
+	wx_vprop_map_dir(CursorVisible, bool,
+					 (CursorInfo(CursorInfo().Visible(value))),
+					 (CursorInfo().Visible()));
 #pragma endregion
 };
 class ConsoleHandleInput : public HandleBase<ConsoleHandleInput> {
@@ -374,7 +382,7 @@ public:
 		freopen_s(&fin, "CONIN$", "r+t", stdin);
 	}
 public:
-	inline void Clear() ret_to(Fill(T(' '), ScreenBufferInfo().Size().Square()); CursorPosition(0));
+	//inline void Clear() ret_to(Fill(T(' '), ScreenBufferInfo().Size().Square()); CursorPosition(0));
 	inline void Color(ConsoleAttribute wAttributes) ret_to(FillAttributes(wAttributes, ScreenBufferInfo().Size().Square()); Attributes(wAttributes));
 public:
 	inline DWORD Format(LPCSTR lpFormat, ...) {
@@ -394,43 +402,42 @@ public:
 //public: // Property      Window
 //	inline CWindow Window() const ret_as(WX::GetConsoleWindow());
 #pragma region Properties
-public: // Property      Title
-	template<class TCHAR>
-	/* W */ inline autor Title                 ( const TCHAR *lpTitle) ret_to_self(WX::SetConsoleTitle(lpTitle));
-	template<bool IsUnicode = WX::IsUnicode, SizeT MaxLen = MaxLenTitle>
-	/* R */ inline auto Title() const {
-		StringX<IsUnicode> str(MaxLen);
-		auto len = WX::GetConsoleTitle(str, (int)MaxLen);
-		return right_hand_cast(str.Resize(len));
-	}
-	template<SizeT MaxLen = MaxLenTitle>
-	/* R */ inline auto  TitleA                () const ret_as(Title<false, MaxLen>());
-	template<SizeT MaxLen = MaxLenTitle>
-	/* R */ inline auto  TitleW                () const ret_as(Title<true, MaxLen>());
-public: // Property      OriginalTitle
+
+	//template<class TCHAR>
+	///* W */ inline autor Title( const TCHAR *lpTitle) ret_to_self(WX::SetConsoleTitle(lpTitle));
+	//template<bool IsUnicode = WX::IsUnicode, SizeT MaxLen = MaxLenTitle>
+	///* R */ inline auto Title() const {
+	//	StringX<IsUnicode> str(MaxLen);
+	//	auto len = WX::GetConsoleTitle(str, (int)MaxLen);
+	//	return right_cast(str.Resize(len));
+	//}
+	//template<SizeT MaxLen = MaxLenTitle>
+	///* R */ inline auto  TitleA() const ret_as(Title<false, MaxLen>());
+	//template<SizeT MaxLen = MaxLenTitle>
+	///* R */ inline auto  TitleW() const ret_as(Title<true, MaxLen>());
 
 	template<bool IsUnicode = WX::IsUnicode, SizeT MaxLen = MaxLenTitle>
 	/* R */ inline auto OriginalTitle () const {
 		StringX<IsUnicode> str(MaxLen);
 		auto len = WX::GetConsoleOriginalTitle(str, (int)MaxLen);
-		return right_hand_cast(str.Resize(len));
+		return right_cast(str.Resize(len));
 	}
 	template<SizeT MaxLen = MaxLenTitle>
-	/* R */ inline auto OriginalTitleA        () const ret_as(OriginalTitle<false, MaxLen>());
+	/* R */ inline auto OriginalTitleA() const ret_as(OriginalTitle<false, MaxLen>());
 	template<SizeT MaxLen = MaxLenTitle>
-	/* R */ inline auto OriginalTitleW        () const ret_as(OriginalTitle<true, MaxLen>());
+	/* R */ inline auto OriginalTitleW() const ret_as(OriginalTitle<true, MaxLen>());
 
-public: // Property      CodePage
-	/* W */ inline autor CodePage              ( UINT uCodePage) ret_to_self(WX::SetConsoleCP(uCodePage));
-	/* R */ inline UINT  CodePage              () const ret_as(WX::GetConsoleCP());
-public: // Property      OutputCodePage
-	/* W */ inline autor OutputCodePage        ( UINT uCodePage) ret_to_self(WX::SetConsoleOutputCP(uCodePage));
-	/* R */ inline UINT  OutputCodePage        () const ret_as(WX::GetConsoleOutputCP());
-public: // Property      SelectionInfo
-	/* R */ inline auto  SelectionInfo         () const ret_to(ConsoleSelectionInfo csi, WX::GetConsoleSelectionInfo(&csi), csi);
-public: // Property      HistoryInfo
-	/* W */ inline autor HistoryInfo           ( CONSOLE_HISTORY_INFO chi) ret_to_self(WX::SetConsoleHistoryInfo(&chi));
-	/* R */ inline auto  HistoryInfo           () const ret_to(ConsoleHistoryInfo chi, WX::GetConsoleHistoryInfo(&chi), chi);
+	wx_vprop_map_dir(InputCodePage, UINT,
+					 (WX::SetConsoleCP(value)),
+					 (WX::GetConsoleCP()));
+	wx_vprop_map_dir(OutputCodePage, UINT,
+					 (WX::SetConsoleOutputCP(value)),
+					 (WX::GetConsoleOutputCP()));
+	wx_vprop_get_def(SelectionInfo, ConsoleSelectionInfo,
+					 (WX::GetConsoleSelectionInfo(&value)));
+	wx_vprop_map_def(HistoryInfo, ConsoleHistoryInfo,
+					 (WX::SetConsoleHistoryInfo(&value)),
+					 (WX::GetConsoleHistoryInfo(&value)));
 #pragma endregion   
 
 public:
@@ -438,4 +445,6 @@ public:
 	inline auto &operator[](bool bCurVis) ret_as(CursorVisible(bCurVis));
 } Console;
 
+#ifndef WX_IDL_IMPORT
 }
+#endif

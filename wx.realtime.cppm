@@ -892,7 +892,7 @@ public:
 			if (len - 1 == value.Length()) return &value;
 			String str((SizeT)len - 1);
 			WX::ExpandEnvironmentStrings(value, str, len);
-			return right_hand_cast(str);
+			return right_cast(str);
 		}
 	public:
 		inline auto &operator=(const String &value) ret_to_self(Value(value));
@@ -1016,7 +1016,7 @@ class CurrentEnvironment {
 			auto len = WX::GetEnvironmentVariable(lpName, O, 0);
 			String str((SizeT)len - 1);
 			WX::SetEnvironmentVariable(lpName, str, len);
-			return right_hand_cast(str);
+			return right_cast(str);
 		}
 	public: // Property - Expand
 		/* R */ inline String Expand() const {
@@ -1025,7 +1025,7 @@ class CurrentEnvironment {
 			if (val.Length() == len) return val;
 			String str((SizeT)len - 1);
 			WX::ExpandEnvironmentStrings(val, str, len);
-			return right_hand_cast(str);
+			return right_cast(str);
 		}
 	public:
 		inline auto &operator=(LPCTSTR lpValue) ret_to_self(Value(lpValue));
@@ -1301,7 +1301,7 @@ template<bool IsUnicode>
 	auto len = WX::GetCurrentDirectory(0, (LPXSTR<IsUnicode>)O);
 	StringX<IsUnicode> str((SizeT)len);
 	WX::GetCurrentDirectory(len, str);
-	return right_hand_cast(str);
+	return right_cast(str);
 }
 /* R */ inline StringA CurrentDirectoryA() ret_as(CurrentDirectory<false>());
 /* R */ inline StringW CurrentDirectoryW() ret_as(CurrentDirectory<true>());
@@ -1312,7 +1312,7 @@ template<bool IsUnicode>
 	WX::GetUserName((LPXSTR<IsUnicode>)O, &len);
 	StringX<IsUnicode> str((SizeT)len);
 	WX::GetUserName(str, &len);
-	return right_hand_cast(str);
+	return right_cast(str);
 }
 inline StringA CurrentUserNameA() ret_as(CurrentUserName<false>());
 inline StringW CurrentUserNameW() ret_as(CurrentUserName<true>());
@@ -1323,7 +1323,7 @@ template<bool IsUnicode>
 	WX::GetComputerName((LPXSTR<IsUnicode>)O, &len);
 	StringX<IsUnicode> str((SizeT)len);
 	WX::GetComputerName(str, &len);
-	return right_hand_cast(str);
+	return right_cast(str);
 }
 /* R */ inline StringA CurrentComputerNameA() ret_as(CurrentComputerName<false>());
 /* R */ inline StringW CurrentComputerNameW() ret_as(CurrentComputerName<true>());

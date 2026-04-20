@@ -249,11 +249,11 @@ inline void StringCbLength(LPCWSTR psz, SizeT cbMax, SizeT *pcbLength)
 export namespace WX {
 
 template<bool IsUnicode>
-using XCHAR = ConditionOf<IsUnicode, WCHAR, CHAR>;
+using XCHAR = TypeIf<IsUnicode, WCHAR, CHAR>;
 template<bool IsUnicode>
-using LPXSTR = ConditionOf<IsUnicode, LPWSTR, LPSTR>;
+using LPXSTR = TypeIf<IsUnicode, LPWSTR, LPSTR>;
 template<bool IsUnicode>
-using LPCXSTR = ConditionOf<IsUnicode, LPCWSTR, LPCSTR>;
+using LPCXSTR = TypeIf<IsUnicode, LPCWSTR, LPCSTR>;
 
 template<class TCHAR>
 concept IsCharA = IsSame<TCHAR, CHAR> || IsSame<TCHAR, LPSTR> || IsSame<TCHAR, LPCSTR>;
@@ -626,16 +626,16 @@ inline StringBase<TCHAR> format(const TCHAR *lpFormat, ...) {
 #pragma endregion
 
 /* toString - format_numeral */
-template<bool IsUnicode = WX::IsUnicode>
-inline StringX<IsUnicode> toString(const format_numeral &fn, Numeral auto i) {
-	XCHAR<IsUnicode> pBuffer[format_numeral::MaxLen];
-	auto len = fn.push(i, pBuffer);
-	return +CString(len, pBuffer);
-}
-template<bool IsUnicode = WX::IsUnicode>
-inline auto toString(Numeral auto i) ret_as(toString<IsUnicode>(DEC, i));
-template<bool IsUnicode = WX::IsUnicode>
-inline auto toString(FloatType auto f) ret_as(toString<IsUnicode>(FPT, f));
+//template<bool IsUnicode = WX::IsUnicode>
+//inline StringX<IsUnicode> toString(const format_numeral &fn, Numeral auto i) {
+//	XCHAR<IsUnicode> pBuffer[format_numeral::MaxLen];
+//	auto len = fn.push(i, pBuffer);
+//	return +CString(len, pBuffer);
+//}
+//template<bool IsUnicode = WX::IsUnicode>
+//inline auto toString(Numeral auto i) ret_as(toString<IsUnicode>(DEC, i));
+//template<bool IsUnicode = WX::IsUnicode>
+//inline auto toString(FloatType auto f) ret_as(toString<IsUnicode>(FPT, f));
 
 /* toString - Exception */
 template<bool IsUnicode>

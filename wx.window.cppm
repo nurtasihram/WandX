@@ -28,7 +28,7 @@ public: // Property - Name
 	/* R */ inline StringX<IsUnicode> Name() const {
 		StringX<IsUnicode> str(MaxLen);
 		auto len = WX::GetAtomName(self, str, (int)MaxLen);
-		return right_hand_cast(str.Resize(len));
+		return right_cast(str.Resize(len));
 	}
 	template<SizeT MaxLen = MaxLenClass>
 	/* R */ inline StringA NameA() const ret_as(Name<false, MaxLen>());
@@ -63,7 +63,7 @@ public: // Property - Name
 	/* R */ inline StringX<IsUnicode> Name() const {
 		StringX<IsUnicode> str(MaxLen);
 		auto len = WX::GetAtomName(self, str, (int)MaxLen);
-		return right_hand_cast(str.Resize(len));
+		return right_cast(str.Resize(len));
 	}
 	template<SizeT MaxLen = MaxLenClass>
 	/* R */ inline StringA NameA() const ret_as(Name<false, MaxLen>());
@@ -933,7 +933,7 @@ public: // Property - Name
 	/* R */ inline StringX<IsUnicode> Name() const {
 		StringX<IsUnicode> str(MaxLen);
 		auto len = WX::GetClassName(hWnd, str, (int)MaxLen);
-		return right_hand_cast(str.Resize(len));
+		return right_cast(str.Resize(len));
 	}
 public: // Property - Atom
 	/* W */ inline auto &Atom(ATOM classAtom) ret_to_self(Words(GCW_ATOM) = classAtom);
@@ -1455,7 +1455,7 @@ public: // Property - String
 		if (len <= 0) return O;
 		StringX<IsUnicode> str((SizeT)len);
 		WX::GetWindowText(self, str, len);
-		return right_hand_cast(str);
+		return right_cast(str);
 	}
 	/* R */ inline StringA TextA() const ret_as(Text<false>());
 	/* R */ inline StringW TextW() const ret_as(Text<true>());
@@ -1464,7 +1464,7 @@ public: // Property - ModuleFileName
 	/* R */ inline StringX<IsUnicode> ModuleFileName() const {
 		StringX<IsUnicode> str(MaxLen);
 		int len = WX::GetWindowModuleFileName(self, str, (int)MaxLen);
-		return right_hand_cast(str.Resize(len));
+		return right_cast(str.Resize(len));
 	}
 	template<SizeT MaxLen = MaxLenPath>
 	/* R */ inline StringA ModuleFileNameA() const ret_as(ModuleFileName<false, MaxLen>());
@@ -1653,7 +1653,7 @@ public: // Property - Name
 	/* R */ inline StringX<IsUnicode> Name() const {
 		StringX<IsUnicode> str(MaxLen);
 		auto len = WX::GetClipboardFormatName(uFormat, str, (int)MaxLen);
-		return right_hand_cast(str.Resize(len));
+		return right_cast(str.Resize(len));
 	}
 	template<SizeT MaxLen = MaxLenClass>
 	/* R */ inline StringA NameA() const ret_as(Name<false, MaxLen>());

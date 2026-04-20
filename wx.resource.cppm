@@ -588,7 +588,7 @@ public: // Property - String
 		auto len = StringW(wID).Length();
 		WX::StringA str(len);
 		WX::LoadString(self, wID, str, (int)len);
-		return right_hand_cast(str);
+		return right_cast(str);
 	}
 	inline const WX::StringW StringW(WORD wID) const {
 		LPCWSTR lpString = O;
@@ -603,7 +603,7 @@ public: // Property - FileName
 	/* R */ inline StringX<IsUnicode> FileName() const {
 		StringX<IsUnicode> str(MaxLen);
 		auto len = WX::GetModuleFileName(self, str, (int)MaxLen);
-		return right_hand_cast(str.Resize(len));
+		return right_cast(str.Resize(len));
 	}
 	template<SizeT MaxLen = MaxLenPath>
 	/* R */ inline WX::StringA FileNameA() const ret_as(FileName<false, MaxLen>());

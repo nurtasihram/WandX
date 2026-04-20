@@ -82,7 +82,7 @@
     <ClCompile Include="..\wx.window.cppm">
       <Filter>wx_library\modules</Filter>
     </ClCompile>
-    <ClCompile Include="..\wx.radix.cppm">
+    <ClCompile Include="..\wx.regex.cppm">
       <Filter>wx_library\modules</Filter>
     </ClCompile>
   </ItemGroup>
