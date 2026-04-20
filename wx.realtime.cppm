@@ -14,23 +14,23 @@ constexpr auto ThisFile = LiString("wx.realtimec");
 
 #pragma region ProcessEnv.h
 #undef SetEnvironmentStrings
-wapi_reflect_bool_WAO(SetEnvironmentStrings); // SetEnvironmentStringsA from WinBase.h
+wapi_reflect_true_WAO(SetEnvironmentStrings); // SetEnvironmentStringsA from WinBase.h
 #undef GetCommandLine
-wapi_reflect_bool_WAT(GetCommandLine);
+wapi_reflect_true_WAT(GetCommandLine);
 #undef GetEnvironmentStrings
-//wapi_reflect_bool_WAT(GetEnvironmentStrings);
+//wapi_reflect_true_WAT(GetEnvironmentStrings);
 #undef FreeEnvironmentStrings
-wapi_reflect_bool_WAO(FreeEnvironmentStrings);
+wapi_reflect_true_WAO(FreeEnvironmentStrings);
 #undef GetEnvironmentVariable
-wapi_reflect_bool_WAO(GetEnvironmentVariable, DWORD);
+wapi_reflect_true_WAO(GetEnvironmentVariable, DWORD);
 #undef SetEnvironmentVariable
-wapi_reflect_bool_WAO(SetEnvironmentVariable);
+wapi_reflect_true_WAO(SetEnvironmentVariable);
 #undef ExpandEnvironmentStrings
-wapi_reflect_bool_WAO(ExpandEnvironmentStrings, DWORD);
+wapi_reflect_true_WAO(ExpandEnvironmentStrings, DWORD);
 #undef SetCurrentDirectory
-wapi_reflect_bool_WAO(SetCurrentDirectory);
+wapi_reflect_true_WAO(SetCurrentDirectory);
 #undef GetCurrentDirectory
-wapi_reflect_bool_WAO(GetCurrentDirectory, DWORD);
+wapi_reflect_true_WAO(GetCurrentDirectory, DWORD);
 //#undef SearchPath
 //inline DWORD SearchPath(LPCSTR lpPath, LPCSTR lpFileName, LPCSTR lpExtension,
 //						DWORD nBufferLength, LPSTR lpBuffer, LPSTR *lpFilePart);
@@ -41,15 +41,15 @@ wapi_reflect_bool_WAO(GetCurrentDirectory, DWORD);
 //	safe_ret_as(::SearchPathW(lpPath, lpFileName, lpExtension, nBufferLength,
 //									 lpBuffer, lpFilePart));
 #undef NeedCurrentDirectoryForExePath
-wapi_reflect_bool_WAO(NeedCurrentDirectoryForExePath);
+wapi_reflect_true_WAO(NeedCurrentDirectoryForExePath);
 #pragma endregion
 
 #pragma region ProcessThreadsApi.h
-wapi_reflect_bool(QueueUserAPC);
+wapi_reflect_true(QueueUserAPC);
 #if (NTDDI_VERSION >= NTDDI_WIN10_MN)
-wapi_reflect_bool(QueueUserAPC2);
+wapi_reflect_true(QueueUserAPC2);
 #endif
-wapi_reflect_bool(GetProcessTimes);
+wapi_reflect_true(GetProcessTimes);
 // GetCurrentProcess
 inline HANDLE GetCurrentProcess()
 	ret_as(::GetCurrentProcess());
@@ -59,28 +59,28 @@ inline DWORD GetCurrentProcessId()
 // ExitProcess
 inline void ExitProcess(UINT uExitCode)
 	ret_to(::ExitProcess(uExitCode));
-wapi_reflect_bool(TerminateProcess);
-wapi_reflect_bool(GetExitCodeProcess);
-wapi_reflect_bool(SwitchToThread);
-wapi_reflect_bool(CreateThread, HANDLE);
-wapi_reflect_bool(CreateRemoteThread, HANDLE);
+wapi_reflect_true(TerminateProcess);
+wapi_reflect_true(GetExitCodeProcess);
+wapi_reflect_true(SwitchToThread);
+wapi_reflect_true(CreateThread, HANDLE);
+wapi_reflect_true(CreateRemoteThread, HANDLE);
 // GetCurrentThread
 inline HANDLE GetCurrentThread()
 	ret_as(::GetCurrentThread());
 // GetCurrentThreadId
 inline DWORD GetCurrentThreadId()
 	ret_as(::GetCurrentThreadId());
-wapi_reflect_bool(OpenThread, HANDLE);
-wapi_reflect_bool(SetThreadPriority);
-wapi_reflect_bool(SetThreadPriorityBoost);
-wapi_reflect_bool(GetThreadPriorityBoost);
+wapi_reflect_true(OpenThread, HANDLE);
+wapi_reflect_true(SetThreadPriority);
+wapi_reflect_true(SetThreadPriorityBoost);
+wapi_reflect_true(GetThreadPriorityBoost);
 inline int GetThreadPriority(HANDLE hThread)
 	safe_ret_as(auto res = ::GetThreadPriority(hThread); res != THREAD_PRIORITY_ERROR_RETURN, res);
 // ExitThread
 inline void ExitThread(DWORD dwExitCode)
 	ret_as(::ExitThread(dwExitCode));
-wapi_reflect_bool(TerminateThread);
-wapi_reflect_bool(GetExitCodeThread);
+wapi_reflect_true(TerminateThread);
+wapi_reflect_true(GetExitCodeThread);
 // SuspendThread
 inline DWORD SuspendThread(HANDLE hThread)
 	safe_ret_as(auto res = ::SuspendThread(hThread); res >= 0, res);
@@ -90,17 +90,17 @@ inline DWORD ResumeThread(HANDLE hThread)
 // TlsAlloc
 inline DWORD TlsAlloc()
 	safe_ret_as(auto n = ::TlsAlloc(); n != TLS_OUT_OF_INDEXES, n);
-wapi_reflect_bool(TlsGetValue, LPVOID);
-wapi_reflect_bool(TlsSetValue);
-wapi_reflect_bool(TlsFree);
+wapi_reflect_true(TlsGetValue, LPVOID);
+wapi_reflect_true(TlsSetValue);
+wapi_reflect_true(TlsFree);
 #undef CreateProcess
-wapi_reflect_bool_WAO(CreateProcess);
+wapi_reflect_true_WAO(CreateProcess);
 #undef GetStartupInfo
-// wapi_reflect_bool_WAO(GetStartupInfo); // GetStartupInfoA from WinBase.h
-wapi_reflect_bool(SetProcessShutdownParameters);
-wapi_reflect_bool(GetProcessVersion, DWORD);
+// wapi_reflect_true_WAO(GetStartupInfo); // GetStartupInfoA from WinBase.h
+wapi_reflect_true(SetProcessShutdownParameters);
+wapi_reflect_true(GetProcessVersion, DWORD);
 #undef CreateProcessAsUser
-wapi_reflect_bool_WAO(CreateProcessAsUser);
+wapi_reflect_true_WAO(CreateProcessAsUser);
 // GetCurrentProcessToken
 inline HANDLE GetCurrentProcessToken()
 	ret_as(::GetCurrentProcessToken());
@@ -110,62 +110,62 @@ inline HANDLE GetCurrentThreadToken()
 // GetCurrentThreadEffectiveToken
 inline HANDLE GetCurrentThreadEffectiveToken()
 	ret_as(::GetCurrentThreadEffectiveToken());
-wapi_reflect_bool(SetThreadToken);
-wapi_reflect_bool(OpenProcessToken);
-wapi_reflect_bool(OpenThreadToken);
-wapi_reflect_bool(SetPriorityClass);
-wapi_reflect_bool(GetPriorityClass, DWORD);
-wapi_reflect_bool(SetThreadStackGuarantee);
-wapi_reflect_bool(ProcessIdToSessionId);
-wapi_reflect_bool(GetProcessId, DWORD);
-wapi_reflect_bool(GetThreadId, DWORD);
+wapi_reflect_true(SetThreadToken);
+wapi_reflect_true(OpenProcessToken);
+wapi_reflect_true(OpenThreadToken);
+wapi_reflect_true(SetPriorityClass);
+wapi_reflect_true(GetPriorityClass, DWORD);
+wapi_reflect_true(SetThreadStackGuarantee);
+wapi_reflect_true(ProcessIdToSessionId);
+wapi_reflect_true(GetProcessId, DWORD);
+wapi_reflect_true(GetThreadId, DWORD);
 // wapi_reflect_void(FlushProcessWriteBuffers);
-wapi_reflect_bool(GetProcessIdOfThread, DWORD);
-wapi_reflect_bool(InitializeProcThreadAttributeList);
+wapi_reflect_true(GetProcessIdOfThread, DWORD);
+wapi_reflect_true(InitializeProcThreadAttributeList);
 // wapi_reflect_void(DeleteProcThreadAttributeList);
-wapi_reflect_bool(UpdateProcThreadAttribute);
+wapi_reflect_true(UpdateProcThreadAttribute);
 #if (NTDDI_VERSION >= NTDDI_WIN10_VB)
-wapi_reflect_bool(SetProcessDynamicEHContinuationTargets);
+wapi_reflect_true(SetProcessDynamicEHContinuationTargets);
 #endif
 #if (NTDDI_VERSION >= NTDDI_WIN10_FE)
-wapi_reflect_bool(SetProcessDynamicEnforcedCetCompatibleRanges);
+wapi_reflect_true(SetProcessDynamicEnforcedCetCompatibleRanges);
 #endif
-wapi_reflect_bool(SetProcessAffinityUpdateMode);
-wapi_reflect_bool(QueryProcessAffinityUpdateMode);
-wapi_reflect_bool(CreateRemoteThreadEx, HANDLE);
+wapi_reflect_true(SetProcessAffinityUpdateMode);
+wapi_reflect_true(QueryProcessAffinityUpdateMode);
+wapi_reflect_true(CreateRemoteThreadEx, HANDLE);
 // wapi_reflect_void(GetCurrentThreadStackLimits);
-wapi_reflect_bool(GetThreadContext);
-wapi_reflect_bool(GetProcessMitigationPolicy);
-wapi_reflect_bool(SetThreadContext);
-wapi_reflect_bool(SetProcessMitigationPolicy);
-wapi_reflect_bool(FlushInstructionCache);
-wapi_reflect_bool(GetThreadTimes);
-wapi_reflect_bool(OpenProcess, HANDLE);
+wapi_reflect_true(GetThreadContext);
+wapi_reflect_true(GetProcessMitigationPolicy);
+wapi_reflect_true(SetThreadContext);
+wapi_reflect_true(SetProcessMitigationPolicy);
+wapi_reflect_true(FlushInstructionCache);
+wapi_reflect_true(GetThreadTimes);
+wapi_reflect_true(OpenProcess, HANDLE);
 // IsProcessorFeaturePresent
 inline bool IsProcessorFeaturePresent(DWORD ProcessorFeature)
 	ret_as(::IsProcessorFeaturePresent(ProcessorFeature));
-wapi_reflect_bool(GetProcessHandleCount);
+wapi_reflect_true(GetProcessHandleCount);
 // GetCurrentProcessorNumber
 inline DWORD GetCurrentProcessorNumber()
 	ret_as(::GetCurrentProcessorNumber());
-wapi_reflect_bool(SetThreadIdealProcessorEx);
-wapi_reflect_bool(GetThreadIdealProcessorEx);
+wapi_reflect_true(SetThreadIdealProcessorEx);
+wapi_reflect_true(GetThreadIdealProcessorEx);
 // wapi_reflect_void(GetCurrentProcessorNumberEx);
-wapi_reflect_bool(GetProcessPriorityBoost);
-wapi_reflect_bool(SetProcessPriorityBoost);
-wapi_reflect_bool(GetThreadIOPendingFlag);
-wapi_reflect_bool(GetSystemTimes);
-wapi_reflect_bool(GetThreadInformation);
-wapi_reflect_bool(SetThreadInformation);
-wapi_reflect_bool(IsProcessCritical);
-wapi_reflect_bool(SetProtectedPolicy);
-wapi_reflect_bool(QueryProtectedPolicy);
+wapi_reflect_true(GetProcessPriorityBoost);
+wapi_reflect_true(SetProcessPriorityBoost);
+wapi_reflect_true(GetThreadIOPendingFlag);
+wapi_reflect_true(GetSystemTimes);
+wapi_reflect_true(GetThreadInformation);
+wapi_reflect_true(SetThreadInformation);
+wapi_reflect_true(IsProcessCritical);
+wapi_reflect_true(SetProtectedPolicy);
+wapi_reflect_true(QueryProtectedPolicy);
 // SetThreadIdealProcessor
 inline DWORD SetThreadIdealProcessor(HANDLE hThread, DWORD dwIdealProcessor)
 	safe_ret_as(auto res = ::SetThreadIdealProcessor(hThread, dwIdealProcessor); res >= 0, res);
-wapi_reflect_bool(SetProcessInformation);
-wapi_reflect_bool(GetProcessInformation);
-wapi_reflect_bool(GetProcessShutdownParameters);
+wapi_reflect_true(SetProcessInformation);
+wapi_reflect_true(GetProcessInformation);
+wapi_reflect_true(GetProcessShutdownParameters);
 //// SetThreadDescription
 //inline void SetThreadDescription(HANDLE hThread, PCWSTR lpDescription)
 //	safe_ret_as(::SetThreadDescription(hThread, lpDescription));
@@ -209,8 +209,8 @@ inline void EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 // LeaveCriticalSection
 inline void LeaveCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 	ret_to(::LeaveCriticalSection(lpCriticalSection));
-wapi_reflect_bool(InitializeCriticalSectionAndSpinCount);
-wapi_reflect_bool(InitializeCriticalSectionEx);
+wapi_reflect_true(InitializeCriticalSectionAndSpinCount);
+wapi_reflect_true(InitializeCriticalSectionEx);
 // SetCriticalSectionSpinCount
 inline DWORD SetCriticalSectionSpinCount(LPCRITICAL_SECTION lpCriticalSection, DWORD dwSpinCount)
 	ret_as(::SetCriticalSectionSpinCount(lpCriticalSection, dwSpinCount));
@@ -223,9 +223,9 @@ inline void DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 // InitOnceInitialize
 inline void InitOnceInitialize(PINIT_ONCE InitOnce)
 	ret_to(::InitOnceInitialize(InitOnce));
-wapi_reflect_bool(InitOnceExecuteOnce);
-wapi_reflect_bool(InitOnceBeginInitialize);
-wapi_reflect_bool(InitOnceComplete);
+wapi_reflect_true(InitOnceExecuteOnce);
+wapi_reflect_true(InitOnceBeginInitialize);
+wapi_reflect_true(InitOnceComplete);
 // InitializeConditionVariable
 inline void InitializeConditionVariable(PCONDITION_VARIABLE ConditionVariable)
 	ret_to(::InitializeConditionVariable(ConditionVariable));
@@ -235,8 +235,8 @@ inline void WakeConditionVariable(PCONDITION_VARIABLE ConditionVariable)
 // WakeAllConditionVariable
 inline void WakeAllConditionVariable(PCONDITION_VARIABLE ConditionVariable)
 	ret_to(::WakeAllConditionVariable(ConditionVariable));
-wapi_reflect_bool(SleepConditionVariableCS);
-wapi_reflect_bool(SleepConditionVariableSRW);
+wapi_reflect_true(SleepConditionVariableCS);
+wapi_reflect_true(SleepConditionVariableSRW);
 // SetEvent
 inline void SetEvent(HANDLE hEvent)
 	ret_to(::SetEvent(hEvent));
@@ -262,21 +262,21 @@ inline DWORD WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds, BOOL bAle
 inline DWORD WaitForMultipleObjects(DWORD nCount, const HANDLE *lpHandles, BOOL bWaitAll, DWORD dwMilliseconds, BOOL bAlertable)
 	safe_ret_as(auto res = ::WaitForMultipleObjectsEx(nCount, lpHandles, bWaitAll, dwMilliseconds, bAlertable); res != WAIT_FAILED, res);
 #undef CreateMutex
-wapi_reflect_bool_WAO(CreateMutex);
+wapi_reflect_true_WAO(CreateMutex);
 #undef OpenMutex
-wapi_reflect_bool_WAO(OpenMutex); // OpenMutexA from WinBase.h
+wapi_reflect_true_WAO(OpenMutex); // OpenMutexA from WinBase.h
 #undef CreateEvent
-wapi_reflect_bool_WAO(CreateEvent);
+wapi_reflect_true_WAO(CreateEvent);
 #undef OpenSemaphore
-wapi_reflect_bool_WAO(OpenSemaphore); // OpenSemaphoreA from WinBase.h
+wapi_reflect_true_WAO(OpenSemaphore); // OpenSemaphoreA from WinBase.h
 #undef OpenWaitableTimer
-wapi_reflect_bool_WAO(OpenWaitableTimer); // OpenWaitableTimerA from WinBase.h
-wapi_reflect_bool(SetWaitableTimer);
-wapi_reflect_bool(CancelWaitableTimer);
+wapi_reflect_true_WAO(OpenWaitableTimer); // OpenWaitableTimerA from WinBase.h
+wapi_reflect_true(SetWaitableTimer);
+wapi_reflect_true(CancelWaitableTimer);
 #undef CreateMutexEx
-wapi_reflect_bool_WAO(CreateMutexEx, HANDLE);
+wapi_reflect_true_WAO(CreateMutexEx, HANDLE);
 #undef CreateEventEx
-wapi_reflect_bool_WAO(CreateEventEx, HANDLE);
+wapi_reflect_true_WAO(CreateEventEx, HANDLE);
 // Sleep
 inline void Sleep(DWORD dwMilliseconds)
 	ret_to(::Sleep(dwMilliseconds));
@@ -287,13 +287,13 @@ inline DWORD SignalObjectAndWait(HANDLE hObjectToSignal, HANDLE hObjectToWaitOn,
 inline DWORD WaitForMultipleObjects(DWORD nCount, const HANDLE *lpHandles, BOOL bWaitAll, DWORD dwMilliseconds)
 	safe_ret_as(auto res = ::WaitForMultipleObjects(nCount, lpHandles, bWaitAll, dwMilliseconds); res != WAIT_FAILED, res);
 #undef CreateSemaphore
-wapi_reflect_bool_WAO(CreateSemaphore); // CreateSemaphoreA from WinBase.h
+wapi_reflect_true_WAO(CreateSemaphore); // CreateSemaphoreA from WinBase.h
 #undef CreateSemaphoreEx
-wapi_reflect_bool_WAO(CreateSemaphoreEx); // CreateSemaphoreExA from WinBase.h
+wapi_reflect_true_WAO(CreateSemaphoreEx); // CreateSemaphoreExA from WinBase.h
 #undef CreateWaitableTimer
-wapi_reflect_bool_WAO(CreateWaitableTimer); // CreateWaitableTimerA from WinBase.h
+wapi_reflect_true_WAO(CreateWaitableTimer); // CreateWaitableTimerA from WinBase.h
 #undef CreateWaitableTimerEx
-wapi_reflect_bool_WAO(CreateWaitableTimerEx); // CreateWaitableTimerExA from WinBase.h
+wapi_reflect_true_WAO(CreateWaitableTimerEx); // CreateWaitableTimerExA from WinBase.h
 #pragma endregion
 
 }

@@ -44,7 +44,7 @@ constexpr auto AssertFaultMap = ValueMap<ops,
 	AssertOps::Default    , LiString(" => false ")
 >;
 
-template<class AnyType, AssertOps ops, auto var>
+template<class AnyType, AssertOps ops, auto val>
 constexpr bool assert_oeperator(AnyType arg) {
 	if_c                (ops == AssertOps::   Bigger  )  return arg >  var;
 	if_c                (ops == AssertOps::   BigEqual)  return arg >= var;
@@ -57,14 +57,14 @@ constexpr bool assert_oeperator(AnyType arg) {
 	else { static_assert(ops == AssertOps::Default    ); return (bool)arg; }
 }
 
-template<class AnyType, AssertOps ops, auto var = true, auto var_str = LiStringO>
+template<class AnyType, AssertOps ops, auto val = true, auto val_str = LiStringO>
 struct AssertOperator {
 	constexpr bool operator()(AnyType arg) const ret_as(assert_oeperator<AnyType, ops, var>(arg));
 	static constexpr auto FaultString = AssertFaultMap<ops> + var_str;
 };
 template<class AnyType> constexpr bool IsAssertOperatorType = false;
-template<class AnyType, AssertOps ops, auto var, auto var_str> 
-constexpr bool IsAssertOperatorType<AssertOperator<AnyType, ops, var, var_str>> = true;
+template<class AnyType, AssertOps ops, auto val, auto val_str> 
+constexpr bool IsAssertOperatorType<AssertOperator<AnyType, ops, val, val_str>> = true;
 template<class AnyType> concept AssertOperatorType = IsAssertOperatorType<AnyType>;
 template<auto assert> constexpr bool IsAssertOperator = IsAssertOperatorType<decltype(assert)>;
 

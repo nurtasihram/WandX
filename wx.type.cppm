@@ -37,13 +37,13 @@ inline int GetDateFormat(LPCWSTR lpLocaleName, DWORD dwFlags, const SYSTEMTIME *
 #pragma endregion
 
 #pragma region HandleApi.h
-wapi_reflect_bool(CloseHandle);
-wapi_reflect_bool(DuplicateHandle);
+wapi_reflect_true(CloseHandle);
+wapi_reflect_true(DuplicateHandle);
 // CompareObjectHandles
 inline bool CompareObjectHandles(HANDLE hObject1, HANDLE hObject2)
 	ret_as(::CompareObjectHandles(hObject1, hObject2));
-wapi_reflect_bool(GetHandleInformation);
-wapi_reflect_bool(SetHandleInformation);
+wapi_reflect_true(GetHandleInformation);
+wapi_reflect_true(SetHandleInformation);
 #pragma endregion
 
 }

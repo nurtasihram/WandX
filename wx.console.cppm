@@ -40,21 +40,21 @@ wapi_reflect_bool(SetStdHandleEx);
 #pragma endregion
 
 #pragma region ConsoleApi.h
-wapi_reflect_bool(AllocConsole);
+wapi_reflect_true(AllocConsole);
 // AllocConsoleWithOptions 
-wapi_reflect_bool(FreeConsole);
-wapi_reflect_bool(AttachConsole);
-wapi_reflect_bool(GetConsoleCP, UINT);
-wapi_reflect_bool(GetConsoleOutputCP, UINT);
-wapi_reflect_bool(GetConsoleMode);
-wapi_reflect_bool(SetConsoleMode);
-wapi_reflect_bool(GetNumberOfConsoleInputEvents);
+wapi_reflect_true(FreeConsole);
+wapi_reflect_true(AttachConsole);
+wapi_reflect_true(GetConsoleCP, UINT);
+wapi_reflect_true(GetConsoleOutputCP, UINT);
+wapi_reflect_true(GetConsoleMode);
+wapi_reflect_true(SetConsoleMode);
+wapi_reflect_true(GetNumberOfConsoleInputEvents);
 #undef ReadConsoleInput
-wapi_reflect_bool_WAT(ReadConsoleInput);
+wapi_reflect_true_WAT(ReadConsoleInput);
 #undef PeekConsoleInput
-wapi_reflect_bool_WAT(PeekConsoleInput);
+wapi_reflect_true_WAT(PeekConsoleInput);
 #undef ReadConsole
-wapi_reflect_bool_WAT(ReadConsole);
+wapi_reflect_true_WAT(ReadConsole);
 #undef WriteConsole
 wapi_reflect_bool_WAT(WriteConsole);
 wapi_reflect_bool(SetConsoleCtrlHandler);
@@ -80,32 +80,32 @@ wapi_reflect_bool(SetConsoleCursorPosition);
 // GetLargestConsoleWindowSize
 inline COORD GetLargestConsoleWindowSize(HANDLE hConsoleOutput)
 	safe_ret_as(auto c = ::GetLargestConsoleWindowSize(hConsoleOutput); c.X && c.Y, c);
-wapi_reflect_bool(SetConsoleTextAttribute);
-wapi_reflect_bool(SetConsoleWindowInfo);
+wapi_reflect_true(SetConsoleTextAttribute);
+wapi_reflect_true(SetConsoleWindowInfo);
 #undef WriteConsoleOutputCharacter
-wapi_reflect_bool_WAO(WriteConsoleOutputCharacter);
-wapi_reflect_bool(WriteConsoleOutputAttribute);
+wapi_reflect_true_WAO(WriteConsoleOutputCharacter);
+wapi_reflect_true(WriteConsoleOutputAttribute);
 #undef ReadConsoleOutputCharacter
-wapi_reflect_bool_WAO(ReadConsoleOutputCharacter);
-wapi_reflect_bool(ReadConsoleOutputAttribute);
+wapi_reflect_true_WAO(ReadConsoleOutputCharacter);
+wapi_reflect_true(ReadConsoleOutputAttribute);
 #undef WriteConsoleInput
-wapi_reflect_bool_WAT(WriteConsoleInput);
+wapi_reflect_true_WAT(WriteConsoleInput);
 #undef ScrollConsoleScreenBuffer
-wapi_reflect_bool_WAT(ScrollConsoleScreenBuffer);
+wapi_reflect_true_WAT(ScrollConsoleScreenBuffer);
 #undef WriteConsoleOutput
-wapi_reflect_bool_WAT(WriteConsoleOutput);
+wapi_reflect_true_WAT(WriteConsoleOutput);
 #undef ReadConsoleOutput
-wapi_reflect_bool_WAT(ReadConsoleOutput);
+wapi_reflect_true_WAT(ReadConsoleOutput);
 #undef GetConsoleTitle
-wapi_reflect_bool_WAO(GetConsoleTitle, int);
+wapi_reflect_true_WAO(GetConsoleTitle, int);
 #undef GetConsoleOriginalTitle
-wapi_reflect_bool_WAO(GetConsoleOriginalTitle, int);
+wapi_reflect_true_WAO(GetConsoleOriginalTitle, int);
 #undef SetConsoleTitle
-wapi_reflect_bool_WAO(SetConsoleTitle);
+wapi_reflect_true_WAO(SetConsoleTitle);
 #pragma endregion
 
 #pragma region ConsoleApi3.h
-wapi_reflect_bool(GetNumberOfConsoleMouseButtons, UINT);
+wapi_reflect_true(GetNumberOfConsoleMouseButtons, UINT);
 // GetConsoleFontSize
 inline COORD GetConsoleFontSize(HANDLE hConsoleOutput, DWORD nFont)
 	safe_ret_as(auto c = ::GetConsoleFontSize(hConsoleOutput, nFont); c.X && c.Y, c);
@@ -119,18 +119,18 @@ wapi_reflect_bool(GetConsoleDisplayMode);
 wapi_reflect_bool(SetConsoleDisplayMode);
 wapi_reflect_pure(GetConsoleWindow);
 #undef AddConsoleAlias
-wapi_reflect_bool_WAO(AddConsoleAlias);
+wapi_reflect_true_WAO(AddConsoleAlias);
 #undef GetConsoleAlias
-wapi_reflect_bool_WAO(GetConsoleAlias);
+wapi_reflect_true_WAO(GetConsoleAlias);
 #undef GetConsoleAliasesLength
-wapi_reflect_bool_WAO(GetConsoleAliasesLength);
+wapi_reflect_true_WAO(GetConsoleAliasesLength);
 #undef GetConsoleAliasExesLength
 wapi_reflect_pure_WAT(GetConsoleAliasExesLength);
 #undef GetConsoleAliases
-wapi_reflect_bool_WAO(GetConsoleAliases);
+wapi_reflect_true_WAO(GetConsoleAliases);
 #undef GetConsoleAliasExes
-wapi_reflect_bool_WAO(GetConsoleAliasExes);
-wapi_reflect_bool(GetConsoleProcessList, DWORD);
+wapi_reflect_true_WAO(GetConsoleAliasExes);
+wapi_reflect_true(GetConsoleProcessList, DWORD);
 #pragma endregion
 
 }
@@ -249,10 +249,10 @@ protected:
 	friend_to_proxy(ConsoleHandleOutput);
 	ConsoleHandleOutput(HANDLE h) : Super(h) {}
 public:
-	ConsoleHandleOutput() : Super(WX::GetStdHandle(STD_OUTPUT_HANDLE)) {}
+	ConsoleHandleOutput() : Super(Win32::GetStdHandle(STD_OUTPUT_HANDLE)) {}
 	ConsoleHandleOutput(Nu) {}
 public:
-	inline void ActiveScreenBuffer() ret_to(WX::SetConsoleActiveScreenBuffer(self));
+	inline void ActiveScreenBuffer() ret_to(Win32::SetConsoleActiveScreenBuffer(self));
 public:
 	inline DWORD Fill(char ch, DWORD len, LPoint pos = 0) ret_as(WX::FillConsoleOutputCharacter<false>(self, ch, len, pos, &len), len);
 	inline DWORD Fill(wchar_t ch, DWORD len, LPoint pos = 0) ret_as(WX::FillConsoleOutputCharacter<true>(self, ch, len, pos, &len), len);
@@ -357,10 +357,10 @@ protected:
 	friend_to_proxy(ConsoleHandleInput);
 	ConsoleHandleInput(HANDLE h) : Super(h) {}
 public:
-	ConsoleHandleInput() : Super(WX::GetStdHandle(STD_INPUT_HANDLE)) {}
+	ConsoleHandleInput() : Super(Win32::GetStdHandle(STD_INPUT_HANDLE)) {}
 	ConsoleHandleInput(Nu) {}
 public:
-	inline void FlushInputBuffer() ret_to(WX::FlushConsoleInputBuffer(self));
+	inline void FlushInputBuffer() ret_to(Win32::FlushConsoleInputBuffer(self));
 };
 class IConsole : public ConsoleHandleOutput {
 protected:
@@ -368,12 +368,12 @@ protected:
 public:
 public:
 	IConsole(Nu) {}
-	IConsole() : hError(WX::GetStdHandle(STD_ERROR_HANDLE)) {}
+	IConsole() : hError(Win32::GetStdHandle(STD_ERROR_HANDLE)) {}
 	IConsole(DWORD pid) ret_to(Attach(pid));
 public:
-	inline void Attach(DWORD pid) ret_to(WX::AttachConsole(pid));
-	inline void Alloc() ret_to(WX::AllocConsole());
-	inline void Free() ret_to(WX::FreeConsole());
+	inline void Attach(DWORD pid) ret_to(Win32::AttachConsole(pid));
+	inline void Alloc() ret_to(Win32::AllocConsole());
+	inline void Free() ret_to(Win32::FreeConsole());
 
 	inline void Select() {
 		static FILE* fout = O, * ferr = O, * fin = O;
@@ -399,8 +399,8 @@ public:
 		va_end(argList);
 		return bytes;
 	}
-//public: // Property      Window
-//	inline CWindow Window() const ret_as(WX::GetConsoleWindow());
+//public: // Property Window
+//	inline CWindow Window() const ret_as(Win32::GetConsoleWindow());
 #pragma region Properties
 
 	//template<class TCHAR>
