@@ -21,7 +21,7 @@
 #define mx_b2(...) { __VA_ARGS__ }
 #define mx_b3(...) < __VA_ARGS__ >
 // macro invoker
-#define mx_call(func, ...) mx_b0(func mx_b1(__VA_ARGS__))
+#define mx_call(func, ...) mx_b0(func(__VA_ARGS__))
 #define mx_ret(...)  __VA_ARGS__
 #define mx_void(...) 
 #define mx_kill_braces(arg) mx_b0(mx_b0 arg)
@@ -154,17 +154,9 @@ struct name : public enum_shim(type, name, base) {                 \
 #define wx_answer_abort     throw
 #pragma endregion
 
-/* Macro string branch selector */
-#define locale_symbolx(name)     static constexpr auto name = AnyX<IsUnicode>(name##W, name##A)
-#define const_stringx(name, str) static constexpr auto name##A = str; \
-								 static constexpr auto name##W = L##str
-#define auto_stringx(name, str)  const_stringx(name, str); \
-								 locale_symbolx(name)
-#define structx(name)            TypeIf<IsUnicode, name##W, name##A>
-#define using_structx(name)      using name = TypeIf<IsUnicode, name##W, name##A>
-
-#ifdef WX_CPPM_CORE
-#undef WX_CPPM_CORE
-#else
+#ifndef WX_CPPM_EXPORT
 import wx;
+using namespace WX;
+#else
+#	undef WX_CPPM_EXPORT
 #endif

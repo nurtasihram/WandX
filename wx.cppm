@@ -5,13 +5,12 @@ module;
 #include <type_traits>
 #include <functional>
 
-#define WX_CPPM_CORE
+#define WX_CPPM_EXPORT
 #include "wx"
 
 export module wx;
 
-export
-namespace WX {
+export namespace WX {
 
 #pragma region Prototypes AnyFrom Standard Library
 
@@ -381,7 +380,7 @@ struct ProtoNodeOf<AnyRet(ParaN..., ...)>  {
 	using return_type = AnyRet;
 	template<template<class...> class AnyList = ParaList>
 	using listof_para = AnyList<ParaN...>;
-	static constexpr bool countof_para = sizeof...(ParaN);
+	static constexpr SizeT countof_para = sizeof...(ParaN);
 	static constexpr Modifications modification = Modifications::FuntionVariadicProto;
 };
 
@@ -972,7 +971,19 @@ template<class Type1  , class Type2> concept         SameCastOf = UpCastOf<Type1
 template<class Type1  , class Type2> constexpr int  OrderCastOf = UpCastOf<Type1, Type2> ? +1 : DownCastOf<Type1, Type2> ? -1 : 0;
 
 template<Extendable...ExtensioN>
-struct ExtendsOf : ExtensioN... {};
+struct MultiBaseOf : ExtensioN... {};
+
+template<Extendable...ExtensioN>
+struct OverrideFunctor;
+template<Extendable Extensio0>
+struct OverrideFunctor<Extensio0> : public Extensio0 {
+	using Extensio0::operator();
+};
+template<Extendable Extensio0, Extendable...ExtensioN>
+struct OverrideFunctor<Extensio0, ExtensioN...> : public Extensio0, public OverrideFunctor<ExtensioN...> {
+	using Extensio0::operator();
+	using OverrideFunctor<ExtensioN...>::operator();
+};
 
 #pragma endregion
 
@@ -1301,5 +1312,95 @@ struct EnumBase {
 };
 
 #pragma endregion
+
+#pragma region AssertOperators
+enum class AssertOps {
+	Default     , // arg => false  ( convert to bool )
+	Bigger      , // arg >  val
+	BigEqual    , // arg >= val
+	Smaller     , // arg <  val
+	SmallEqual  , // arg <= val
+	Equal       , // arg == val
+	Nequal      , // arg != val
+	ByErrorCode , // arg <=> val  ( val(   ) != 0    )
+	CustomTest    // arg  => val  ( val(arg) == true )
+};
+
+template<AssertOps ops>
+constexpr auto AssertFaultMap = ValueMap<ops,
+	AssertOps::   Bigger  , LiString(" <= "),
+	AssertOps::   BigEqual, LiString(" < " ),
+	AssertOps:: Smaller   , LiString(" >= "),
+	AssertOps:: SmallEqual, LiString(" > " ),
+	AssertOps::      Equal, LiString(" != "),
+	AssertOps::     Nequal, LiString(" == "),
+	AssertOps::ByErrorCode, LiString(" <=> "),
+	AssertOps::CustomTest , LiString(""),
+	AssertOps::Default    , LiString(" => false ")
+>;
+
+template<class AnyType, AssertOps ops, auto val>
+constexpr bool assert_oeperator(AnyType arg) {
+	     if constexpr   (ops == AssertOps::   Bigger  )  return arg >  val;
+	else if constexpr   (ops == AssertOps::   BigEqual)  return arg >= val;
+	else if constexpr   (ops == AssertOps:: Smaller   )  return arg <  val;
+	else if constexpr   (ops == AssertOps:: SmallEqual)  return arg <= val;
+	else if constexpr   (ops == AssertOps::      Equal)  return arg == val;
+	else if constexpr   (ops == AssertOps::     Nequal)  return arg != val;
+	else if constexpr   (ops == AssertOps::ByErrorCode)  return val() != 0;
+	else if constexpr   (ops == AssertOps::CustomTest )  return val( arg );
+	else { static_assert(ops == AssertOps::Default    ); return (bool)arg; }
+}
+
+template<class AnyType, AssertOps ops, auto val = true, auto val_str = LiStringO>
+struct AssertOperator {
+	constexpr bool operator()(AnyType arg) const ret_as(assert_oeperator<AnyType, ops, val>(arg));
+	static constexpr auto FaultString = AssertFaultMap<ops> + val_str;
+};
+template<class AnyType> constexpr bool IsAssertOperatorType = false;
+template<class AnyType, AssertOps ops, auto val, auto val_str>
+constexpr bool IsAssertOperatorType<AssertOperator<AnyType, ops, val, val_str>> = true;
+template<class AnyType> concept AssertOperatorType = IsAssertOperatorType<AnyType>;
+template<auto assert> constexpr bool IsAssertOperator = IsAssertOperatorType<decltype(assert)>;
+
+template<class AnyType>	constexpr auto AssertTrue     = AssertOperator<AnyType, AssertOps::Default                     >();
+template<class AnyType>	constexpr auto AssertPositive = AssertOperator<AnyType, AssertOps::Bigger , 0, LiString("0")   >();
+template<class AnyType>	constexpr auto AssertNotZero  = AssertOperator<AnyType, AssertOps::Nequal , 0, LiString("0")   >();
+template<class AnyType>	constexpr auto AssertNotNull  = AssertOperator<AnyType, AssertOps::Nequal , O, LiString("null")>();
+template<class AnyType, auto fault_val, auto fault_str>
+constexpr auto AssertFaultValue = AssertOperator<AnyType, AssertOps::Nequal, fault_val, fault_str>();
+#pragma endregion
+
+template<auto file, auto name, class AnyType>
+class BridgeAPI;
+template<auto file, auto name, class AnyRet, class...ParaN>
+class BridgeAPI<name, file, AnyRet(*)(ParaN...)> {
+	using API_Type = AnyRet(*)(ParaN...);
+public:
+	template<API_Type fn> requires(fn != O)
+		class Ref {
+		public: // API prototype infomations proxy
+			template<class NewAPI>
+			struct PointerProxy {
+				static constexpr auto  Name    = name;
+				static constexpr IntPU Address = (IntPU)(void *)fn;
+				constexpr API_Type operator*() const ret_as(fn);
+				constexpr NewAPI   operator&() const ret_as(NewAPI::Reflective);
+			};
+		public: // reflectors
+			template<AssertOperatorType auto assert, class NewRet = AnyRet, auto GetLastError = O>
+				requires(NotVoid<AnyRet>)
+			struct AssertReturn {
+				static constexpr NewRet Reflective(ParaN...args) {
+					if (auto ret = fn(right_cast(args)...); assert(ret))
+						return (NewRet)ret; /* can be void */
+					throw Exception(file, name, name + assert.FaultString, __LINE__,GetLastError ? (Int32)GetLastError() : 0);
+				}
+				constexpr auto operator()(ParaN...args) const ret_as(Reflective(right_cast(args)...));
+			};
+			struct Passby { constexpr AnyRet operator()(ParaN...args) const { return fn(args...); } };
+			struct NoReturn { [[noreturn]] constexpr void operator()(ParaN...args) const { fn(args...); } };
+	};
+};
 
 }

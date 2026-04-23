@@ -16,6 +16,9 @@
     <Filter Include="resources">
       <UniqueIdentifier>{f7f5107d-137e-4294-b8fb-25b48ee683ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="wx_library\IDL">
+      <UniqueIdentifier>{50c2aa49-be24-4766-89d8-fedbfae26bc3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resources\Resource.h">
@@ -24,8 +27,35 @@
     <ClInclude Include="resources\targetver.h">
       <Filter>resources</Filter>
     </ClInclude>
-    <ClInclude Include="..\wx__nt.h">
-      <Filter>wx_library\prv_inc</Filter>
+    <ClInclude Include="..\win32\wx.window.hpp">
+      <Filter>wx_library\IDL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\win32\wx.console.inl">
+      <Filter>wx_library\IDL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\win32\wx.control.hpp">
+      <Filter>wx_library\IDL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\win32\wx.dialog.hpp">
+      <Filter>wx_library\IDL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\win32\wx.file.inl">
+      <Filter>wx_library\IDL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\win32\wx.gdi.hpp">
+      <Filter>wx_library\IDL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\win32\wx.realtime.hpp">
+      <Filter>wx_library\IDL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\win32\wx.resource.hpp">
+      <Filter>wx_library\IDL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\win32\wx.security.hpp">
+      <Filter>wx_library\IDL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\win32\wx.type.inl">
+      <Filter>wx_library\IDL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -43,100 +73,82 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="wx_test.cpp" />
-    <ClCompile Include="..\wx.console.cppm">
+    <ClCompile Include="..\win32\wx.console.cppm">
       <Filter>wx_library\modules</Filter>
     </ClCompile>
-    <ClCompile Include="..\wx.control.cppm">
+    <ClCompile Include="..\win32\wx.internet.cppm">
       <Filter>wx_library\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\win32\wx.string.cppm">
+      <Filter>wx_library\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\win32\wx.type.cppm">
+      <Filter>wx_library\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\win32\wx.win32.cppm">
+      <Filter>wx_library\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\win32\wx.main.cpp">
+      <Filter>wx_library</Filter>
     </ClCompile>
     <ClCompile Include="..\wx.cppm">
       <Filter>wx_library\modules</Filter>
     </ClCompile>
-    <ClCompile Include="..\wx.dialog.cppm">
-      <Filter>wx_library\modules</Filter>
-    </ClCompile>
-    <ClCompile Include="..\wx.file.cppm">
-      <Filter>wx_library\modules</Filter>
-    </ClCompile>
-    <ClCompile Include="..\wx.gdi.cppm">
-      <Filter>wx_library\modules</Filter>
-    </ClCompile>
-    <ClCompile Include="..\wx.win32.cppm">
-      <Filter>wx_library\modules</Filter>
-    </ClCompile>
-    <ClCompile Include="..\wx.realtime.cppm">
-      <Filter>wx_library\modules</Filter>
-    </ClCompile>
-    <ClCompile Include="..\wx.resource.cppm">
-      <Filter>wx_library\modules</Filter>
-    </ClCompile>
-    <ClCompile Include="..\wx.security.cppm">
-      <Filter>wx_library\modules</Filter>
-    </ClCompile>
-    <ClCompile Include="..\wx.string.cppm">
-      <Filter>wx_library\modules</Filter>
-    </ClCompile>
-    <ClCompile Include="..\wx.type.cppm">
-      <Filter>wx_library\modules</Filter>
-    </ClCompile>
-    <ClCompile Include="..\wx.window.cppm">
-      <Filter>wx_library\modules</Filter>
-    </ClCompile>
-    <ClCompile Include="..\wx.regex.cppm">
+    <ClCompile Include="..\win32\wx.file.cppm">
       <Filter>wx_library\modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="make.bat" />
-    <None Include="..\wx__msg.inl">
+    <None Include="..\win32\wx__msg.inl">
       <Filter>wx_library\prv_inc</Filter>
     </None>
-    <None Include="..\wx__msg_ctl.inl">
+    <None Include="..\win32\wx__msg_ctl.inl">
       <Filter>wx_library\prv_inc</Filter>
     </None>
-    <None Include="..\wx__rm.inl">
+    <None Include="..\win32\wx__windows.inl">
       <Filter>wx_library\prv_inc</Filter>
+    </None>
+    <None Include="..\win32\wx_console">
+      <Filter>wx_library\pub_inc</Filter>
+    </None>
+    <None Include="..\win32\wx_control">
+      <Filter>wx_library\pub_inc</Filter>
+    </None>
+    <None Include="..\win32\wx_dialog">
+      <Filter>wx_library\pub_inc</Filter>
+    </None>
+    <None Include="..\win32\wx_dll">
+      <Filter>wx_library\pub_inc</Filter>
+    </None>
+    <None Include="..\win32\wx_file">
+      <Filter>wx_library\pub_inc</Filter>
+    </None>
+    <None Include="..\win32\wx_gdi">
+      <Filter>wx_library\pub_inc</Filter>
+    </None>
+    <None Include="..\win32\wx_realtime">
+      <Filter>wx_library\pub_inc</Filter>
+    </None>
+    <None Include="..\win32\wx_resource">
+      <Filter>wx_library\pub_inc</Filter>
+    </None>
+    <None Include="..\win32\wx_security">
+      <Filter>wx_library\pub_inc</Filter>
+    </None>
+    <None Include="..\win32\wx_string">
+      <Filter>wx_library\pub_inc</Filter>
+    </None>
+    <None Include="..\win32\wx_type">
+      <Filter>wx_library\pub_inc</Filter>
+    </None>
+    <None Include="..\win32\wx_win32">
+      <Filter>wx_library\pub_inc</Filter>
+    </None>
+    <None Include="..\win32\wx_window">
+      <Filter>wx_library\pub_inc</Filter>
     </None>
     <None Include="..\wx">
-      <Filter>wx_library\pub_inc</Filter>
-    </None>
-    <None Include="..\wx_console">
-      <Filter>wx_library\pub_inc</Filter>
-    </None>
-    <None Include="..\wx_control">
-      <Filter>wx_library\pub_inc</Filter>
-    </None>
-    <None Include="..\wx_dialog">
-      <Filter>wx_library\pub_inc</Filter>
-    </None>
-    <None Include="..\wx_dll">
-      <Filter>wx_library\pub_inc</Filter>
-    </None>
-    <None Include="..\wx_file">
-      <Filter>wx_library\pub_inc</Filter>
-    </None>
-    <None Include="..\wx_gdi">
-      <Filter>wx_library\pub_inc</Filter>
-    </None>
-    <None Include="..\wx_main">
-      <Filter>wx_library\pub_inc</Filter>
-    </None>
-    <None Include="..\wx_realtime">
-      <Filter>wx_library\pub_inc</Filter>
-    </None>
-    <None Include="..\wx_resource">
-      <Filter>wx_library\pub_inc</Filter>
-    </None>
-    <None Include="..\wx_security">
-      <Filter>wx_library\pub_inc</Filter>
-    </None>
-    <None Include="..\wx_string">
-      <Filter>wx_library\pub_inc</Filter>
-    </None>
-    <None Include="..\wx_type">
-      <Filter>wx_library\pub_inc</Filter>
-    </None>
-    <None Include="..\wx_window">
       <Filter>wx_library\pub_inc</Filter>
     </None>
   </ItemGroup>

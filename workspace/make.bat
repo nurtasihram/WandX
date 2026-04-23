@@ -23,28 +23,32 @@ if /i "%1" == "clean" (
 ) else if /i "%1" == "build" (
 	set module_files=
 	set module_files=!module_files! "!global_dir!\wx.cppm"
-	set module_files=!module_files! "!global_dir!\wx.win32.cppm"
-	set module_files=!module_files! "!global_dir!\wx.string.cppm"
-	set module_files=!module_files! "!global_dir!\wx.type.cppm"
-	set module_files=!module_files! "!global_dir!\wx.console.cppm"
+	set module_files=!module_files! "!global_dir!\win32\wx.win32.cppm"
+	set module_files=!module_files! "!global_dir!\win32\wx.string.cppm"
+	set module_files=!module_files! "!global_dir!\win32\wx.type.cppm"
+	set module_files=!module_files! "!global_dir!\win32\wx.console.cppm"
 	rem set module_files=!module_files! "!global_dir!\wx.realtime.cppm"
 	rem set module_files=!module_files! "!global_dir!\wx.gdi.cppm"
 	rem set module_files=!module_files! "!global_dir!\wx.resource.cppm"
 	rem set module_files=!module_files! "!global_dir!\wx.window.cppm" 
 	rem set module_files=!module_files! "!global_dir!\wx.control.cppm"
 	set source_files=!module_files! "!workspace!\wx_test.cpp"
-	set include_paths="!global_dir!"
+	set source_files=!source_files! "!global_dir!\win32\wx.main.cpp"
+	set include_paths=-I"!global_dir!"
+	set include_paths=!include_paths! -I"!global_dir!\win32"
 	if /i "%2" == "clang" (
 		set compiler=clang++
 		set compile_mod=-std=c++2a -fmodules -fprebuilt-module-path="./" --precompile
+		set compile_mod=!compile_mod! !include_paths!
 		set compile_src=-std=c++2a -fmodules -fprebuilt-module-path="./"
-		set compile_src=!compile_src! -c -I!include_paths!
+		set compile_src=!compile_src! -c !include_paths!
 		set link_args=
 	) else if /i "%2" == "mingw" (
 		set compiler=g++
 		set compile_mod=-c -std=c++2a -fmodules
+		set compile_mod=!compile_mod! !include_paths!
 		set compile_src=-c -std=c++2a -fmodules
-		set compile_src=!compile_src! -c -I!include_paths!
+		set compile_src=!compile_src! -c !include_paths!
 		set link_args=-lgdi32 -lcomdlg32
 	) else (
 		echo Unknown compiler %2

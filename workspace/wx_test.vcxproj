@@ -94,8 +94,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:__cplusplus /Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,8 +118,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:__cplusplus /Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,8 +140,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:__cplusplus /Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -164,8 +164,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:__cplusplus /Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -179,7 +179,6 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\wx__nt.h" />
     <ClInclude Include="resources\Resource.h" />
     <ClInclude Include="resources\targetver.h" />
   </ItemGroup>
@@ -191,76 +190,52 @@
     <ResourceCompile Include="resources\wx_duk.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\wx.console.cppm" />
-    <ClCompile Include="..\wx.control.cppm">
+    <ClCompile Include="..\win32\wx.console.cppm" />
+    <ClCompile Include="..\win32\wx.file.cppm" />
+    <ClCompile Include="..\win32\wx.internet.cppm">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\win32\wx.main.cpp" />
+    <ClCompile Include="..\win32\wx.string.cppm" />
+    <ClCompile Include="..\win32\wx.type.cppm" />
+    <ClCompile Include="..\win32\wx.win32.cppm" />
     <ClCompile Include="..\wx.cppm" />
-    <ClCompile Include="..\wx.dialog.cppm">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\wx.file.cppm">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\wx.gdi.cppm">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\wx.regex.cppm" />
-    <ClCompile Include="..\wx.win32.cppm" />
-    <ClCompile Include="..\wx.realtime.cppm" />
-    <ClCompile Include="..\wx.resource.cppm">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\wx.security.cppm">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\wx.string.cppm" />
-    <ClCompile Include="..\wx.type.cppm" />
-    <ClCompile Include="..\wx.window.cppm">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="wx_test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\win32\wx_console" />
+    <None Include="..\win32\wx_control" />
+    <None Include="..\win32\wx_dialog" />
+    <None Include="..\win32\wx_dll" />
+    <None Include="..\win32\wx_file" />
+    <None Include="..\win32\wx_gdi" />
+    <None Include="..\win32\wx_realtime" />
+    <None Include="..\win32\wx_resource" />
+    <None Include="..\win32\wx_security" />
+    <None Include="..\win32\wx_string" />
+    <None Include="..\win32\wx_type" />
+    <None Include="..\win32\wx_win32" />
+    <None Include="..\win32\wx_window" />
+    <None Include="..\win32\wx__msg.inl" />
+    <None Include="..\win32\wx__msg_ctl.inl" />
+    <None Include="..\win32\wx__windows.inl" />
     <None Include="..\wx" />
-    <None Include="..\wx_console" />
-    <None Include="..\wx_control" />
-    <None Include="..\wx_dialog" />
-    <None Include="..\wx_dll" />
-    <None Include="..\wx_file" />
-    <None Include="..\wx_gdi" />
-    <None Include="..\wx_main" />
-    <None Include="..\wx_realtime" />
-    <None Include="..\wx_resource" />
-    <None Include="..\wx_security" />
-    <None Include="..\wx_string" />
-    <None Include="..\wx_type" />
-    <None Include="..\wx_window" />
-    <None Include="..\wx__msg.inl" />
-    <None Include="..\wx__msg_ctl.inl" />
-    <None Include="..\wx__rm.inl" />
     <None Include="make.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\win32\wx.console.inl" />
+    <ClInclude Include="..\win32\wx.control.hpp" />
+    <ClInclude Include="..\win32\wx.dialog.hpp" />
+    <ClInclude Include="..\win32\wx.file.inl" />
+    <ClInclude Include="..\win32\wx.gdi.hpp" />
+    <ClInclude Include="..\win32\wx.realtime.hpp" />
+    <ClInclude Include="..\win32\wx.resource.hpp" />
+    <ClInclude Include="..\win32\wx.security.hpp" />
+    <ClInclude Include="..\win32\wx.type.inl" />
+    <ClInclude Include="..\win32\wx.window.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
