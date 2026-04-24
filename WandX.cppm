@@ -5,12 +5,12 @@ module;
 #include <type_traits>
 #include <functional>
 
-#define WX_CPPM_EXPORT
-#include "wx"
+#define WANDX_CPPM_EXPORT_NATIVE
+#include "WandX.h"
 
-export module wx;
+export module WandX;
 
-export namespace WX {
+export namespace WandX {
 
 #pragma region Prototypes AnyFrom Standard Library
 
@@ -52,7 +52,7 @@ using SizeT  = std::size_t;
 
 }
 
-export namespace WX {
+export namespace WandX {
 
 #pragma region Basic Type Traits & Helpers System
 

@@ -1,5 +1,5 @@
-#include "wx"
-#include "wx_console"
+#include "WandX.h"
+#include "WandX.Win32.Console.h"
 
 int WxMain() {
 	Console.Write("WX - Tests\n");

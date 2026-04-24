@@ -376,3 +376,5 @@ gcm.cache/
 
 *.exe
 *.exe.manifest
+/workspace/wx_test.vcxproj
+/workspace/wx_test.vcxproj.filters

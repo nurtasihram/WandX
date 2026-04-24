@@ -87,10 +87,10 @@ public: \
 
 #pragma region Macros Of Proxy Shim
 // proxy struct
-#define proxy_struct(name, struct_name)                   struct name final : WX::CStructProxy<name, struct_name>
+#define proxy_struct(name, struct_name)                   struct name final : WandX::CStructProxy<name, struct_name>
 // proxy property
 #define proxy_prop_set(name, proto_name, type)            inline auto&name(type value) ret_to_self(safe_setval(Super::proto_name, value))
-#define proxy_prop_get(name, proto_name, type)            inline auto name(          ) const ret_as(WX::safe_c_cast<type>(Super::proto_name))
+#define proxy_prop_get(name, proto_name, type)            inline auto name(          ) const ret_as(WandX::safe_c_cast<type>(Super::proto_name))
 #define proxy_prop(name, proto_name, type_in, type_out)   proxy_prop_set(name, proto_name, type_in   ); \
 														  proxy_prop_get(name, proto_name, type_out  )
 #define proxy_prop_sync(name, proto_name, type)           proxy_prop    (name, proto_name, type, type)
@@ -103,11 +103,11 @@ public: \
 #define proxy_prop_size(proto_name, type)                 protected: proxy_prop_set(SelfSize, proto_name, size_t); friend Super; \
 														  public:    proxy_prop_get(SelfSize, proto_name, type)
 // proxy view
-#define friend_to_proxy(name) friend union WX::ProxyView<name>
+#define friend_to_proxy(name) friend union WandX::ProxyView<name>
 #pragma endregion
 
 #pragma region Macros Of Enum 
-#define enum_shim(type, name, base) WX::Enum##type##Shim<name, base>
+#define enum_shim(type, name, base) WandX::Enum##type##Shim<name, base>
 #define enum_base(type, name, base, ...)                           \
 struct name : public enum_shim(type, name, base) {                 \
 	using ShimType = enum_shim(type, name, base)                 ; \
@@ -123,8 +123,8 @@ struct name : public enum_shim(type, name, base) {                 \
 #pragma endregion
 
 #pragma region Macros Of Chain Extended Helper
-#define ChainedBase(name, child_tmpl_name) name : public WX::ChildBridge<child_tmpl_name, name>
-#define ChainedClass(name, base_tmpl_name) name : public WX::SuperBridge<base_tmpl_name, name>
+#define ChainedBase(name, child_tmpl_name) name : public WandX::ChildBridge<child_tmpl_name, name>
+#define ChainedClass(name, base_tmpl_name) name : public WandX::SuperBridge<base_tmpl_name, name>
 #define friend_to_child(template_child)    friend template_child
 #define friend_to_super()                  friend Super
 // alias key-word
@@ -145,7 +145,7 @@ struct name : public enum_shim(type, name, base) {                 \
 #pragma region Macros Of Exception System throw
 /* exception throw */
 #define wx_context_inf        __FILE__, __FUNCTION__, __LINE__
-#define wx_error_detail(sent) WX::Exception(wx_context_inf, #sent)
+#define wx_error_detail(sent) WandX::Exception(wx_context_inf, #sent)
 #define wx_throw_line(sent)   throw wx_error_detail(sent)
 /* exception answer */
 #define wx_answer           int
@@ -154,9 +154,9 @@ struct name : public enum_shim(type, name, base) {                 \
 #define wx_answer_abort     throw
 #pragma endregion
 
-#ifndef WX_CPPM_EXPORT
-import wx;
-using namespace WX;
+#ifndef WANDX_CPPM_EXPORT_NATIVE
+import WandX;
+using namespace WandX;
 #else
-#	undef WX_CPPM_EXPORT
+#	undef WANDX_CPPM_EXPORT_NATIVE
 #endif

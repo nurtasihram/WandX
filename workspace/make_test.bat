@@ -1,41 +1,49 @@
 @echo off
 setlocal enabledelayedexpansion
-set workspace=%cd%
-cd %cd%\..\
-set global_dir=%cd%
-cd !workspace!
+set script_dir=%~dp0
+if "%script_dir:~-1%"=="\" set script_dir=%script_dir:~0,-1%
+for %%i in ("%script_dir%\..") do set global_dir=%%~fi
+set workspace=%script_dir%
+set build_pushed=
+pushd "%workspace%"
 if /i "%1" == "clean" (
 	echo -- Clean started
 	set clear_path=
-	set clear_path=!clear_path! "gcm.cache"
-	set clear_path=!clear_path! "workspace\x64"
-	set clear_path=!clear_path! "workspace\Debug"
-	set clear_path=!clear_path! "workspace\Release"
-	set clear_path=!clear_path! "workspace\wx_test"
+	set clear_path=!clear_path! "!global_dir!\gcm.cache"
+	set clear_path=!clear_path! "!workspace!\x64"
+	set clear_path=!clear_path! "!workspace!\Debug"
+	set clear_path=!clear_path! "!workspace!\Release"
+	set clear_path=!clear_path! "!workspace!\wx_test"
+	set clear_path=!clear_path! "!workspace!\build"
 	for %%p in (!clear_path!) do (
-		rmdir %%p /s /q && echo clean and remove folder %%p
+		if exist %%p rmdir %%p /s /q && echo clean and remove folder %%p
 	)
-	set clear_filter=*.o *.obj *.pcm *.exe *.manifest *.aps
+	set clear_filter=*.o *.obj *.pcm *.exe *.manifest *.aps *.ilk *.pdb *.exp *.lib
 	for %%p in (!clear_filter!) do (
-		del %%p /q && echo remove file %%p
+		del /q "!workspace!\%%p" 2>nul && echo remove file !workspace!\%%p
 	)
 	echo -- Clean finished
 ) else if /i "%1" == "build" (
+	set build_dir=!workspace!\build\%2
+	if not exist "!build_dir!" mkdir "!build_dir!"
+	pushd "!build_dir!"
+	set build_pushed=1
 	set module_files=
-	set module_files=!module_files! "!global_dir!\wx.cppm"
-	set module_files=!module_files! "!global_dir!\win32\wx.win32.cppm"
-	set module_files=!module_files! "!global_dir!\win32\wx.string.cppm"
-	set module_files=!module_files! "!global_dir!\win32\wx.type.cppm"
-	set module_files=!module_files! "!global_dir!\win32\wx.console.cppm"
-	rem set module_files=!module_files! "!global_dir!\wx.realtime.cppm"
-	rem set module_files=!module_files! "!global_dir!\wx.gdi.cppm"
-	rem set module_files=!module_files! "!global_dir!\wx.resource.cppm"
-	rem set module_files=!module_files! "!global_dir!\wx.window.cppm" 
-	rem set module_files=!module_files! "!global_dir!\wx.control.cppm"
+	set module_files=!module_files! "!global_dir!\WandX.cppm"
+	set module_files=!module_files! "!global_dir!\WandX.Win32.cppm"
+	set module_files=!module_files! "!global_dir!\WandX.Win32.String.cppm"
+	set module_files=!module_files! "!global_dir!\WandX.Win32.Type.cppm"
+	set module_files=!module_files! "!global_dir!\WandX.Win32.Console.cppm"
+	set module_files=!module_files! "!global_dir!\WandX.Win32.Realtime.cppm"
+	set module_files=!module_files! "!global_dir!\WandX.Win32.File.cppm"
+	set module_files=!module_files! "!global_dir!\WandX.Win32.GDI.cppm"
+	set module_files=!module_files! "!global_dir!\WandX.Win32.Resource.cppm"
+	set module_files=!module_files! "!global_dir!\WandX.Win32.Security.cppm"
+	rem set module_files=!module_files! "!global_dir!\WandX.Win32.Window.cppm" 
+	rem set module_files=!module_files! "!global_dir!\WandX.Win32.Control.cppm"
 	set source_files=!module_files! "!workspace!\wx_test.cpp"
-	set source_files=!source_files! "!global_dir!\win32\wx.main.cpp"
+	set source_files=!source_files! "!global_dir!\WandX.Win32.Main.cpp"
 	set include_paths=-I"!global_dir!"
-	set include_paths=!include_paths! -I"!global_dir!\win32"
 	if /i "%2" == "clang" (
 		set compiler=clang++
 		set compile_mod=-std=c++2a -fmodules -fprebuilt-module-path="./" --precompile
@@ -99,3 +107,5 @@ if /i "%1" == "clean" (
 	echo    help            - show this list
 )
 :end
+if defined build_pushed popd
+popd
