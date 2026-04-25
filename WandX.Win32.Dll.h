@@ -1,4 +1,4 @@
-#include "WandX.Win32.Resource"
+#include "WandX.Win32.Resources.h"
 
 #ifndef DLL_INL_LIST
 #	error Please define DLL_INL_LIST as list registered functions / variables

@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="workspace/wx_test.vcxproj" Id="f1fb2231-e5fc-4b22-b977-e9f0ca77fc97" />
+  <Project Path="WandX.Win32.Samples/WandX.Win32.Samples.vcxproj" Id="6c0d9571-d41d-4076-be09-599c6c66d745" />
 </Solution>

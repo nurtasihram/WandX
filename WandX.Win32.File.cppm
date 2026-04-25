@@ -10,7 +10,7 @@ export module WandX.File;
 import WandX;
 import WandX.Win32;
 import WandX.Win32.String;
-import WandX.Win32.Type;
+import WandX.Win32.Types;
 // import WandX.Resource;
 
 static constexpr auto ThisFile = WandX::LiString("WandX.Win32.File");

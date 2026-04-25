@@ -4,9 +4,9 @@ module;
 #include <CommCtrl.h>
 
 #define WANDX_CPPM_EXPORT_NATIVE
-#include "Win32.Control.h"
+#include "WandX.Win32.Controls"
 
-export module WandX.Win32.Control;
+export module WandX.Win32.Controls;
 
 import WandX.Win32;
 

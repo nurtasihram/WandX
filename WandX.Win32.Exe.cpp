@@ -12,7 +12,7 @@
 	" language='*'" \
 "\"")
 
-#include "WandX.Win32.Type.h"
+#include "WandX.Win32.Types.h"
 #include "WandX.Win32.Console.h"
 
 using namespace WandX;
@@ -34,10 +34,23 @@ int main() {
 	return _WxMain();
 }
 
-int APIENTRY _tWinMain(HINSTANCE hInstance,
-					   HINSTANCE hPrevInstance,
-					   LPTSTR    lpCmdLine,
-					   int       nCmdShow) {
+int APIENTRY wWinMain(HINSTANCE hInstance,
+					  HINSTANCE hPrevInstance,
+					  LPWSTR    lpCmdLine,
+					  int       nCmdShow) {
+#ifndef WANDX_NO_CONSOLE_IN_WINMAIN
+	// Console.Alloc();
+	// Console.Select();
+#else
+#	undef WANDX_NO_CONSOLE_IN_WINMAIN
+#endif
+	return _WxMain();
+}
+
+int APIENTRY WinMain(HINSTANCE hInstance,
+					 HINSTANCE hPrevInstance,
+					 LPSTR    lpCmdLine,
+					 int       nCmdShow) {
 #ifndef WANDX_NO_CONSOLE_IN_WINMAIN
 	// Console.Alloc();
 	// Console.Select();

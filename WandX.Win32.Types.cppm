@@ -3,15 +3,15 @@ module;
 #include <Windows.h>
 
 #define WANDX_CPPM_EXPORT_NATIVE
-#include "WandX.Win32.Type.h"
+#include "WandX.Win32.Types.h"
 
-export module WandX.Win32.Type;
+export module WandX.Win32.Types;
 
 import WandX;
 import WandX.Win32;
 import WandX.Win32.String;
 
-static constexpr auto ThisFile = WandX::LiString("WandX.Win32.Type");
+static constexpr auto ThisFile = WandX::LiString("WandX.Win32.Types");
 
 export namespace WandX {
 namespace Native {
@@ -34,6 +34,6 @@ wapi_ret_true(SetHandleInformation);
 
 }
 
-#include "WandX.Win32.Type.idl"
+#include "WandX.Win32.Types.idl"
 
 }

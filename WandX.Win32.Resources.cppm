@@ -3,7 +3,7 @@ module;
 #include <Windows.h>
 
 #define WANDX_CPPM_EXPORT_NATIVE
-#include "WandX.Win32.Resource.h"
+#include "WandX.Win32.Resources.h"
 
 export module WandX.Resource;
 

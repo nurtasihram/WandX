@@ -1,21 +1,3 @@
-//
-//		From Windowsx.h
-// 
-// --- Find With RegExp ---
-// /\* (?<ret>\w+) (?<name>\w+)(?<arglist>\(.*?\)) \*/\r\n#define HANDLE_(?<msgid>\w+).+?\) \\\r\n\s*(?<unpack>.+\))\r\n#define FORWARD_\w+(?<args>\(.+?\)) \\\r\n\s*(?<pack>.+?)\r\n
-//
-// --- Replace With RegExp ---
-// MSG_TRANS(${msgid},\n\t${ret}, ${name}, ${arglist},\n\t${pack},\n\t${args},\n\t${unpack})
-// 
-// --- Patch Item ---
-// WM_COPYDATA
-// WM_COPYDATA
-// WM_CTLCOLOR(\w+)
-// WM_MENUSELECT
-// WM_(NC)*(.)*BUTTOND(OWN|BLCLK)
-// WM_SYSTEMERROR
-//
-
 #include <Windows.h>
 
 #ifndef MSG_TRANS

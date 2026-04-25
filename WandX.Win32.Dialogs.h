@@ -1,7 +1,7 @@
 #pragma once
 
 #ifndef WANDX_CPPM_EXPORT_NATIVE
-import WandX.Win32.Dialog;
+import WandX.Win32.Dialogs;
 #endif
 
 #include "Win32.Window.h"

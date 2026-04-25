@@ -4,7 +4,7 @@
 import WandX.Win32.Realtime;
 #endif
 
-#include "WandX.Win32.Type.h"
+#include "WandX.Win32.Types.h"
 
 // from ProcessThreadsApi.h
 #undef CreateProcess

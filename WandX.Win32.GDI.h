@@ -4,7 +4,7 @@
 import WandX.Win32.GDI;
 #endif
 
-#include "WandX.Win32.Type.h"
+#include "WandX.Win32.Types.h"
 
 // from WinGDI.h
 #undef AddFontResource
