@@ -65,7 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\WandX.Win32.Controls.Messages.inl" />
-    <None Include="..\WandX.Win32.Windows.Messages.inl" />
+    <None Include="..\WandX.Win32.Window.Messages.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>

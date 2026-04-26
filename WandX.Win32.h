@@ -395,9 +395,6 @@ import WandX.Win32;
 #undef GetUserName
 #undef LogonUser
 #undef LogonUserEx
-#undef CreatePrivateNamespace
-#undef OpenPrivateNamespace
-#undef CreateBoundaryDescriptor
 #undef GetCurrentHwProfile
 #undef VerifyVersionInfo
 #undef CreateJobObject

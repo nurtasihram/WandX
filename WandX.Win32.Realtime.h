@@ -24,6 +24,15 @@ import WandX.Win32.Realtime;
 #undef CreateWaitableTimer
 #undef CreateWaitableTimerEx
 
+// from NamespaceApi.h
+#undef CreatePrivateNamespace
+#undef OpenPrivateNamespace
+#undef CreateBoundaryDescriptor
+
+// from JobApi2.h
+#undef CreateJobObject
+#undef OpenJobObject
+
 #define BaseOf_Waitable(name) name : public WandX::WaitableBase<name>
 
 #define SFINAE_Thread(name) friend class WandX::ThreadBase<name>; using Super = WandX::ThreadBase<name>

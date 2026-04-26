@@ -178,6 +178,31 @@ wapi_ret_true_WAO(CreateWaitableTimer); // CreateWaitableTimerA from WinBase.h
 wapi_ret_true_WAO(CreateWaitableTimerEx); // CreateWaitableTimerExA from WinBase.h
 #pragma endregion
 
+#pragma region NamespaceApi.h
+wapi_ret_true_WAO(CreatePrivateNamespace); // CreatePrivateNamespaceA from WinBase.h
+wapi_ret_true_WAO(OpenPrivateNamespace); // OpenPrivateNamespaceA from WinBase.h
+wapi_ret_true(ClosePrivateNamespace);
+wapi_ret_true_WAO(CreateBoundaryDescriptor); // CreateBoundaryDescriptorA from WinBase.h
+wapi_ret_true(AddSIDToBoundaryDescriptor);
+wapi_ret_direct(DeleteBoundaryDescriptor);
+#pragma endregion
+
+#pragma region JobApi.h
+// IsProcessInJob
+#pragma endregion
+
+#pragma region JobApi2.h
+wapi_ret_notnull_WAO(CreateJobObject); // CreateJobObjectA from WinBase.h
+wapi_ret_direct(FreeMemoryJobObject);
+wapi_ret_notnull_WAO(OpenJobObject); // OpenJobObject from WinBase.h
+wapi_ret_true(AssignProcessToJobObject);
+wapi_ret_true(TerminateJobObject);
+wapi_ret_true(SetInformationJobObject);
+wapi_ret_true(SetIoRateControlInformationJobObject);
+wapi_ret_true(QueryInformationJobObject);
+wapi_ret_true(QueryIoRateControlInformationJobObject);
+#pragma endregion
+
 }
 
 }

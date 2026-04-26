@@ -7,9 +7,6 @@
     <Filter Include="WandX\Win32">
       <UniqueIdentifier>{e6fe6551-8580-400e-9a58-0c0d99c0e448}</UniqueIdentifier>
     </Filter>
-    <Filter Include="WandX\Win32\Windows">
-      <UniqueIdentifier>{54b88c9c-21f7-4892-b798-693fc6cc10af}</UniqueIdentifier>
-    </Filter>
     <Filter Include="WandX\Win32\Console">
       <UniqueIdentifier>{e80a297b-d813-4d1a-8b80-6012a2c5552c}</UniqueIdentifier>
     </Filter>
@@ -45,6 +42,9 @@
     </Filter>
     <Filter Include="WandX\Win32\Entrances">
       <UniqueIdentifier>{a4c63403-40b6-423d-9710-ca303fb24c5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WandX\Win32\Window">
+      <UniqueIdentifier>{54b88c9c-21f7-4892-b798-693fc6cc10af}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -109,7 +109,7 @@
       <Filter>WandX\Win32\Realtime</Filter>
     </ClInclude>
     <ClInclude Include="..\WandX.Win32.Window.idl">
-      <Filter>WandX\Win32\Windows</Filter>
+      <Filter>WandX\Win32\Window</Filter>
     </ClInclude>
     <ClInclude Include="..\WandX.Win32.Types.idl">
       <Filter>WandX\Win32\Types</Filter>
@@ -142,7 +142,7 @@
       <Filter>WandX\Win32\String</Filter>
     </ClInclude>
     <ClInclude Include="..\WandX.Win32.Window.h">
-      <Filter>WandX\Win32\Windows</Filter>
+      <Filter>WandX\Win32\Window</Filter>
     </ClInclude>
     <ClInclude Include="..\WandX.Win32.Types.h">
       <Filter>WandX\Win32\Types</Filter>
@@ -170,8 +170,8 @@
     <None Include="..\WandX.Win32.Controls.Messages.inl">
       <Filter>WandX\Win32\Controls</Filter>
     </None>
-    <None Include="..\WandX.Win32.Windows.Messages.inl">
-      <Filter>WandX\Win32\Windows</Filter>
+    <None Include="..\WandX.Win32.Window.Messages.inl">
+      <Filter>WandX\Win32\Window</Filter>
     </None>
   </ItemGroup>
 </Project>

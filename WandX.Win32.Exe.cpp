@@ -19,7 +19,10 @@ using namespace WandX;
 
 int WxMain();
 
-static int _WxMain() {
+static int WxMain_safe() {
+#ifndef WANDX_NO_CONSOLE_IN_WINMAIN
+	Console.Alloc();
+#endif
 	//try {
 		return WxMain();
 	//} catch (WandX::Exception err) {
@@ -31,7 +34,7 @@ static int _WxMain() {
 }
 
 int main() {
-	return _WxMain();
+	return WxMain_safe();
 }
 
 int APIENTRY wWinMain(HINSTANCE hInstance,
@@ -39,23 +42,17 @@ int APIENTRY wWinMain(HINSTANCE hInstance,
 					  LPWSTR    lpCmdLine,
 					  int       nCmdShow) {
 #ifndef WANDX_NO_CONSOLE_IN_WINMAIN
-	// Console.Alloc();
-	// Console.Select();
+
 #else
 #	undef WANDX_NO_CONSOLE_IN_WINMAIN
 #endif
-	return _WxMain();
+	return WxMain_safe();
 }
 
 int APIENTRY WinMain(HINSTANCE hInstance,
 					 HINSTANCE hPrevInstance,
 					 LPSTR    lpCmdLine,
 					 int       nCmdShow) {
-#ifndef WANDX_NO_CONSOLE_IN_WINMAIN
-	// Console.Alloc();
-	// Console.Select();
-#else
-#	undef WANDX_NO_CONSOLE_IN_WINMAIN
-#endif
-	return _WxMain();
+
+	return WxMain_safe();
 }

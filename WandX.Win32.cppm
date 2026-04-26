@@ -456,68 +456,7 @@ wapi_ret_true_WAO(ReportEvent);
 // GetEventLogInformation
 // OperationStart
 // OperationEnd
-// AccessCheckAndAuditAlarm
-inline void AccessCheckAndAuditAlarm(LPCSTR SubsystemName, LPVOID HandleId, LPSTR ObjectTypeName, LPSTR ObjectName, PSECURITY_DESCRIPTOR SecurityDescriptor, DWORD DesiredAccess, PGENERIC_MAPPING GenericMapping, BOOL ObjectCreation, LPDWORD GrantedAccess, LPBOOL AccessStatus, LPBOOL GenerateOnClose)
-	safe_ret_as(::AccessCheckAndAuditAlarmA(SubsystemName, HandleId, ObjectTypeName, ObjectName,   SecurityDescriptor, DesiredAccess, GenericMapping, ObjectCreation,   GrantedAccess, AccessStatus, GenerateOnClose));
-// from securitybaseapi.h
-inline void AccessCheckAndAuditAlarm(LPCWSTR SubsystemName, LPVOID HandleId, LPWSTR ObjectTypeName, LPWSTR ObjectName, PSECURITY_DESCRIPTOR SecurityDescriptor, DWORD DesiredAccess, PGENERIC_MAPPING GenericMapping, BOOL ObjectCreation, LPDWORD GrantedAccess, LPBOOL AccessStatus, LPBOOL GenerateOnClose)
-	safe_ret_as(::AccessCheckAndAuditAlarmW(SubsystemName, HandleId, ObjectTypeName, ObjectName,   SecurityDescriptor, DesiredAccess, GenericMapping, ObjectCreation,   GrantedAccess, AccessStatus, GenerateOnClose));
-// AccessCheckByTypeAndAuditAlarmA
-// AccessCheckByTypeResultListAndAuditAlarm
-inline void AccessCheckByTypeResultListAndAuditAlarm(LPCSTR SubsystemName, LPVOID HandleId, LPSTR ObjectTypeName, LPSTR ObjectName, PSECURITY_DESCRIPTOR SecurityDescriptor, PSID PrincipalSelfSid, DWORD DesiredAccess, AUDIT_EVENT_TYPE AuditType, DWORD Flags, POBJECT_TYPE_LIST ObjectTypeList, DWORD ObjectTypeListLength, PGENERIC_MAPPING GenericMapping, BOOL ObjectCreation, LPDWORD GrantedAccess, LPDWORD AccessStatus, LPBOOL pfGenerateOnClose)
-	safe_ret_as(::AccessCheckByTypeResultListAndAuditAlarmA(SubsystemName, HandleId, ObjectTypeName, ObjectName,   SecurityDescriptor, PrincipalSelfSid, DesiredAccess,   AuditType, Flags, ObjectTypeList, ObjectTypeListLength,   GenericMapping, ObjectCreation, GrantedAccess,   AccessStatus, pfGenerateOnClose));
-// from securitybaseapi.h
-inline void AccessCheckByTypeResultListAndAuditAlarm(LPCWSTR SubsystemName, LPVOID HandleId, LPWSTR ObjectTypeName, LPWSTR ObjectName, PSECURITY_DESCRIPTOR SecurityDescriptor, PSID PrincipalSelfSid, DWORD DesiredAccess, AUDIT_EVENT_TYPE AuditType, DWORD Flags, POBJECT_TYPE_LIST ObjectTypeList, DWORD ObjectTypeListLength, PGENERIC_MAPPING GenericMapping, BOOL ObjectCreation, LPDWORD GrantedAccess, LPDWORD AccessStatus, LPBOOL pfGenerateOnClose)
-	safe_ret_as(::AccessCheckByTypeResultListAndAuditAlarmW(SubsystemName, HandleId, ObjectTypeName, ObjectName,   SecurityDescriptor, PrincipalSelfSid, DesiredAccess,   AuditType, Flags, ObjectTypeList, ObjectTypeListLength,   GenericMapping, ObjectCreation, GrantedAccess,   AccessStatus, pfGenerateOnClose));
-// AccessCheckByTypeResultListAndAuditAlarmByHandle
-inline void AccessCheckByTypeResultListAndAuditAlarmByHandle(LPCSTR SubsystemName, LPVOID HandleId, HANDLE ClientToken, LPCSTR ObjectTypeName, LPCSTR ObjectName, PSECURITY_DESCRIPTOR SecurityDescriptor, PSID PrincipalSelfSid, DWORD DesiredAccess, AUDIT_EVENT_TYPE AuditType, DWORD Flags, POBJECT_TYPE_LIST ObjectTypeList, DWORD ObjectTypeListLength, PGENERIC_MAPPING GenericMapping, BOOL ObjectCreation, LPDWORD GrantedAccess, LPDWORD AccessStatusList, LPBOOL pfGenerateOnClose)
-	safe_ret_as(::AccessCheckByTypeResultListAndAuditAlarmByHandleA(SubsystemName, HandleId, ClientToken,   ObjectTypeName, ObjectName, SecurityDescriptor,   PrincipalSelfSid, DesiredAccess, AuditType,   Flags, ObjectTypeList, ObjectTypeListLength,   GenericMapping, ObjectCreation, GrantedAccess,   AccessStatusList, pfGenerateOnClose));
-// from securitybaseapi.h
-inline void AccessCheckByTypeResultListAndAuditAlarmByHandle(LPCWSTR SubsystemName, LPVOID HandleId, HANDLE ClientToken, LPCWSTR ObjectTypeName, LPCWSTR ObjectName, PSECURITY_DESCRIPTOR SecurityDescriptor, PSID PrincipalSelfSid, DWORD DesiredAccess, AUDIT_EVENT_TYPE AuditType, DWORD Flags, POBJECT_TYPE_LIST ObjectTypeList, DWORD ObjectTypeListLength, PGENERIC_MAPPING GenericMapping, BOOL ObjectCreation, LPDWORD GrantedAccess, LPDWORD AccessStatusList, LPBOOL pfGenerateOnClose)
-	safe_ret_as(::AccessCheckByTypeResultListAndAuditAlarmByHandleW(SubsystemName, HandleId, ClientToken,   ObjectTypeName, ObjectName, SecurityDescriptor,   PrincipalSelfSid, DesiredAccess, AuditType,   Flags, ObjectTypeList, ObjectTypeListLength,   GenericMapping, ObjectCreation, GrantedAccess,   AccessStatusList, pfGenerateOnClose));
-// ObjectOpenAuditAlarm
-inline void ObjectOpenAuditAlarm(LPCSTR SubsystemName, LPVOID HandleId, LPSTR ObjectTypeName, LPSTR ObjectName, PSECURITY_DESCRIPTOR pSecurityDescriptor, HANDLE ClientToken, DWORD DesiredAccess, DWORD GrantedAccess, PPRIVILEGE_SET Privileges, BOOL ObjectCreation, BOOL AccessGranted, LPBOOL GenerateOnClose)
-	safe_ret_as(::ObjectOpenAuditAlarmA(SubsystemName, HandleId, ObjectTypeName, ObjectName,   pSecurityDescriptor, ClientToken, DesiredAccess, GrantedAccess,   Privileges, ObjectCreation, AccessGranted, GenerateOnClose));
-// from securitybaseapi.h
-inline void ObjectOpenAuditAlarm(LPCWSTR SubsystemName, LPVOID HandleId, LPWSTR ObjectTypeName, LPWSTR ObjectName, PSECURITY_DESCRIPTOR pSecurityDescriptor, HANDLE ClientToken, DWORD DesiredAccess, DWORD GrantedAccess, PPRIVILEGE_SET Privileges, BOOL ObjectCreation, BOOL AccessGranted, LPBOOL GenerateOnClose)
-	safe_ret_as(::ObjectOpenAuditAlarmW(SubsystemName, HandleId, ObjectTypeName, ObjectName,   pSecurityDescriptor, ClientToken, DesiredAccess, GrantedAccess,   Privileges, ObjectCreation, AccessGranted, GenerateOnClose));
-// ObjectPrivilegeAuditAlarm
-inline void ObjectPrivilegeAuditAlarm(LPCSTR SubsystemName, LPVOID HandleId, HANDLE ClientToken,  DWORD DesiredAccess, PPRIVILEGE_SET Privileges, BOOL AccessGranted)
-	safe_ret_as(::ObjectPrivilegeAuditAlarmA(SubsystemName, HandleId, ClientToken, DesiredAccess, Privileges, AccessGranted));
-// from securitybaseapi.h
-inline void ObjectPrivilegeAuditAlarm(LPCWSTR SubsystemName, LPVOID HandleId, HANDLE ClientToken,  DWORD DesiredAccess, PPRIVILEGE_SET Privileges, BOOL AccessGranted)
-	safe_ret_as(::ObjectPrivilegeAuditAlarmW(SubsystemName, HandleId, ClientToken, DesiredAccess, Privileges, AccessGranted));
-// ObjectCloseAuditAlarm
-inline void ObjectCloseAuditAlarm(LPCSTR SubsystemName, LPVOID HandleId, BOOL GenerateOnClose)
-	safe_ret_as(::ObjectCloseAuditAlarmA(SubsystemName, HandleId, GenerateOnClose));
-// from securitybaseapi.h
-inline void ObjectCloseAuditAlarm(LPCWSTR SubsystemName, LPVOID HandleId, BOOL GenerateOnClose)
-	safe_ret_as(::ObjectCloseAuditAlarmW(SubsystemName, HandleId, GenerateOnClose));
-// ObjectDeleteAuditAlarm
-inline void ObjectDeleteAuditAlarm(LPCSTR SubsystemName, LPVOID HandleId, BOOL GenerateOnClose)
-	safe_ret_as(::ObjectDeleteAuditAlarmA(SubsystemName, HandleId, GenerateOnClose));
-// from securitybaseapi.h
-inline void ObjectDeleteAuditAlarm(LPCWSTR SubsystemName, LPVOID HandleId, BOOL GenerateOnClose)
-	safe_ret_as(::ObjectDeleteAuditAlarmW(SubsystemName, HandleId, GenerateOnClose));
-// PrivilegedServiceAuditAlarm
-inline void PrivilegedServiceAuditAlarm(LPCSTR SubsystemName, LPCSTR ServiceName, HANDLE ClientToken,PPRIVILEGE_SET Privileges, BOOL AccessGranted)
-	safe_ret_as(::PrivilegedServiceAuditAlarmA(SubsystemName, ServiceName, ClientToken, Privileges, AccessGranted));
-// from securitybaseapi.h
-inline void PrivilegedServiceAuditAlarm(LPCWSTR SubsystemName, LPCWSTR ServiceName, HANDLE ClientToken,PPRIVILEGE_SET Privileges, BOOL AccessGranted)
-	safe_ret_as(::PrivilegedServiceAuditAlarmW(SubsystemName, ServiceName, ClientToken, Privileges, AccessGranted));
 // AddConditionalAce
-// SetFileSecurity
-inline void SetFileSecurity(LPCSTR lpFileName, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor)
-	safe_ret_as(::SetFileSecurityA(lpFileName, SecurityInformation, pSecurityDescriptor));
-// from securitybaseapi.h
-inline void SetFileSecurity(LPCWSTR lpFileName, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor)
-	safe_ret_as(::SetFileSecurityW(lpFileName, SecurityInformation, pSecurityDescriptor));
-// GetFileSecurity
-inline void GetFileSecurity(LPCSTR lpFileName, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor,DWORD nLength, LPDWORD lpnLengthNeeded)
-	safe_ret_as(::GetFileSecurityA(lpFileName, SecurityInformation, pSecurityDescriptor, nLength, lpnLengthNeeded));
-// from securitybaseapi.h
-inline void GetFileSecurity(LPCWSTR lpFileName, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor,DWORD nLength, LPDWORD lpnLengthNeeded)
-	safe_ret_as(::GetFileSecurityW(lpFileName, SecurityInformation, pSecurityDescriptor, nLength, lpnLengthNeeded));
 // ReadDirectoryChanges
 inline void ReadDirectoryChanges(HANDLE hDirectory, LPVOID lpBuffer, DWORD nBufferLength, BOOL bWatchSubtree, DWORD dwNotifyFilter, LPDWORD lpBytesReturned, LPOVERLAPPED lpOverlapped, LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)
 	safe_ret_as(::ReadDirectoryChangesW(hDirectory, lpBuffer, nBufferLength, bWatchSubtree,   dwNotifyFilter, lpBytesReturned, lpOverlapped, lpCompletionRoutine));
@@ -557,24 +496,6 @@ inline void CreateProcessWithToken(HANDLE hToken, DWORD dwLogonFlags, LPCWSTR lp
 wapi_ret_true(RegisterWaitForSingleObject);
 wapi_ret_true(UnregisterWait);
 // BindIoCompletionCallback
-// CreatePrivateNamespace
-inline HANDLE CreatePrivateNamespace(LPSECURITY_ATTRIBUTES lpPrivateNamespaceAttributes, LPVOID lpBoundaryDescriptor, LPCSTR lpAliasPrefix)
-	safe_ret_as(auto h = ::CreatePrivateNamespaceA(lpPrivateNamespaceAttributes, lpBoundaryDescriptor, lpAliasPrefix), h);
-// from namespaceapi.h
-inline HANDLE CreatePrivateNamespace(LPSECURITY_ATTRIBUTES lpPrivateNamespaceAttributes, LPVOID lpBoundaryDescriptor, LPCWSTR lpAliasPrefix)
-	safe_ret_as(auto h = ::CreatePrivateNamespaceW(lpPrivateNamespaceAttributes, lpBoundaryDescriptor, lpAliasPrefix), h);
-// OpenPrivateNamespace
-inline HANDLE OpenPrivateNamespace(LPVOID lpBoundaryDescriptor, LPCSTR lpAliasPrefix)
-	safe_ret_as(auto h = ::OpenPrivateNamespaceA(lpBoundaryDescriptor, lpAliasPrefix), h);
-// from namespaceapi.h
-inline HANDLE OpenPrivateNamespace(LPVOID lpBoundaryDescriptor, LPCWSTR lpAliasPrefix)
-	safe_ret_as(auto h = ::OpenPrivateNamespaceW(lpBoundaryDescriptor, lpAliasPrefix), h);
-// CreateBoundaryDescriptor
-inline HANDLE CreateBoundaryDescriptor(LPCSTR Name, DWORD Flags)
-	safe_ret_as(auto h = ::CreateBoundaryDescriptorA(Name, Flags), h);
-// namespaceapi.h
-inline HANDLE CreateBoundaryDescriptor(LPCWSTR Name, DWORD Flags)
-	safe_ret_as(auto h = ::CreateBoundaryDescriptorW(Name, Flags), h);
 // AddIntegrityLabelToBoundaryDescriptor
 wapi_ret_true_WAO(GetCurrentHwProfile);
 // VerifyVersionInfo
@@ -584,18 +505,6 @@ wapi_ret_true_WAO(GetCurrentHwProfile);
 //	safe_ret_as(::VerifyVersionInfoW(lpVersionInfo, dwTypeMask, dwlConditionMask));// SetSystemPowerState
 // GetSystemPowerStatus
 // MapUserPhysicalPagesScatter
-// CreateJobObject
-inline HANDLE CreateJobObject(LPSECURITY_ATTRIBUTES lpJobAttributes, LPCSTR lpName)
-	safe_ret_as(auto h = ::CreateJobObjectA(lpJobAttributes, lpName), h);
-// from jobapi2.h
-inline HANDLE CreateJobObject(LPSECURITY_ATTRIBUTES lpJobAttributes, LPCWSTR lpName)
-	safe_ret_as(auto h = ::CreateJobObjectW(lpJobAttributes, lpName), h);
-// OpenJobObject
-inline HANDLE OpenJobObject(DWORD dwDesiredAccess, BOOL bInheritHandle, LPCSTR lpName)
-	safe_ret_as(auto h = ::OpenJobObjectA(dwDesiredAccess, bInheritHandle, lpName), h);
-// from jobapi2.h
-inline HANDLE OpenJobObject(DWORD dwDesiredAccess, BOOL bInheritHandle, LPCWSTR lpName)
-	safe_ret_as(auto h = ::OpenJobObjectW(dwDesiredAccess, bInheritHandle, lpName), h);
 // FindFirstVolume
 inline HANDLE FindFirstVolume(LPSTR lpszVolumeName, DWORD cchBufferLength)
 	safe_ret_as(auto h = ::FindFirstVolumeA(lpszVolumeName, cchBufferLength); h != INVALID_HANDLE_VALUE, h);
