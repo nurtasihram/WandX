@@ -3,7 +3,6 @@ module;
 #include <Windows.h>
 #define STRSAFE_LIB
 #include <StrSafe.h>
-#undef STRSAFE_LIB
 
 #define WANDX_CPPM_EXPORT_NATIVE
 #include "WandX.Win32.String.h"
@@ -18,49 +17,49 @@ static constexpr auto ThisFile = WandX::LiString("WandX.Win32.String");
 namespace WandX::Native {
 
 #pragma region StringApiSet.h
-wapi_ret_notzero(CompareStringEx);
-wapi_ret_notzero(CompareStringOrdinal);
-wapi_ret_notzero_WAO(CompareString); // CompareStringA from WinNls.h
-wapi_ret_positive_WAO(FoldString); // FoldStringA from WinNls.h
+wapi_ret(CompareStringEx, notzero);
+wapi_ret(CompareStringOrdinal, notzero);
+wapi_ret_WAO(CompareString, notzero); // CompareStringA from WinNls.h
+wapi_ret_WAO(FoldString, positive); // FoldStringA from WinNls.h
 
-wapi_ret_true_WAO(GetStringTypeEx); // GetStringTypeExA from WinNls.h
+wapi_ret_WAO(GetStringTypeEx, true); // GetStringTypeExA from WinNls.h
 inline void GetStringType(DWORD dwInfoType, LPCWCH lpSrcStr, int cchSrc, LPWORD lpCharType)
 	safe_ret_as(::GetStringTypeW(dwInfoType, lpSrcStr, cchSrc, lpCharType));
-wapi_ret_positive(MultiByteToWideChar);
-wapi_ret_positive(WideCharToMultiByte);
+wapi_ret(MultiByteToWideChar, positive);
+wapi_ret(WideCharToMultiByte, positive);
 #pragma endregion
 
 #pragma region StrSafe.h
-wapi_ret_success_WAO(StringCchCopy);
-wapi_ret_success_WAO(StringCchCopyEx);
-wapi_ret_success_WAO(StringCbCopy);
-wapi_ret_success_WAO(StringCbCopyEx);
-wapi_ret_success_WAO(StringCchCopyN);
-wapi_ret_success_WAO(StringCbCopyN);
-wapi_ret_success_WAO(StringCchCopyNEx);
-wapi_ret_success_WAO(StringCbCopyNEx);
-wapi_ret_success_WAO(StringCchCat);
-wapi_ret_success_WAO(StringCbCat);
-wapi_ret_success_WAO(StringCchCatEx);
-wapi_ret_success_WAO(StringCbCatEx);
-wapi_ret_success_WAO(StringCchCatN);
-wapi_ret_success_WAO(StringCbCatN);
-wapi_ret_success_WAO(StringCchCatNEx);
-wapi_ret_success_WAO(StringCbCatNEx);
-wapi_ret_success_WAO(StringCchVPrintf);
-wapi_ret_success_WAO(StringCbVPrintf);
-//wapi_ret_success_WAO(StringCchPrintf);
-//wapi_ret_success_WAO(StringCbPrintf);
-//wapi_ret_success_WAO(StringCchPrintfEx);
-//wapi_ret_success_WAO(StringCbPrintfEx);
-wapi_ret_success_WAO(StringCchVPrintfEx);
-wapi_ret_success_WAO(StringCbVPrintfEx);
-wapi_ret_success_WAO(StringCchGets);
-wapi_ret_success_WAO(StringCbGets);
-wapi_ret_success_WAO(StringCchGetsEx);
-wapi_ret_success_WAO(StringCbGetsEx);
-wapi_ret_success_WAO(StringCchLength);
-wapi_ret_success_WAO(StringCbLength);
+wapi_ret_WAO(StringCchCopy, success);
+wapi_ret_WAO(StringCchCopyEx, success);
+wapi_ret_WAO(StringCbCopy, success);
+wapi_ret_WAO(StringCbCopyEx, success);
+wapi_ret_WAO(StringCchCopyN, success);
+wapi_ret_WAO(StringCbCopyN, success);
+wapi_ret_WAO(StringCchCopyNEx, success);
+wapi_ret_WAO(StringCbCopyNEx, success);
+wapi_ret_WAO(StringCchCat, success);
+wapi_ret_WAO(StringCbCat, success);
+wapi_ret_WAO(StringCchCatEx, success);
+wapi_ret_WAO(StringCbCatEx, success);
+wapi_ret_WAO(StringCchCatN, success);
+wapi_ret_WAO(StringCbCatN, success);
+wapi_ret_WAO(StringCchCatNEx, success);
+wapi_ret_WAO(StringCbCatNEx, success);
+wapi_ret_WAO(StringCchVPrintf, success);
+wapi_ret_WAO(StringCbVPrintf, success);
+//wapi_ret_WAO(StringCchPrintf, success);
+//wapi_ret_WAO(StringCbPrintf, success);
+//wapi_ret_WAO(StringCchPrintfEx, success);
+//wapi_ret_WAO(StringCbPrintfEx, success);
+wapi_ret_WAO(StringCchVPrintfEx, success);
+wapi_ret_WAO(StringCbVPrintfEx, success);
+wapi_ret_WAO(StringCchGets, success);
+wapi_ret_WAO(StringCbGets, success);
+wapi_ret_WAO(StringCchGetsEx, success);
+wapi_ret_WAO(StringCbGetsEx, success);
+wapi_ret_WAO(StringCchLength, success);
+wapi_ret_WAO(StringCbLength, success);
 #pragma endregion
 
 }

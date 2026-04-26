@@ -18,83 +18,83 @@ export namespace WandX {
 namespace Native {
 
 #pragma region ProcessEnv.h (part)
-wapi_ret_validhd(GetStdHandle);
-wapi_ret_true(SetStdHandle);
-wapi_ret_true(SetStdHandleEx);
+wapi_ret(GetStdHandle, validhd);
+wapi_ret(SetStdHandle, true);
+wapi_ret(SetStdHandleEx, true);
 #pragma endregion
 
 #pragma region ConsoleApi.h
-wapi_ret_true(AllocConsole);
+wapi_ret(AllocConsole, true);
 // AllocConsoleWithOptions 
-wapi_ret_true(FreeConsole);
-wapi_ret_true(AttachConsole);
-wapi_ret_positive(GetConsoleCP);
-wapi_ret_positive(GetConsoleOutputCP);
-wapi_ret_true(GetConsoleMode);
-wapi_ret_true(SetConsoleMode);
-wapi_ret_true(GetNumberOfConsoleInputEvents);
-wapi_ret_true_WAT(ReadConsoleInput);
-wapi_ret_true_WAT(PeekConsoleInput);
-wapi_ret_true_WAT(ReadConsole);
-wapi_ret_true_WAT(WriteConsole);
-wapi_ret_true(SetConsoleCtrlHandler);
+wapi_ret(FreeConsole, true);
+wapi_ret(AttachConsole, true);
+wapi_ret(GetConsoleCP, positive);
+wapi_ret(GetConsoleOutputCP, positive);
+wapi_ret(GetConsoleMode, true);
+wapi_ret(SetConsoleMode, true);
+wapi_ret(GetNumberOfConsoleInputEvents, true);
+wapi_ret_WAT(ReadConsoleInput, true);
+wapi_ret_WAT(PeekConsoleInput, true);
+wapi_ret_WAT(ReadConsole, true);
+wapi_ret_WAT(WriteConsole, true);
+wapi_ret(SetConsoleCtrlHandler, true);
 #pragma endregion
 
 #pragma region ConsoleApi2.h
-wapi_ret_true_WAT(FillConsoleOutputCharacter);
-wapi_ret_true(FillConsoleOutputAttribute);
-wapi_ret_true(GenerateConsoleCtrlEvent);
-wapi_ret_validhd(CreateConsoleScreenBuffer);
-wapi_ret_true(SetConsoleActiveScreenBuffer);
-wapi_ret_true(FlushConsoleInputBuffer);
-wapi_ret_true(SetConsoleCP);
-wapi_ret_true(SetConsoleOutputCP);
-wapi_ret_true(GetConsoleCursorInfo);
-wapi_ret_true(SetConsoleCursorInfo);
-wapi_ret_true(GetConsoleScreenBufferInfo);
-wapi_ret_true(GetConsoleScreenBufferInfoEx);
-wapi_ret_true(SetConsoleScreenBufferInfoEx);
-wapi_ret_true(SetConsoleScreenBufferSize);
-wapi_ret_true(SetConsoleCursorPosition);
+wapi_ret_WAT(FillConsoleOutputCharacter, true);
+wapi_ret(FillConsoleOutputAttribute, true);
+wapi_ret(GenerateConsoleCtrlEvent, true);
+wapi_ret(CreateConsoleScreenBuffer, validhd);
+wapi_ret(SetConsoleActiveScreenBuffer, true);
+wapi_ret(FlushConsoleInputBuffer, true);
+wapi_ret(SetConsoleCP, true);
+wapi_ret(SetConsoleOutputCP, true);
+wapi_ret(GetConsoleCursorInfo, true);
+wapi_ret(SetConsoleCursorInfo, true);
+wapi_ret(GetConsoleScreenBufferInfo, true);
+wapi_ret(GetConsoleScreenBufferInfoEx, true);
+wapi_ret(SetConsoleScreenBufferInfoEx, true);
+wapi_ret(SetConsoleScreenBufferSize, true);
+wapi_ret(SetConsoleCursorPosition, true);
 // GetLargestConsoleWindowSize
 inline COORD GetLargestConsoleWindowSize(HANDLE hConsoleOutput)
 safe_ret_as(auto c = ::GetLargestConsoleWindowSize(hConsoleOutput); c.X &&c.Y, c);
-wapi_ret_true(SetConsoleTextAttribute);
-wapi_ret_true(SetConsoleWindowInfo);
-wapi_ret_true_WAO(WriteConsoleOutputCharacter);
-wapi_ret_true(WriteConsoleOutputAttribute);
-wapi_ret_true_WAO(ReadConsoleOutputCharacter);
-wapi_ret_true(ReadConsoleOutputAttribute);
-wapi_ret_true_WAT(WriteConsoleInput);
-wapi_ret_true_WAT(ScrollConsoleScreenBuffer);
-wapi_ret_true_WAT(WriteConsoleOutput);
-wapi_ret_true_WAT(ReadConsoleOutput);
-wapi_ret_positive_WAO(GetConsoleTitle);
-wapi_ret_positive_WAO(GetConsoleOriginalTitle);
-wapi_ret_true_WAO(SetConsoleTitle);
+wapi_ret(SetConsoleTextAttribute, true);
+wapi_ret(SetConsoleWindowInfo, true);
+wapi_ret_WAO(WriteConsoleOutputCharacter, true);
+wapi_ret(WriteConsoleOutputAttribute, true);
+wapi_ret_WAO(ReadConsoleOutputCharacter, true);
+wapi_ret(ReadConsoleOutputAttribute, true);
+wapi_ret_WAT(WriteConsoleInput, true);
+wapi_ret_WAT(ScrollConsoleScreenBuffer, true);
+wapi_ret_WAT(WriteConsoleOutput, true);
+wapi_ret_WAT(ReadConsoleOutput, true);
+wapi_ret_WAO(GetConsoleTitle, positive);
+wapi_ret_WAO(GetConsoleOriginalTitle, positive);
+wapi_ret_WAO(SetConsoleTitle, true);
 #pragma endregion
 
 #pragma region ConsoleApi3.h
-wapi_ret_positive(GetNumberOfConsoleMouseButtons);
+wapi_ret(GetNumberOfConsoleMouseButtons, positive);
 // GetConsoleFontSize
 inline COORD GetConsoleFontSize(HANDLE hConsoleOutput, DWORD nFont)
 safe_ret_as(auto c = ::GetConsoleFontSize(hConsoleOutput, nFont); c.X &&c.Y, c);
-wapi_ret_true(GetCurrentConsoleFont);
-wapi_ret_true(GetCurrentConsoleFontEx);
-wapi_ret_true(SetCurrentConsoleFontEx);
-wapi_ret_true(GetConsoleSelectionInfo);
-wapi_ret_true(GetConsoleHistoryInfo);
-wapi_ret_true(SetConsoleHistoryInfo);
-wapi_ret_true(GetConsoleDisplayMode);
-wapi_ret_true(SetConsoleDisplayMode);
-wapi_ret_direct(GetConsoleWindow);
-wapi_ret_true_WAO(AddConsoleAlias);
-wapi_ret_true_WAO(GetConsoleAlias);
-wapi_ret_true_WAO(GetConsoleAliasesLength);
-wapi_ret_direct_WAT(GetConsoleAliasExesLength);
-wapi_ret_true_WAO(GetConsoleAliases);
-wapi_ret_true_WAO(GetConsoleAliasExes);
-wapi_ret_positive(GetConsoleProcessList);
+wapi_ret(GetCurrentConsoleFont, true);
+wapi_ret(GetCurrentConsoleFontEx, true);
+wapi_ret(SetCurrentConsoleFontEx, true);
+wapi_ret(GetConsoleSelectionInfo, true);
+wapi_ret(GetConsoleHistoryInfo, true);
+wapi_ret(SetConsoleHistoryInfo, true);
+wapi_ret(GetConsoleDisplayMode, true);
+wapi_ret(SetConsoleDisplayMode, true);
+wapi_ret(GetConsoleWindow, direct);
+wapi_ret_WAO(AddConsoleAlias, true);
+wapi_ret_WAO(GetConsoleAlias, true);
+wapi_ret_WAO(GetConsoleAliasesLength, true);
+wapi_ret_WAT(GetConsoleAliasExesLength, direct);
+wapi_ret_WAO(GetConsoleAliases, true);
+wapi_ret_WAO(GetConsoleAliasExes, true);
+wapi_ret(GetConsoleProcessList, positive);
 #pragma endregion
 
 }

@@ -141,8 +141,8 @@ constexpr bool IsUnicode =
 // LocalFlags
 // LocalFree
 // GetBinaryType
-wapi_ret_true_WAO(GetBinaryType);
-wapi_ret_positive_WAO(GetLongPathNameTransacted);
+wapi_ret_WAO(GetBinaryType, true);
+wapi_ret_WAO(GetLongPathNameTransacted, positive);
 // GetProcessAffinityMask
 // SetProcessAffinityMask
 // GetProcessIoCounters
@@ -182,36 +182,36 @@ wapi_ret_positive_WAO(GetLongPathNameTransacted);
 // Wow64GetThreadSelectorEntry
 // DebugSetProcessKillOnExit
 // DebugBreakProcess
-wapi_ret_true(PulseEvent);
-wapi_ret_true(GlobalDeleteAtom);
+wapi_ret(PulseEvent, true);
+wapi_ret(GlobalDeleteAtom, true);
 // InitAtomTable
-wapi_ret_true(DeleteAtom);
+wapi_ret(DeleteAtom, true);
 // SetHandleCount
 // GetDevicePowerState
-wapi_ret_true_WAO(SetFileShortName);
+wapi_ret_WAO(SetFileShortName, true);
 // LoadModule
 // WinExec
-wapi_ret_true(ClearCommBreak);
-wapi_ret_true(ClearCommError);
-wapi_ret_true(SetupComm);
-wapi_ret_true(EscapeCommFunction);
-wapi_ret_true(GetCommConfig);
-wapi_ret_true(GetCommMask);
-wapi_ret_true(GetCommProperties);
-wapi_ret_true(GetCommModemStatus);
-wapi_ret_true(GetCommState);
-wapi_ret_true(GetCommTimeouts);
-wapi_ret_true(PurgeComm);
-wapi_ret_true(SetCommBreak);
-wapi_ret_true(SetCommConfig);
-wapi_ret_true(SetCommMask);
-wapi_ret_true(SetCommState);
-wapi_ret_true(SetCommTimeouts);
-wapi_ret_true(TransmitCommChar);
-wapi_ret_true(WaitCommEvent);
+wapi_ret(ClearCommBreak, true);
+wapi_ret(ClearCommError, true);
+wapi_ret(SetupComm, true);
+wapi_ret(EscapeCommFunction, true);
+wapi_ret(GetCommConfig, true);
+wapi_ret(GetCommMask, true);
+wapi_ret(GetCommProperties, true);
+wapi_ret(GetCommModemStatus, true);
+wapi_ret(GetCommState, true);
+wapi_ret(GetCommTimeouts, true);
+wapi_ret(PurgeComm, true);
+wapi_ret(SetCommBreak, true);
+wapi_ret(SetCommConfig, true);
+wapi_ret(SetCommMask, true);
+wapi_ret(SetCommState, true);
+wapi_ret(SetCommTimeouts, true);
+wapi_ret(TransmitCommChar, true);
+wapi_ret(WaitCommEvent, true);
 #if (NTDDI_VERSION >= NTDDI_WIN10_RS3)
-wapi_ret_validhd(OpenCommPort);
-wapi_ret_success(GetCommPorts);
+wapi_ret(OpenCommPort, validhd);
+wapi_ret(GetCommPorts, success);
 #endif
 // SetTapePosition
 // GetTapePosition
@@ -226,14 +226,14 @@ wapi_ret_success(GetCommPorts);
 // GetSystemRegistryQuota
 // FileTimeToDosDateTime
 // DosDateTimeToFileTime
-wapi_ret_positive_WAO(FormatMessage);
-wapi_ret_notnull_WAO(CreateMailslot);
+wapi_ret_WAO(FormatMessage, positive);
+wapi_ret_WAO(CreateMailslot, notnull);
 // GetMailslotInfo
 // SetMailslotInfo
-wapi_ret_true_WAO(EncryptFile);
-wapi_ret_true_WAO(DecryptFile);
-wapi_ret_true_WAO(FileEncryptionStatus);
-wapi_ret_success_WAO(OpenEncryptedFileRaw);
+wapi_ret_WAO(EncryptFile, true);
+wapi_ret_WAO(DecryptFile, true);
+wapi_ret_WAO(FileEncryptionStatus, true);
+wapi_ret_WAO(OpenEncryptedFileRaw, success);
 // ReadEncryptedFileRaw
 // WriteEncryptedFileRaw
 // CloseEncryptedFileRaw
@@ -267,43 +267,43 @@ inline DWORD GetLogicalDriveStrings(LPSTR lpBuffer, DWORD nSize)
 inline DWORD GetLogicalDriveStrings(LPWSTR lpBuffer, DWORD nSize)
 	safe_ret_as(auto h = ::GetLogicalDriveStringsW(nSize, lpBuffer), h);
 // LoadPackagedLibrary
-wapi_ret_true_WAO(QueryFullProcessImageName);
-wapi_ret_positive_WAO(GetFirmwareEnvironmentVariable);
-wapi_ret_positive_WAO(GetFirmwareEnvironmentVariableEx);
-wapi_ret_true_WAO(SetFirmwareEnvironmentVariable);
-wapi_ret_true_WAO(SetFirmwareEnvironmentVariableEx);
+wapi_ret_WAO(QueryFullProcessImageName, true);
+wapi_ret_WAO(GetFirmwareEnvironmentVariable, positive);
+wapi_ret_WAO(GetFirmwareEnvironmentVariableEx, positive);
+wapi_ret_WAO(SetFirmwareEnvironmentVariable, true);
+wapi_ret_WAO(SetFirmwareEnvironmentVariableEx, true);
 // GetFirmwareType
 // IsNativeVhdBoot
-wapi_ret_true_WAO(EnumResourceTypes);
-wapi_ret_true_WAO(EnumResourceLanguages);
-wapi_ret_notnull_WAO(BeginUpdateResource);
-wapi_ret_true_WAO(UpdateResource);
-wapi_ret_true_WAT(EndUpdateResource);
-wapi_ret_positive_WAO(GlobalAddAtom);
-wapi_ret_positive_WAO(GlobalAddAtomEx);
-wapi_ret_positive_WAO(GlobalFindAtom);
-wapi_ret_positive_WAO(GlobalGetAtomName);
-wapi_ret_positive_WAO(AddAtom);
-wapi_ret_positive_WAO(FindAtom);
-wapi_ret_positive_WAO(GetAtomName);
-wapi_ret_direct_WAO(GetProfileInt);
-wapi_ret_direct_WAO(GetProfileString);
-wapi_ret_true_WAO(WriteProfileString);
-wapi_ret_direct_WAO(GetProfileSection);
-wapi_ret_true_WAO(WriteProfileSection);
-wapi_ret_direct_WAO(GetPrivateProfileInt);
-wapi_ret_positive_WAO(GetPrivateProfileString);
-wapi_ret_true_WAO(WritePrivateProfileString);
-wapi_ret_positive_WAO(GetPrivateProfileSection);
-wapi_ret_true_WAO(WritePrivateProfileSection);
-wapi_ret_positive_WAO(GetPrivateProfileSectionNames);
-wapi_ret_true_WAO(GetPrivateProfileStruct);
-wapi_ret_true_WAO(WritePrivateProfileStruct);
-wapi_ret_true_WAO(SetDllDirectory);
-wapi_ret_positive_WAO(GetDllDirectory);
+wapi_ret_WAO(EnumResourceTypes, true);
+wapi_ret_WAO(EnumResourceLanguages, true);
+wapi_ret_WAO(BeginUpdateResource, notnull);
+wapi_ret_WAO(UpdateResource, true);
+wapi_ret_WAT(EndUpdateResource, true);
+wapi_ret_WAO(GlobalAddAtom, positive);
+wapi_ret_WAO(GlobalAddAtomEx, positive);
+wapi_ret_WAO(GlobalFindAtom, positive);
+wapi_ret_WAO(GlobalGetAtomName, positive);
+wapi_ret_WAO(AddAtom, positive);
+wapi_ret_WAO(FindAtom, positive);
+wapi_ret_WAO(GetAtomName, positive);
+wapi_ret_WAO(GetProfileInt, direct);
+wapi_ret_WAO(GetProfileString, direct);
+wapi_ret_WAO(WriteProfileString, true);
+wapi_ret_WAO(GetProfileSection, direct);
+wapi_ret_WAO(WriteProfileSection, true);
+wapi_ret_WAO(GetPrivateProfileInt, direct);
+wapi_ret_WAO(GetPrivateProfileString, positive);
+wapi_ret_WAO(WritePrivateProfileString, true);
+wapi_ret_WAO(GetPrivateProfileSection, positive);
+wapi_ret_WAO(WritePrivateProfileSection, true);
+wapi_ret_WAO(GetPrivateProfileSectionNames, positive);
+wapi_ret_WAO(GetPrivateProfileStruct, true);
+wapi_ret_WAO(WritePrivateProfileStruct, true);
+wapi_ret_WAO(SetDllDirectory, true);
+wapi_ret_WAO(GetDllDirectory, positive);
 // SetSearchPathMode
-wapi_ret_true_WAO(CreateDirectoryEx);
-wapi_ret_true_WAO(CreateDirectoryTransacted);
+wapi_ret_WAO(CreateDirectoryEx, true);
+wapi_ret_WAO(CreateDirectoryTransacted, true);
 // RemoveDirectory
 // from fileapi.h
 inline void RemoveDirectory(LPCSTR lpPathName)
@@ -311,7 +311,7 @@ inline void RemoveDirectory(LPCSTR lpPathName)
 // from fileapi.h
 inline void RemoveDirectory(LPCWSTR lpPathName)
 	safe_ret_as(::RemoveDirectoryW(lpPathName));
-wapi_ret_true_WAO(RemoveDirectoryTransacted);
+wapi_ret_WAO(RemoveDirectoryTransacted, true);
 // GetFullPathName
 // from fileapi.h
 inline DWORD GetFullPathName(LPCSTR lpFileName, DWORD nBufferLength, LPSTR lpBuffer, LPSTR *lpFilePart)
@@ -319,7 +319,7 @@ inline DWORD GetFullPathName(LPCSTR lpFileName, DWORD nBufferLength, LPSTR lpBuf
 // from fileapi.h
 inline DWORD GetFullPathName(LPCWSTR lpFileName, DWORD nBufferLength, LPWSTR lpBuffer, LPWSTR *lpFilePart)
 	safe_ret_as(auto h = ::GetFullPathNameW(lpFileName, nBufferLength, lpBuffer, lpFilePart), h);
-wapi_ret_positive_WAO(GetFullPathNameTransacted);
+wapi_ret_WAO(GetFullPathNameTransacted, positive);
 // DefineDosDevice
 inline void DefineDosDevice(DWORD dwFlags, LPCSTR lpDeviceName, LPCSTR lpTargetPath)
 	safe_ret_as(::DefineDosDeviceA(dwFlags, lpDeviceName, lpTargetPath));
@@ -345,7 +345,7 @@ inline void SetFileAttributes(LPCSTR lpFileName, DWORD dwFileAttributes)
 // from fileapi.h
 inline void SetFileAttributes(LPCWSTR lpFileName, DWORD dwFileAttributes)
 	safe_ret_as(::SetFileAttributesW(lpFileName, dwFileAttributes));
-wapi_ret_true_WAO(SetFileAttributesTransacted);
+wapi_ret_WAO(SetFileAttributesTransacted, true);
 // GetFileAttributes
 // from fileapi.h
 inline DWORD GetFileAttributes(LPCSTR lpFileName)
@@ -353,8 +353,8 @@ inline DWORD GetFileAttributes(LPCSTR lpFileName)
 // from fileapi.h
 inline DWORD GetFileAttributes(LPCWSTR lpFileName)
 	safe_ret_as(auto h = ::GetFileAttributesW(lpFileName); h != INVALID_FILE_ATTRIBUTES, h);
-wapi_ret_true_WAO(GetFileAttributesEx);
-wapi_ret_true_WAO(GetFileAttributesTransacted);
+//wapi_ret_WAO(GetFileAttributesEx, true);
+wapi_ret_WAO(GetFileAttributesTransacted, true);
 // GetCompressedFileSize
 // from fileapi.h
 inline DWORD GetCompressedFileSize(LPCSTR lpFileName, LPDWORD lpFileSizeHigh)
@@ -367,8 +367,8 @@ inline DWORD GetCompressedFileSizeTransacted(LPCSTR lpFileName, LPDWORD lpFileSi
 	safe_ret_as(auto h = ::GetCompressedFileSizeTransactedA(lpFileName, lpFileSizeHigh, hTransaction); h != INVALID_FILE_SIZE, h);
 inline DWORD GetCompressedFileSizeTransacted(LPCWSTR lpFileName, LPDWORD lpFileSizeHigh, HANDLE hTransaction)
 	safe_ret_as(auto h = ::GetCompressedFileSizeTransactedW(lpFileName, lpFileSizeHigh, hTransaction); h != INVALID_FILE_SIZE, h);
-wapi_ret_true_WAO(DeleteFileTransacted);
-wapi_ret_true_WAO(CheckNameLegalDOS8Dot3);
+wapi_ret_WAO(DeleteFileTransacted, true);
+wapi_ret_WAO(CheckNameLegalDOS8Dot3, true);
 // FindFirstFile
 // from fileapi.h
 inline HANDLE FindFirstFile(LPCSTR lpFileName, LPWIN32_FIND_DATAA lpFindFileData)
@@ -388,16 +388,16 @@ inline HANDLE FindFirstFileTransacted(LPCSTR lpFileName, FINDEX_INFO_LEVELS fInf
 	safe_ret_as(auto h = ::FindFirstFileTransactedA(lpFileName, fInfoLevelId, lpFindFileData, fSearchOp, lpSearchFilter, dwAdditionalFlags, hTransaction); h != INVALID_HANDLE_VALUE, h);
 inline HANDLE FindFirstFileTransacted(LPCWSTR lpFileName, FINDEX_INFO_LEVELS fInfoLevelId, LPVOID lpFindFileData, FINDEX_SEARCH_OPS fSearchOp, LPVOID lpSearchFilter, DWORD dwAdditionalFlags, HANDLE hTransaction)
 	safe_ret_as(auto h = ::FindFirstFileTransactedW(lpFileName, fInfoLevelId, lpFindFileData, fSearchOp, lpSearchFilter, dwAdditionalFlags, hTransaction); h != INVALID_HANDLE_VALUE, h);
-wapi_ret_true_WAO(CopyFile);
-wapi_ret_true_WAO(CopyFileEx);
+wapi_ret_WAO(CopyFile, true);
+wapi_ret_WAO(CopyFileEx, true);
 // CopyFileTransacted
 // CopyFile2
-wapi_ret_true_WAO(MoveFile);
-wapi_ret_true_WAO(MoveFileEx);
-wapi_ret_true_WAO(MoveFileWithProgress);
-wapi_ret_true_WAO(ReplaceFile);
-wapi_ret_true_WAO(CreateHardLink);
-wapi_ret_true_WAO(CreateHardLinkTransacted);
+wapi_ret_WAO(MoveFile, true);
+wapi_ret_WAO(MoveFileEx, true);
+wapi_ret_WAO(MoveFileWithProgress, true);
+wapi_ret_WAO(ReplaceFile, true);
+wapi_ret_WAO(CreateHardLink, true);
+wapi_ret_WAO(CreateHardLinkTransacted, true);
 // FindFirstStreamTransacted
 inline HANDLE FindFirstStreamTransacted(LPCWSTR lpFileName, STREAM_INFO_LEVELS InfoLevel, LPVOID lpFindStreamData, DWORD dwFlags, HANDLE hTransaction)
 	safe_ret_as(auto h = ::FindFirstStreamTransactedW(lpFileName, InfoLevel, lpFindStreamData, dwFlags, hTransaction); h != INVALID_HANDLE_VALUE, h);
@@ -438,21 +438,21 @@ inline void GetNamedPipeClientComputerName(HANDLE Pipe, LPWSTR ClientComputerNam
 // GetNamedPipeClientSessionId
 // GetNamedPipeServerProcessId
 // GetNamedPipeServerSessionId
-wapi_ret_true_WAO(SetVolumeLabel);
+wapi_ret_WAO(SetVolumeLabel, true);
 // SetFileBandwidthReservation
 // GetFileBandwidthReservation
 // ClearEventLog
-wapi_ret_true_WAO(BackupEventLog);
+wapi_ret_WAO(BackupEventLog, true);
 // CloseEventLog
 // DeregisterEventSource
 // NotifyChangeEventLog
 // GetNumberOfEventLogRecords
 // GetOldestEventLogRecord
-wapi_ret_notnull_WAO(OpenEventLog);
-wapi_ret_notnull_WAO(RegisterEventSource);
-wapi_ret_notnull_WAO(OpenBackupEventLog);
-wapi_ret_positive_WAT(ReadEventLog);
-wapi_ret_true_WAO(ReportEvent);
+wapi_ret_WAO(OpenEventLog, notnull);
+wapi_ret_WAO(RegisterEventSource, notnull);
+wapi_ret_WAO(OpenBackupEventLog, notnull);
+wapi_ret_WAT(ReadEventLog, positive);
+wapi_ret_WAO(ReportEvent, true);
 // GetEventLogInformation
 // OperationStart
 // OperationEnd
@@ -470,34 +470,34 @@ inline void ReadDirectoryChangesEx(HANDLE hDirectory, LPVOID lpBuffer, DWORD nBu
 // IsBadWritePtr - deprecated
 // IsBadCodePtr - deprecated
 // IsBadStringPtr - deprecated
-wapi_ret_true_WAO(LookupAccountSid);
-wapi_ret_true_WAO(LookupAccountName);
-wapi_ret_true_WAO(LookupAccountNameLocal);
-wapi_ret_true_WAO(LookupAccountSidLocal);
-wapi_ret_true_WAO(LookupPrivilegeValue);
-wapi_ret_true_WAO(LookupPrivilegeName);
-wapi_ret_true_WAO(LookupPrivilegeDisplayName);
-wapi_ret_true_WAO(BuildCommDCB);
-wapi_ret_true_WAO(BuildCommDCBAndTimeouts);
-wapi_ret_true_WAO(CommConfigDialog);
-wapi_ret_true_WAO(GetDefaultCommConfig);
-wapi_ret_true_WAO(SetDefaultCommConfig);
-wapi_ret_true_WAO(GetComputerName);
-wapi_ret_true_WAO(DnsHostnameToComputerName);
-wapi_ret_true_WAO(GetUserName);
-wapi_ret_true_WAO(LogonUser);
-wapi_ret_true_WAO(LogonUserEx);
+wapi_ret_WAO(LookupAccountSid, true);
+wapi_ret_WAO(LookupAccountName, true);
+wapi_ret_WAO(LookupAccountNameLocal, true);
+wapi_ret_WAO(LookupAccountSidLocal, true);
+wapi_ret_WAO(LookupPrivilegeValue, true);
+wapi_ret_WAO(LookupPrivilegeName, true);
+wapi_ret_WAO(LookupPrivilegeDisplayName, true);
+wapi_ret_WAO(BuildCommDCB, true);
+wapi_ret_WAO(BuildCommDCBAndTimeouts, true);
+wapi_ret_WAO(CommConfigDialog, true);
+wapi_ret_WAO(GetDefaultCommConfig, true);
+wapi_ret_WAO(SetDefaultCommConfig, true);
+wapi_ret_WAO(GetComputerName, true);
+wapi_ret_WAO(DnsHostnameToComputerName, true);
+wapi_ret_WAO(GetUserName, true);
+wapi_ret_WAO(LogonUser, true);
+wapi_ret_WAO(LogonUserEx, true);
 // CreateProcessWithLogon
 inline void CreateProcessWithLogon(LPCWSTR lpUsername, LPCWSTR lpDomain, LPCWSTR lpPassword, DWORD dwLogonFlags,   LPCWSTR lpApplicationName, LPWSTR lpCommandLine,   DWORD dwCreationFlags, LPVOID lpEnvironment,   LPCWSTR lpCurrentDirectory, LPSTARTUPINFOW lpStartupInfo,   LPPROCESS_INFORMATION lpProcessInformation)
 	safe_ret_as(::CreateProcessWithLogonW(lpUsername, lpDomain, lpPassword, dwLogonFlags, lpApplicationName, lpCommandLine, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation));
 // CreateProcessWithToken
 inline void CreateProcessWithToken(HANDLE hToken, DWORD dwLogonFlags, LPCWSTR lpApplicationName,   LPWSTR lpCommandLine, DWORD dwCreationFlags, LPVOID lpEnvironment,   LPCWSTR lpCurrentDirectory, LPSTARTUPINFOW lpStartupInfo,   LPPROCESS_INFORMATION lpProcessInformation)
 	safe_ret_as(::CreateProcessWithTokenW(hToken, dwLogonFlags, lpApplicationName, lpCommandLine, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation));
-wapi_ret_true(RegisterWaitForSingleObject);
-wapi_ret_true(UnregisterWait);
+wapi_ret(RegisterWaitForSingleObject, true);
+wapi_ret(UnregisterWait, true);
 // BindIoCompletionCallback
 // AddIntegrityLabelToBoundaryDescriptor
-wapi_ret_true_WAO(GetCurrentHwProfile);
+wapi_ret_WAO(GetCurrentHwProfile, true);
 // VerifyVersionInfo
 //inline void VerifyVersionInfo(LPOSVERSIONINFOEXA lpVersionInfo, DWORD dwTypeMask, DWORDLONG dwlConditionMask)
 //	safe_ret_as(::VerifyVersionInfoA(lpVersionInfo, dwTypeMask, dwlConditionMask));
@@ -522,9 +522,9 @@ inline HANDLE FindFirstVolumeMountPoint(LPCSTR lpszRootPathName, LPSTR lpszVolum
 	safe_ret_as(auto h = ::FindFirstVolumeMountPointA(lpszRootPathName, lpszVolumeMountPoint, cchBufferLength); h != INVALID_HANDLE_VALUE, h);
 inline HANDLE FindFirstVolumeMountPoint(LPCWSTR lpszRootPathName, LPWSTR lpszVolumeMountPoint, DWORD cchBufferLength)
 	safe_ret_as(auto h = ::FindFirstVolumeMountPointW(lpszRootPathName, lpszVolumeMountPoint, cchBufferLength); h != INVALID_HANDLE_VALUE, h);
-wapi_ret_true_WAO(FindNextVolumeMountPoint);
+wapi_ret_WAO(FindNextVolumeMountPoint, true);
 // FindVolumeMountPointClose
-wapi_ret_true_WAO(SetVolumeMountPoint);
+wapi_ret_WAO(SetVolumeMountPoint, true);
 // DeleteVolumeMountPoint
 inline void DeleteVolumeMountPoint(LPCSTR lpszVolumeMountPoint)
 	safe_ret_as(::DeleteVolumeMountPointA(lpszVolumeMountPoint));
@@ -560,7 +560,7 @@ inline HANDLE CreateActCtx(PCACTCTXW pActCtx)
 // ActivateActCtx
 // DeactivateActCtx
 // GetCurrentActCtx
-wapi_ret_true_WAO(FindActCtxSectionString);
+wapi_ret_WAO(FindActCtxSectionString, true);
 // FindActCtxSectionGuid
 // QueryActCtx
 inline void QueryActCtx(DWORD dwFlags, HANDLE hActCtx,PVOID pvSubInstance, ULONG ulInfoClass,PVOID pvBuffer, SIZE_T cbBuffer, SIZE_T *pcbWrittenOrRequired)
@@ -588,11 +588,11 @@ inline void QueryActCtx(DWORD dwFlags, HANDLE hActCtx,PVOID pvSubInstance, ULONG
 // GetFileInformationByHandleEx
 // GetFileInformationByName
 // OpenFileById
-wapi_ret_true_WAO(CreateSymbolicLink);
+wapi_ret_WAO(CreateSymbolicLink, true);
 // QueryActCtxSettings
 inline void QueryActCtxSettings(DWORD dwFlags, HANDLE hActCtx,PCWSTR settingsNameSpace, PCWSTR settingName,PWSTR pvBuffer, SIZE_T dwBuffer, SIZE_T *pdwWrittenOrRequired)
 	safe_ret_as(::QueryActCtxSettingsW(dwFlags, hActCtx,  settingsNameSpace, settingName,  pvBuffer, dwBuffer, pdwWrittenOrRequired));
-wapi_ret_true_WAO(CreateSymbolicLinkTransacted);
+wapi_ret_WAO(CreateSymbolicLinkTransacted, true);
 // AddSecureMemoryCacheCallback
 // RemoveSecureMemoryCacheCallback
 // CopyContext
@@ -622,45 +622,45 @@ wapi_ret_true_WAO(CreateSymbolicLinkTransacted);
 #pragma region WinUser.h
 // wvsprintf - Deprecated
 // wsprintf - Deprecated
-wapi_ret_notnull_WAO(LoadKeyboardLayout);
-wapi_ret_notnull(ActivateKeyboardLayout);
-wapi_ret_direct(ToUnicodeEx);
-wapi_ret_true(UnloadKeyboardLayout);
-wapi_ret_true_WAO(GetKeyboardLayoutName);
+wapi_ret_WAO(LoadKeyboardLayout, notnull);
+wapi_ret(ActivateKeyboardLayout, notnull);
+wapi_ret(ToUnicodeEx, direct);
+wapi_ret(UnloadKeyboardLayout, true);
+wapi_ret_WAO(GetKeyboardLayoutName, true);
 // GetKeyboardLayoutList
 inline int GetKeyboardLayoutList(int nBuff, HKL FAR *lpList)
 	safe_ret_as(auto h = ::GetKeyboardLayoutList(nBuff, lpList), h);
-wapi_ret_direct(GetKeyboardLayout);
+wapi_ret(GetKeyboardLayout, direct);
 // GetMouseMovePointsEx
 inline int GetMouseMovePointsEx(UINT cbSize, LPMOUSEMOVEPOINT lppt, LPMOUSEMOVEPOINT lpptBuf, int nBufPoints, DWORD resolution)
 	safe_ret_as(auto h = ::GetMouseMovePointsEx(cbSize, lppt, lpptBuf, nBufPoints, resolution), h);
-wapi_ret_notnull_WAO(CreateDesktop);
-wapi_ret_notnull_WAO(CreateDesktopEx);
-wapi_ret_notnull_WAO(OpenDesktop);
-wapi_ret_notnull(OpenInputDesktop);
-wapi_ret_true_WAO(EnumDesktops);
-wapi_ret_true(EnumDesktopWindows);
-wapi_ret_true(SwitchDesktop);
-wapi_ret_true(SetThreadDesktop);
-wapi_ret_true(CloseDesktop);
-wapi_ret_notnull(GetThreadDesktop);
-wapi_ret_notnull_WAO(CreateWindowStation);
-wapi_ret_notnull_WAO(OpenWindowStation);
-wapi_ret_true_WAO(EnumWindowStations);
-wapi_ret_true(CloseWindowStation);
-wapi_ret_true(SetProcessWindowStation);
-wapi_ret_notnull(GetProcessWindowStation);
-wapi_ret_true(SetUserObjectSecurity);
-wapi_ret_true(GetUserObjectSecurity);
-wapi_ret_true_WAT(GetUserObjectInformation);
-wapi_ret_true_WAT(SetUserObjectInformation);
-wapi_ret_direct(IsHungAppWindow);
-wapi_ret_direct(DisableProcessWindowsGhosting);
-wapi_ret_positive_WAO(RegisterWindowMessage);
-wapi_ret_true(TrackMouseEvent);
-wapi_ret_true(DrawFrameControl);
-wapi_ret_true(DrawCaption);
-wapi_ret_true(DrawAnimatedRects);
+wapi_ret_WAO(CreateDesktop, notnull);
+wapi_ret_WAO(CreateDesktopEx, notnull);
+wapi_ret_WAO(OpenDesktop, notnull);
+wapi_ret(OpenInputDesktop, notnull);
+wapi_ret_WAO(EnumDesktops, true);
+wapi_ret(EnumDesktopWindows, true);
+wapi_ret(SwitchDesktop, true);
+wapi_ret(SetThreadDesktop, true);
+wapi_ret(CloseDesktop, true);
+wapi_ret(GetThreadDesktop, notnull);
+wapi_ret_WAO(CreateWindowStation, notnull);
+wapi_ret_WAO(OpenWindowStation, notnull);
+wapi_ret_WAO(EnumWindowStations, true);
+wapi_ret(CloseWindowStation, true);
+wapi_ret(SetProcessWindowStation, true);
+wapi_ret(GetProcessWindowStation, notnull);
+wapi_ret(SetUserObjectSecurity, true);
+wapi_ret(GetUserObjectSecurity, true);
+wapi_ret_WAT(GetUserObjectInformation, true);
+wapi_ret_WAT(SetUserObjectInformation, true);
+wapi_ret(IsHungAppWindow, direct);
+wapi_ret(DisableProcessWindowsGhosting, direct);
+wapi_ret_WAO(RegisterWindowMessage, positive);
+wapi_ret(TrackMouseEvent, true);
+wapi_ret(DrawFrameControl, true);
+wapi_ret(DrawCaption, true);
+wapi_ret(DrawAnimatedRects, true);
 // GetMessage
 template<bool IsUnicode = Native::IsUnicode>
 inline bool GetMessage(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilterMax) {
@@ -671,7 +671,7 @@ inline bool GetMessage(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilt
 // TranslateMessage
 inline bool TranslateMessage(CONST MSG *lpMsg)
 	ret_as(::TranslateMessage(lpMsg));
-wapi_ret_direct_WAT(DispatchMessage);
+wapi_ret_WAT(DispatchMessage, direct);
 // SetMessageQueue
 // PeekMessage
 template<bool IsUnicode = Native::IsUnicode>
@@ -680,16 +680,16 @@ inline bool PeekMessage(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFil
 		 ret_as(::PeekMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg))
 	else ret_as(::PeekMessageA(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg))
 }
-wapi_ret_true(RegisterHotKey);
-wapi_ret_true(UnregisterHotKey);
-wapi_ret_true(ExitWindowsEx);
-wapi_ret_direct(SwapMouseButton);
-wapi_ret_direct(GetMessagePos);
-wapi_ret_direct(GetMessageTime);
-wapi_ret_direct(GetMessageExtraInfo);
-wapi_ret_direct(GetUnpredictedMessagePos);
-wapi_ret_direct(IsWow64Message);
-wapi_ret_direct(SetMessageExtraInfo);
+wapi_ret(RegisterHotKey, true);
+wapi_ret(UnregisterHotKey, true);
+wapi_ret(ExitWindowsEx, true);
+wapi_ret(SwapMouseButton, direct);
+wapi_ret(GetMessagePos, direct);
+wapi_ret(GetMessageTime, direct);
+wapi_ret(GetMessageExtraInfo, direct);
+wapi_ret(GetUnpredictedMessagePos, direct);
+wapi_ret(IsWow64Message, direct);
+wapi_ret(SetMessageExtraInfo, direct);
 // SendMessage
 template<bool IsUnicode = Native::IsUnicode>
 inline LRESULT SendMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
@@ -704,8 +704,8 @@ inline LRESULT SendMessageTimeout(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 		 ret_safe_to(auto h = ::SendMessageTimeoutW(hWnd, Msg, wParam, lParam, fuFlags, uTimeout, lpdwResult), h)
 	else ret_safe_to(auto h = ::SendMessageTimeoutA(hWnd, Msg, wParam, lParam, fuFlags, uTimeout, lpdwResult), h)
 }
-wapi_ret_true_WAT(SendNotifyMessage);
-wapi_ret_true_WAT(SendMessageCallback);
+wapi_ret_WAT(SendNotifyMessage, true);
+wapi_ret_WAT(SendMessageCallback, true);
 // BroadcastSystemMessageEx
 template<bool IsUnicode = Native::IsUnicode>
 inline long BroadcastSystemMessageEx(DWORD flags, LPDWORD lpInfo, UINT Msg, WPARAM wParam, LPARAM lParam, PBSMINFO pbsmInfo) {
@@ -720,64 +720,64 @@ inline long BroadcastSystemMessage(DWORD flags, LPDWORD lpInfo, UINT Msg, WPARAM
 		 safe_ret_as(auto h = ::BroadcastSystemMessageW(flags, lpInfo, Msg, wParam, lParam), h)
 	else safe_ret_as(auto h = ::BroadcastSystemMessageA(flags, lpInfo, Msg, wParam, lParam), h)
 }
-wapi_ret_notnull_WAT(RegisterDeviceNotification);
-wapi_ret_true(UnregisterDeviceNotification);
-wapi_ret_notnull(RegisterPowerSettingNotification);
-wapi_ret_true(UnregisterPowerSettingNotification);
-wapi_ret_notnull(RegisterSuspendResumeNotification);
-wapi_ret_true(UnregisterSuspendResumeNotification);
-wapi_ret_true_WAT(PostMessage);
-wapi_ret_true_WAT(PostThreadMessage);
-wapi_ret_true(AttachThreadInput);
-wapi_ret_direct(ReplyMessage);
-wapi_ret_true(WaitMessage);
-wapi_ret_positive(WaitForInputIdle);
-wapi_ret_direct_WAT(DefWindowProc);
-wapi_ret_direct(PostQuitMessage);
-wapi_ret_direct_WAT(CallWindowProc);
-wapi_ret_direct(InSendMessage);
-wapi_ret_direct(InSendMessageEx);
-wapi_ret_direct(GetDoubleClickTime);
-wapi_ret_true(SetDoubleClickTime);
-wapi_ret_positive_WAO(RegisterClass);
-wapi_ret_true_WAO(UnregisterClass);
-wapi_ret_true_WAO(GetClassInfo);
-wapi_ret_positive_WAO(RegisterClassEx);
-wapi_ret_true_WAO(GetClassInfoEx);
-wapi_ret_notnull_WAO(CreateWindowEx);
-wapi_ret_direct(IsWindow);
-wapi_ret_direct(IsMenu);
-wapi_ret_direct(IsChild);
-wapi_ret_true(DestroyWindow);
-wapi_ret_direct(ShowWindow);
-wapi_ret_true(AnimateWindow);
-wapi_ret_true(UpdateLayeredWindow);
-wapi_ret_true(UpdateLayeredWindowIndirect);
-wapi_ret_true(GetLayeredWindowAttributes);
-wapi_ret_direct(PrintWindow);
-wapi_ret_true(SetLayeredWindowAttributes);
-wapi_ret_direct(ShowWindowAsync);
-wapi_ret_direct(FlashWindow);
-wapi_ret_direct(FlashWindowEx);
-wapi_ret_true(ShowOwnedPopups);
-wapi_ret_true(OpenIcon);
-wapi_ret_true(CloseWindow);
-wapi_ret_true(MoveWindow);
-wapi_ret_true(SetWindowPos);
-wapi_ret_true(GetWindowPlacement);
-wapi_ret_true(SetWindowPlacement);
-wapi_ret_true(GetWindowDisplayAffinity);
-wapi_ret_true(SetWindowDisplayAffinity);
-wapi_ret_notnull(BeginDeferWindowPos);
-wapi_ret_notnull(DeferWindowPos);
-wapi_ret_true(EndDeferWindowPos);
-wapi_ret_direct(IsWindowVisible);
-wapi_ret_direct(IsIconic);
-wapi_ret_direct(AnyPopup);
-wapi_ret_true(BringWindowToTop);
-wapi_ret_direct(IsZoomed);
-wapi_ret_notnull_WAO(CreateDialogParam);
-wapi_ret_notnull_WAT(CreateDialogIndirectParam);
+wapi_ret_WAT(RegisterDeviceNotification, notnull);
+wapi_ret(UnregisterDeviceNotification, true);
+wapi_ret(RegisterPowerSettingNotification, notnull);
+wapi_ret(UnregisterPowerSettingNotification, true);
+wapi_ret(RegisterSuspendResumeNotification, notnull);
+wapi_ret(UnregisterSuspendResumeNotification, true);
+wapi_ret_WAT(PostMessage, true);
+wapi_ret_WAT(PostThreadMessage, true);
+wapi_ret(AttachThreadInput, true);
+wapi_ret(ReplyMessage, direct);
+wapi_ret(WaitMessage, true);
+wapi_ret(WaitForInputIdle, positive);
+wapi_ret_WAT(DefWindowProc, direct);
+wapi_ret(PostQuitMessage, direct);
+wapi_ret_WAT(CallWindowProc, direct);
+wapi_ret(InSendMessage, direct);
+wapi_ret(InSendMessageEx, direct);
+wapi_ret(GetDoubleClickTime, direct);
+wapi_ret(SetDoubleClickTime, true);
+wapi_ret_WAO(RegisterClass, positive);
+wapi_ret_WAO(UnregisterClass, true);
+wapi_ret_WAO(GetClassInfo, true);
+wapi_ret_WAO(RegisterClassEx, positive);
+wapi_ret_WAO(GetClassInfoEx, true);
+wapi_ret_WAO(CreateWindowEx, notnull);
+wapi_ret(IsWindow, direct);
+wapi_ret(IsMenu, direct);
+wapi_ret(IsChild, direct);
+wapi_ret(DestroyWindow, true);
+wapi_ret(ShowWindow, direct);
+wapi_ret(AnimateWindow, true);
+wapi_ret(UpdateLayeredWindow, true);
+wapi_ret(UpdateLayeredWindowIndirect, true);
+wapi_ret(GetLayeredWindowAttributes, true);
+wapi_ret(PrintWindow, direct);
+wapi_ret(SetLayeredWindowAttributes, true);
+wapi_ret(ShowWindowAsync, direct);
+wapi_ret(FlashWindow, direct);
+wapi_ret(FlashWindowEx, direct);
+wapi_ret(ShowOwnedPopups, true);
+wapi_ret(OpenIcon, true);
+wapi_ret(CloseWindow, true);
+wapi_ret(MoveWindow, true);
+wapi_ret(SetWindowPos, true);
+wapi_ret(GetWindowPlacement, true);
+wapi_ret(SetWindowPlacement, true);
+wapi_ret(GetWindowDisplayAffinity, true);
+wapi_ret(SetWindowDisplayAffinity, true);
+wapi_ret(BeginDeferWindowPos, notnull);
+wapi_ret(DeferWindowPos, notnull);
+wapi_ret(EndDeferWindowPos, true);
+wapi_ret(IsWindowVisible, direct);
+wapi_ret(IsIconic, direct);
+wapi_ret(AnyPopup, direct);
+wapi_ret(BringWindowToTop, true);
+wapi_ret(IsZoomed, direct);
+wapi_ret_WAO(CreateDialogParam, notnull);
+wapi_ret_WAT(CreateDialogIndirectParam, notnull);
 #undef DialogBoxParam
 inline INT_PTR DialogBoxParam(HINSTANCE hInstance, LPCSTR lpTemplateName, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam)
 	ret_safe_to(auto h = ::DialogBoxParamA(hInstance, lpTemplateName, hWndParent, lpDialogFunc, dwInitParam), h);
@@ -790,17 +790,17 @@ inline INT_PTR DialogBoxIndirectParam(HINSTANCE hInstance, LPCDLGTEMPLATE hDialo
 		 ret_safe_to(auto h = ::DialogBoxIndirectParamW(hInstance, hDialogTemplate, hWndParent, lpDialogFunc, dwInitParam), h)
 	else ret_safe_to(auto h = ::DialogBoxIndirectParamA(hInstance, hDialogTemplate, hWndParent, lpDialogFunc, dwInitParam), h)
 }
-wapi_ret_true(EndDialog);
-wapi_ret_notnull(GetDlgItem);
-wapi_ret_true(SetDlgItemInt);
+wapi_ret(EndDialog, true);
+wapi_ret(GetDlgItem, notnull);
+wapi_ret(SetDlgItemInt, true);
 // GetDlgItemInt
 inline UINT GetDlgItemInt(HWND hDlg, int nIDDlgItem, BOOL *lpTranslated, BOOL bSigned)
 	safe_ret_as(auto h = ::GetDlgItemInt(hDlg, nIDDlgItem, lpTranslated, bSigned); h != !*lpTranslated, h);
-wapi_ret_true_WAO(SetDlgItemText);
-wapi_ret_positive_WAO(GetDlgItemText);
-wapi_ret_true(CheckDlgButton);
-wapi_ret_true(CheckRadioButton);
-wapi_ret_direct(IsDlgButtonChecked);
+wapi_ret_WAO(SetDlgItemText, true);
+wapi_ret_WAO(GetDlgItemText, positive);
+wapi_ret(CheckDlgButton, true);
+wapi_ret(CheckRadioButton, true);
+wapi_ret(IsDlgButtonChecked, direct);
 // SendDlgItemMessage
 template<bool IsUnicode = Native::IsUnicode>
 inline LRESULT SendDlgItemMessage(HWND hDlg, int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam) {
@@ -808,52 +808,52 @@ inline LRESULT SendDlgItemMessage(HWND hDlg, int nIDDlgItem, UINT Msg, WPARAM wP
 		 ret_safe_to(auto h = ::SendDlgItemMessageW(hDlg, nIDDlgItem, Msg, wParam, lParam), h)
 	else ret_safe_to(auto h = ::SendDlgItemMessageA(hDlg, nIDDlgItem, Msg, wParam, lParam), h)
 }
-wapi_ret_notnull(GetNextDlgGroupItem);
-wapi_ret_notnull(GetNextDlgTabItem);
+wapi_ret(GetNextDlgGroupItem, notnull);
+wapi_ret(GetNextDlgTabItem, notnull);
 // GetDlgCtrlID
 inline int GetDlgCtrlID(HWND hWnd)
 	safe_ret_as(auto h = ::GetDlgCtrlID(hWnd), h);
-wapi_ret_direct(GetDialogBaseUnits);
-wapi_ret_direct_WAT(DefDlgProc);
-wapi_ret_true(SetDialogControlDpiChangeBehavior);
+wapi_ret(GetDialogBaseUnits, direct);
+wapi_ret_WAT(DefDlgProc, direct);
+wapi_ret(SetDialogControlDpiChangeBehavior, true);
 // GetDialogControlDpiChangeBehavior
 inline DIALOG_CONTROL_DPI_CHANGE_BEHAVIORS GetDialogControlDpiChangeBehavior(HWND hWnd)
 	safe_ret_as(auto h = ::GetDialogControlDpiChangeBehavior(hWnd), h);
-wapi_ret_true(SetDialogDpiChangeBehavior);
+wapi_ret(SetDialogDpiChangeBehavior, true);
 // GetDialogDpiChangeBehavior
 inline DIALOG_DPI_CHANGE_BEHAVIORS GetDialogDpiChangeBehavior(HWND hDlg)
 	safe_ret_as(auto h = ::GetDialogDpiChangeBehavior(hDlg), h);
-wapi_ret_direct_WAT(CallMsgFilter);
-wapi_ret_true(OpenClipboard);
-wapi_ret_true(CloseClipboard);
-wapi_ret_direct(GetClipboardSequenceNumber);
-wapi_ret_notnull(GetClipboardOwner);
-wapi_ret_notnull(SetClipboardViewer);
-wapi_ret_notnull(GetClipboardViewer);
-wapi_ret_direct(ChangeClipboardChain);
-wapi_ret_notnull(SetClipboardData);
-wapi_ret_notnull(GetClipboardData);
+wapi_ret_WAT(CallMsgFilter, direct);
+wapi_ret(OpenClipboard, true);
+wapi_ret(CloseClipboard, true);
+wapi_ret(GetClipboardSequenceNumber, direct);
+wapi_ret(GetClipboardOwner, notnull);
+wapi_ret(SetClipboardViewer, notnull);
+wapi_ret(GetClipboardViewer, notnull);
+wapi_ret(ChangeClipboardChain, direct);
+wapi_ret(SetClipboardData, notnull);
+wapi_ret(GetClipboardData, notnull);
 // GetClipboardMetadata
-wapi_ret_direct_WAO(RegisterClipboardFormat);
+wapi_ret_WAO(RegisterClipboardFormat, direct);
 // CountClipboardFormats
 inline int CountClipboardFormats()
 	safe_ret_as(auto h = ::CountClipboardFormats(), h);
-wapi_ret_positive(EnumClipboardFormats);
+wapi_ret(EnumClipboardFormats, positive);
 // GetClipboardFormatName
 inline int GetClipboardFormatName(UINT format, LPSTR lpszFormatName, int cchMaxCount)
 	safe_ret_as(auto h = ::GetClipboardFormatNameA(format, lpszFormatName, cchMaxCount), h);
 inline int GetClipboardFormatName(UINT format, LPWSTR lpszFormatName, int cchMaxCount)
 	safe_ret_as(auto h = ::GetClipboardFormatNameW(format, lpszFormatName, cchMaxCount), h);
-wapi_ret_true(EmptyClipboard);
-wapi_ret_direct(IsClipboardFormatAvailable);
+wapi_ret(EmptyClipboard, true);
+wapi_ret(IsClipboardFormatAvailable, direct);
 // GetPriorityClipboardFormat
 inline int GetPriorityClipboardFormat(UINT *paFormatPriorityList, int cFormats)
 	safe_ret_as(auto h = ::GetPriorityClipboardFormat(paFormatPriorityList, cFormats), h);
 inline HWND GetOpenClipboardWindow()
 	safe_ret_as(auto h = ::GetOpenClipboardWindow(), h);
-wapi_ret_true(AddClipboardFormatListener);
-wapi_ret_true(RemoveClipboardFormatListener);
-wapi_ret_true(GetUpdatedClipboardFormats);
+wapi_ret(AddClipboardFormatListener, true);
+wapi_ret(RemoveClipboardFormatListener, true);
+wapi_ret(GetUpdatedClipboardFormats, true);
 // CharToOem - Deprecated
 // OemToChar - Deprecated
 // CharToOemBuff - Deprecated
@@ -870,14 +870,14 @@ wapi_ret_true(GetUpdatedClipboardFormats);
 // IsCharAlphaNumeric - Deprecated
 // IsCharUpper - Deprecated
 // IsCharLower - Deprecated
-wapi_ret_notnull(SetFocus);
-wapi_ret_direct(GetActiveWindow);
-wapi_ret_direct(GetFocus);
-wapi_ret_direct(GetKBCodePage);
-wapi_ret_direct(GetKeyState);
-wapi_ret_direct(GetAsyncKeyState);
-wapi_ret_true(GetKeyboardState);
-wapi_ret_true(SetKeyboardState);
+wapi_ret(SetFocus, notnull);
+wapi_ret(GetActiveWindow, direct);
+wapi_ret(GetFocus, direct);
+wapi_ret(GetKBCodePage, direct);
+wapi_ret(GetKeyState, direct);
+wapi_ret(GetAsyncKeyState, direct);
+wapi_ret(GetKeyboardState, true);
+wapi_ret(SetKeyboardState, true);
 // GetKeyNameText
 inline int GetKeyNameText(LONG lParam, LPSTR lpString, int cchSize)
 	safe_ret_as(auto h = ::GetKeyNameTextA(lParam, lpString, cchSize), h);
@@ -886,10 +886,10 @@ inline int GetKeyNameText(LONG lParam, LPWSTR lpString, int cchSize)
 // GetKeyboardType
 inline int GetKeyboardType(int nTypeFlag)
 	ret_safe_to(auto h = ::GetKeyboardType(nTypeFlag), h);
-wapi_ret_direct(ToAscii);
-wapi_ret_direct(ToAsciiEx);
-wapi_ret_direct(ToUnicode);
-wapi_ret_direct(OemKeyScan);
+wapi_ret(ToAscii, direct);
+wapi_ret(ToAsciiEx, direct);
+wapi_ret(ToUnicode, direct);
+wapi_ret(OemKeyScan, direct);
 // VkKeyScan
 inline SHORT VkKeyScan(CHAR ch)
 	ret_as(::VkKeyScanA(ch));
@@ -902,60 +902,60 @@ inline SHORT VkKeyScanEx(WCHAR ch, HKL dwhkl)
 	ret_as(::VkKeyScanExW(ch, dwhkl));
 // keybd_event
 // mouse_event
-wapi_ret_positive(SendInput);
-wapi_ret_true(GetTouchInputInfo);
-wapi_ret_true(CloseTouchInputHandle);
-wapi_ret_true(RegisterTouchWindow);
-wapi_ret_true(UnregisterTouchWindow);
-wapi_ret_direct(IsTouchWindow);
-wapi_ret_true(InitializeTouchInjection);
-wapi_ret_true(InjectTouchInput);
-wapi_ret_true(GetPointerType);
-wapi_ret_true(GetPointerCursorId);
-wapi_ret_true(GetPointerInfo);
-wapi_ret_true(GetPointerInfoHistory);
-wapi_ret_true(GetPointerFrameInfo);
-wapi_ret_true(GetPointerFrameInfoHistory);
-wapi_ret_true(GetPointerTouchInfo);
-wapi_ret_true(GetPointerTouchInfoHistory);
-wapi_ret_true(GetPointerFrameTouchInfo);
-wapi_ret_true(GetPointerFrameTouchInfoHistory);
-wapi_ret_true(GetPointerPenInfo);
-wapi_ret_true(GetPointerPenInfoHistory);
-wapi_ret_true(GetPointerFramePenInfo);
-wapi_ret_true(GetPointerFramePenInfoHistory);
-wapi_ret_true(SkipPointerFrameMessages);
-wapi_ret_true(RegisterPointerInputTarget);
-wapi_ret_true(UnregisterPointerInputTarget);
+wapi_ret(SendInput, positive);
+wapi_ret(GetTouchInputInfo, true);
+wapi_ret(CloseTouchInputHandle, true);
+wapi_ret(RegisterTouchWindow, true);
+wapi_ret(UnregisterTouchWindow, true);
+wapi_ret(IsTouchWindow, direct);
+wapi_ret(InitializeTouchInjection, true);
+wapi_ret(InjectTouchInput, true);
+wapi_ret(GetPointerType, true);
+wapi_ret(GetPointerCursorId, true);
+wapi_ret(GetPointerInfo, true);
+wapi_ret(GetPointerInfoHistory, true);
+wapi_ret(GetPointerFrameInfo, true);
+wapi_ret(GetPointerFrameInfoHistory, true);
+wapi_ret(GetPointerTouchInfo, true);
+wapi_ret(GetPointerTouchInfoHistory, true);
+wapi_ret(GetPointerFrameTouchInfo, true);
+wapi_ret(GetPointerFrameTouchInfoHistory, true);
+wapi_ret(GetPointerPenInfo, true);
+wapi_ret(GetPointerPenInfoHistory, true);
+wapi_ret(GetPointerFramePenInfo, true);
+wapi_ret(GetPointerFramePenInfoHistory, true);
+wapi_ret(SkipPointerFrameMessages, true);
+wapi_ret(RegisterPointerInputTarget, true);
+wapi_ret(UnregisterPointerInputTarget, true);
 // RegisterPointerInputTargetEx
 // UnregisterPointerInputTargetEx
 #if (NTDDI_VERSION >= NTDDI_WIN10_RS5)
-wapi_ret_notnull(CreateSyntheticPointerDevice);
-wapi_ret_true(InjectSyntheticPointerInput);
-wapi_ret_direct(DestroySyntheticPointerDevice);
+wapi_ret(CreateSyntheticPointerDevice, notnull);
+wapi_ret(InjectSyntheticPointerInput, true);
+wapi_ret(DestroySyntheticPointerDevice, direct);
 #endif
-wapi_ret_true(EnableMouseInPointer);
-wapi_ret_direct(IsMouseInPointerEnabled);
+wapi_ret(EnableMouseInPointer, true);
+wapi_ret(IsMouseInPointerEnabled, direct);
 // EnableMouseInPointerForThread
-wapi_ret_true(RegisterTouchHitTestingWindow);
-wapi_ret_true(EvaluateProximityToRect);
-wapi_ret_true(EvaluateProximityToPolygon);
+wapi_ret(RegisterTouchHitTestingWindow, true);
+wapi_ret(EvaluateProximityToRect, true);
+wapi_ret(EvaluateProximityToPolygon, true);
 // PackTouchHitTestingProximityEvaluation
 inline LRESULT PackTouchHitTestingProximityEvaluation(const TOUCH_HIT_TESTING_INPUT *pHitTestingInput, const TOUCH_HIT_TESTING_PROXIMITY_EVALUATION *pProximityEval)
 	ret_safe_to(auto h = ::PackTouchHitTestingProximityEvaluation(pHitTestingInput, pProximityEval), h);
-wapi_ret_true(GetWindowFeedbackSetting);
-wapi_ret_true(SetWindowFeedbackSetting);
+wapi_ret(GetWindowFeedbackSetting, true);
+wapi_ret(SetWindowFeedbackSetting, true);
 // GetPointerInputTransform - Deprecated
 //inline void GetPointerInputTransform(UINT32 pointerId, UINT32 historyCount, INPUT_TRANSFORM *inputTransform)
 //	safe_ret_as(::GetPointerInputTransform(pointerId, historyCount, inputTransform));
-wapi_ret_true(GetLastInputInfo);
-wapi_ret_direct_WAT(MapVirtualKey);
-wapi_ret_direct_WAT(MapVirtualKeyEx);
-wapi_ret_direct(GetInputState);
-wapi_ret_direct(GetQueueStatus);
-wapi_ret_direct(GetCapture);
-wapi_ret_direct(SetCapture);
-wapi_ret_true(ReleaseCapture);
+wapi_ret(GetLastInputInfo, true);
+wapi_ret_WAT(MapVirtualKey, direct);
+wapi_ret_WAT(MapVirtualKeyEx, direct);
+wapi_ret(GetInputState, direct);
+wapi_ret(GetQueueStatus, direct);
+wapi_ret(GetCapture, direct);
+wapi_ret(SetCapture, direct);
+wapi_ret(ReleaseCapture, true);
 // MsgWaitForMultipleObjects
 inline DWORD MsgWaitForMultipleObjects(DWORD nCount, CONST HANDLE *pHandles, BOOL fWaitAll, DWORD dwMilliseconds, DWORD dwWakeMask)
 	safe_ret_as(auto h = ::MsgWaitForMultipleObjects(nCount, pHandles, fWaitAll, dwMilliseconds, dwWakeMask), h);
@@ -968,14 +968,14 @@ inline UINT_PTR SetTimer(HWND hWnd, UINT_PTR nIDEvent, UINT uElapse, TIMERPROC l
 // SetCoalescableTimer
 inline UINT_PTR SetCoalescableTimer(HWND hWnd, UINT_PTR nIDEvent, UINT uElapse, TIMERPROC lpTimerFunc, ULONG uToleranceDelay)
 	safe_ret_as(auto h = ::SetCoalescableTimer(hWnd, nIDEvent, uElapse, lpTimerFunc, uToleranceDelay), h);
-wapi_ret_true(KillTimer);
-wapi_ret_direct(IsWindowUnicode);
-wapi_ret_direct(EnableWindow);
-wapi_ret_direct(IsWindowEnabled);
-wapi_ret_notnull_WAO(LoadAccelerators);
-wapi_ret_notnull_WAT(CreateAcceleratorTable);
-wapi_ret_true(DestroyAcceleratorTable);
-wapi_ret_direct_WAT(CopyAcceleratorTable);
+wapi_ret(KillTimer, true);
+wapi_ret(IsWindowUnicode, direct);
+wapi_ret(EnableWindow, direct);
+wapi_ret(IsWindowEnabled, direct);
+wapi_ret_WAO(LoadAccelerators, notnull);
+wapi_ret_WAT(CreateAcceleratorTable, notnull);
+wapi_ret(DestroyAcceleratorTable, true);
+wapi_ret_WAT(CopyAcceleratorTable, direct);
 // TranslateAccelerator
 template<bool IsUnicode = Native::IsUnicode>
 inline int TranslateAccelerator(HWND hWnd, HACCEL hAccTable, LPMSG lpMsg) {
@@ -989,74 +989,74 @@ inline int GetSystemMetrics(int nIndex)
 // GetSystemMetricsForDpi
 inline int GetSystemMetricsForDpi(int nIndex, UINT dpi)
 	safe_ret_as(auto h = ::GetSystemMetricsForDpi(nIndex, dpi), h);
-wapi_ret_notnull_WAO(LoadMenu);
-wapi_ret_notnull_WAT(LoadMenuIndirect);
-wapi_ret_direct(GetMenu);
-wapi_ret_true(SetMenu);
+wapi_ret_WAO(LoadMenu, notnull);
+wapi_ret_WAT(LoadMenuIndirect, notnull);
+wapi_ret(GetMenu, direct);
+wapi_ret(SetMenu, true);
 // ChangeMenu - Undocumented
-wapi_ret_direct(HiliteMenuItem);
+wapi_ret(HiliteMenuItem, direct);
 // GetMenuString
 inline int GetMenuString(HMENU hMenu, UINT uIDItem, LPSTR lpString, int cchMax, UINT flags)
 	safe_ret_as(auto h = ::GetMenuStringA(hMenu, uIDItem, lpString, cchMax, flags), h);
 inline int GetMenuString(HMENU hMenu, UINT uIDItem, LPWSTR lpString, int cchMax, UINT flags)
 	safe_ret_as(auto h = ::GetMenuStringW(hMenu, uIDItem, lpString, cchMax, flags), h);
-wapi_ret_direct(GetMenuState);
-wapi_ret_true(DrawMenuBar);
-wapi_ret_direct(GetSystemMenu);
-wapi_ret_notnull(CreateMenu);
-wapi_ret_notnull(CreatePopupMenu);
-wapi_ret_true(DestroyMenu);
+wapi_ret(GetMenuState, direct);
+wapi_ret(DrawMenuBar, true);
+wapi_ret(GetSystemMenu, direct);
+wapi_ret(CreateMenu, notnull);
+wapi_ret(CreatePopupMenu, notnull);
+wapi_ret(DestroyMenu, true);
 // CheckMenuItem
 inline DWORD CheckMenuItem(HMENU hMenu, UINT uIDCheckItem, UINT uCheck)
 	safe_ret_as(auto h = ::CheckMenuItem(hMenu, uIDCheckItem, uCheck), h);
-wapi_ret_true(EnableMenuItem);
-wapi_ret_direct(GetSubMenu);
-wapi_ret_direct(GetMenuItemID);
+wapi_ret(EnableMenuItem, true);
+wapi_ret(GetSubMenu, direct);
+wapi_ret(GetMenuItemID, direct);
 // GetMenuItemCount
 inline int GetMenuItemCount(HMENU hMenu)
 	safe_ret_as(auto h = ::GetMenuItemCount(hMenu), h);
-wapi_ret_true_WAO(InsertMenu);
-wapi_ret_true_WAO(AppendMenu);
-wapi_ret_true_WAO(ModifyMenu);
-wapi_ret_true(RemoveMenu);
-wapi_ret_true(DeleteMenu);
-wapi_ret_true(SetMenuItemBitmaps);
-wapi_ret_direct(GetMenuCheckMarkDimensions);
-wapi_ret_true(TrackPopupMenu);
-wapi_ret_true(TrackPopupMenuEx);
-wapi_ret_true(CalculatePopupWindowPosition);
-wapi_ret_true(GetMenuInfo);
-wapi_ret_true(SetMenuInfo);
-wapi_ret_true(EndMenu);
-wapi_ret_true_WAO(InsertMenuItem);
-wapi_ret_true_WAO(GetMenuItemInfo);
-wapi_ret_true_WAO(SetMenuItemInfo);
+wapi_ret_WAO(InsertMenu, true);
+wapi_ret_WAO(AppendMenu, true);
+wapi_ret_WAO(ModifyMenu, true);
+wapi_ret(RemoveMenu, true);
+wapi_ret(DeleteMenu, true);
+wapi_ret(SetMenuItemBitmaps, true);
+wapi_ret(GetMenuCheckMarkDimensions, direct);
+wapi_ret(TrackPopupMenu, true);
+wapi_ret(TrackPopupMenuEx, true);
+wapi_ret(CalculatePopupWindowPosition, true);
+wapi_ret(GetMenuInfo, true);
+wapi_ret(SetMenuInfo, true);
+wapi_ret(EndMenu, true);
+wapi_ret_WAO(InsertMenuItem, true);
+wapi_ret_WAO(GetMenuItemInfo, true);
+wapi_ret_WAO(SetMenuItemInfo, true);
 // GetMenuDefaultItem
 inline UINT GetMenuDefaultItem(HMENU hMenu, UINT fByPos, UINT gmdiFlags)
 	safe_ret_as(auto h = ::GetMenuDefaultItem(hMenu, fByPos, gmdiFlags); h != -1, h);
-wapi_ret_true(SetMenuDefaultItem);
-wapi_ret_true(GetMenuItemRect);
-wapi_ret_direct(MenuItemFromPoint);
+wapi_ret(SetMenuDefaultItem, true);
+wapi_ret(GetMenuItemRect, true);
+wapi_ret(MenuItemFromPoint, direct);
 // DragObject
-wapi_ret_direct(DragDetect);
-wapi_ret_true(UpdateWindow);
+wapi_ret(DragDetect, direct);
+wapi_ret(UpdateWindow, true);
 inline HWND SetActiveWindow(HWND hWnd)
 	safe_ret_as(auto h = ::SetActiveWindow(hWnd), h);
-wapi_ret_direct(GetForegroundWindow);
+wapi_ret(GetForegroundWindow, direct);
 inline void SwitchToThisWindow(HWND hwnd, BOOL fUnknown)
 	ret_as(::SwitchToThisWindow(hwnd, fUnknown));
-wapi_ret_true(SetForegroundWindow);
-wapi_ret_true(AllowSetForegroundWindow);
-wapi_ret_true(LockSetForegroundWindow);
-wapi_ret_notnull(GetDC);
-wapi_ret_notnull(GetDCEx);
-wapi_ret_notnull(GetWindowDC);
+wapi_ret(SetForegroundWindow, true);
+wapi_ret(AllowSetForegroundWindow, true);
+wapi_ret(LockSetForegroundWindow, true);
+wapi_ret(GetDC, notnull);
+wapi_ret(GetDCEx, notnull);
+wapi_ret(GetWindowDC, notnull);
 // ReleaseDC
 inline int ReleaseDC(HWND hWnd, HDC hDC)
 	safe_ret_as(auto h = ::ReleaseDC(hWnd, hDC), h);
-wapi_ret_notnull(BeginPaint);
-wapi_ret_true(EndPaint);
-wapi_ret_direct(GetUpdateRect);
+wapi_ret(BeginPaint, notnull);
+wapi_ret(EndPaint, true);
+wapi_ret(GetUpdateRect, direct);
 // GetUpdateRgn
 inline int GetUpdateRgn(HWND hWnd, HRGN hRgn, BOOL bErase)
 	safe_ret_as(auto h = ::GetUpdateRgn(hWnd, hRgn, bErase), h);
@@ -1069,13 +1069,13 @@ inline int GetWindowRgn(HWND hWnd, HRGN hRgn)
 // GetWindowRgnBox
 inline int GetWindowRgnBox(HWND hWnd, LPRECT lprc)
 	safe_ret_as(auto h = ::GetWindowRgnBox(hWnd, lprc), h);
-wapi_ret_true(InvalidateRect);
-wapi_ret_true(ValidateRect);
-wapi_ret_true(InvalidateRgn);
-wapi_ret_true(ValidateRgn);
-wapi_ret_true(RedrawWindow);
-wapi_ret_true(LockWindowUpdate);
-wapi_ret_true(ScrollWindow);
+wapi_ret(InvalidateRect, true);
+wapi_ret(ValidateRect, true);
+wapi_ret(InvalidateRgn, true);
+wapi_ret(ValidateRgn, true);
+wapi_ret(RedrawWindow, true);
+wapi_ret(LockWindowUpdate, true);
+wapi_ret(ScrollWindow, true);
 // ScrollWindowEx
 inline int ScrollWindowEx(HWND hWnd, int dx, int dy, CONST RECT *prcScroll, CONST RECT *prcClip, HRGN hrgnUpdate, LPRECT prcUpdate, UINT flags)
 	safe_ret_as(auto h = ::ScrollWindowEx(hWnd, dx, dy, prcScroll, prcClip, hrgnUpdate, prcUpdate, flags), h);
@@ -1085,12 +1085,12 @@ inline int SetScrollPos(HWND hWnd, int nBar, int nPos, BOOL bRedraw)
 // GetScrollPos
 inline int GetScrollPos(HWND hWnd, int nBar)
 	safe_ret_as(auto h = ::GetScrollPos(hWnd, nBar), h);
-wapi_ret_true(SetScrollRange);
-wapi_ret_true(GetScrollRange);
-wapi_ret_true(ShowScrollBar);
-wapi_ret_true(EnableScrollBar);
-wapi_ret_true_WAO(SetProp);
-wapi_ret_direct_WAO(GetProp);
+wapi_ret(SetScrollRange, true);
+wapi_ret(GetScrollRange, true);
+wapi_ret(ShowScrollBar, true);
+wapi_ret(EnableScrollBar, true);
+wapi_ret_WAO(SetProp, true);
+wapi_ret_WAO(GetProp, direct);
 // RemoveProp
 inline HANDLE RemoveProp(HWND hWnd, LPCSTR lpString)
 	ret_safe_to(auto h = ::RemovePropA(hWnd, lpString), h);
@@ -1106,7 +1106,7 @@ inline int EnumProps(HWND hWnd, PROPENUMPROCA lpEnumFunc)
 	safe_ret_as(auto h = ::EnumPropsA(hWnd, lpEnumFunc), h);
 inline int EnumProps(HWND hWnd, PROPENUMPROCW lpEnumFunc)
 	safe_ret_as(auto h = ::EnumPropsW(hWnd, lpEnumFunc), h);
-wapi_ret_true_WAO(SetWindowText);
+wapi_ret_WAO(SetWindowText, true);
 // GetWindowText
 inline int GetWindowText(HWND hWnd, LPSTR lpString, int nMaxCount)
 	ret_safe_to(auto h = ::GetWindowTextA(hWnd, lpString, nMaxCount), h);
@@ -1119,54 +1119,54 @@ inline int GetWindowTextLength(HWND hWnd) {
 		 ret_safe_to(auto h = ::GetWindowTextLengthW(hWnd), h)
 	else ret_safe_to(auto h = ::GetWindowTextLengthA(hWnd), h)
 }
-wapi_ret_true(GetClientRect);
-wapi_ret_true(GetWindowRect);
-wapi_ret_true(AdjustWindowRect);
-wapi_ret_true(AdjustWindowRectEx);
-wapi_ret_true(AdjustWindowRectExForDpi);
-wapi_ret_true(SetWindowContextHelpId);
-wapi_ret_direct(GetWindowContextHelpId);
-wapi_ret_true(SetMenuContextHelpId);
-wapi_ret_direct(GetMenuContextHelpId);
-wapi_ret_notzero_WAO(MessageBox);
-wapi_ret_notzero_WAO(MessageBoxEx);
-wapi_ret_notzero_WAO(MessageBoxIndirect);
-wapi_ret_true(MessageBeep);
-wapi_ret_direct(ShowCursor);
-wapi_ret_true(SetCursorPos);
-wapi_ret_true(SetPhysicalCursorPos);
-wapi_ret_direct(SetCursor);
-wapi_ret_true(GetCursorPos);
-wapi_ret_true(GetPhysicalCursorPos);
-wapi_ret_true(GetClipCursor);
-wapi_ret_direct(GetCursor);
-wapi_ret_true(CreateCaret);
+wapi_ret(GetClientRect, true);
+wapi_ret(GetWindowRect, true);
+wapi_ret(AdjustWindowRect, true);
+wapi_ret(AdjustWindowRectEx, true);
+wapi_ret(AdjustWindowRectExForDpi, true);
+wapi_ret(SetWindowContextHelpId, true);
+wapi_ret(GetWindowContextHelpId, direct);
+wapi_ret(SetMenuContextHelpId, true);
+wapi_ret(GetMenuContextHelpId, direct);
+wapi_ret_WAO(MessageBox, notzero);
+wapi_ret_WAO(MessageBoxEx, notzero);
+wapi_ret_WAO(MessageBoxIndirect, notzero);
+wapi_ret(MessageBeep, true);
+wapi_ret(ShowCursor, direct);
+wapi_ret(SetCursorPos, true);
+wapi_ret(SetPhysicalCursorPos, true);
+wapi_ret(SetCursor, direct);
+wapi_ret(GetCursorPos, true);
+wapi_ret(GetPhysicalCursorPos, true);
+wapi_ret(GetClipCursor, true);
+wapi_ret(GetCursor, direct);
+wapi_ret(CreateCaret, true);
 // GetCaretBlinkTime
 inline UINT GetCaretBlinkTime()
 	safe_ret_as(auto h = ::GetCaretBlinkTime(), h);
-wapi_ret_true(SetCaretBlinkTime);
-wapi_ret_true(DestroyCaret);
-wapi_ret_true(HideCaret);
-wapi_ret_true(ShowCaret);
-wapi_ret_true(SetCaretPos);
-wapi_ret_true(GetCaretPos);
-wapi_ret_true(ClientToScreen);
-wapi_ret_true(ScreenToClient);
-wapi_ret_true(LogicalToPhysicalPoint);
-wapi_ret_true(PhysicalToLogicalPoint);
-wapi_ret_true(LogicalToPhysicalPointForPerMonitorDPI);
-wapi_ret_true(PhysicalToLogicalPointForPerMonitorDPI);
+wapi_ret(SetCaretBlinkTime, true);
+wapi_ret(DestroyCaret, true);
+wapi_ret(HideCaret, true);
+wapi_ret(ShowCaret, true);
+wapi_ret(SetCaretPos, true);
+wapi_ret(GetCaretPos, true);
+wapi_ret(ClientToScreen, true);
+wapi_ret(ScreenToClient, true);
+wapi_ret(LogicalToPhysicalPoint, true);
+wapi_ret(PhysicalToLogicalPoint, true);
+wapi_ret(LogicalToPhysicalPointForPerMonitorDPI, true);
+wapi_ret(PhysicalToLogicalPointForPerMonitorDPI, true);
 // MapWindowPoints
 inline int MapWindowPoints(HWND hWndFrom, HWND hWndTo, LPPOINT lpPoints, UINT cPoints)
 	ret_safe_to(auto h = ::MapWindowPoints(hWndFrom, hWndTo, lpPoints, cPoints), h);
-wapi_ret_direct(WindowFromPoint);
-wapi_ret_direct(WindowFromPhysicalPoint);
-wapi_ret_direct(ChildWindowFromPoint);
-wapi_ret_true(ClipCursor);
-wapi_ret_direct(ChildWindowFromPointEx);
-wapi_ret_direct(GetSysColor);
-wapi_ret_direct(GetSysColorBrush);
-wapi_ret_true(SetSysColors);
+wapi_ret(WindowFromPoint, direct);
+wapi_ret(WindowFromPhysicalPoint, direct);
+wapi_ret(ChildWindowFromPoint, direct);
+wapi_ret(ClipCursor, true);
+wapi_ret(ChildWindowFromPointEx, direct);
+wapi_ret(GetSysColor, direct);
+wapi_ret(GetSysColorBrush, direct);
+wapi_ret(SetSysColors, true);
 // SetRect
 // SetRectEmpty
 // CopyRect
@@ -1222,23 +1222,23 @@ inline ULONG_PTR SetClassLongPtr(HWND hWnd, int nIndex, LONG_PTR dwNewLong) {
 		 ret_safe_to(auto h = ::SetClassLongPtrW(hWnd, nIndex, dwNewLong), h)
 	else ret_safe_to(auto h = ::SetClassLongPtrA(hWnd, nIndex, dwNewLong), h)
 }
-wapi_ret_true(GetProcessDefaultLayout);
-wapi_ret_true(SetProcessDefaultLayout);
-wapi_ret_direct(GetDesktopWindow);
+wapi_ret(GetProcessDefaultLayout, true);
+wapi_ret(SetProcessDefaultLayout, true);
+wapi_ret(GetDesktopWindow, direct);
 // GetParent
 inline HWND GetParent(HWND hWnd)
 	ret_safe_to(auto h = ::GetParent(hWnd), h);
 // SetParent
 inline HWND SetParent(HWND hWndChild, HWND hWndNewParent)
 	ret_safe_to(auto h = ::SetParent(hWndChild, hWndNewParent), h);
-wapi_ret_direct(EnumChildWindows);
-wapi_ret_direct_WAO(FindWindow);
-wapi_ret_notnull_WAO(FindWindowEx);
-wapi_ret_direct(GetShellWindow);
-wapi_ret_true(RegisterShellHookWindow);
-wapi_ret_true(DeregisterShellHookWindow);
-wapi_ret_true(EnumWindows);
-wapi_ret_direct(EnumThreadWindows);
+wapi_ret(EnumChildWindows, direct);
+wapi_ret_WAO(FindWindow, direct);
+wapi_ret_WAO(FindWindowEx, notnull);
+wapi_ret(GetShellWindow, direct);
+wapi_ret(RegisterShellHookWindow, true);
+wapi_ret(DeregisterShellHookWindow, true);
+wapi_ret(EnumWindows, true);
+wapi_ret(EnumThreadWindows, direct);
 // GetClassName
 inline int GetClassName(HWND hWnd, LPSTR lpClassName, int nMaxCount)
 	safe_ret_as(auto h = ::GetClassNameA(hWnd, lpClassName, nMaxCount), h);
@@ -1246,87 +1246,87 @@ inline int GetClassName(HWND hWnd, LPWSTR lpClassName, int nMaxCount)
 	safe_ret_as(auto h = ::GetClassNameW(hWnd, lpClassName, nMaxCount), h);
 inline HWND GetTopWindow(HWND hWnd)
 	ret_safe_to(auto h = ::GetTopWindow(hWnd), h);
-wapi_ret_direct(IsGUIThread);
-wapi_ret_direct(GetLastActivePopup);
+wapi_ret(IsGUIThread, direct);
+wapi_ret(GetLastActivePopup, direct);
 inline HWND GetWindow(HWND hWnd, UINT uCmd)
 	ret_safe_to(auto h = ::GetWindow(hWnd, uCmd), h);
 // SetWindowsHook - Undocumented
 // UnhookWindowsHook
-wapi_ret_notnull_WAT(SetWindowsHookEx);
-wapi_ret_true(UnhookWindowsHookEx);
-wapi_ret_direct(CallNextHookEx);
-wapi_ret_true(CheckMenuRadioItem);
-wapi_ret_notnull_WAO(LoadBitmap);
-wapi_ret_notnull_WAO(LoadCursor);
-wapi_ret_notnull_WAO(LoadCursorFromFile);
-wapi_ret_notnull(CreateCursor);
-wapi_ret_true(DestroyCursor);
-wapi_ret_true(SetSystemCursor);
-wapi_ret_notnull_WAO(LoadIcon);
+wapi_ret_WAT(SetWindowsHookEx, notnull);
+wapi_ret(UnhookWindowsHookEx, true);
+wapi_ret(CallNextHookEx, direct);
+wapi_ret(CheckMenuRadioItem, true);
+wapi_ret_WAO(LoadBitmap, notnull);
+wapi_ret_WAO(LoadCursor, notnull);
+wapi_ret_WAO(LoadCursorFromFile, notnull);
+wapi_ret(CreateCursor, notnull);
+wapi_ret(DestroyCursor, true);
+wapi_ret(SetSystemCursor, true);
+wapi_ret_WAO(LoadIcon, notnull);
 // PrivateExtractIcons
 inline UINT PrivateExtractIcons(LPCSTR szFileName, int nIconIndex, int cxIcon, int cyIcon, HICON *phicon, UINT *piconid, UINT nIcons, UINT flags)
 	safe_ret_as(auto h = ::PrivateExtractIconsA(szFileName, nIconIndex, cxIcon, cyIcon, phicon, piconid, nIcons, flags); h != -1, h);
 inline UINT PrivateExtractIcons(LPCWSTR szFileName, int nIconIndex, int cxIcon, int cyIcon, HICON *phicon, UINT *piconid, UINT nIcons, UINT flags)
 	safe_ret_as(auto h = ::PrivateExtractIconsW(szFileName, nIconIndex, cxIcon, cyIcon, phicon, piconid, nIcons, flags); h != -1, h);
-wapi_ret_notnull(CreateIcon);
-wapi_ret_true(DestroyIcon);
+wapi_ret(CreateIcon, notnull);
+wapi_ret(DestroyIcon, true);
 // LookupIconIdFromDirectory
 inline int LookupIconIdFromDirectory(PBYTE presbits, BOOL fIcon)
 	safe_ret_as(auto h = ::LookupIconIdFromDirectory(presbits, fIcon), h);
 // LookupIconIdFromDirectoryEx
 inline int LookupIconIdFromDirectoryEx(PBYTE presbits, BOOL fIcon, int cxDesired, int cyDesired, UINT Flags)
 	safe_ret_as(auto h = ::LookupIconIdFromDirectoryEx(presbits, fIcon, cxDesired, cyDesired, Flags), h);
-wapi_ret_notnull(CreateIconFromResource);
-wapi_ret_notnull(CreateIconFromResourceEx);
+wapi_ret(CreateIconFromResource, notnull);
+wapi_ret(CreateIconFromResourceEx, notnull);
 #if (NTDDI_VERSION >= NTDDI_WIN10_CO) && !__GNUC__
-wapi_ret_direct(SetThreadCursorCreationScaling);
+wapi_ret(SetThreadCursorCreationScaling, direct);
 #endif
-wapi_ret_notnull_WAO(LoadImage);
+wapi_ret_WAO(LoadImage, notnull);
 //// CopyImage
 //inline HANDLE CopyImage(HANDLE h, UINT type, int cx, int cy, UINT flags)
 //	safe_ret_as(auto h = ::CopyImage(h, type, cx, cy, flags), h);
-wapi_ret_notnull(CreateIconIndirect);
-wapi_ret_notnull(CopyIcon);
-wapi_ret_true(GetIconInfo);
-wapi_ret_true_WAO(GetIconInfoEx);
-wapi_ret_direct_WAT(IsDialogMessage);
-wapi_ret_true(MapDialogRect);
+wapi_ret(CreateIconIndirect, notnull);
+wapi_ret(CopyIcon, notnull);
+wapi_ret(GetIconInfo, true);
+wapi_ret_WAO(GetIconInfoEx, true);
+wapi_ret_WAT(IsDialogMessage, direct);
+wapi_ret(MapDialogRect, true);
 // DlgDirList
 inline int DlgDirList(HWND hDlg, LPSTR lpPathSpec, int nIDListBox, int nIDStaticPath, UINT uFileType)
 	safe_ret_as(auto h = ::DlgDirListA(hDlg, lpPathSpec, nIDListBox, nIDStaticPath, uFileType), h);
 inline int DlgDirList(HWND hDlg, LPWSTR lpPathSpec, int nIDListBox, int nIDStaticPath, UINT uFileType)
 	safe_ret_as(auto h = ::DlgDirListW(hDlg, lpPathSpec, nIDListBox, nIDStaticPath, uFileType), h);
-wapi_ret_true_WAO(DlgDirSelectEx);
+wapi_ret_WAO(DlgDirSelectEx, true);
 // DlgDirListComboBox
 inline int DlgDirListComboBox(HWND hDlg, LPSTR lpPathSpec, int nIDComboBox, int nIDStaticPath, UINT uFiletype)
 	safe_ret_as(auto h = ::DlgDirListComboBoxA(hDlg, lpPathSpec, nIDComboBox, nIDStaticPath, uFiletype), h);
 inline int DlgDirListComboBox(HWND hDlg, LPWSTR lpPathSpec, int nIDComboBox, int nIDStaticPath, UINT uFiletype)
 	safe_ret_as(auto h = ::DlgDirListComboBoxW(hDlg, lpPathSpec, nIDComboBox, nIDStaticPath, uFiletype), h);
-wapi_ret_true_WAO(DlgDirSelectComboBoxEx);
-wapi_ret_direct(SetScrollInfo);
-wapi_ret_true(GetScrollInfo);
-wapi_ret_direct_WAT(DefFrameProc);
-wapi_ret_direct_WAT(DefMDIChildProc);
-wapi_ret_direct(TranslateMDISysAccel);
-wapi_ret_positive(ArrangeIconicWindows);
-wapi_ret_notnull_WAO(CreateMDIWindow);
-wapi_ret_positive(TileWindows);
-wapi_ret_positive(CascadeWindows);
-wapi_ret_true_WAO(WinHelp);
-wapi_ret_positive(GetGuiResources);
-wapi_ret_direct_WAO(ChangeDisplaySettings);
-wapi_ret_direct_WAO(ChangeDisplaySettingsEx);
-wapi_ret_true_WAO(EnumDisplaySettings);
-wapi_ret_true_WAO(EnumDisplaySettingsEx);
-wapi_ret_true_WAO(EnumDisplayDevices);
-wapi_ret_direct(GetDisplayConfigBufferSizes);
-wapi_ret_direct(SetDisplayConfig);
-wapi_ret_direct(QueryDisplayConfig);
-wapi_ret_direct(DisplayConfigGetDeviceInfo);
-wapi_ret_direct(DisplayConfigSetDeviceInfo);
-wapi_ret_true_WAT(SystemParametersInfo);
-wapi_ret_true(SystemParametersInfoForDpi);
-wapi_ret_true(SoundSentry);
+wapi_ret_WAO(DlgDirSelectComboBoxEx, true);
+wapi_ret(SetScrollInfo, direct);
+wapi_ret(GetScrollInfo, true);
+wapi_ret_WAT(DefFrameProc, direct);
+wapi_ret_WAT(DefMDIChildProc, direct);
+wapi_ret(TranslateMDISysAccel, direct);
+wapi_ret(ArrangeIconicWindows, positive);
+wapi_ret_WAO(CreateMDIWindow, notnull);
+wapi_ret(TileWindows, positive);
+wapi_ret(CascadeWindows, positive);
+wapi_ret_WAO(WinHelp, true);
+wapi_ret(GetGuiResources, positive);
+wapi_ret_WAO(ChangeDisplaySettings, direct);
+wapi_ret_WAO(ChangeDisplaySettingsEx, direct);
+wapi_ret_WAO(EnumDisplaySettings, true);
+wapi_ret_WAO(EnumDisplaySettingsEx, true);
+wapi_ret_WAO(EnumDisplayDevices, true);
+wapi_ret(GetDisplayConfigBufferSizes, direct);
+wapi_ret(SetDisplayConfig, direct);
+wapi_ret(QueryDisplayConfig, direct);
+wapi_ret(DisplayConfigGetDeviceInfo, direct);
+wapi_ret(DisplayConfigSetDeviceInfo, direct);
+wapi_ret_WAT(SystemParametersInfo, true);
+wapi_ret(SystemParametersInfoForDpi, true);
+wapi_ret(SoundSentry, true);
 // SetDebugErrorLevel
 // SetLastErrorEx
 // InternalGetWindowText
@@ -1334,51 +1334,51 @@ inline int InternalGetWindowText(HWND hWnd, LPWSTR pString, int cchMaxCount)
 	ret_safe_to(auto h = ::InternalGetWindowText(hWnd, pString, cchMaxCount), h);
 // EndTask
 // CancelShutdown
-wapi_ret_direct(MonitorFromPoint);
-wapi_ret_direct(MonitorFromRect);
-wapi_ret_direct(MonitorFromWindow);
-wapi_ret_true_WAT(GetMonitorInfo);
-wapi_ret_true(EnumDisplayMonitors);
-wapi_ret_direct(NotifyWinEvent);
-wapi_ret_notnull(SetWinEventHook);
-wapi_ret_direct(IsWinEventHookInstalled);
-wapi_ret_true(UnhookWinEvent);
-wapi_ret_true(GetGUIThreadInfo);
-wapi_ret_true(BlockInput);
-wapi_ret_true(SetProcessDPIAware);
-wapi_ret_direct(IsProcessDPIAware);
-wapi_ret_notzero(SetThreadDpiAwarenessContext);
-wapi_ret_notzero(GetWindowDpiAwarenessContext);
-wapi_ret_notzero(GetAwarenessFromDpiAwarenessContext);
-wapi_ret_direct(GetDpiFromDpiAwarenessContext);
-wapi_ret_direct(AreDpiAwarenessContextsEqual);
-wapi_ret_direct(IsValidDpiAwarenessContext);
-wapi_ret_positive(GetDpiForWindow);
-wapi_ret_direct(GetDpiForSystem);
-wapi_ret_direct(GetSystemDpiForProcess);
-wapi_ret_true(EnableNonClientDpiScaling);
-wapi_ret_true(InheritWindowMonitor);
-wapi_ret_true(SetProcessDpiAwarenessContext);
+wapi_ret(MonitorFromPoint, direct);
+wapi_ret(MonitorFromRect, direct);
+wapi_ret(MonitorFromWindow, direct);
+wapi_ret_WAT(GetMonitorInfo, true);
+wapi_ret(EnumDisplayMonitors, true);
+wapi_ret(NotifyWinEvent, direct);
+wapi_ret(SetWinEventHook, notnull);
+wapi_ret(IsWinEventHookInstalled, direct);
+wapi_ret(UnhookWinEvent, true);
+wapi_ret(GetGUIThreadInfo, true);
+wapi_ret(BlockInput, true);
+wapi_ret(SetProcessDPIAware, true);
+wapi_ret(IsProcessDPIAware, direct);
+wapi_ret(SetThreadDpiAwarenessContext, notzero);
+wapi_ret(GetWindowDpiAwarenessContext, notzero);
+wapi_ret(GetAwarenessFromDpiAwarenessContext, notzero);
+wapi_ret(GetDpiFromDpiAwarenessContext, direct);
+wapi_ret(AreDpiAwarenessContextsEqual, direct);
+wapi_ret(IsValidDpiAwarenessContext, direct);
+wapi_ret(GetDpiForWindow, positive);
+wapi_ret(GetDpiForSystem, direct);
+wapi_ret(GetSystemDpiForProcess, direct);
+wapi_ret(EnableNonClientDpiScaling, true);
+wapi_ret(InheritWindowMonitor, true);
+wapi_ret(SetProcessDpiAwarenessContext, true);
 #if (NTDDI_VERSION >= NTDDI_WIN10_19H1)
-wapi_ret_direct(GetDpiAwarenessContextForProcess);
+wapi_ret(GetDpiAwarenessContextForProcess, direct);
 #endif
-wapi_ret_notzero(SetThreadDpiHostingBehavior);
-wapi_ret_direct(GetThreadDpiHostingBehavior);
-wapi_ret_direct(GetWindowDpiHostingBehavior);
-wapi_ret_positive_WAO(GetWindowModuleFileName);
-wapi_ret_true(GetCursorInfo);
-wapi_ret_true(GetWindowInfo);
-wapi_ret_true(GetTitleBarInfo);
-wapi_ret_true(GetMenuBarInfo);
-wapi_ret_true(GetScrollBarInfo);
-wapi_ret_true(GetComboBoxInfo);
-wapi_ret_direct(GetAncestor);
-wapi_ret_direct(RealChildWindowFromPoint);
-wapi_ret_positive_WAO(RealGetWindowClass);
-wapi_ret_true_WAO(GetAltTabInfo);
-wapi_ret_direct(GetListBoxInfo);
-wapi_ret_true(LockWorkStation);
-wapi_ret_true(UserHandleGrantAccess);
+wapi_ret(SetThreadDpiHostingBehavior, notzero);
+wapi_ret(GetThreadDpiHostingBehavior, direct);
+wapi_ret(GetWindowDpiHostingBehavior, direct);
+wapi_ret_WAO(GetWindowModuleFileName, positive);
+wapi_ret(GetCursorInfo, true);
+wapi_ret(GetWindowInfo, true);
+wapi_ret(GetTitleBarInfo, true);
+wapi_ret(GetMenuBarInfo, true);
+wapi_ret(GetScrollBarInfo, true);
+wapi_ret(GetComboBoxInfo, true);
+wapi_ret(GetAncestor, direct);
+wapi_ret(RealChildWindowFromPoint, direct);
+wapi_ret_WAO(RealGetWindowClass, positive);
+wapi_ret_WAO(GetAltTabInfo, true);
+wapi_ret(GetListBoxInfo, direct);
+wapi_ret(LockWorkStation, true);
+wapi_ret(UserHandleGrantAccess, true);
 // GetRawInputData
 inline UINT GetRawInputData(HRAWINPUT hRawInput, UINT uiCommand, LPVOID pData, PUINT pcbSize, UINT cbSizeHeader)
 	safe_ret_as(auto h = ::GetRawInputData(hRawInput, uiCommand, pData, pcbSize, cbSizeHeader); h != -1, h);
@@ -1392,7 +1392,7 @@ inline UINT GetRawInputDeviceInfo(HANDLE hDevice, UINT uiCommand, LPVOID pData, 
 // GetRawInputBuffer
 inline UINT GetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize, UINT cbSizeHeader)
 	safe_ret_as(auto h = ::GetRawInputBuffer(pData, pcbSize, cbSizeHeader); h != -1, h);
-wapi_ret_true(RegisterRawInputDevices);
+wapi_ret(RegisterRawInputDevices, true);
 // GetRegisteredRawInputDevices
 inline UINT GetRegisteredRawInputDevices(PRAWINPUTDEVICE pRawInputDevices, PUINT puiNumDevices, UINT cbSize)
 	safe_ret_as(auto h = ::GetRegisteredRawInputDevices(pRawInputDevices, puiNumDevices, cbSize); h != -1, h);
@@ -1402,33 +1402,33 @@ inline UINT GetRawInputDeviceList(PRAWINPUTDEVICELIST pRawInputDeviceList, PUINT
 // DefRawInputProc
 inline LRESULT DefRawInputProc(PRAWINPUT *paRawInput, INT nInput, UINT cbSizeHeader)
 safe_ret_as(auto h = ::DefRawInputProc(paRawInput, nInput, cbSizeHeader); h >= 0, h);
-wapi_ret_true(GetPointerDevices);
-wapi_ret_true(GetPointerDevice);
-wapi_ret_true(GetPointerDeviceProperties);
-wapi_ret_true(RegisterPointerDeviceNotifications);
-wapi_ret_true(GetPointerDeviceRects);
-wapi_ret_true(GetPointerDeviceCursors);
-wapi_ret_true(GetRawPointerDeviceData);
-wapi_ret_true(ChangeWindowMessageFilter);
-wapi_ret_true(ChangeWindowMessageFilterEx);
-wapi_ret_true(GetGestureInfo);
-wapi_ret_true(GetGestureExtraArgs);
-wapi_ret_true(CloseGestureInfoHandle);
-wapi_ret_true(SetGestureConfig);
-wapi_ret_true(GetGestureConfig);
-wapi_ret_true(ShutdownBlockReasonCreate);
-wapi_ret_true(ShutdownBlockReasonQuery);
-wapi_ret_true(ShutdownBlockReasonDestroy);
-wapi_ret_true(GetCurrentInputMessageSource);
+wapi_ret(GetPointerDevices, true);
+wapi_ret(GetPointerDevice, true);
+wapi_ret(GetPointerDeviceProperties, true);
+wapi_ret(RegisterPointerDeviceNotifications, true);
+wapi_ret(GetPointerDeviceRects, true);
+wapi_ret(GetPointerDeviceCursors, true);
+wapi_ret(GetRawPointerDeviceData, true);
+wapi_ret(ChangeWindowMessageFilter, true);
+wapi_ret(ChangeWindowMessageFilterEx, true);
+wapi_ret(GetGestureInfo, true);
+wapi_ret(GetGestureExtraArgs, true);
+wapi_ret(CloseGestureInfoHandle, true);
+wapi_ret(SetGestureConfig, true);
+wapi_ret(GetGestureConfig, true);
+wapi_ret(ShutdownBlockReasonCreate, true);
+wapi_ret(ShutdownBlockReasonQuery, true);
+wapi_ret(ShutdownBlockReasonDestroy, true);
+wapi_ret(GetCurrentInputMessageSource, true);
 // GetCIMSSM
-wapi_ret_true(GetAutoRotationState);
-wapi_ret_true(GetDisplayAutoRotationPreferences);
-wapi_ret_true(GetDisplayAutoRotationPreferencesByProcessId);
-wapi_ret_true(SetDisplayAutoRotationPreferences);
+wapi_ret(GetAutoRotationState, true);
+wapi_ret(GetDisplayAutoRotationPreferences, true);
+wapi_ret(GetDisplayAutoRotationPreferencesByProcessId, true);
+wapi_ret(SetDisplayAutoRotationPreferences, true);
 // IsImmersiveProcess
 inline bool IsImmersiveProcess(HANDLE hProcess)
 	ret_safe_to(auto h = ::IsImmersiveProcess(hProcess), h);
-wapi_ret_true(SetProcessRestrictionExemption);
+wapi_ret(SetProcessRestrictionExemption, true);
 // ApplyWindowAction
 // SetAdditionalForegroundBoostProcesses - Deprecated
 // RegisterForTooltipDismissNotification - Deprecated

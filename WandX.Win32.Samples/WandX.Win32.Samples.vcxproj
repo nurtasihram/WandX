@@ -22,6 +22,7 @@
     <ClCompile Include="..\WandX.cppm" />
     <ClCompile Include="..\WandX.Win32.Console.cppm" />
     <ClCompile Include="..\WandX.Win32.cppm" />
+    <ClCompile Include="..\WandX.Win32.Dialogs.cppm" />
     <ClCompile Include="..\WandX.Win32.File.cppm" />
     <ClCompile Include="..\WandX.Win32.GDI.cppm" />
     <ClCompile Include="..\WandX.Win32.Internet.cppm" />
@@ -31,6 +32,7 @@
     <ClCompile Include="..\WandX.Win32.Security.cppm" />
     <ClCompile Include="..\WandX.Win32.String.cppm" />
     <ClCompile Include="..\WandX.Win32.Types.cppm" />
+    <ClCompile Include="..\WandX.Win32.Window.cppm" />
     <ClCompile Include="WandX.Win32.Samples.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,29 @@
 #pragma region File
+
+
+proxy_struct(FileTime, FILETIME) {
+	FileTime(Nu) {}
+	FileTime() {}
+	FileTime(const FILETIME &ft) : Super(ft) {}
+	FileTime(const SYSTEMTIME &st) nt_assert(SystemTimeToFileTime(&st, &self));
+	FileTime(LARGE_INTEGER li) : Super(reuse_cast<FILETIME>(li)){}
+public:
+	static inline FileTime SystemTime() ret_to(FileTime ft; GetSystemTimeAsFileTime(&ft), ft);
+public:
+	
+	inline FileTime ToLocal() safe_ret_to(FILETIME ft, ::FileTimeToLocalFileTime(&self, &ft), ft);
+	inline FileTime ToUniversal() safe_ret_to(FILETIME ft, ::LocalFileTimeToFileTime(&self, &ft), ft);
+public:
+	template<bool IsUnicode = Native::IsUnicode>
+	inline StringX<IsUnicode> toString() const ret_as(((SysTime)self).toString<IsUnicode>());
+	inline StringA toStringA() const ret_as(toString<false>());
+	inline StringW toStringW() const ret_as(toString<true>());
+
+public:
+	inline operator SYSTEMTIME() const safe_ret_to(SYSTEMTIME st, FileTimeToSystemTime(&self, &st), st);
+	inline operator LARGE_INTEGER() const ret_as(reuse_cast<LARGE_INTEGER>(self));
+};
+
 enum_flags(FileAccess                   , HandleAccess              ,
 		   Default                      = 0                         ,
 		   ReadData                     = FILE_READ_DATA            , // file & pipe

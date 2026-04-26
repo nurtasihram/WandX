@@ -4,7 +4,7 @@
 import WandX.Win32.Window;
 #endif
 
-#include "WandX.Win32.Resource.h"
+#include "WandX.Win32.Resources.h"
 
 #define SFINAE_Window(name) friend class Native::WindowBase<name>
 #define BaseOf_Window(name) name : public Native::WindowBase<name>
