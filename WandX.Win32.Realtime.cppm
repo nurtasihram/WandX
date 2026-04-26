@@ -1,6 +1,7 @@
 module;
 
 #include <Windows.h>
+#include <SynchApi.h>
 
 #define WANDX_CPPM_EXPORT_NATIVE
 #include "WandX.Win32.Realtime.h"
@@ -9,6 +10,7 @@ export module WandX.Realtime;
 
 import WandX;
 import WandX.Win32;
+import WandX.Win32.Types;
 
 static constexpr auto ThisFile = WandX::LiString("WandX.Win32.Realtime");
 
@@ -16,102 +18,99 @@ export namespace WandX {
 namespace Native {
 
 #pragma region ProcessThreadsApi.h
-wapi_ret_true(QueueUserAPC);
+wapi_ret(QueueUserAPC, true);
 #if (NTDDI_VERSION >= NTDDI_WIN10_MN)
-wapi_ret_true(QueueUserAPC2);
+wapi_ret(QueueUserAPC2, true);
 #endif
-wapi_ret_true(GetProcessTimes);
-wapi_ret_direct(GetCurrentProcess);
-wapi_ret_direct(GetCurrentProcessId);
-wapi_ret_direct(ExitProcess); // noreturn
-wapi_ret_true(TerminateProcess);
-wapi_ret_true(GetExitCodeProcess);
-wapi_ret_true(SwitchToThread);
-wapi_ret_notnull(CreateThread);
-wapi_ret_notnull(CreateRemoteThread);
-wapi_ret_direct(GetCurrentThread);
-wapi_ret_direct(GetCurrentThreadId);
-wapi_ret_notnull(OpenThread);
-wapi_ret_true(SetThreadPriority);
-wapi_ret_true(SetThreadPriorityBoost);
-wapi_ret_true(GetThreadPriorityBoost);
-inline int GetThreadPriority(HANDLE hThread)
-safe_ret_as(auto res = ::GetThreadPriority(hThread); res != THREAD_PRIORITY_ERROR_RETURN, res);
-wapi_ret_direct(ExitThread); // noreturn
-wapi_ret_true(TerminateThread);
-wapi_ret_true(GetExitCodeThread);
+wapi_ret(GetProcessTimes, true);
+wapi_ret(GetCurrentProcess, direct);
+wapi_ret(GetCurrentProcessId, direct);
+wapi_ret(ExitProcess, direct); // noreturn
+wapi_ret(TerminateProcess, true);
+wapi_ret(GetExitCodeProcess, true);
+wapi_ret(SwitchToThread, true);
+wapi_ret(CreateThread, notnull);
+wapi_ret(CreateRemoteThread, notnull);
+wapi_ret(GetCurrentThread, direct);
+wapi_ret(GetCurrentThreadId, direct);
+wapi_ret(OpenThread, notnull);
+wapi_ret(SetThreadPriority, true);
+wapi_ret(SetThreadPriorityBoost, true);
+wapi_ret(GetThreadPriorityBoost, true);
+wapi_ret(GetThreadPriority, fault, THREAD_PRIORITY_ERROR_RETURN);
+wapi_ret(ExitThread, direct); // noreturn
+wapi_ret(TerminateThread, true);
+wapi_ret(GetExitCodeThread, true);
 // SuspendThread
 inline DWORD SuspendThread(HANDLE hThread)
 safe_ret_as(auto res = ::SuspendThread(hThread); res >= 0, res);
 // ResumeThread
 inline DWORD ResumeThread(HANDLE hThread)
 safe_ret_as(auto res = ::ResumeThread(hThread); res >= 0, res);
-// TlsAlloc
-inline DWORD TlsAlloc()
-safe_ret_as(auto n = ::TlsAlloc(); n != TLS_OUT_OF_INDEXES, n);
-wapi_ret_notnull(TlsGetValue);
-wapi_ret_true(TlsSetValue);
-wapi_ret_true(TlsFree);
-wapi_ret_true_WAO(CreateProcess);
-wapi_ret_direct_WAT(GetStartupInfo); // GetStartupInfoA from WinBase.h
-wapi_ret_true(SetProcessShutdownParameters);
-wapi_ret_notzero(GetProcessVersion);
-wapi_ret_true_WAO(CreateProcessAsUser);
-wapi_ret_direct(GetCurrentProcessToken);
-wapi_ret_direct(GetCurrentThreadToken);
-wapi_ret_direct(GetCurrentThreadEffectiveToken);
-wapi_ret_true(SetThreadToken);
-wapi_ret_true(OpenProcessToken);
-wapi_ret_true(OpenThreadToken);
-wapi_ret_true(SetPriorityClass);
-wapi_ret_notzero(GetPriorityClass);
-wapi_ret_true(SetThreadStackGuarantee);
-wapi_ret_true(ProcessIdToSessionId);
-wapi_ret_notzero(GetProcessId);
-wapi_ret_notzero(GetThreadId);
-wapi_ret_direct(FlushProcessWriteBuffers);
-wapi_ret_notzero(GetProcessIdOfThread);
-wapi_ret_true(InitializeProcThreadAttributeList);
-wapi_ret_direct(DeleteProcThreadAttributeList);
-wapi_ret_true(UpdateProcThreadAttribute);
+wapi_ret(TlsAlloc, fault, TLS_OUT_OF_INDEXES);
+wapi_ret(TlsGetValue, notnull);
+wapi_ret(TlsSetValue, true);
+wapi_ret(TlsFree, true);
+wapi_ret_WAO(CreateProcess, true);
+wapi_ret_WAT(GetStartupInfo, direct); // GetStartupInfoA from WinBase.h
+wapi_ret(SetProcessShutdownParameters, true);
+wapi_ret(GetProcessVersion, notzero);
+wapi_ret_WAO(CreateProcessAsUser, true);
+wapi_ret(GetCurrentProcessToken, direct);
+wapi_ret(GetCurrentThreadToken, direct);
+wapi_ret(GetCurrentThreadEffectiveToken, direct);
+wapi_ret(SetThreadToken, true);
+wapi_ret(OpenProcessToken, true);
+wapi_ret(OpenThreadToken, true);
+wapi_ret(SetPriorityClass, true);
+wapi_ret(GetPriorityClass, notzero);
+wapi_ret(SetThreadStackGuarantee, true);
+wapi_ret(ProcessIdToSessionId, true);
+wapi_ret(GetProcessId, notzero);
+wapi_ret(GetThreadId, notzero);
+wapi_ret(FlushProcessWriteBuffers, direct);
+wapi_ret(GetProcessIdOfThread, notzero);
+wapi_ret(InitializeProcThreadAttributeList, true);
+wapi_ret(DeleteProcThreadAttributeList, direct);
+wapi_ret(UpdateProcThreadAttribute, true);
 #if (NTDDI_VERSION >= NTDDI_WIN10_VB)
-wapi_ret_true(SetProcessDynamicEHContinuationTargets);
+wapi_ret(SetProcessDynamicEHContinuationTargets, true);
 #endif
 #if (NTDDI_VERSION >= NTDDI_WIN10_FE)
-wapi_ret_true(SetProcessDynamicEnforcedCetCompatibleRanges);
+wapi_ret(SetProcessDynamicEnforcedCetCompatibleRanges, true);
 #endif
-wapi_ret_true(SetProcessAffinityUpdateMode);
-wapi_ret_true(QueryProcessAffinityUpdateMode);
-wapi_ret_notnull(CreateRemoteThreadEx);
-wapi_ret_direct(GetCurrentThreadStackLimits);
-wapi_ret_true(GetThreadContext);
-wapi_ret_true(GetProcessMitigationPolicy);
-wapi_ret_true(SetThreadContext);
-wapi_ret_true(SetProcessMitigationPolicy);
-wapi_ret_true(FlushInstructionCache);
-wapi_ret_true(GetThreadTimes);
-wapi_ret_notnull(OpenProcess);
-wapi_ret_direct(IsProcessorFeaturePresent);
-wapi_ret_true(GetProcessHandleCount);
-wapi_ret_direct(GetCurrentProcessorNumber);
-wapi_ret_true(SetThreadIdealProcessorEx);
-wapi_ret_true(GetThreadIdealProcessorEx);
-wapi_ret_direct(GetCurrentProcessorNumberEx);
-wapi_ret_true(GetProcessPriorityBoost);
-wapi_ret_true(SetProcessPriorityBoost);
-wapi_ret_true(GetThreadIOPendingFlag);
-wapi_ret_true(GetSystemTimes);
-wapi_ret_true(GetThreadInformation);
-wapi_ret_true(SetThreadInformation);
-wapi_ret_true(IsProcessCritical);
-wapi_ret_true(SetProtectedPolicy);
-wapi_ret_true(QueryProtectedPolicy);
+wapi_ret(SetProcessAffinityUpdateMode, true);
+wapi_ret(QueryProcessAffinityUpdateMode, true);
+wapi_ret(CreateRemoteThreadEx, notnull);
+wapi_ret(GetCurrentThreadStackLimits, direct);
+wapi_ret(GetThreadContext, true);
+wapi_ret(GetProcessMitigationPolicy, true);
+wapi_ret(SetThreadContext, true);
+wapi_ret(SetProcessMitigationPolicy, true);
+wapi_ret(FlushInstructionCache, true);
+wapi_ret(GetThreadTimes, true);
+wapi_ret(OpenProcess, notnull);
+wapi_ret(IsProcessorFeaturePresent, direct);
+wapi_ret(GetProcessHandleCount, true);
+wapi_ret(GetCurrentProcessorNumber, direct);
+wapi_ret(SetThreadIdealProcessorEx, true);
+wapi_ret(GetThreadIdealProcessorEx, true);
+wapi_ret(GetCurrentProcessorNumberEx, direct);
+wapi_ret(GetProcessPriorityBoost, true);
+wapi_ret(SetProcessPriorityBoost, true);
+wapi_ret(GetThreadIOPendingFlag, true);
+wapi_ret(GetSystemTimes, true);
+wapi_ret(GetThreadInformation, true);
+wapi_ret(SetThreadInformation, true);
+wapi_ret(IsProcessCritical, true);
+wapi_ret(SetProtectedPolicy, true);
+wapi_ret(QueryProtectedPolicy, true);
 // SetThreadIdealProcessor
 inline DWORD SetThreadIdealProcessor(HANDLE hThread, DWORD dwIdealProcessor)
 safe_ret_as(auto res = ::SetThreadIdealProcessor(hThread, dwIdealProcessor); res >= 0, res);
-wapi_ret_true(SetProcessInformation);
-wapi_ret_true(GetProcessInformation);
-wapi_ret_true(GetProcessShutdownParameters);
+wapi_ret(SetProcessInformation, true);
+wapi_ret(GetProcessInformation, true);
+wapi_ret(GetProcessShutdownParameters, true);
 // SetThreadDescription
 // GetThreadDescription
 #pragma endregion
@@ -120,71 +119,63 @@ wapi_ret_true(GetProcessShutdownParameters);
 #pragma endregion
 
 #pragma region SynchApi.h
-wapi_ret_direct(InitializeSRWLock);
-wapi_ret_direct(ReleaseSRWLockExclusive);
-wapi_ret_direct(ReleaseSRWLockShared);
-wapi_ret_direct(AcquireSRWLockExclusive);
-wapi_ret_direct(AcquireSRWLockShared);
-wapi_ret_direct(TryAcquireSRWLockExclusive);
-wapi_ret_direct(TryAcquireSRWLockShared);
-wapi_ret_direct(InitializeCriticalSection);
-wapi_ret_direct(EnterCriticalSection);
-wapi_ret_direct(LeaveCriticalSection);
-wapi_ret_true(InitializeCriticalSectionAndSpinCount);
-wapi_ret_true(InitializeCriticalSectionEx);
-wapi_ret_direct(SetCriticalSectionSpinCount);
-wapi_ret_direct(TryEnterCriticalSection);
-wapi_ret_direct(DeleteCriticalSection);
-wapi_ret_direct(InitOnceInitialize);
-wapi_ret_true(InitOnceExecuteOnce);
-wapi_ret_true(InitOnceBeginInitialize);
-wapi_ret_true(InitOnceComplete);
-wapi_ret_direct(InitializeConditionVariable);
-wapi_ret_direct(WakeConditionVariable);
-wapi_ret_direct(WakeAllConditionVariable);
-wapi_ret_true(SleepConditionVariableCS);
-wapi_ret_true(SleepConditionVariableSRW);
-wapi_ret_direct(SetEvent);
-wapi_ret_direct(ResetEvent);
-wapi_ret_direct(ReleaseSemaphore);
-wapi_ret_direct(ReleaseMutex);
-// WaitForSingleObject
-inline DWORD WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds)
-safe_ret_as(auto res = ::WaitForSingleObject(hHandle, dwMilliseconds); res != WAIT_FAILED, res);
-wapi_ret_direct(Sleep);
-wapi_ret_direct(SleepEx);
-// WaitForSingleObjectEx
-inline DWORD WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds, BOOL bAlertable)
-safe_ret_as(auto res = ::WaitForSingleObjectEx(hHandle, dwMilliseconds, bAlertable); res != WAIT_FAILED, res);
-// WaitForMultipleObjectsEx
-inline DWORD WaitForMultipleObjects(DWORD nCount, const HANDLE *lpHandles, BOOL bWaitAll, DWORD dwMilliseconds, BOOL bAlertable)
-safe_ret_as(auto res = ::WaitForMultipleObjectsEx(nCount, lpHandles, bWaitAll, dwMilliseconds, bAlertable); res != WAIT_FAILED, res);
-wapi_ret_true_WAO(CreateMutex);
-wapi_ret_true_WAO(OpenMutex); // OpenMutexA from WinBase.h
-wapi_ret_true_WAO(CreateEvent);
-wapi_ret_true_WAO(OpenSemaphore); // OpenSemaphoreA from WinBase.h
-wapi_ret_true_WAO(OpenWaitableTimer); // OpenWaitableTimerA from WinBase.h
-wapi_ret_true(SetWaitableTimer);
-wapi_ret_true(CancelWaitableTimer);
-wapi_ret_notnull_WAO(CreateMutexEx);
-wapi_ret_notnull_WAO(CreateEventEx);
-// wapi_ret_fault(SignalObjectAndWait, WAIT_FAILED);
-// WaitForMultipleObjects
-inline DWORD WaitForMultipleObjects(DWORD nCount, const HANDLE *lpHandles, BOOL bWaitAll, DWORD dwMilliseconds)
-safe_ret_as(auto res = ::WaitForMultipleObjects(nCount, lpHandles, bWaitAll, dwMilliseconds); res != WAIT_FAILED, res);
-wapi_ret_true_WAO(CreateSemaphore); // CreateSemaphoreA from WinBase.h
-wapi_ret_true_WAO(CreateSemaphoreEx); // CreateSemaphoreExA from WinBase.h
-wapi_ret_true_WAO(CreateWaitableTimer); // CreateWaitableTimerA from WinBase.h
-wapi_ret_true_WAO(CreateWaitableTimerEx); // CreateWaitableTimerExA from WinBase.h
+wapi_ret(InitializeSRWLock, direct);
+wapi_ret(ReleaseSRWLockExclusive, direct);
+wapi_ret(ReleaseSRWLockShared, direct);
+wapi_ret(AcquireSRWLockExclusive, direct);
+wapi_ret(AcquireSRWLockShared, direct);
+wapi_ret(TryAcquireSRWLockExclusive, direct);
+wapi_ret(TryAcquireSRWLockShared, direct);
+wapi_ret(InitializeCriticalSection, direct);
+wapi_ret(EnterCriticalSection, direct);
+wapi_ret(LeaveCriticalSection, direct);
+wapi_ret(InitializeCriticalSectionAndSpinCount, true);
+wapi_ret(InitializeCriticalSectionEx, true);
+wapi_ret(SetCriticalSectionSpinCount, direct);
+wapi_ret(TryEnterCriticalSection, direct);
+wapi_ret(DeleteCriticalSection, direct);
+wapi_ret(InitOnceInitialize, direct);
+wapi_ret(InitOnceExecuteOnce, true);
+wapi_ret(InitOnceBeginInitialize, true);
+wapi_ret(InitOnceComplete, true);
+wapi_ret(InitializeConditionVariable, direct);
+wapi_ret(WakeConditionVariable, direct);
+wapi_ret(WakeAllConditionVariable, direct);
+wapi_ret(SleepConditionVariableCS, true);
+wapi_ret(SleepConditionVariableSRW, true);
+wapi_ret(SetEvent, true);
+wapi_ret(ResetEvent, true);
+wapi_ret(ReleaseSemaphore, true);
+wapi_ret(ReleaseMutex, true);
+wapi_ret(Sleep, direct);
+wapi_ret(SleepEx, direct);
+wapi_ret(SignalObjectAndWait, fault, WAIT_FAILED);
+wapi_ret(WaitForSingleObject, fault, WAIT_FAILED);
+wapi_ret(WaitForSingleObjectEx, fault, WAIT_FAILED);
+wapi_ret(WaitForMultipleObjects, fault, WAIT_FAILED);
+wapi_ret(WaitForMultipleObjectsEx, fault, WAIT_FAILED);
+wapi_ret_WAO(CreateMutex, true);
+wapi_ret_WAO(OpenMutex, true); // OpenMutexA from WinBase.h
+wapi_ret_WAO(CreateEvent, true);
+wapi_ret_WAO(OpenSemaphore, true); // OpenSemaphoreA from WinBase.h
+wapi_ret_WAO(OpenWaitableTimer, true); // OpenWaitableTimerA from WinBase.h
+wapi_ret(SetWaitableTimer, true);
+wapi_ret(CancelWaitableTimer, true);
+wapi_ret_WAO(CreateMutexEx, notnull);
+wapi_ret_WAO(CreateEventEx, notnull);
+wapi_ret_WAO(CreateSemaphore, true); // CreateSemaphoreA from WinBase.h
+wapi_ret_WAO(CreateSemaphoreEx, true); // CreateSemaphoreExA from WinBase.h
+wapi_ret_WAO(CreateWaitableTimer, true); // CreateWaitableTimerA from WinBase.h
+wapi_ret_WAO(CreateWaitableTimerEx, true); // CreateWaitableTimerExA from WinBase.h
 #pragma endregion
 
 #pragma region NamespaceApi.h
-wapi_ret_true_WAO(CreatePrivateNamespace); // CreatePrivateNamespaceA from WinBase.h
-wapi_ret_true_WAO(OpenPrivateNamespace); // OpenPrivateNamespaceA from WinBase.h
-wapi_ret_true(ClosePrivateNamespace);
-wapi_ret_true_WAO(CreateBoundaryDescriptor); // CreateBoundaryDescriptorA from WinBase.h
-wapi_ret_true(AddSIDToBoundaryDescriptor);
-wapi_ret_direct(DeleteBoundaryDescriptor);
+wapi_ret_WAO(CreatePrivateNamespace, true); // CreatePrivateNamespaceA from WinBase.h
+wapi_ret_WAO(OpenPrivateNamespace, true); // OpenPrivateNamespaceA from WinBase.h
+wapi_ret(ClosePrivateNamespace, true);
+wapi_ret_WAO(CreateBoundaryDescriptor, true); // CreateBoundaryDescriptorA from WinBase.h
+wapi_ret(AddSIDToBoundaryDescriptor, true);
+wapi_ret(DeleteBoundaryDescriptor, direct);
 #pragma endregion
 
 #pragma region JobApi.h
@@ -192,17 +183,113 @@ wapi_ret_direct(DeleteBoundaryDescriptor);
 #pragma endregion
 
 #pragma region JobApi2.h
-wapi_ret_notnull_WAO(CreateJobObject); // CreateJobObjectA from WinBase.h
-wapi_ret_direct(FreeMemoryJobObject);
-wapi_ret_notnull_WAO(OpenJobObject); // OpenJobObject from WinBase.h
-wapi_ret_true(AssignProcessToJobObject);
-wapi_ret_true(TerminateJobObject);
-wapi_ret_true(SetInformationJobObject);
-wapi_ret_true(SetIoRateControlInformationJobObject);
-wapi_ret_true(QueryInformationJobObject);
-wapi_ret_true(QueryIoRateControlInformationJobObject);
+wapi_ret_WAO(CreateJobObject, notnull); // CreateJobObjectA from WinBase.h
+wapi_ret(FreeMemoryJobObject, direct);
+wapi_ret_WAO(OpenJobObject, notnull); // OpenJobObject from WinBase.h
+wapi_ret(AssignProcessToJobObject, true);
+wapi_ret(TerminateJobObject, true);
+wapi_ret(SetInformationJobObject, true);
+wapi_ret(SetIoRateControlInformationJobObject, true);
+wapi_ret(QueryInformationJobObject, true);
+wapi_ret(QueryIoRateControlInformationJobObject, true);
 #pragma endregion
 
-}
+template<class AnyChild>
+class WaitableBase : public HandleBase<AnyChild> {
+public:
+	using Super = HandleBase<AnyChild>;
+protected:
+	WaitableBase(HANDLE h) : Super(h) {}
+	WaitableBase(const WaitableBase &w) : Super(w) {}
+public:
+	WaitableBase() {}
+	WaitableBase(Nu) {}
+
+	/* const */ class_method(Wait, DWORD, (DWORD dwMilliseconds = INFINITE), as(Native::WaitForSingleObject(self, dwMilliseconds) == WAIT_OBJECT_0));
+};
+
+enum_flags(EventAccess , HandleAccess       ,
+		   All         = EVENT_ALL_ACCESS   ,
+		   Modify      = EVENT_MODIFY_STATE );
+class Event : public WaitableBase<Event> {
+public:
+	using Super = WaitableBase<Event>;
+	using Access = EventAccess;
+protected:
+	Event(HANDLE h) : Super(h) {}
+public:
+	//Event() : Event(Create()) {}
+	Event(Nu) {}
+
+	class_method(Set, void, (), to(Native::SetEvent(self)));
+	class_method(Reset, void, (), to(Native::ResetEvent(self)));
+	class_method(Pulse, void, (), to(Native::PulseEvent(self)));
+
+	//inline auto &operator=(bool bState) ret_to_self(if (bState) Set(); else Reset(););
+};
+using CEvent = ProxyView<Event>;
+
+enum_flags(MutexAccess  , HandleAccess       ,
+		   All          = MUTEX_ALL_ACCESS   ,
+		   Modify       = MUTEX_MODIFY_STATE );
+class Mutex : public WaitableBase<Mutex> {
+public:
+	using Super = WaitableBase<Mutex>;
+	using Access = MutexAccess;
+protected:
+	Mutex(HANDLE h) : Super(h) {}
+public:
+	//Mutex() : Mutex(Create()) {}
+	Mutex(Nu) {}
+
+	class_method(Release, void, (), to(WandX::ReleaseMutex(self)));
+};
+using CMutex = ProxyView<Mutex>;
+
+enum_flags(SemaphoreAccess , HandleAccess           ,
+		   All             = SEMAPHORE_ALL_ACCESS   ,
+		   Modify          = SEMAPHORE_MODIFY_STATE );
+class BaseOf_Waitable(Semaphore) {
+public:
+	using Super = WaitableBase<Semaphore>;
+	using Access = SemaphoreAccess;
+protected:
+	Semaphore(HANDLE h) : Super(h) {}
+	Semaphore(const Semaphore & s) : Super(s.hObject) ret_to(s.hObject = O);
+public:
+//	Semaphore() : Semaphore(Create()) {}
+	Semaphore(Nu) {}
+
+	class_method(Release, void, (), to(WandX::ReleaseSemaphore(self)));
+};
+
+enum_flags(TimerAccess , HandleAccess       ,
+		   All         = TIMER_ALL_ACCESS   ,
+		   Modify      = TIMER_MODIFY_STATE );
+using WaitableTimerAccess = TimerAccess;
+class WaitableTimer : public WaitableBase<WaitableTimer> {
+public:
+	using Super = WaitableBase<WaitableTimer>;
+	using Access = TimerAccess;
+protected:
+	WaitableTimer(HANDLE h) : Super(h) {}
+	WaitableTimer(const WaitableTimer &t) : Super(t.hObject) ret_to(t.hObject = O);
+public:
+	//WaitableTimer() : WaitableTimer(Create()) {}
+	WaitableTimer(Nu) {}
+
+};
+using Timer = WaitableTimer;
+
+class PrivateNamespace : public HandleBase<PrivateNamespace> {
+public:
+	using Super = HandleBase<PrivateNamespace>;
+protected:
+	PrivateNamespace(HANDLE h) : Super(h) {}
+public:
+	PrivateNamespace() {}
+};
+
+// #include "WandX.Win32.Realtime.h"
 
 }

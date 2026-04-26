@@ -157,58 +157,62 @@
 
 /* Macro Windows API reflectors W/A Overload In One */
 
-#	define wapi_ret_direct_WAO(name)         constexpr RefReturnWA<RefReturnDirect   , ThisFile, LiString(#name), ::name##W, ::name##A> name
-#	define wapi_ret_true_WAO(name)           constexpr RefReturnWA<RefReturnTrue     , ThisFile, LiString(#name), ::name##W, ::name##A> name
-#	define wapi_ret_validhd_WAO(name)        constexpr RefReturnWA<RefReturnHandle   , ThisFile, LiString(#name), ::name##W, ::name##A> name
-#	define wapi_ret_notzero_WAO(name)        constexpr RefReturnWA<RefReturnNotZero  , ThisFile, LiString(#name), ::name##W, ::name##A> name
-#	define wapi_ret_notnull_WAO(name)        constexpr RefReturnWA<RefReturnNotNull  , ThisFile, LiString(#name), ::name##W, ::name##A> name
-#	define wapi_ret_success_WAO(name)        constexpr RefReturnWA<RefReturnSuccess  , ThisFile, LiString(#name), ::name##W, ::name##A> name
-#	define wapi_ret_positive_WAO(name)       constexpr RefReturnWA<RefReturnPositive , ThisFile, LiString(#name), ::name##W, ::name##A> name
-//#	define wapi_ret_fault_WAO(name, val)     constexpr RefReturnWA<RefReturnFault    , ThisFile, LiString(#name), ::name##W, ::name##A, val, LiString(#val)> name
+#	define wapi_ret_WAO_direct(name)         constexpr RefReturnWA<RefReturnDirect   , ThisFile, LiString(#name), ::name##W, ::name##A> name
+#	define wapi_ret_WAO_true(name)           constexpr RefReturnWA<RefReturnTrue     , ThisFile, LiString(#name), ::name##W, ::name##A> name
+#	define wapi_ret_WAO_validhd(name)        constexpr RefReturnWA<RefReturnHandle   , ThisFile, LiString(#name), ::name##W, ::name##A> name
+#	define wapi_ret_WAO_notzero(name)        constexpr RefReturnWA<RefReturnNotZero  , ThisFile, LiString(#name), ::name##W, ::name##A> name
+#	define wapi_ret_WAO_notnull(name)        constexpr RefReturnWA<RefReturnNotNull  , ThisFile, LiString(#name), ::name##W, ::name##A> name
+#	define wapi_ret_WAO_success(name)        constexpr RefReturnWA<RefReturnSuccess  , ThisFile, LiString(#name), ::name##W, ::name##A> name
+#	define wapi_ret_WAO_positive(name)       constexpr RefReturnWA<RefReturnPositive , ThisFile, LiString(#name), ::name##W, ::name##A> name
+//#	define wapi_ret_WAO_fault(name, val)     constexpr RefReturnWA<RefReturnFault    , ThisFile, LiString(#name), ::name##W, ::name##A, val, LiString(#val)> name
 
 /* Macro Windows API reflectors A Version */
 
-#	define wapi_ret_direct_A(name)           wapi_ret_direct(name##A)
-#	define wapi_ret_true_A(name)             wapi_ret_true(name##A)
-#	define wapi_ret_validhd_A(name)          wapi_ret_validhd(name##A)
-#	define wapi_ret_notzero_A(name)          wapi_ret_notzero(name##A)
-#	define wapi_ret_notnull_A(name)          wapi_ret_notnull(name##A)
-#	define wapi_ret_success_A(name)          wapi_ret_success(name##A)
-#	define wapi_ret_positive_A(name)         wapi_ret_positive(name##A)
+#	define wapi_ret_A_direct(name)           wapi_ret_direct(name##A)
+#	define wapi_ret_A_true(name)             wapi_ret_true(name##A)
+#	define wapi_ret_A_validhd(name)          wapi_ret_validhd(name##A)
+#	define wapi_ret_A_notzero(name)          wapi_ret_notzero(name##A)
+#	define wapi_ret_A_notnull(name)          wapi_ret_notnull(name##A)
+#	define wapi_ret_A_success(name)          wapi_ret_success(name##A)
+#	define wapi_ret_A_positive(name)         wapi_ret_positive(name##A)
 
 /* Macro Windows API reflectors W Version */
 
-#	define wapi_ret_direct_W(name)           wapi_ret_direct(name##W)
-#	define wapi_ret_true_W(name)             wapi_ret_true(name##W)
-#	define wapi_ret_validhd_W(name)          wapi_ret_validhd(name##W)
-#	define wapi_ret_notzero_W(name)          wapi_ret_notzero(name##W)
-#	define wapi_ret_notnull_W(name)          wapi_ret_notnull(name##W)
-#	define wapi_ret_success_W(name)          wapi_ret_success(name##W)
-#	define wapi_ret_positive_W(name)         wapi_ret_positive(name##W)
+#	define wapi_ret_W_direct(name)           wapi_ret_direct(name##W)
+#	define wapi_ret_W_true(name)             wapi_ret_true(name##W)
+#	define wapi_ret_W_validhd(name)          wapi_ret_validhd(name##W)
+#	define wapi_ret_W_notzero(name)          wapi_ret_notzero(name##W)
+#	define wapi_ret_W_notnull(name)          wapi_ret_notnull(name##W)
+#	define wapi_ret_W_success(name)          wapi_ret_success(name##W)
+#	define wapi_ret_W_positive(name)         wapi_ret_positive(name##W)
 
 /* Macro Windows API reflectors W&A Versions */
 
-#	define wapi_ret_direct_WA(name)          wapi_ret_direct_W(name);    wapi_ret_direct_A(name)
-#	define wapi_ret_true_WA(name)            wapi_ret_true(name##W);     wapi_ret_true(name##A)
-#	define wapi_ret_validhd_WA(name)         wapi_ret_validhd(name##W);  wapi_ret_validhd(name##A)
-#	define wapi_ret_notzero_WA(name)         wapi_ret_notzero(name##W);  wapi_ret_notzero(name##A)
-#	define wapi_ret_notnull_WA(name)         wapi_ret_notnull(name##W);  wapi_ret_notnull(name##A)
-#	define wapi_ret_success_WA(name)         wapi_ret_success(name##W);  wapi_ret_success(name##A)
-#	define wapi_ret_positive_WA(name)        wapi_ret_positive(name##W); wapi_ret_positive(name##A)
+#	define wapi_ret_WA_direct(name)          wapi_ret_W_direct(name);    wapi_ret_A_direct(name)
+#	define wapi_ret_WA_true(name)            wapi_ret_true(name##W);     wapi_ret_true(name##A)
+#	define wapi_ret_WA_validhd(name)         wapi_ret_validhd(name##W);  wapi_ret_validhd(name##A)
+#	define wapi_ret_WA_notzero(name)         wapi_ret_notzero(name##W);  wapi_ret_notzero(name##A)
+#	define wapi_ret_WA_notnull(name)         wapi_ret_notnull(name##W);  wapi_ret_notnull(name##A)
+#	define wapi_ret_WA_success(name)         wapi_ret_success(name##W);  wapi_ret_success(name##A)
+#	define wapi_ret_WA_positive(name)        wapi_ret_positive(name##W); wapi_ret_positive(name##A)
 
 /* Macro Windows API reflectors W&A Versions With Template Selector */
 
-#	define WAT_selector(name)					  template<bool IsUnicode = Native::IsUnicode> \
-												  constexpr auto name = ValueIf<IsUnicode, name##W, name##A>;
+#	define WAT_selector(name)                template<bool IsUnicode = Native::IsUnicode> \
+                                             constexpr auto name = ValueIf<IsUnicode, name##W, name##A>;
 
-#	define wapi_ret_direct_WAT(name)         wapi_ret_direct_WA(name);   WAT_selector(name)
-#	define wapi_ret_true_WAT(name)           wapi_ret_true_WA(name);     WAT_selector(name)
-#	define wapi_ret_validhd_WAT(name)        wapi_ret_validhd_WA(name);  WAT_selector(name)
-#	define wapi_ret_notzero_WAT(name)        wapi_ret_notzero_WA(name);  WAT_selector(name)
-#	define wapi_ret_notnull_WAT(name)        wapi_ret_notnull_WA(name);  WAT_selector(name)
-#	define wapi_ret_success_WAT(name)        wapi_ret_success_WA(name);  WAT_selector(name)
-#	define wapi_ret_positive_WAT(name)       wapi_ret_positive_WA(name); WAT_selector(name)
-										   
+#	define wapi_ret_WAT_direct(name)         wapi_ret_WA_direct(name);   WAT_selector(name)
+#	define wapi_ret_WAT_true(name)           wapi_ret_WA_true(name);     WAT_selector(name)
+#	define wapi_ret_WAT_validhd(name)        wapi_ret_WA_validhd(name);  WAT_selector(name)
+#	define wapi_ret_WAT_notzero(name)        wapi_ret_WA_notzero(name);  WAT_selector(name)
+#	define wapi_ret_WAT_notnull(name)        wapi_ret_WA_notnull(name);  WAT_selector(name)
+#	define wapi_ret_WAT_success(name)        wapi_ret_WA_success(name);  WAT_selector(name)
+#	define wapi_ret_WAT_positive(name)       wapi_ret_WA_positive(name); WAT_selector(name)
+
+#	define wapi_ret(name, type, ...)         mx_call(mx_cat(wapi_ret_, type), name, ##__VA_ARGS__)
+#	define wapi_ret_WAO(name, type, ...)     mx_call(mx_cat(wapi_ret_WAO_, type), name, ##__VA_ARGS__)
+#	define wapi_ret_WAT(name, type, ...)     mx_call(mx_cat(wapi_ret_WAT_, type), name, ##__VA_ARGS__)
+
 /* Macro exception system reflect for Windows */
 
 #	define wx_throw_line_nt(sent) throw WandX::Exception(__FILE__, __FUNCTION__, #sent, __LINE__, GetLastError())

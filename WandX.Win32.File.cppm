@@ -19,33 +19,33 @@ export namespace WandX {
 namespace Native {
 
 #pragma region FileApi.h
-wapi_ret_validhd_WAO(FindFirstChangeNotification);
-wapi_ret_true_WAO(FindNextFile);
-wapi_ret_true_WAO(GetDiskFreeSpace);
-wapi_ret_true_WAO(GetDiskFreeSpaceEx);
-wapi_ret_success_WAO(GetDiskSpaceInformation);
-wapi_ret_direct_WAO(GetDriveType);
-wapi_ret_positive_WAO(GetFinalPathNameByHandle);
-wapi_ret_positive_WAO(GetLongPathName);
-wapi_ret_positive_WAO(GetShortPathName); // GetShortPathNameA from WinBase.h
-wapi_ret_positive_WAO(GetTempFileName);
+wapi_ret_WAO(FindFirstChangeNotification, validhd);
+wapi_ret_WAO(FindNextFile, true);
+wapi_ret_WAO(GetDiskFreeSpace, true);
+wapi_ret_WAO(GetDiskFreeSpaceEx, true);
+wapi_ret_WAO(GetDiskSpaceInformation, success);
+wapi_ret_WAO(GetDriveType, direct);
+wapi_ret_WAO(GetFinalPathNameByHandle, positive);
+wapi_ret_WAO(GetLongPathName, positive);
+wapi_ret_WAO(GetShortPathName, positive); // GetShortPathNameA from WinBase.h
+wapi_ret_WAO(GetTempFileName, positive);
 // GetVolumeInformationByHandle
-wapi_ret_true_WAO(GetVolumeInformation);
+wapi_ret_WAO(GetVolumeInformation, true);
 // FindFirstStream
 // FindNextStream
-wapi_ret_positive_WAO(GetTempPath);
+wapi_ret_WAO(GetTempPath, positive);
 // FindFirstFileName
 // FindNextFileName
 #if (NTDDI_VERSION >= NTDDI_WIN10_FE)
-wapi_ret_positive_WAO(GetTempPath2);
+wapi_ret_WAO(GetTempPath2, positive);
 #endif
-wapi_ret_validhd_WAO(CreateFile);
-wapi_ret_true_WAO(CreateDirectory);
+wapi_ret_WAO(CreateFile, validhd);
+wapi_ret_WAO(CreateDirectory, true);
 #if defined(NTDDI_WIN11_GE) && (NTDDI_VERSION >= NTDDI_WIN11_GE) && !__GNUC__
-wapi_ret_true_WAO(CreateDirectory2);
-wapi_ret_true_WAO(RemoveDirectory2);
-wapi_ret_true_WAO(DeleteFile);
-wapi_ret_true_WAO(DeleteFile2);
+wapi_ret_WAO(CreateDirectory2, true);
+wapi_ret_WAO(RemoveDirectory2, true);
+wapi_ret_WAO(DeleteFile, true);
+wapi_ret_WAO(DeleteFile2, true);
 #endif
 #pragma endregion
 
@@ -54,6 +54,6 @@ wapi_ret_true_WAO(DeleteFile2);
 
 }
 
-//#include "wx.file.inl"
+#include "WandX.Win32.File.idl"
 
 }

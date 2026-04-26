@@ -1043,7 +1043,7 @@ template<HasBaseType AnyEnum> using BaseTypeOf = typename AnyEnum::BaseType;
 template<class OutType, class InType>
 constexpr auto safe_c_cast(const InType &c_value) {
 	if_c (HasBaseType<OutType>) {
-		 misuse_assert(IsSame<mx_b0(BaseTypeOf<OutType>, InType)>, "Unsafe enum cast detected");
+		 misuse_assert(IsSameSize<mx_b0(BaseTypeOf<OutType>, InType)>, "Unsafe enum cast detected");
 		 return reuse_cast<OutType>(c_value);
 	}
 	else return (OutType)c_value;

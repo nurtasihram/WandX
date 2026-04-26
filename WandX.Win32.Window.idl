@@ -1,13 +1,3 @@
-module;
-
-#define WANDX_CPPM_EXPORT_NATIVE
-#include "Win32.Window.h"
-
-export module WandX.window;
-
-import WandX.Win32;
-
-export namespace WandX {
 
 #pragma region Atoms
 class Atom {
@@ -450,9 +440,9 @@ public:// Property - Async
 	/* W */ inline auto&Async(bool bEnabled) ret_to_self(if (bEnabled) self->flags |= WPF_ASYNCWINDOWPLACEMENT; else self->flags &= ~WPF_ASYNCWINDOWPLACEMENT);
 	/* R */ inline bool Async() const ret_as(self->flags & WPF_ASYNCWINDOWPLACEMENT);
 public: // Property - ShowFlags
-	proxy_prop_set(ShowFlags,flags,SW);
-	/* S */ inline auto&ShowFlags() ret_as(ref_cast<SW>(self->showCmd));
-	proxy_prop_get(ShowFlags,showCmd,SW);
+	proxy_prop_set(ShowFlags,flags,Shows);
+	/* S */ inline auto&ShowFlags() ret_as(ref_cast<Shows>(self->showCmd));
+	proxy_prop_get(ShowFlags,showCmd,Shows);
 public: // Property - MinPosition
 proxy_prop_set(MinPosition, Point, ptMinPosition);
 	/* S */ inline auto&MinPosition() ret_as(ref_cast<Point>(self->ptMinPosition));
@@ -989,22 +979,22 @@ public: // MsgBox
 	inline int MsgBox(LPCSTR lpCaption, const Exception &err) const ret_as(WandX::MsgBox(lpCaption, err, self));
 	inline int MsgBox(LPCWSTR lpCaption, const Exception &err) const ret_as(WandX::MsgBox(lpCaption, err, self));
 public: // Show
-	inline auto&Show(SW nShow)     ret_to_child(WandX::ShowWindow(self, nShow.yield()));
-	inline auto&Hide()             ret_as(Show(SW::Hide));
-	inline auto&Normal()           ret_as(Show(SW::Normal));
-	inline auto&ShowNormal()       ret_as(Show(SW::ShowNormal));
-	inline auto&ShowMinimized()    ret_as(Show(SW::ShowMinimized));
-	inline auto&ShowMaximized()    ret_as(Show(SW::ShowMaximized));
-	inline auto&ShowNoActivate()   ret_as(Show(SW::ShowNoActivate));
-	inline auto&Show()             ret_as(Show(SW::Show));
-	inline auto&Maximize()         ret_as(Show(SW::Maximize));
-	inline auto&Minimize()         ret_as(Show(SW::Minimize));
-	inline auto&ForceMinimize()    ret_as(Show(SW::ForceMinimize));
-	inline auto&ShowMinNoActive()  ret_as(Show(SW::ShowMinNoActive));
-	inline auto&ShowDefault()      ret_as(Show(SW::ShowDefault));
-	inline auto&ShowNA()           ret_as(Show(SW::ShowNA));
-	inline auto&Restore()          ret_as(Show(SW::Restore));
-	inline auto&Max()              ret_as(Show(SW::Max));
+	inline auto&Show(Shows nShow)     ret_to_child(WandX::ShowWindow(self, nShow.yield()));
+	inline auto&Hide()             ret_as(Show(Shows::Hide));
+	inline auto&Normal()           ret_as(Show(Shows::Normal));
+	inline auto&ShowNormal()       ret_as(Show(Shows::ShowNormal));
+	inline auto&ShowMinimized()    ret_as(Show(Shows::ShowMinimized));
+	inline auto&ShowMaximized()    ret_as(Show(Shows::ShowMaximized));
+	inline auto&ShowNoActivate()   ret_as(Show(Shows::ShowNoActivate));
+	inline auto&Show()             ret_as(Show(Shows::Show));
+	inline auto&Maximize()         ret_as(Show(Shows::Maximize));
+	inline auto&Minimize()         ret_as(Show(Shows::Minimize));
+	inline auto&ForceMinimize()    ret_as(Show(Shows::ForceMinimize));
+	inline auto&ShowMinNoActive()  ret_as(Show(Shows::ShowMinNoActive));
+	inline auto&ShowDefault()      ret_as(Show(Shows::ShowDefault));
+	inline auto&ShowNA()           ret_as(Show(Shows::ShowNA));
+	inline auto&Restore()          ret_as(Show(Shows::Restore));
+	inline auto&Max()              ret_as(Show(Shows::Max));
 public: // Flash
 	inline bool Flash(bool bInvert) const ret_as(WandX::FlashWindow(self, bInvert));
 	inline bool Flash(FlashInfo fi) const ret_as(WandX::FlashWindow(&fi));
@@ -1704,5 +1694,3 @@ public: // Property - Format
 #pragma endregion
 } Clipboard;
 #pragma endregion
-
-}

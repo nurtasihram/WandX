@@ -290,27 +290,6 @@ public:
 	inline operator FILETIME() const safe_ret_to(FILETIME ft, SystemTimeToFileTime(&self, &ft), ft);
 };
 alias_of_type(SysTime, SystemTime);
-proxy_struct(FileTime, FILETIME) {
-	FileTime(Nu) {}
-	FileTime() {}
-	FileTime(const FILETIME &ft) : Super(ft) {}
-	FileTime(const SYSTEMTIME &st) nt_assert(SystemTimeToFileTime(&st, &self));
-	FileTime(LARGE_INTEGER li) : Super(reuse_cast<FILETIME>(li)){}
-public:
-	static inline FileTime SystemTime() ret_to(FileTime ft; GetSystemTimeAsFileTime(&ft), ft);
-public:
-	inline FileTime ToLocal() safe_ret_to(FILETIME ft, FileTimeToLocalFileTime(&self, &ft), ft);
-	inline FileTime ToUniversal() safe_ret_to(FILETIME ft, LocalFileTimeToFileTime(&self, &ft), ft);
-public:
-	template<bool IsUnicode = Native::IsUnicode>
-	inline StringX<IsUnicode> toString() const ret_as(((SysTime)self).toString<IsUnicode>());
-	inline StringA toStringA() const ret_as(toString<false>());
-	inline StringW toStringW() const ret_as(toString<true>());
-
-public:
-	inline operator SYSTEMTIME() const safe_ret_to(SYSTEMTIME st, FileTimeToSystemTime(&self, &st), st);
-	inline operator LARGE_INTEGER() const ret_as(reuse_cast<LARGE_INTEGER>(self));
-};
 #pragma endregion
 
 #pragma region Point Size Rect
@@ -646,7 +625,7 @@ inline int MsgBox(LPCWSTR lpCaption, const Exception &err, HWND hParent = O)
 	ret_as(MsgBox(lpCaption, toStringW(err), MB::IconError | MB::AbortRetryIgnore, hParent));
 #pragma endregion
 
-enum_class(WindowShowFlags  , int                ,
+enum_class(Shows            , int                ,
 		   Hide             = SW_HIDE            ,
 		   ShowNormal       = SW_SHOWNORMAL      ,
 		   Normal           = SW_NORMAL          ,
@@ -662,7 +641,6 @@ enum_class(WindowShowFlags  , int                ,
 		   ShowDefault      = SW_SHOWDEFAULT     ,
 		   ForceMinimize    = SW_FORCEMINIMIZE   ,
 		   Max              = SW_MAX             );
-using SW = WindowShowFlags;
 
 class RGBColor {
 protected:

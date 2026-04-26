@@ -85,6 +85,12 @@
     <ClCompile Include="..\WandX.Win32.Exe.cpp">
       <Filter>WandX\Win32\Entrances</Filter>
     </ClCompile>
+    <ClCompile Include="..\WandX.Win32.Dialogs.cppm">
+      <Filter>WandX\Win32\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WandX.Win32.Window.cppm">
+      <Filter>WandX\Win32\Window</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\WandX.h">

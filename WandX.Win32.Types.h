@@ -9,3 +9,11 @@ import WandX.Win32.Types;
 // from DateTimeApi.h
 #undef GetDateFormat
 #undef GetTimeFormat
+
+// from SysInfoApi.h
+#undef GetSystemDirectory
+#undef GetWindowsDirectory
+#undef GetSystemWindowsDirectory
+#undef GetComputerNameEx
+#undef GetVersionEx
+#undef SetComputerName
