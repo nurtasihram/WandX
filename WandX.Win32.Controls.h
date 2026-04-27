@@ -4,4 +4,4 @@
 import WandX.Win32.Controls;
 #endif
 
-#include "Win32.Window"
+#include "WandX.Win32.Window.h"
