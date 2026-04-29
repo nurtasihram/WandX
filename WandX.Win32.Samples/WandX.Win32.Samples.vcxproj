@@ -20,54 +20,54 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WandX.cppm" />
-    <ClCompile Include="..\WandX.Win32.Console.cppm" />
-    <ClCompile Include="..\WandX.Win32.cppm" />
-    <ClCompile Include="..\WandX.Win32.Dialogs.cppm" />
-    <ClCompile Include="..\WandX.Win32.File.cppm" />
-    <ClCompile Include="..\WandX.Win32.GDI.cppm" />
-    <ClCompile Include="..\WandX.Win32.Internet.cppm" />
-    <ClCompile Include="..\WandX.Win32.Exe.cpp" />
-    <ClCompile Include="..\WandX.Win32.Realtime.cppm" />
-    <ClCompile Include="..\WandX.Win32.Resources.cppm" />
-    <ClCompile Include="..\WandX.Win32.Security.cppm" />
-    <ClCompile Include="..\WandX.Win32.String.cppm" />
-    <ClCompile Include="..\WandX.Win32.Types.cppm" />
-    <ClCompile Include="..\WandX.Win32.Window.cppm" />
+    <ClCompile Include="..\WandX.Win32\WandX.Win32.Console.cppm" />
+    <ClCompile Include="..\WandX.Win32\WandX.Win32.cppm" />
+    <ClCompile Include="..\WandX.Win32\WandX.Win32.Dialogs.cppm" />
+    <ClCompile Include="..\WandX.Win32\WandX.Win32.File.cppm" />
+    <ClCompile Include="..\WandX.Win32\WandX.Win32.GDI.cppm" />
+    <ClCompile Include="..\WandX.Win32\WandX.Win32.Internet.cppm" />
+    <ClCompile Include="..\WandX.Win32\WandX.Win32.Exe.cpp" />
+    <ClCompile Include="..\WandX.Win32\WandX.Win32.Realtime.cppm" />
+    <ClCompile Include="..\WandX.Win32\WandX.Win32.Resources.cppm" />
+    <ClCompile Include="..\WandX.Win32\WandX.Win32.Security.cppm" />
+    <ClCompile Include="..\WandX.Win32\WandX.Win32.String.cppm" />
+    <ClCompile Include="..\WandX.Win32\WandX.Win32.Types.cppm" />
+    <ClCompile Include="..\WandX.Win32\WandX.Win32.Window.cppm" />
     <ClCompile Include="WandX.Win32.Samples.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\WandX.h" />
-    <ClInclude Include="..\WandX.Win32.Console.h" />
-    <ClInclude Include="..\WandX.Win32.Controls.h" />
-    <ClInclude Include="..\WandX.Win32.Dialogs.h" />
-    <ClInclude Include="..\WandX.Win32.Dll.h" />
-    <ClInclude Include="..\WandX.Win32.File.h" />
-    <ClInclude Include="..\WandX.Win32.GDI.h" />
-    <ClInclude Include="..\WandX.Win32.h" />
-    <ClInclude Include="..\WandX.Win32.Internet.h" />
-    <ClInclude Include="..\WandX.Win32.Realtime.h" />
-    <ClInclude Include="..\WandX.Win32.Resources.h" />
-    <ClInclude Include="..\WandX.Win32.Security.h" />
-    <ClInclude Include="..\WandX.Win32.String.h" />
-    <ClInclude Include="..\WandX.Win32.Types.h" />
-    <ClInclude Include="..\WandX.Win32.Window.h" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Console.h" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Controls.h" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Dialogs.h" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Dll.h" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.File.h" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.GDI.h" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.h" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Internet.h" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Realtime.h" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Resources.h" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Security.h" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.String.h" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Types.h" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\WandX.Win32.Console.idl" />
-    <ClInclude Include="..\WandX.Win32.Controls.idl" />
-    <ClInclude Include="..\WandX.Win32.Dialogs.idl" />
-    <ClInclude Include="..\WandX.Win32.File.idl" />
-    <ClInclude Include="..\WandX.Win32.GDI.idl" />
-    <ClInclude Include="..\WandX.Win32.Internet.idl" />
-    <ClInclude Include="..\WandX.Win32.Realtime.idl" />
-    <ClInclude Include="..\WandX.Win32.Resources.idl" />
-    <ClInclude Include="..\WandX.Win32.Security.idl" />
-    <ClInclude Include="..\WandX.Win32.Types.idl" />
-    <ClInclude Include="..\WandX.Win32.Window.idl" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Console.idl" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Controls.idl" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Dialogs.idl" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.File.idl" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.GDI.idl" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Internet.idl" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Realtime.idl" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Resources.idl" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Security.idl" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Types.idl" />
+    <ClInclude Include="..\WandX.Win32\WandX.Win32.Window.idl" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\WandX.Win32.Controls.Messages.inl" />
-    <None Include="..\WandX.Win32.Window.Messages.inl" />
+    <None Include="..\WandX.Win32\WandX.Win32.Controls.Messages.inl" />
+    <None Include="..\WandX.Win32\WandX.Win32.Window.Messages.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
@@ -129,7 +129,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus /Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)WandX.Win32\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -149,7 +149,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus /Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)WandX.Win32\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -167,7 +167,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus /Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)WandX.Win32\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -187,7 +187,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus /Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)WandX.Win32\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
