@@ -77,7 +77,7 @@ using IconInfoExW = IconInfoExX<true>;
 class Icon {
 protected:
 	mutable HICON hIcon = O;
-	friend_to_proxy(Icon);
+	proxy_basetype(Icon);
 	Icon(HICON h) : hIcon(h) {}
 	Icon(const Icon &i) : hIcon(i.hIcon) ret_to(i.hIcon = O);
 public:
@@ -148,7 +148,7 @@ class Cursor : public Icon {
 public:
 	using Super = Icon;
 protected:
-	friend_to_proxy(Cursor);
+	proxy_basetype(Cursor);
 	Cursor(HCURSOR h) : Super((HICON)h) {}
 	Cursor(const Cursor &c) : Icon(c) {}
 public:
@@ -250,7 +250,7 @@ public: // Property - VirtualKey
 class Accelerators {
 protected:
 	mutable HACCEL hAccel = O;
-	friend_to_proxy(Accelerators);
+	proxy_basetype(Accelerators);
 	Accelerators(HACCEL h) : hAccel(h) {}
 	Accelerators(const Accelerators &c) : hAccel(c.hAccel) ret_to(c.hAccel = O);
 public:
@@ -359,7 +359,7 @@ enum_flags(MenuTrack        , UINT                ,
 class Menu {
 protected:
 	mutable HMENU hMenu = O;
-	friend_to_proxy(Menu);
+	proxy_basetype(Menu);
 	Menu(HMENU h) : hMenu(h) {}
 	Menu(const Menu &m) : hMenu(m.hMenu) ret_to(m.hMenu = O);
 public:
@@ -415,7 +415,7 @@ inline Menu MenuPopup() ret_as(Menu::CreatePopup());
 class Module {
 protected:
 	mutable HINSTANCE hInst = O;
-	friend_to_proxy(Module);
+	proxy_basetype(Module);
 	Module(HINSTANCE h) : hInst(h) {}
 	Module(const Module &m) : hInst(m.hInst) ret_to(m.hInst = O);
 public:
@@ -461,7 +461,7 @@ public: // Property - Cursor
 public: // Property - String
 	template<bool IsUnicode = Native::IsUnicode>
 	inline StringX<IsUnicode> String(WORD wID) const {
-		if_c (IsUnicode)
+		if constexpr (IsUnicode)
 			 return StringW(wID);
 		else return StringA(wID);
 	}

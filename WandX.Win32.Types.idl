@@ -1,4 +1,4 @@
-#pragma region HandleBase
+#pragma region KernalObject
 enum_flags(HandleAccess   , DWORD           ,
 	       Delete         = DELETE          ,
 	       ReadCtl        = READ_CONTROL    ,
@@ -10,30 +10,19 @@ enum_flags(HandleAccess   , DWORD           ,
 	       GenericExecute = GENERIC_EXECUTE ,
 	       GenericAll     = GENERIC_ALL     );
 template<class AnyChild>
-class HandleBase;
-using Handle = HandleBase<void>;
-template<class AnyChild>
-class HandleBase : public ChildBridge<AnyChild, HandleBase> {
-protected:
-	mutable HANDLE hObject = O;
-public:
+class KernalObject;
+using Handle = KernalObject<void>;
+
+class_chain_begin(KernalObject) {
+	proxy_basetype(KernalObject, HANDLE, O);
 	using Access = HandleAccess;
-protected:
-	HandleBase(HANDLE h) : hObject(h) {}
-	HandleBase(const HandleBase &h) : hObject(h.hObject) ret_to(h.hObject = O);
-public:
-	HandleBase() {}
-	HandleBase(Nu) {}
-	HandleBase(HandleBase &obj) : hObject(obj.hObject) ret_to(obj.hObject = O);
-	HandleBase(HandleBase &&obj) : hObject(obj.hObject) ret_to(obj.hObject = O);
-	~HandleBase() ret_to(Close());
-public:
-	inline void Close() ret_to(if (hObject) (Native::CloseHandle(hObject), hObject = O));
-public:
-	inline bool Compare(HANDLE h) const ret_as(Native::CompareObjectHandles(self, h));
+
+	~KernalObject() ret_to(Close());
+
+	class_method(Close, void, (), to(Native::CloseHandle(self); proxy_obj = O));
+	class_method(Compare, bool, (HANDLE h), as(Native::CompareObjectHandles(self, h))); /* const */
 
 	//inline auto CopyTo() DuplicateHandle
-	//inline auto Wait(DWORD dwMillisecond = INFINITE) ret_as(::WaitForSingleObject)
 
 public: // Property - Information
 	/* W */ inline auto &Information(DWORD dwMask, DWORD dwFlags) ret_to_child(Native::SetHandleInformation(self, dwMask, dwFlags));
@@ -44,11 +33,6 @@ public: // Property - Inherit
 public: // Property - ProtectFromClose
 	/* W */ inline auto &ProtectFromClose(bool bProtected) ret_to_child(Information(HANDLE_FLAG_PROTECT_FROM_CLOSE, bProtected ? HANDLE_FLAG_PROTECT_FROM_CLOSE : 0));
 	/* R */ inline bool ProtectFromClose() const ret_as(Information(HANDLE_FLAG_PROTECT_FROM_CLOSE));
-
-public:
-	inline operator bool() const ret_as(hObject && hObject != INVALID_HANDLE_VALUE);
-	inline operator HANDLE() const ret_as(hObject);
-	inline operator const Handle() const ret_as(ref_cast<Handle>(self));
 };
 #pragma endregion
 
@@ -91,12 +75,12 @@ enum_flags(HeapAllocFlag      , UINT                     ,
 		   NoSerialize        = HEAP_NO_SERIALIZE        ,
 		   ZeroInit           = HEAP_ZERO_MEMORY         );
 using HAF = HeapAllocFlag;
-class Heap : public WandX::HandleBase<Heap> {
+class Heap : public WandX::KernalObject<Heap> {
 public:
-	using Super = HandleBase<Heap>;
+	using Super = KernalObject<Heap>;
 	using AllocFlags = HeapAllocFlag;
 protected:
-	friend_to_proxy(Heap);
+	//proxy_basetype(Heap);
 	Heap(HANDLE hHeap) : Super(hHeap) {}
 public:
 	Heap() : Super(GetProcessHeap()) {}
@@ -125,19 +109,19 @@ public:
 public:
 	//	DWORD GetProcessHeaps(_In_ DWORD NumberOfHeaps, _Out_writes_to_(NumberOfHeaps, return) PHANDLE ProcessHeaps);
 	inline bool Destroy() {
-		if (Super::hObject && Super::hObject != GetProcessHeap())
-			if (!HeapDestroy(Super::hObject))
+		if (Super::proxy_obj && Super::proxy_obj != GetProcessHeap())
+			if (!HeapDestroy(Super::proxy_obj))
 				return false;
-		Super::hObject = O;
+		Super::proxy_obj = O;
 		return true;
 	}
-	inline void *Alloc(SizeT size, AllocFlags flags = AllocFlags::Fixed) safe_ret_as(auto h = HeapAlloc(self, flags.yield(), size), h);
-	inline void *Realloc(void *ptr, SizeT nSize, DWORD flags = 0) safe_ret_as((ptr = HeapReAlloc(self, flags, ptr, nSize)), ptr);
-	inline bool Free(void *ptr, DWORD flags = 0) ret_as(HeapFree(self, flags, ptr));
-	inline SizeT Size(const void *ptr, DWORD flags) const safe_ret_as(auto size = HeapSize(self, flags, ptr), size);
-	inline bool IsValid(const void *ptr, DWORD flags) const ret_as(HeapValidate(self, flags, ptr));
-	inline auto &Lock() safe_ret_as_self(HeapLock(self));
-	inline auto &Unlock() safe_ret_as_self(HeapUnlock(self));
+	//inline void *Alloc(SizeT size, AllocFlags flags = AllocFlags::Fixed) safe_ret_as(auto h = HeapAlloc(self, flags.yield(), size), h);
+	//inline void *Realloc(void *ptr, SizeT nSize, DWORD flags = 0) safe_ret_as((ptr = HeapReAlloc(self, flags, ptr, nSize)), ptr);
+	//inline bool Free(void *ptr, DWORD flags = 0) ret_as(HeapFree(self, flags, ptr));
+	//inline SizeT Size(const void *ptr, DWORD flags) const safe_ret_as(auto size = HeapSize(self, flags, ptr), size);
+	//inline bool IsValid(const void *ptr, DWORD flags) const ret_as(HeapValidate(self, flags, ptr));
+	//inline auto &Lock() safe_ret_as_self(HeapLock(self));
+	//inline auto &Unlock() safe_ret_as_self(HeapUnlock(self));
 	//	HeapWalk();
 	//	SIZE_T HeapCompact(HANDLE hHeap, DWORD dwFlags);
 public: // Property - Summaries

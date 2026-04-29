@@ -48,7 +48,7 @@ enum_flags(SystemState      , DWORD                        ,
 class ImageList {
 protected:
 	mutable HIMAGELIST hImageList = O;
-	friend_to_proxy(ImageList);
+	proxy_basetype(ImageList);
 	ImageList(HIMAGELIST h) : hImageList(h) {}
 public:
 	ImageList() {}

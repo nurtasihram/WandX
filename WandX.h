@@ -36,13 +36,7 @@
 
 #pragma region Macros Of C++ Keywords Alias
 // alias conditional branch
-#define if_c       if   constexpr
-#define elif       else if 
-#define elif_c     elif constexpr
-#define _if(...)     __VA_ARGS__ ? 
-#define _else      :
-#define _elif(...) : __VA_ARGS__ ?
-#define _return
+#define elif else if 
 // alias return
 #define ret_as(...)       {       return __VA_ARGS__; }
 #define ret_to(line, ...) { line; return __VA_ARGS__; }
@@ -54,7 +48,7 @@
 #define alias_of_type(alias, proto_name) using alias = proto_name
 #pragma endregion
 
-#pragma region !!!!!!!!!!!!!!!!!! MAY BE DEPRECATED !!!!!!!!!!!!!!!!!!
+#pragma region Macros Of Static Reflection
 /* Macro string helpers */
 #if defined(UNICODE) || defined(_UNICODE)
 #	define T(str) TEXT(str)
@@ -64,69 +58,88 @@
 /* Macro static reflection */
 #define use_member(name) \
 template <class AnyClass> class member_##name##_of { \
-	template<class AnyType> static auto ist(int) -> decltype(any_require<typename AnyType::name>(), std::true_type()); \
-	template<class AnyType> static auto ist(...) -> std::false_type; \
-	template<class AnyType> static auto adr(int) -> decltype(&AnyType::name, std::true_type()); \
-	template<class AnyType> static auto adr(...) -> std::false_type; \
-	template<class AnyType, class Ret, class... Args> \
-	static auto cmp(Ret(*)(Args...)) -> \
-		std::is_convertible<decltype(any_require<AnyType>().name(any_require<Args>()...)), Ret>; \
-	template<class AnyType, class Ret, class... Args> \
-	static auto cmp(Ret(AnyType::**)(Args...)) -> \
-		std::is_convertible<decltype(AnyType::name(any_require<Args>()...)), Ret>; \
-	template<class AnyType> \
-	static auto cmp(...) -> std::false_type; \
+    template<class AnyType> static auto ist(int) -> decltype(any_require<typename AnyType::name>(), std::true_type()); \
+    template<class AnyType> static auto ist(...) -> std::false_type; \
+    template<class AnyType> static auto adr(int) -> decltype(&AnyType::name, std::true_type()); \
+    template<class AnyType> static auto adr(...) -> std::false_type; \
+    template<class AnyType, class Ret, class... Args> \
+    static auto cmp(Ret(*)(Args...)) -> \
+        std::is_convertible<decltype(any_require<AnyType>().name(any_require<Args>()...)), Ret>; \
+    template<class AnyType, class Ret, class... Args> \
+    static auto cmp(Ret(AnyType::**)(Args...)) -> \
+        std::is_convertible<decltype(AnyType::name(any_require<Args>()...)), Ret>; \
+    template<class AnyType> \
+    static auto cmp(...) -> std::false_type; \
 public: \
-	static constexpr bool is_type = decltype(ist<AnyClass>(0))::value; \
-	static constexpr bool is_addressable = decltype(adr<AnyClass>(0))::value; \
-	static constexpr bool is_existed = is_type || is_addressable; \
-	template<class AnyType> \
-	static constexpr bool compatible_to = \
-		decltype(cmp<AnyClass>(any_require<AnyType *>()))::value; }
+    static constexpr bool is_type = decltype(ist<AnyClass>(0))::value; \
+    static constexpr bool is_addressable = decltype(adr<AnyClass>(0))::value; \
+    static constexpr bool is_existed = is_type || is_addressable; \
+    template<class AnyType> \
+    static constexpr bool compatible_to = \
+        decltype(cmp<AnyClass>(any_require<AnyType *>()))::value; }
 #pragma endregion
 
 #pragma region Macros Of Proxy Shim
 // proxy struct
-#define proxy_struct(name, struct_name)                   struct name final : WandX::CStructProxy<name, struct_name>
+#define proxy_struct(name, struct_name) \
+    struct name final : WandX::ProxyCStruct<name, struct_name>
 // proxy property
-#define proxy_prop_set(name, proto_name, type)            inline auto&name(type value) ret_to_self(safe_setval(Super::proto_name, value))
-#define proxy_prop_get(name, proto_name, type)            inline auto name(          ) const ret_as(WandX::safe_c_cast<type>(Super::proto_name))
-#define proxy_prop(name, proto_name, type_in, type_out)   proxy_prop_set(name, proto_name, type_in   ); \
-														  proxy_prop_get(name, proto_name, type_out  )
-#define proxy_prop_sync(name, proto_name, type)           proxy_prop    (name, proto_name, type, type)
+#define proxy_prop_set(name, proto_name, type) \
+    inline auto&name(type value) ret_to_self(safe_setval(Super::proto_name, value))
+#define proxy_prop_get(name, proto_name, type) \
+    inline auto name(          ) const ret_as(WandX::safe_c_cast<type>(Super::proto_name))
+#define proxy_prop(name, proto_name, type_in, type_out) \
+    proxy_prop_set(name, proto_name, type_in ); \
+    proxy_prop_get(name, proto_name, type_out)
+#define proxy_prop_sync(name, proto_name, type)\
+    proxy_prop    (name, proto_name, type, type)
 // proxy array property
-#define proxy_prop_set_arr(name, proto_name, type) inline auto &name(const Array<type, ArrayCountOf(&Super::proto_name)> &arr)  ret_to_self(ArrayProxy(Super::proto_name).cast<type>() = arr);
-#define proxy_prop_get_arr(name, proto_name, type) inline auto &name(                                                        ) const ret_as(ArrayProxy(Super::proto_name).cast<type>());
-#define proxy_prop_arrc(name, proto_name, type) proxy_prop_set_arr(name, proto_name, type); \
-												proxy_prop_get_arr(name, proto_name, type)
+#define proxy_prop_set_arr(name, proto_name, type) \
+    inline auto &name(const Array<type, ArrayCountOf(&Super::proto_name)> &arr)  ret_to_self(ArrayProxy(Super::proto_name).cast<type>() = arr);
+#define proxy_prop_get_arr(name, proto_name, type) \
+    inline auto &name(                                                        ) const ret_as(ArrayProxy(Super::proto_name).cast<type>());
+#define proxy_prop_arrc(name, proto_name, type) \
+    proxy_prop_set_arr(name, proto_name, type); \
+    proxy_prop_get_arr(name, proto_name, type)
 // proxy self-size
-#define proxy_prop_size(proto_name, type)                 protected: proxy_prop_set(SelfSize, proto_name, size_t); friend Super; \
-														  public:    proxy_prop_get(SelfSize, proto_name, type)
+#define proxy_prop_size(proto_name, type) \
+    protected: proxy_prop_set(SelfSize, proto_name, size_t); friend Super; \
+    public:    proxy_prop_get(SelfSize, proto_name, type)
 // proxy view
-#define friend_to_proxy(name) friend union WandX::ProxyView<name>
+#define proxy_basetype(name, base, ...) \
+    protected: mutable base proxy_obj{ __VA_ARGS__ }; \
+    public: name() {} name(base obj) : proxy_obj(obj) {} \
+    inline       name yield(base obj)       ret_to(name last = proxy_obj; proxy_obj = obj, right_cast(last)); \
+    inline const name yield(base obj) const ret_to(name last = proxy_obj; proxy_obj = obj, right_cast(last)); \
+    inline Nu operator=(Nu) ret_to(proxy_obj = O, O); \
+    inline operator base() const ret_as(proxy_obj); \
+    friend union WandX::ProxyView<name>
+// 
+//#define use_public_super() public: using Super = 
+#define class_extended(name, parent)       class name : public parent
+#define class_super_constructor()          using Super::Super
+#define class_chain_begin(name)            template<class AnyChild> class name : public ChainBegin<AnyChild, name>
+#define class_chain_node(name, parent)     template<class AnyChild> class name : public ChainBegin<AnyChild, name>, public parent<name>
+#define class_chain_end(name, parent)      class name : public parent<name>
 #pragma endregion
 
 #pragma region Macros Of Enum 
 #define enum_shim(type, name, base) WandX::Enum##type##Shim<name, base>
 #define enum_base(type, name, base, ...)                           \
 struct name : public enum_shim(type, name, base) {                 \
-	using ShimType = enum_shim(type, name, base)                 ; \
-	using ShimType::ShimType                                     ; \
-	using typename ShimType::Super                               ; \
-	using typename ShimType::BaseType                            ; \
-	static constexpr ShimType                      __VA_ARGS__   ; \
-	static constexpr BaseType EnumEntries     []{  __VA_ARGS__ } ; \
-	static constexpr char     EnumProtoString []{ #__VA_ARGS__ } ; \
-	static constexpr char     EnumName        []{  #name       } ; }
+    using ShimType = enum_shim(type, name, base)                 ; \
+    using ShimType::ShimType                                     ; \
+    using typename ShimType::Super                               ; \
+    using typename ShimType::BaseType                            ; \
+    static constexpr ShimType                      __VA_ARGS__   ; \
+    static constexpr BaseType EnumEntries     []{  __VA_ARGS__ } ; \
+    static constexpr char     EnumProtoString []{ #__VA_ARGS__ } ; \
+    static constexpr char     EnumName        []{  #name       } ; }
 #define enum_class(name, base, ...) enum_base(Class, name, base, __VA_ARGS__)
 #define enum_flags(name, base, ...) enum_base(Flags, name, base, __VA_ARGS__)
 #pragma endregion
 
 #pragma region Macros Of Chain Extended Helper
-#define ChainedBase(name, child_tmpl_name) name : public WandX::ChildBridge<child_tmpl_name, name>
-#define ChainedClass(name, base_tmpl_name) name : public WandX::SuperBridge<base_tmpl_name, name>
-#define friend_to_child(template_child)    friend template_child
-#define friend_to_super()                  friend Super
 // alias key-word
 #define self     mx_b1(*this)
 #define pself    mx_b1( this)

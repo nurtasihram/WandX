@@ -3,6 +3,9 @@ module;
 #include <Windows.h>
 #define STRSAFE_LIB
 #include <StrSafe.h>
+#undef STRSAFE_LIB
+
+#pragma comment(lib, "legacy_stdio_definitions.lib")
 
 #define WANDX_CPPM_EXPORT_NATIVE
 #include "WandX.Win32.String.h"
@@ -80,19 +83,19 @@ concept IsCharW = IsSame<TCHAR, WCHAR> || IsSame<TCHAR, LPWSTR> || IsSame<TCHAR,
 
 template<bool IsUnicode, class AnyTypeW, class AnyTypeA>
 constexpr auto AnyX(AnyTypeW *w, AnyTypeA *a) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 return w;
 	else return a;
 }
 template<bool IsUnicode, class AnyTypeW, class AnyTypeA>
 constexpr auto &AnyX(AnyTypeW &w, AnyTypeA &a) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 return w;
 	else return a;
 }
 template<bool IsUnicode, class AnyTypeW, class AnyTypeA>
 constexpr auto AnyX(AnyTypeW &&w, AnyTypeA &&a) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 return w;
 	else return a;
 }
@@ -232,7 +235,7 @@ public:
 	inline LPCTSTR c_str_safe() const {
 		if (Len && lpsz) 
 			return lpsz;
-		if_c (IsCharW<TCHAR>)
+		if constexpr (IsCharW<TCHAR>)
 			 return L"";
 		else return "";
 	}
@@ -363,9 +366,9 @@ inline StringW FitsW(const StringA &str, CodePages cp = CodePages::Active) {
 }
 template<bool IsUnicode = Native::IsUnicode, class TCHAR = ::TCHAR>
 inline auto Fits(StringBase<TCHAR> str) {
-	if_c (IsSame<XCHAR<IsUnicode>, TCHAR>)
+	if constexpr (IsSame<XCHAR<IsUnicode>, TCHAR>)
 		 ret_as(str)
-	elif_c (IsUnicode)
+	elif constexpr (IsUnicode)
 		 ret_as(FitsW(str))
 	else ret_as(FitsA(str))
 }
@@ -374,19 +377,19 @@ inline String Fits(const CharType *lpString, SizeT MaxLen, CodePages cp = CodePa
 	if (!lpString || !MaxLen) return O;
 	auto uLen = WandX::Length(lpString, MaxLen);
 	if (!uLen) return O;
-	if_c (IsSame<CharType, TCHAR>) {
+	if constexpr (IsSame<CharType, TCHAR>) {
 		auto lpsz = String::Alloc(uLen);
 		CopyMemory(lpsz, lpString, (uLen + 1) * sizeof(TCHAR));
 		return{ uLen, lpsz };
 	}
 	else {
 		int tLen;
-		if_c (Native::IsUnicode)
+		if constexpr (Native::IsUnicode)
 			 nt_assert((tLen = MultiByteToWideChar(cp.yield(), 0, lpString, (int)uLen, O, 0)) > 0)
 		else nt_assert((tLen = WideCharToMultiByte(cp.yield(), 0, lpString, (int)uLen, O, 0, O, O)) > 0)
 			// if (tLen != uLen) warnning glyphs missing 
 			auto lpsz = String::Alloc(tLen);
-		if_c (Native::IsUnicode)
+		if constexpr (Native::IsUnicode)
 			 nt_assert(tLen == MultiByteToWideChar(cp.yield(), 0, lpString, (int)uLen, lpsz, tLen))
 		else nt_assert(tLen == WideCharToMultiByte(cp.yield(), 0, lpString, (int)uLen, lpsz, tLen, O, O))
 			lpsz[tLen] = 0;
@@ -490,7 +493,7 @@ inline StringA toStringA(const Exception& err) {
 inline StringW toStringW(const Exception &err) ret_as(FitsW(toStringA(err)));
 template<bool IsUnicode = Native::IsUnicode>
 inline auto toString(const Exception &err) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 ret_as(toStringW(err))
 	else ret_as(toStringA(err));
 }
@@ -512,7 +515,7 @@ inline const auto &toString(bool b) {
 	static const auto falseStrA = "false"_A;
 	static const auto trueStrW = L"true"_W;
 	static const auto falseStrW = L"false"_W;
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 ret_as(b ? trueStrW : falseStrW)
 	else ret_as(b ? trueStrA : falseStrA)
 }
@@ -609,8 +612,8 @@ class SimpleRegex {
 public:
 	template<EnumType AnyEnum>
 	static constexpr auto Table() {
-		if_c (EnumType<AnyEnum>) {
-			if_c (IsCharW<TCHAR>)
+		if constexpr (EnumType<AnyEnum>) {
+			if constexpr (IsCharW<TCHAR>)
 				 ret_as(GetMaps<AnyEnum::Count>(AnyEnum::__EntriesW))
 			else ret_as(GetMaps<AnyEnum::Count>(AnyEnum::__EntriesA))
 		}
@@ -637,7 +640,7 @@ inline SimpleRegex<IsUnicode>::Token::operator const StringX<IsUnicode>() const 
 //	for (auto i = 0; i < EnumType::Count; ++i)
 //		if (val == EnumType::__Vals[i])
 //			return table[i].key;
-//	if_c (EnumType::HasProtoEnum)
+//	if constexpr (EnumType::HasProtoEnum)
 //		 return toString<IsUnicode>(reuse_cast<typename EnumType::ProtoEnum>(e));
 //	else return toString<IsUnicode>(format_numeral("d"), val);
 //}

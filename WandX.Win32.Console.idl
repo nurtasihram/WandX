@@ -101,16 +101,12 @@ enum_flags(ConsoleMode            , DWORD                                       
 		   OutputWrapAtEol        = ENABLE_WRAP_AT_EOL_OUTPUT                      ,
 		   OutputVirtualTerminal  = ENABLE_VIRTUAL_TERMINAL_PROCESSING             ,
 		   OutputLvbGridWorldwide = ENABLE_LVB_GRID_WORLDWIDE                     );
-class ConsoleOutput : public HandleBase<ConsoleOutput> {
+class_chain_end(ConsoleOutput, KernalObject) {
 public:
-	using Super = HandleBase<ConsoleOutput>;
-protected:
-	friend_to_proxy(ConsoleOutput);
-	ConsoleOutput(HANDLE h) : Super(h) {}
-public:
+	using Super = KernalObject<ConsoleOutput>;
 
+	class_super_constructor();
 	ConsoleOutput() : Super(Native::GetStdHandle(STD_OUTPUT_HANDLE)) {}
-	ConsoleOutput(Nu) {}
 
 #pragma region Methods
 	class_method(ActiveScreenBuffer, void, (), to(Native::SetConsoleActiveScreenBuffer(self)));
@@ -191,15 +187,11 @@ public:
 
 };
 
-class ConsoleInput : public HandleBase<ConsoleInput> {
+class_chain_end(ConsoleInput, KernalObject) {
 public:
-	using Super = HandleBase<ConsoleInput>;
-protected:
-	friend_to_proxy(ConsoleInput);
-	ConsoleInput(HANDLE h) : Super(h) {}
-public:
+	using Super = KernalObject<ConsoleInput>;
+	class_super_constructor();
 	ConsoleInput() : Super(Native::GetStdHandle(STD_INPUT_HANDLE)) {}
-	ConsoleInput(Nu) {}
 
 #pragma region Methods
 	class_method(FlushInputBuffer, void, (), to(Native::FlushConsoleInputBuffer(self)));
@@ -216,14 +208,15 @@ public:
 
 };
 
-class IConsole : public ConsoleOutput {
-	ConsoleOutput error;
-	ConsoleInput input;
+class_extended(IConsole, ConsoleOutput) {
+	ConsoleOutput error = Native::GetStdHandle(STD_ERROR_HANDLE);
+	ConsoleInput input = Native::GetStdHandle(STD_INPUT_HANDLE);
 public:
 
-	IConsole(Nu) : ConsoleOutput(O), error(O), input(O) {}
-	IConsole() : error(Native::GetStdHandle(STD_ERROR_HANDLE)) {}
-	IConsole(DWORD pid) ret_to(Attach(pid));
+	IConsole() {}
+	IConsole(IConsole &&) = default;
+	IConsole(IConsole const &) = default;
+	IConsole(ConsoleOutput output, ConsoleInput input = O, ConsoleOutput error = O) {}
 
 #pragma region Methods
 	class_method(Attach, void, (DWORD pid), to(Native::AttachConsole(pid)));
@@ -247,7 +240,15 @@ public:
 #pragma endregion
 
 #pragma region Properties
-
+	class_prop_map(ConsoleOutput, GlobalOutput, as,
+				  (Native::GetStdHandle(STD_OUTPUT_HANDLE)),
+				  (Native::SetStdHandle(STD_OUTPUT_HANDLE, value)));
+	class_prop_map(ConsoleOutput, ErrorOutput, as,
+				  (Native::GetStdHandle(STD_ERROR_HANDLE)),
+				  (Native::SetStdHandle(STD_ERROR_HANDLE, value)));
+	//class_prop_map(ConsoleInput, GlobalInput, as, 
+	//			  (Native::GetStdHandle(STD_INPUT_HANDLE)),
+	//			  (Native::SetStdHandle(STD_INPUT_HANDLE, value)));
 	//	inline CWindow Window() const ret_as(Native::GetConsoleWindow());
 
 	//template<class TCHAR>
@@ -263,18 +264,23 @@ public:
 	//template<SizeT MaxLen = MaxLenTitle>
 	///* R */ inline auto  TitleW() const ret_as(Title<true, MaxLen>());
 
-	template<bool IsUnicode = Native::IsUnicode, SizeT MaxLen = MaxLenTitle>
-	/* R */ inline auto OriginalTitle() const {
-		StringX<IsUnicode> str(MaxLen);
-		auto len = Native::GetConsoleOriginalTitle(str, (int)MaxLen);
-		return right_cast(str.Resize(len));
-	}
-	template<SizeT MaxLen = MaxLenTitle>
-	/* R */ inline auto OriginalTitleA() const ret_as(OriginalTitle<false, MaxLen>());
-	template<SizeT MaxLen = MaxLenTitle>
-	/* R */ inline auto OriginalTitleW() const ret_as(OriginalTitle<true, MaxLen>());
+#	define class_prop_strfix_getas_WAO(name, maxlen, body) \
+	template<bool IsUnicode = Native::IsUnicode, SizeT MaxLen = maxlen> \
+	inline StringX<IsUnicode> name() const { \
+		StringX<IsUnicode> str(MaxLen); \
+		auto len = body; \
+		return right_cast(str.Resize(len)); \
+	} \
+	template<SizeT MaxLen = maxlen> const \
+	inline StringA name##A() const ret_as(name<false, MaxLen>()); \
+	template<SizeT MaxLen = maxlen> const \
+	inline StringW name##W() const ret_as(name<true, MaxLen>())
 
-	class_prop_map(UINT, InputCodePage, as,
+	class_prop_strfix_getas_WAO(OriginalTitle, MaxLenTitle,
+								(Native::GetConsoleOriginalTitle(str, (int)MaxLen)));
+
+
+	class_prop_map(UINT, CodePage, as,
 				  (Native::GetConsoleCP()),
 				  (Native::SetConsoleCP(value)));
 	class_prop_map(UINT, OutputCodePage, as,

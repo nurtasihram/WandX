@@ -27,7 +27,7 @@ public:
 	using Super = WaitableBase<ThreadBase<>>;
 	using Access = ThreadAccess;
 protected:
-	friend_to_proxy(Thread);
+	proxy_basetype(Thread);
 	ThreadBase(HANDLE h) : Super(h) {}
 	ThreadBase(const ThreadBase &t) : Super(t.hObject) ret_to(t.hObject = O);
 public:
@@ -37,7 +37,7 @@ public:
 	ThreadBase(ThreadBase &&t) : Super(t.hObject) {}
 public:
 	template<class AnyChild = void>
-	class CreateStruct : public ChildBridge<AnyChild, CreateStruct> {
+	class CreateStruct : public ChainBegin<AnyChild, CreateStruct> {
 		friend class ThreadBase;
 		LPSECURITY_ATTRIBUTES lpThreadAttributes = O;
 		SIZE_T dwStackSize = 0;
@@ -103,14 +103,14 @@ public:
 	using Super::operator=;
 };
 template<class AnyChild>
-class ThreadBase : public Thread, public ChildBridge<AnyChild, ThreadBase> {
+class ThreadBase : public Thread, public ChainBegin<AnyChild, ThreadBase> {
 	friend class ThreadBase<>;
 public:
 	using Super = Thread;
-	using typename ChildBridge<AnyChild, ThreadBase>::Child;
-	using ChildBridge<AnyChild, ThreadBase>::__child__;
+	using typename ChainBegin<AnyChild, ThreadBase>::Child;
+	using ChainBegin<AnyChild, ThreadBase>::__child__;
 protected:
-	friend_to_proxy(ThreadBase);
+	proxy_basetype(ThreadBase);
 	ThreadBase(HANDLE h) : Super(h) {}
 	ThreadBase(const ThreadBase &t) : Super(t) {}
 public:
@@ -145,7 +145,7 @@ protected: // Thread Procedure
 		try {
 			misdef_assert(member_OnRun_of<AnyChild>::is_addressable,
 						  "Member OnRun uncallable, unexisted or undefined");
-			if_c (member_OnRun_of<AnyChild>::template compatible_to<DWORD()>)
+			if constexpr (member_OnRun_of<AnyChild>::template compatible_to<DWORD()>)
 				ret_as(pChild->OnRun())
 			else {
 				misdef_assert(member_OnRun_of<AnyChild>::template compatible_to<void()>,
@@ -162,13 +162,13 @@ protected: // Thread Procedure
 protected: // Thread Procedure Exception System
 	use_member(OnCatch);
 	static inline wx_answer Catch(Child *pChild, const Exception &err) {
-		if_c (member_OnCatch_of<AnyChild>::template compatible_to<wx_answer(Exception)>)
+		if constexpr (member_OnCatch_of<AnyChild>::template compatible_to<wx_answer(Exception)>)
 			ret_as(pChild->OnCatch(err))
-		elif_c (member_OnCatch_of<AnyChild>::template compatible_to<wx_answer()>)
+		elif constexpr (member_OnCatch_of<AnyChild>::template compatible_to<wx_answer()>)
 			ret_as(pChild->OnCatch())
-		elif_c (member_OnCatch_of<AnyChild>::template compatible_to<void(Exception)>)
+		elif constexpr (member_OnCatch_of<AnyChild>::template compatible_to<void(Exception)>)
 			ret_as((pChild->OnCatch(err), false))
-		elif_c (member_OnCatch_of<AnyChild>::template compatible_to<void()>)
+		elif constexpr (member_OnCatch_of<AnyChild>::template compatible_to<void()>)
 			ret_as((pChild->OnCatch(), false))
 		else {
 			misdef_assert(!member_OnCatch_of<AnyChild>::is_addressable,
@@ -186,13 +186,13 @@ protected: // Thread Procedure Exception System
 	}
 	use_member(OnFinal);
 	static inline DWORD Final(Child *pChild, const Exception &err) {
-		if_c (member_OnFinal_of<AnyChild>::template compatible_to<DWORD(Exception)>)
+		if constexpr (member_OnFinal_of<AnyChild>::template compatible_to<DWORD(Exception)>)
 			ret_as(pChild->OnFinal(err))
-		elif_c (member_OnFinal_of<AnyChild>::template compatible_to<DWORD()>)
+		elif constexpr (member_OnFinal_of<AnyChild>::template compatible_to<DWORD()>)
 			ret_as(pChild->OnFinal())
-		elif_c (member_OnFinal_of<AnyChild>::template compatible_to<void(Exception)>)
+		elif constexpr (member_OnFinal_of<AnyChild>::template compatible_to<void(Exception)>)
 			ret_as((pChild->OnFinal(err), -1))
-		elif_c (member_OnFinal_of<AnyChild>::template compatible_to<void()>)
+		elif constexpr (member_OnFinal_of<AnyChild>::template compatible_to<void()>)
 			ret_as((pChild->OnFinal(), -1))
 		else {
 			misdef_assert(!member_OnFinal_of<AnyChild>::is_addressable,
@@ -213,7 +213,7 @@ protected:
 		AnyCallable f;
 		InlineStartClosure(const AnyCallable &f) : f(f) {}
 		DWORD operator()() override {
-			if_c (static_compatible<AnyCallable, DWORD()>)
+			if constexpr (static_compatible<AnyCallable, DWORD()>)
 				ret_as(f())
 			else {
 				misdef_assert((static_compatible<AnyCallable, void()>),
@@ -235,11 +235,11 @@ protected:
 		AnyCatch lOnCatch;
 		InlineExceptionClosure(const AnyCatch &lOnCatch) : lOnCatch(lOnCatch) {}
 		bool OnCatch(const Exception &err) override {
-			if_c (static_compatible<AnyCatch, wx_answer(Exception)>)
+			if constexpr (static_compatible<AnyCatch, wx_answer(Exception)>)
 				ret_as(lOnCatch(err))
-			elif_c (static_compatible<AnyCatch, wx_answer()>)
+			elif constexpr (static_compatible<AnyCatch, wx_answer()>)
 				ret_as(lOnCatch())
-			elif_c (static_compatible<AnyCatch, void(Exception)>)
+			elif constexpr (static_compatible<AnyCatch, void(Exception)>)
 				ret_as((lOnCatch(err), false))
 			else {
 				misdef_assert((static_compatible<AnyCatch, void()>),

@@ -9,7 +9,7 @@ class GObjectBase : public ExtendShim<GObjectBase<AnyChild, BaseHandle>, AnyChil
 public:
 	using Child = Chain<GObjectBase, AnyChild>;
 protected:
-	friend_to_proxy(GObjectBase);
+	proxy_basetype(GObjectBase);
 	mutable HGDIOBJ hobj = O;
 	GObjectBase(HGDIOBJ h) : hobj(h) {}
 	GObjectBase(const GObjectBase &h) : hobj(h.hobj) ret_to(h.hobj = O);
@@ -129,7 +129,7 @@ public:
 	using Logic = BitmapLogic;
 	using Super = GObjectBase<Bitmap, HBITMAP>;
 protected:
-	friend_to_proxy(Bitmap);
+	proxy_basetype(Bitmap);
 	Bitmap(HBITMAP h) : Super(h) {}
 	Bitmap(const Bitmap & b) : Super(b) {}
 public:
@@ -341,7 +341,7 @@ public:
 	using LogicA = FontLogicA;
 	using LogicW = FontLogicW;
 protected:
-	friend_to_proxy(Font);
+	proxy_basetype(Font);
 	Font(HFONT h) : Super(h) {}
 	Font(const Font &f) : Super(f) {}
 public:
@@ -393,7 +393,7 @@ public:
 	using Styles = PenStyles;
 	using Log = PenLogic;
 protected:
-	friend_to_proxy(Pen);
+	proxy_basetype(Pen);
 	Pen(HPEN h) : Super(h) {}
 	Pen(const Pen &p) : Super(p) {}
 public:
@@ -470,7 +470,7 @@ class BaseOf_GDI(Brush, HBRUSH) {
 public:
 	using Super = GObjectBase<Brush, HBRUSH>;
 protected:
-	friend_to_proxy(Brush);
+	proxy_basetype(Brush);
 	Brush(HBRUSH h) : Super(h) {}
 	Brush(const Brush &b) : Super(b) {}
 public:
@@ -524,7 +524,7 @@ public:
 	using Super = GObjectBase<Palette, HPALETTE>;
 	using Entry = PaletteEntry;
 protected:
-	friend_to_proxy(Palette);
+	proxy_basetype(Palette);
 	Palette(HPALETTE h) : Super(h) {}
 	Palette(const Palette &p) : Super(p) {}
 public:
@@ -595,7 +595,7 @@ class BaseOf_GDI(Region, HRGN) {
 public:
 	using Super = GObjectBase<Region, HRGN>;
 protected:
-	friend_to_proxy(Region);
+	proxy_basetype(Region);
 	Region(HRGN h) : Super(h) {}
 	Region(const Region &r) : Super(r) {}
 public:
@@ -639,7 +639,7 @@ class BaseOf_GDI(MetaFile, HMETAFILE) {
 public:
 	using Super = GObjectBase<MetaFile, HMETAFILE>;
 protected:
-	friend_to_proxy(Region);
+	proxy_basetype(Region);
 	MetaFile(HMETAFILE h) : Super(h) {}
 	MetaFile(const MetaFile &m) : Super(m) {}
 public:
@@ -909,7 +909,7 @@ class BaseOf_GDI(DevCap, HDC) {
 public:
 	using Super = GObjectBase<DevCap, HDC>;
 protected:
-	friend_to_proxy(DevCap);
+	proxy_basetype(DevCap);
 	DevCap(HDC h) : Super(h) {}
 	DevCap(const DevCap &d) : Super(d) {}
 public:

@@ -664,7 +664,7 @@ wapi_ret(DrawAnimatedRects, true);
 // GetMessage
 template<bool IsUnicode = Native::IsUnicode>
 inline bool GetMessage(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilterMax) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 safe_ret_as(auto h = ::GetMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax); h >= 0, h)
 	else safe_ret_as(auto h = ::GetMessageA(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax); h >= 0, h)
 }
@@ -676,7 +676,7 @@ wapi_ret_WAT(DispatchMessage, direct);
 // PeekMessage
 template<bool IsUnicode = Native::IsUnicode>
 inline bool PeekMessage(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilterMax, UINT wRemoveMsg) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 ret_as(::PeekMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg))
 	else ret_as(::PeekMessageA(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg))
 }
@@ -693,14 +693,14 @@ wapi_ret(SetMessageExtraInfo, direct);
 // SendMessage
 template<bool IsUnicode = Native::IsUnicode>
 inline LRESULT SendMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 ret_safe_to(auto h = ::SendMessageW(hWnd, Msg, wParam, lParam), h)
 	else ret_safe_to(auto h = ::SendMessageA(hWnd, Msg, wParam, lParam), h)
 }
 // SendMessageTimeout
 template<bool IsUnicode = Native::IsUnicode>
 inline LRESULT SendMessageTimeout(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, UINT fuFlags, UINT uTimeout, PDWORD_PTR lpdwResult) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 ret_safe_to(auto h = ::SendMessageTimeoutW(hWnd, Msg, wParam, lParam, fuFlags, uTimeout, lpdwResult), h)
 	else ret_safe_to(auto h = ::SendMessageTimeoutA(hWnd, Msg, wParam, lParam, fuFlags, uTimeout, lpdwResult), h)
 }
@@ -709,14 +709,14 @@ wapi_ret_WAT(SendMessageCallback, true);
 // BroadcastSystemMessageEx
 template<bool IsUnicode = Native::IsUnicode>
 inline long BroadcastSystemMessageEx(DWORD flags, LPDWORD lpInfo, UINT Msg, WPARAM wParam, LPARAM lParam, PBSMINFO pbsmInfo) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 safe_ret_as(auto h = ::BroadcastSystemMessageExW(flags, lpInfo, Msg, wParam, lParam, pbsmInfo), h)
 	else safe_ret_as(auto h = ::BroadcastSystemMessageExA(flags, lpInfo, Msg, wParam, lParam, pbsmInfo), h)
 }
 // BroadcastSystemMessage
 template<bool IsUnicode = Native::IsUnicode>
 inline long BroadcastSystemMessage(DWORD flags, LPDWORD lpInfo, UINT Msg, WPARAM wParam, LPARAM lParam) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 safe_ret_as(auto h = ::BroadcastSystemMessageW(flags, lpInfo, Msg, wParam, lParam), h)
 	else safe_ret_as(auto h = ::BroadcastSystemMessageA(flags, lpInfo, Msg, wParam, lParam), h)
 }
@@ -786,7 +786,7 @@ inline INT_PTR DialogBoxParam(HINSTANCE hInstance, LPCWSTR lpTemplateName, HWND 
 #undef DialogBoxIndirectParam
 template<bool IsUnicode = Native::IsUnicode>
 inline INT_PTR DialogBoxIndirectParam(HINSTANCE hInstance, LPCDLGTEMPLATE hDialogTemplate, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 ret_safe_to(auto h = ::DialogBoxIndirectParamW(hInstance, hDialogTemplate, hWndParent, lpDialogFunc, dwInitParam), h)
 	else ret_safe_to(auto h = ::DialogBoxIndirectParamA(hInstance, hDialogTemplate, hWndParent, lpDialogFunc, dwInitParam), h)
 }
@@ -804,7 +804,7 @@ wapi_ret(IsDlgButtonChecked, direct);
 // SendDlgItemMessage
 template<bool IsUnicode = Native::IsUnicode>
 inline LRESULT SendDlgItemMessage(HWND hDlg, int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 ret_safe_to(auto h = ::SendDlgItemMessageW(hDlg, nIDDlgItem, Msg, wParam, lParam), h)
 	else ret_safe_to(auto h = ::SendDlgItemMessageA(hDlg, nIDDlgItem, Msg, wParam, lParam), h)
 }
@@ -979,7 +979,7 @@ wapi_ret_WAT(CopyAcceleratorTable, direct);
 // TranslateAccelerator
 template<bool IsUnicode = Native::IsUnicode>
 inline int TranslateAccelerator(HWND hWnd, HACCEL hAccTable, LPMSG lpMsg) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 safe_ret_as(auto h = ::TranslateAcceleratorW(hWnd, hAccTable, lpMsg), h)
 	else safe_ret_as(auto h = ::TranslateAcceleratorA(hWnd, hAccTable, lpMsg), h)
 }
@@ -1115,7 +1115,7 @@ inline int GetWindowText(HWND hWnd, LPWSTR lpString, int nMaxCount)
 // GetWindowTextLength
 template<bool IsUnicode = Native::IsUnicode>
 inline int GetWindowTextLength(HWND hWnd) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 ret_safe_to(auto h = ::GetWindowTextLengthW(hWnd), h)
 	else ret_safe_to(auto h = ::GetWindowTextLengthA(hWnd), h)
 }
@@ -1189,14 +1189,14 @@ inline WORD SetWindowWord(HWND hWnd, int nIndex, WORD wNewWord)
 // GetWindowLongPtr
 template<bool IsUnicode = Native::IsUnicode>
 inline LONG_PTR GetWindowLongPtr(HWND hWnd, int nIndex) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 ret_safe_to(auto h = ::GetWindowLongPtrW(hWnd, nIndex), h)
 	else ret_safe_to(auto h = ::GetWindowLongPtrA(hWnd, nIndex), h)
 }
 // SetWindowLongPtr
 template<bool IsUnicode = Native::IsUnicode>
 inline LONG_PTR SetWindowLongPtr(HWND hWnd, int nIndex, LONG_PTR dwNewLong) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 ret_safe_to(auto h = ::SetWindowLongPtrW(hWnd, nIndex, dwNewLong), h)
 	else ret_safe_to(auto h = ::SetWindowLongPtrA(hWnd, nIndex, dwNewLong), h)
 }
@@ -1211,14 +1211,14 @@ inline WORD SetClassWord(HWND hWnd, int nIndex, WORD wNewWord)
 // GetClassLongPtr
 template<bool IsUnicode = Native::IsUnicode>
 inline ULONG_PTR GetClassLongPtr(HWND hWnd, int nIndex) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 ret_safe_to(auto h = ::GetClassLongPtrW(hWnd, nIndex), h)
 	else ret_safe_to(auto h = ::GetClassLongPtrA(hWnd, nIndex), h)
 }
 // SetClassLongPtr
 template<bool IsUnicode = Native::IsUnicode>
 inline ULONG_PTR SetClassLongPtr(HWND hWnd, int nIndex, LONG_PTR dwNewLong) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 ret_safe_to(auto h = ::SetClassLongPtrW(hWnd, nIndex, dwNewLong), h)
 	else ret_safe_to(auto h = ::SetClassLongPtrA(hWnd, nIndex, dwNewLong), h)
 }
@@ -1385,7 +1385,7 @@ inline UINT GetRawInputData(HRAWINPUT hRawInput, UINT uiCommand, LPVOID pData, P
 // GetRawInputDeviceInfo
 template<bool IsUnicode = Native::IsUnicode>
 inline UINT GetRawInputDeviceInfo(HANDLE hDevice, UINT uiCommand, LPVOID pData, PUINT pcbSize) {
-	if_c (IsUnicode)
+	if constexpr (IsUnicode)
 		 safe_ret_as(auto h = ::GetRawInputDeviceInfoW(hDevice, uiCommand, pData, pcbSize); h != -1, h)
 	else safe_ret_as(auto h = ::GetRawInputDeviceInfoA(hDevice, uiCommand, pData, pcbSize); h != -1, h)
 }

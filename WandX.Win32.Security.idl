@@ -354,7 +354,7 @@ class SecurityDescriptor {
 		bool bDefault = false, bPresent = false, bModified = false;
 		xACL(const SecurityDescriptor &sd) : sd(const_cast<SecurityDescriptor &>(sd)) {
 			BOOL bDefault = false, bPresent = false;
-			if_c (_SACL_1_DACL_0_)
+			if constexpr (_SACL_1_DACL_0_)
 				 WandX::GetSecurityDescriptorSacl(&sd, &bPresent, &pACL, &bDefault);
 			else WandX::GetSecurityDescriptorDacl(&sd, &bPresent, &pACL, &bDefault);
 			this->bDefault = bDefault, this->bPresent = bPresent;
@@ -362,7 +362,7 @@ class SecurityDescriptor {
 		xACL(SecurityDescriptor &sd, PACL pACL) : sd(sd), pACL(pACL), bPresent(true), bModified(true) {}
 		inline void __Set() {
 			if (bModified) {
-				if_c (_SACL_1_DACL_0_)
+				if constexpr (_SACL_1_DACL_0_)
 					 WandX::SetSecurityDescriptorSacl(&sd, bPresent, pACL, bDefault);
 				else WandX::SetSecurityDescriptorDacl(&sd, bPresent, pACL, bDefault);
 			}
@@ -399,7 +399,7 @@ class SecurityDescriptor {
 		bool bDefault = false, bModified = false;
 		xSID(const SecurityDescriptor &sd) : sd(const_cast<SecurityDescriptor &>(sd)) {
 			BOOL bDefault = false;
-			if_c (_GSID_1_OSID_0_)
+			if constexpr (_GSID_1_OSID_0_)
 				 GetSecurityDescriptorGroup(&sd, &pSID, &bDefault);
 			else GetSecurityDescriptorOwner(&sd, &pSID, &bDefault);
 			this->bDefault = bDefault;
@@ -407,7 +407,7 @@ class SecurityDescriptor {
 		xSID(SecurityDescriptor &sd, PSID pSID) : sd(sd), pSID(pSID), bModified(true) {}
 		inline void __Set() {
 			if (bModified) {
-				if_c (_GSID_1_OSID_0_)
+				if constexpr (_GSID_1_OSID_0_)
 					 SetSecurityDescriptorGroup(&sd, pSID, bDefault);
 				else SetSecurityDescriptorOwner(&sd, pSID, bDefault);
 			}

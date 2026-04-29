@@ -124,7 +124,7 @@ using MonitorInfoExW = MonitorInformationsExX<true>;
 class Monitor {
 	mutable HMONITOR hMonitor = O;
 protected:
-	friend_to_proxy(Monitor);
+	proxy_basetype(Monitor);
 	Monitor(HMONITOR h) : hMonitor(h) {}
 	Monitor(const Monitor &m) = delete;
 public:
@@ -146,7 +146,7 @@ public:
 class Desktop {
 	mutable HDESK hDesk = O;
 protected:
-	friend_to_proxy(Desktop);
+	proxy_basetype(Desktop);
 	Desktop(HDESK h) : hDesk(h) {}
 	Desktop(const Desktop &d) = delete;
 public:
@@ -161,7 +161,7 @@ public:
 class WindowStation {
 	mutable HWINSTA hWinSta = O;
 protected:
-	friend_to_proxy(WindowStation);
+	proxy_basetype(WindowStation);
 	WindowStation(HWINSTA h) : hWinSta(h) {}
 	WindowStation(const WindowStation &w) = delete;
 public:
@@ -775,7 +775,7 @@ private:
 public:
 	template<class AnyFunc>
 	inline int Enum(AnyFunc fnEnum) {
-		if_c (static_compatible<AnyFunc, bool(HWND, LPSTR, HANDLE)>) {
+		if constexpr (static_compatible<AnyFunc, bool(HWND, LPSTR, HANDLE)>) {
 			FnEnumPropA fnEnumProps{
 				[&](HWND hWnd, LPSTR lpString, HANDLE hData) {
 					return fnEnum(hWnd, lpString, hData);
@@ -783,7 +783,7 @@ public:
 			};
 			return WandX::EnumProps(hWnd, _EnumPropA, (LPARAM)std::addressof(fnEnumProps));
 		}
-		elif_c (static_compatible<AnyFunc, bool(HWND, LPWSTR, HANDLE)>) {
+		elif constexpr (static_compatible<AnyFunc, bool(HWND, LPWSTR, HANDLE)>) {
 			FnEnumPropW fnEnumProps{
 				[&](HWND hWnd, LPWSTR lpString, HANDLE hData) {
 					return fnEnum(hWnd, lpString, hData);
@@ -791,7 +791,7 @@ public:
 			};
 			return WandX::EnumProps(hWnd, _EnumPropW, (LPARAM)std::addressof(fnEnumProps));
 		}
-		elif_c (static_compatible<AnyFunc, void(HWND, LPSTR, HANDLE)>) {
+		elif constexpr (static_compatible<AnyFunc, void(HWND, LPSTR, HANDLE)>) {
 			FnEnumPropA fnEnumProps{
 				[&](HWND hWnd, LPSTR lpString, HANDLE hData) {
 					fnEnum(hWnd, lpString, hData);
@@ -950,7 +950,7 @@ public:
 	using Style = WStyle;
 	using StyleEx = WStyleEx;
 protected:
-	friend_to_proxy(WindowBase);
+	proxy_basetype(WindowBase);
 	WindowBase(HWND h) : hWnd(h) {}
 	WindowBase(const WindowBase &w) : hWnd(w.hWnd) ret_to(w.hWnd = O);
 public:
@@ -1056,7 +1056,7 @@ public:
 	template<class AnyFunc>
 	static inline void Enum(AnyFunc fnEnum) {
 		FnEnumWindow fnEnumWindows([&](HWND hWnd) {
-			if_c (static_compatible<AnyFunc, bool(HWND)>)
+			if constexpr (static_compatible<AnyFunc, bool(HWND)>)
 				return fnEnum(hWnd);
 			else {
 				misuse_assert((static_compatible<AnyFunc, void(HWND)>),
@@ -1070,7 +1070,7 @@ public:
 	template<class AnyFunc>
 	inline void EnumChild(AnyFunc fnEnum) {
 		FnEnumWindow fnEnumChildren([&](HWND hWnd) {
-			if_c (static_compatible<AnyFunc, bool(HWND)>)
+			if constexpr (static_compatible<AnyFunc, bool(HWND)>)
 				return fnEnum(hWnd);
 			else {
 				misuse_assert((static_compatible<AnyFunc, void(HWND)>),
@@ -1087,7 +1087,7 @@ public:
 protected: // Default Message Procedure
 	use_member(DefProc);
 	static LRESULT CallDefProc(HWND hWnd, UINT msgid, WPARAM wParam, LPARAM lParam) {
-		if_c (member_DefProc_of<Child>::is_addressable) {
+		if constexpr (member_DefProc_of<Child>::is_addressable) {
 			misdef_assert((!std::is_member_pointer_v<decltype(&Child::DefProc)>),
 						  "DefProc must be a static method.");
 			using tfn_WndProc = LRESULT(HWND, UINT, WPARAM, LPARAM);
@@ -1109,17 +1109,17 @@ public: // Reflectors management
 		public: static constexpr bool User##name = member_On##name##_of<Child>::is_addressable; \
 		inline LRESULT CallOn##name argslist { \
 			using fn_type = ret argslist; \
-			if_c (member_On##name##_of<Child>::template compatible_to<ret()>) \
-				if_c (std::is_void_v<ret>) \
+			if constexpr (member_On##name##_of<Child>::template compatible_to<ret()>) \
+				if constexpr (std::is_void_v<ret>) \
 					 ret_as((pChild->On##name(), 0L)) \
 				else ret_as((LRESULT)pChild->name()) \
-			elif_c (member_On##name##_of<Child>::template compatible_to<LRESULT()>) \
+			elif constexpr (member_On##name##_of<Child>::template compatible_to<LRESULT()>) \
 				ret_as(pChild->On##name()) \
-			elif_c (member_On##name##_of<Child>::template compatible_to<void(WPARAM, LPARAM)>) \
+			elif constexpr (member_On##name##_of<Child>::template compatible_to<void(WPARAM, LPARAM)>) \
 				ret_as((send, 0L)) \
-			elif_c (member_On##name##_of<Child>::template compatible_to<LRESULT(WPARAM, LPARAM)>) \
+			elif constexpr (member_On##name##_of<Child>::template compatible_to<LRESULT(WPARAM, LPARAM)>) \
 				ret_as(send) \
-			elif_c (member_On##name##_of<Child>::template compatible_to<fn_type>) { \
+			elif constexpr (member_On##name##_of<Child>::template compatible_to<fn_type>) { \
 				misdef_assert((member_On##name##_of<Child>::template compatible_to<fn_type>), \
 							  "Member On" #name " must be a method compatible to " #ret #argslist ", " #ret "(), void(WPARAM, LPARAM) or LRESULT(WPARAM, LPARAM)" ); \
 				ret_as(pChild->On##name args); \
@@ -1156,13 +1156,13 @@ protected: // Message Procedure
 #define CALL(name) ref.CallOn##name
 #define MSG_TRANS(msgid, ret, name, argslist, args, send, call) \
 					case msgid: \
-						if_c (Reflectors::User##name) { \
+						if constexpr (Reflectors::User##name) { \
 							return call; \
 						} break;
 #include "wx__msg.inl"
 				}
 			}
-			if_c (member_Callback_of<Child>::is_addressable) {
+			if constexpr (member_Callback_of<Child>::is_addressable) {
 				misdef_assert(member_Callback_of<Child>::template compatible_to<LRESULT(WPARAM, LPARAM)>, 
 							  "Member Callback must be a method compatible to LRESULT(WPARAM, LPARAM)");
 				return pChild->Callback(msgid, wParam, lParam);
@@ -1183,13 +1183,13 @@ protected: // Default Message Definitions
 protected: // Message Procedure Exception System
 	use_member(OnCatch);
 	static inline wx_answer Catch(Child *pChild, const MsgException &err) {
-		if_c (member_OnCatch_of<AnyChild>::template compatible_to<wx_answer(MsgException)>)
+		if constexpr (member_OnCatch_of<AnyChild>::template compatible_to<wx_answer(MsgException)>)
 			ret_as(pChild->OnCatch(err))
-		elif_c (member_OnCatch_of<AnyChild>::template compatible_to<wx_answer()>)
+		elif constexpr (member_OnCatch_of<AnyChild>::template compatible_to<wx_answer()>)
 			ret_as(pChild->OnCatch())
-		elif_c (member_OnCatch_of<AnyChild>::template compatible_to<void(MsgException)>)
+		elif constexpr (member_OnCatch_of<AnyChild>::template compatible_to<void(MsgException)>)
 			ret_as((pChild->OnCatch(err), false))
-		elif_c (member_OnCatch_of<AnyChild>::template compatible_to<void()>)
+		elif constexpr (member_OnCatch_of<AnyChild>::template compatible_to<void()>)
 			ret_as((pChild->OnCatch(), false))
 		else {
 			misdef_assert(!member_OnCatch_of<AnyChild>::is_addressable,
@@ -1207,13 +1207,13 @@ protected: // Message Procedure Exception System
 	}
 	use_member(OnFinal);
 	static inline LRESULT Final(Child *pChild, const MsgException &err) {
-		if_c (member_OnFinal_of<AnyChild>::template compatible_to<LRESULT(MsgException)>)
+		if constexpr (member_OnFinal_of<AnyChild>::template compatible_to<LRESULT(MsgException)>)
 			ret_as(pChild->OnFinal(err))
-		elif_c (member_OnFinal_of<AnyChild>::template compatible_to<LRESULT()>)
+		elif constexpr (member_OnFinal_of<AnyChild>::template compatible_to<LRESULT()>)
 			ret_as(pChild->OnFinal())
-		elif_c (member_OnFinal_of<AnyChild>::template compatible_to<void(MsgException)>)
+		elif constexpr (member_OnFinal_of<AnyChild>::template compatible_to<void(MsgException)>)
 			ret_as((pChild->OnFinal(err), -1))
-		elif_c (member_OnFinal_of<AnyChild>::template compatible_to<void()>)
+		elif constexpr (member_OnFinal_of<AnyChild>::template compatible_to<void()>)
 			ret_as((pChild->OnFinal(), -1))
 		else {
 			misdef_assert(!member_OnFinal_of<AnyChild>::is_addressable,
@@ -1242,7 +1242,7 @@ protected:
 	use_member(CClassNameW);
 public:
 	static inline auto&CClassNameA() {
-		if_c (member_CClassNameA_of<AnyChild>::template compatible_to<StringA(AnyChild:: *)()>)
+		if constexpr (member_CClassNameA_of<AnyChild>::template compatible_to<StringA(AnyChild:: *)()>)
 			ret_as(AnyChild::CClassNameA())
 		else {
 			misdef_assert(!member_CClassNameA_of<AnyChild>::is_existed,
@@ -1252,7 +1252,7 @@ public:
 		}
 	}
 	static inline auto&CClassNameW() {
-		if_c (member_CClassNameW_of<AnyChild>::template compatible_to<StringW(AnyChild:: *)()>)
+		if constexpr (member_CClassNameW_of<AnyChild>::template compatible_to<StringW(AnyChild:: *)()>)
 			ret_as(AnyChild::CClassNameW())
 		else {
 			misdef_assert(!member_CClassNameW_of<AnyChild>::is_existed,
@@ -1263,7 +1263,7 @@ public:
 	}
 	template<bool IsUnicode = Native::IsUnicode>
 	static inline auto&CClassName() {
-		if_c (IsUnicode)
+		if constexpr (IsUnicode)
 			 ret_as(CClassNameW())
 		else ret_as(CClassNameA())
 	}
@@ -1316,7 +1316,7 @@ private:
 	}
 public:
 	static inline auto Register() {
-		if_c (member_Register_of<AnyChild>::is_addressable)
+		if constexpr (member_Register_of<AnyChild>::is_addressable)
 			 ret_as(AnyChild::Register())
 		else ret_as(DefRegister())
 	}
@@ -1328,9 +1328,9 @@ private:
 	}
 public:
 	static inline void Unregister() {
-		if_c (!IsSameType(AnyChild::Unregister, Unregister))
+		if constexpr (!IsSameType(AnyChild::Unregister, Unregister))
 			 ret_as(AnyChild::Unregister())
-		elif_c (AnyChild::Unregister != Unregister)
+		elif constexpr (AnyChild::Unregister != Unregister)
 			 ret_as(AnyChild::Unregister())
 		else ret_as(DefUnregister())
 	}

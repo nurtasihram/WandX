@@ -118,9 +118,9 @@ proxy_struct       (FileBaseInfo  , FILE_BASIC_INFO                ) {
 	proxy_prop_sync(TimeLastWrite , LastWriteTime  , FileTime      );
 	proxy_prop_sync(TimeChange    , ChangeTime     , FileTime      );
 	proxy_prop_sync(Attributes    , FileAttributes , FileAttribute );};
-class File : public WandX::HandleBase<File> {
+class File : public WandX::KernalObject<File> {
 public:
-	using Super = HandleBase<File>;
+	using Super = KernalObject<File>;
 protected:
 	File(HANDLE h) : Super(h) {}
 	File(const File &f) : Super(f) {}

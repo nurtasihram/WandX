@@ -23,14 +23,14 @@ static int WxMain_safe() {
 #ifndef WANDX_NO_CONSOLE_IN_WINMAIN
 	Console.Alloc();
 #endif
-	//try {
+	try {
 		return WxMain();
-	//} catch (WandX::Exception err) {
-	//	Console.Write(T("WxMain Exception:\n"));
-	//	Console.Write(toString(err));
-	//	system("pause");
-	//}
-	//return -1;
+	} catch (WandX::Exception err) {
+		Console.Write(T("WxMain Exception:\n"));
+		Console.Write(toString(err));
+		system("pause");
+	}
+	return -1;
 }
 
 int main() {

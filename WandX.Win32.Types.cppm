@@ -21,7 +21,7 @@ wapi_ret_WAO(GetDateFormat, positive);
 wapi_ret_WAO(GetTimeFormat, positive);
 wapi_ret(GetTimeFormatEx, positive);
 wapi_ret(GetDateFormatEx, positive);
-// GetDurationFormatEx - Deprecated
+// GetDurationFormatEx - deprecated
 #pragma endregion
 
 #pragma region HandleApi.h

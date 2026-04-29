@@ -194,16 +194,12 @@ wapi_ret(QueryInformationJobObject, true);
 wapi_ret(QueryIoRateControlInformationJobObject, true);
 #pragma endregion
 
+}
+
 template<class AnyChild>
-class WaitableBase : public HandleBase<AnyChild> {
+class WaitableBase : public KernalObject<AnyChild> {
 public:
-	using Super = HandleBase<AnyChild>;
-protected:
-	WaitableBase(HANDLE h) : Super(h) {}
-	WaitableBase(const WaitableBase &w) : Super(w) {}
-public:
-	WaitableBase() {}
-	WaitableBase(Nu) {}
+	using Super = KernalObject<AnyChild>;
 
 	/* const */ class_method(Wait, DWORD, (DWORD dwMilliseconds = INFINITE), as(Native::WaitForSingleObject(self, dwMilliseconds) == WAIT_OBJECT_0));
 };
@@ -214,18 +210,10 @@ enum_flags(EventAccess , HandleAccess       ,
 class Event : public WaitableBase<Event> {
 public:
 	using Super = WaitableBase<Event>;
-	using Access = EventAccess;
-protected:
-	Event(HANDLE h) : Super(h) {}
-public:
-	//Event() : Event(Create()) {}
-	Event(Nu) {}
 
 	class_method(Set, void, (), to(Native::SetEvent(self)));
 	class_method(Reset, void, (), to(Native::ResetEvent(self)));
 	class_method(Pulse, void, (), to(Native::PulseEvent(self)));
-
-	//inline auto &operator=(bool bState) ret_to_self(if (bState) Set(); else Reset(););
 };
 using CEvent = ProxyView<Event>;
 
@@ -236,31 +224,20 @@ class Mutex : public WaitableBase<Mutex> {
 public:
 	using Super = WaitableBase<Mutex>;
 	using Access = MutexAccess;
-protected:
-	Mutex(HANDLE h) : Super(h) {}
-public:
-	//Mutex() : Mutex(Create()) {}
-	Mutex(Nu) {}
 
-	class_method(Release, void, (), to(WandX::ReleaseMutex(self)));
+	class_method(Release, void, (), to(Native::ReleaseMutex(self)));
 };
 using CMutex = ProxyView<Mutex>;
 
 enum_flags(SemaphoreAccess , HandleAccess           ,
 		   All             = SEMAPHORE_ALL_ACCESS   ,
 		   Modify          = SEMAPHORE_MODIFY_STATE );
-class BaseOf_Waitable(Semaphore) {
+class Semaphore : public WaitableBase<Semaphore> {
 public:
 	using Super = WaitableBase<Semaphore>;
 	using Access = SemaphoreAccess;
-protected:
-	Semaphore(HANDLE h) : Super(h) {}
-	Semaphore(const Semaphore & s) : Super(s.hObject) ret_to(s.hObject = O);
-public:
-//	Semaphore() : Semaphore(Create()) {}
-	Semaphore(Nu) {}
 
-	class_method(Release, void, (), to(WandX::ReleaseSemaphore(self)));
+	class_method(Release, LONG, (LONG ReleaseCount), to(LONG preCount = 0, Native::ReleaseSemaphore(self, ReleaseCount, &preCount), preCount));
 };
 
 enum_flags(TimerAccess , HandleAccess       ,
@@ -271,23 +248,14 @@ class WaitableTimer : public WaitableBase<WaitableTimer> {
 public:
 	using Super = WaitableBase<WaitableTimer>;
 	using Access = TimerAccess;
-protected:
-	WaitableTimer(HANDLE h) : Super(h) {}
-	WaitableTimer(const WaitableTimer &t) : Super(t.hObject) ret_to(t.hObject = O);
-public:
-	//WaitableTimer() : WaitableTimer(Create()) {}
-	WaitableTimer(Nu) {}
 
 };
 using Timer = WaitableTimer;
 
-class PrivateNamespace : public HandleBase<PrivateNamespace> {
+class PrivateNamespace : public KernalObject<PrivateNamespace> {
 public:
-	using Super = HandleBase<PrivateNamespace>;
-protected:
-	PrivateNamespace(HANDLE h) : Super(h) {}
-public:
-	PrivateNamespace() {}
+	using Super = KernalObject<PrivateNamespace>;
+
 };
 
 // #include "WandX.Win32.Realtime.h"

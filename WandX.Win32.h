@@ -247,16 +247,8 @@
 ///////////////////////////////////////////// !!!!DEPRECATE SOON!!!! /////////////////////////////////////////////
 
 #	define safe_ret_as(sent, ...) { if (sent) return __VA_ARGS__; wx_throw_line_nt(sent); }
-#	define safe_ret_as_self(sent)  safe_ret_as(sent, self)
-#	define safe_ret_as_child(sent) safe_ret_as(sent, child)
-
 #	define safe_ret_to(defs, sent, ...) { defs; if (sent) return __VA_ARGS__; wx_throw_line_nt(sent); }
-#	define safe_ret_to_self(defs, sent)  safe_ret_to(defs, sent, self)
-#	define safe_ret_to_child(defs, sent) safe_ret_to(defs, sent, child)
-
 #	define ret_safe_to(sent, ...) { SetLastError(ERROR_SUCCESS); sent; if (GetLastError()) wx_throw_line_nt(sent); return __VA_ARGS__; }
-#	define ret_safe_to_self(sent)  ret_safe_to(sent, self)
-#	define ret_safe_to_child(sent) ret_safe_to(sent, child)
 
 /* Macro string branch selector */
 #	define locale_symbolx(name)     static constexpr auto name = AnyX<IsUnicode>(name##W, name##A)
@@ -290,12 +282,6 @@ import WandX.Win32;
 #undef DecryptFile
 #undef FileEncryptionStatus
 #undef OpenEncryptedFileRaw
-#undef lstrcmp
-#undef lstrcmpi
-#undef lstrcpyn
-#undef lstrcpy
-#undef lstrcat
-#undef lstrlen
 #undef CreateFileMapping
 #undef CreateFileMappingNuma
 #undef OpenFileMapping
