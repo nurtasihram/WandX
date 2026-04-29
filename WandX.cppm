@@ -339,7 +339,7 @@ template<class AnyType, Modifications mod> concept ModOn = HasMod<AnyType, mod>;
 
 template<Modifications mod, ModOn<mod> AnyType> constexpr auto IndexProtoNodeValue = [](){
 	using node = ProtoNodeOf<AnyType>;
-	if_c (node::modification == mod)
+	if constexpr (node::modification == mod)
 		 return node{};
 	else return IndexProtoNodeValue<mod, RemoveModOf<AnyType>>;
 }();
@@ -605,9 +605,9 @@ template<auto fn1, auto fn2> constexpr bool InvokableAmbiguous = InvokableDownTo
 
 #pragma region Type Reference Helpers
 
-template<class OutType> constexpr       OutType &  ref_cast(      SameSizeType<OutType> auto & in) noexcept  ret_as(*(      OutType *)&in);
-template<class OutType> constexpr const OutType &  ref_cast(const SameSizeType<OutType> auto & in) noexcept  ret_as(*(const OutType *)&in);
-template<class OutType> constexpr       OutType  reuse_cast(      SameSizeType<OutType> auto   in) noexcept  ret_as(*(      OutType *)&in);
+template<class OutType> constexpr       OutType &  ref_cast(      SameSizeType<OutType> auto & in) noexcept ret_as(*(      OutType *)&in);
+template<class OutType> constexpr const OutType &  ref_cast(const SameSizeType<OutType> auto & in) noexcept ret_as(*(const OutType *)&in);
+template<class OutType> constexpr       OutType  reuse_cast(      SameSizeType<OutType> auto   in) noexcept ret_as(*(      OutType *)&in);
 template<class OutType, class InType> requires(sizeof(OutType) <= sizeof(InType)) constexpr OutType   big_cast(InType in) noexcept ret_as(*(OutType *)&in);
 template<class OutType, class InType> requires(sizeof(OutType) >= sizeof(InType)) constexpr OutType small_cast(InType in) noexcept ret_as(*(OutType *)&in);
 
@@ -870,37 +870,37 @@ public:
 public:
 	template<SizeT ind> requires(ind < Count)
 	inline auto &value_left() {
-		if_c (ind)
+		if constexpr (ind)
 			 ret_as(args.template value_left<ind - 1>())
 		else ret_as(arg0)
 	}            
 	template<SizeT ind> requires(ind < Count)
 	inline auto &value_left() const {
-		if_c (ind)
+		if constexpr (ind)
 			 ret_as(args.template value_left<ind - 1>())
 		else ret_as(arg0)
 	}
 	template<SizeT ind> requires(ind < Count)
 	inline auto value_right() {
-		if_c (ind)
+		if constexpr (ind)
 			 ret_as(args.template value_right<ind - 1>())
 		else ret_as(static_cast<Right0>(arg0))
 	}
 	template<SizeT ind> requires(ind < Count)
 	inline auto value_right() const {
-		if_c (ind)
+		if constexpr (ind)
 			 ret_as(args.template value_right<ind - 1>())
 		else ret_as(static_cast<const Right0>(arg0))
 	}
 	template<SizeT ind> requires(ind < Count)
 	inline auto value() {
-		if_c (ind)
+		if constexpr (ind)
 			 ret_as(args.template value<ind - 1>())
 		else ret_as(static_cast<Clap0>(arg0))
 	}
 	template<SizeT ind> requires(ind < Count)
 	inline auto value() const {
-		if_c (ind)
+		if constexpr (ind)
 			 ret_as(args.template value<ind - 1>())
 		else ret_as(static_cast<const Clap0>(arg0))
 	}
@@ -930,17 +930,17 @@ public:
 #pragma region Chain Extended Helper
 
 template<class AnyChild, template<class = void> class AnyBase>
-struct ChildBridge {
+struct ChainBegin {
 	using Parent = AnyBase<AnyChild>;
 	using Child = VoidChain<AnyChild, Parent>;
-	ChildBridge() = default;
+	ChainBegin() = default;
 	constexpr auto &__child__() requires(IsExtendedOf<Child, Parent>) ret_as(static_cast<Child &>(self));
 	constexpr auto &__child__() const requires(IsExtendedOf<Child, Parent>) ret_as(static_cast<const Child &>(self));
 };
 template<template<class = void> class AnyBase, class AnyChild>
-struct SuperBridge : public AnyBase<AnyChild> {
+struct ChainNext : public AnyBase<AnyChild> {
 	using Super = AnyBase<AnyChild>;
-	using Shim = SuperBridge<AnyBase, AnyChild>;
+	using Shim = ChainNext<AnyBase, AnyChild>;
 	using Super::Super;
 	constexpr auto & __super__() requires(IsExtendedOf<Shim, Super>) ret_as(static_cast<Super &>(self));
 	constexpr auto & __super__() const requires(IsExtendedOf<Shim, Super>) ret_as(static_cast<const Super &>(self));
@@ -950,10 +950,14 @@ template<class           AnyType> constexpr bool HasSuper     = requires { typen
 template<class           AnyType> concept        HasSuperType = HasSuper<AnyType>;
 template<HasSuperType AnyChained> using              SuperOf  = typename AnyChained::Super;
 
+template<class           AnyType> constexpr bool HasChild     = requires { typename AnyType::Child; };
+template<class           AnyType> concept        HasChildType = HasChild<AnyType>;
+template<HasChildType AnyChained> using              ChildOf  = typename AnyChained::Child;
+
 template<class AnyClass, class AnyBase>
 constexpr bool IsChainExtendedOf = [] {
-	if_c   (IsSame<AnyClass, AnyBase>) return true;
-	elif_c (!HasSuper<AnyClass>)       return false;
+	if  constexpr  (IsSame<AnyClass, AnyBase>) return true;
+	elif constexpr (!HasSuper<AnyClass>)       return false;
 	else return IsChainExtendedOf<SuperOf<AnyClass>, AnyBase>;
 }();
 
@@ -970,22 +974,33 @@ template<class AnyFrom, class AnyTo> concept         DownCastOf = IsExtendedOf<A
 template<class Type1  , class Type2> concept         SameCastOf = UpCastOf<Type1, Type2>   ||   DownCastOf<Type1, Type2>;
 template<class Type1  , class Type2> constexpr int  OrderCastOf = UpCastOf<Type1, Type2> ? +1 : DownCastOf<Type1, Type2> ? -1 : 0;
 
-template<Extendable...ExtensioN>
-struct MultiBaseOf : ExtensioN... {};
-
-template<Extendable...ExtensioN>
-struct OverrideFunctor;
-template<Extendable Extensio0>
-struct OverrideFunctor<Extensio0> : public Extensio0 {
-	using Extensio0::operator();
-};
-template<Extendable Extensio0, Extendable...ExtensioN>
-struct OverrideFunctor<Extensio0, ExtensioN...> : public Extensio0, public OverrideFunctor<ExtensioN...> {
-	using Extensio0::operator();
-	using OverrideFunctor<ExtensioN...>::operator();
-};
+template<class AnyClass>
+constexpr auto further_chain(AnyClass *pThis) {
+	if constexpr (HasChild<AnyClass>) {
+		using Child = ChildOf<AnyClass>;
+		constexpr bool has_child_ref = requires(AnyClass c) { c.__child__(); };
+		misuse_assert(has_child_ref, "ChainBegin is required for further chaining");
+		return &pThis->__child__();
+	}
+	else return pThis;
+}
 
 #pragma endregion
+
+template<Extendable...ExtensionN>
+struct MultiBaseOf : ExtensionN... {};
+
+template<Extendable...ExtensionN>
+struct OverrideFunctor;
+template<Extendable Extension0>
+struct OverrideFunctor<Extension0> : public Extension0 {
+	using Extension0::operator();
+};
+template<Extendable Extension0, Extendable...ExtensionN>
+struct OverrideFunctor<Extension0, ExtensionN...> : public Extension0, public OverrideFunctor<ExtensionN...> {
+	using Extension0::operator();
+	using OverrideFunctor<ExtensionN...>::operator();
+};
 
 #pragma region Proxy Shims
 
@@ -1027,12 +1042,12 @@ public:
 	constexpr operator AnyType *() ret_as(ptr);
 	constexpr operator const AnyType *() const ret_as(ptr);
 public:
-	constexpr auto &operator*() ret_as(*ptr);
-	constexpr auto *operator&() ret_as(&ptr);
-	constexpr auto *operator->() ret_as(ptr);
-	constexpr auto &operator*() const ret_as(*ptr);
-	constexpr auto *operator&() const ret_as(&ptr);
-	constexpr auto *operator->() const ret_as(ptr);
+	constexpr auto &operator *()       ret_as(*ptr);
+	constexpr auto &operator *() const ret_as(*ptr);
+	constexpr auto *operator &()       ret_as(&ptr);
+	constexpr auto *operator &() const ret_as(&ptr);
+	constexpr auto *operator->()       ret_as( ptr);
+	constexpr auto *operator->() const ret_as( ptr);
 };
 template<class OtherType> constexpr bool IsProxyViewOf = false;
 template<class RefType>   constexpr bool IsProxyViewOf<ProxyView<RefType>> = true;
@@ -1042,7 +1057,7 @@ template<HasBaseType AnyEnum> using BaseTypeOf = typename AnyEnum::BaseType;
 
 template<class OutType, class InType>
 constexpr auto safe_c_cast(const InType &c_value) {
-	if_c (HasBaseType<OutType>) {
+	if constexpr (HasBaseType<OutType>) {
 		 misuse_assert(IsSameSize<mx_b0(BaseTypeOf<OutType>, InType)>, "Unsafe enum cast detected");
 		 return reuse_cast<OutType>(c_value);
 	}
@@ -1051,33 +1066,74 @@ constexpr auto safe_c_cast(const InType &c_value) {
 template<class SetType, class GetType>
 constexpr SetType &safe_setval(SetType &set, GetType &&get) noexcept ret_as((set = (SetType)get));
 
-template<class AnyChild,  class AnyStruct>
-struct CStructProxy : protected AnyStruct {
-	using Super = CStructProxy;
-	using BaseType = AnyStruct;
-	friend AnyChild;
-private:
-	static constexpr bool has_self_size() ret_as(requires(AnyChild c) { c.SelfSize; });
-public:
-	constexpr CStructProxy(const BaseType &s) : BaseType(s) {}
-	constexpr CStructProxy(Nu) : BaseType({ 0 }) {}
-	constexpr CStructProxy() : BaseType({ 0 }) {
-		if_c (has_self_size())
-			 static_cast<AnyChild *>(this)->SelfSize(sizeof(AnyChild));
-	}
-public:
-	static constexpr       AnyChild &view_cast(      BaseType &s) requires(IsExtendedOf<AnyChild, Super>) ret_as(reuse_cast<      AnyChild &>(s));
-	static constexpr const AnyChild &view_cast(const BaseType &s) requires(IsExtendedOf<AnyChild, Super>) ret_as(reuse_cast<const AnyChild &>(s));
-public:
-	constexpr operator         BaseType &()       noexcept ret_as(self);
-	constexpr operator   const BaseType &() const noexcept ret_as(self);
-	constexpr       BaseType & operator *()       noexcept ret_as(self);
-	constexpr const BaseType & operator *() const noexcept ret_as(self);
-	constexpr       BaseType * operator->()       noexcept ret_as(this);
-	constexpr const BaseType * operator->() const noexcept ret_as(this);
-	constexpr       BaseType * operator &()       noexcept ret_as(this);
-	constexpr const BaseType * operator &() const noexcept ret_as(this);
+template<class AnyTypePureC>
+struct ProxyType {
+	template<class AnyChild>
+	struct CValue {
+		using Super = CValue;
+		using BaseType = AnyTypePureC;
+		friend AnyChild;
+	protected:
+		mutable BaseType value;
+	public:
+		CValue(const BaseType &s) noexcept : value(s) {}
+	public:
+		static constexpr       AnyChild &view_cast(      BaseType &s) noexcept requires(IsExtendedOf<AnyChild, Super>) ret_as(reuse_cast<      AnyChild &>(s));
+		static constexpr const AnyChild &view_cast(const BaseType &s) noexcept requires(IsExtendedOf<AnyChild, Super>) ret_as(reuse_cast<const AnyChild &>(s));
+	public:
+		constexpr operator         BaseType &()       noexcept ret_as(value);
+		constexpr operator   const BaseType &() const noexcept ret_as(value);
+		constexpr       BaseType & operator *()       noexcept ret_as(value);
+		constexpr const BaseType & operator *() const noexcept ret_as(value);
+		constexpr       BaseType * operator->()       noexcept ret_as(std::addressof(value));
+		constexpr const BaseType * operator->() const noexcept ret_as(std::addressof(value));
+	public:
+		inline auto operator=(const BaseType &s) noexcept
+			requires(ConstructorStaticAssert<AnyChild, BaseType>) {
+			AnyChild last{ (const BaseType &)value };
+			value = s;
+			return right_cast(last);
+		}
+	};
+	template<class AnyChild>
+	struct CStruct : protected AnyTypePureC {
+		using Super = CStruct;
+		using BaseType = AnyTypePureC;
+		friend AnyChild;
+	private:
+		static constexpr bool has_self_size() noexcept ret_as(requires(AnyChild c) { c.SelfSize; });
+	public:
+		constexpr CStruct(const BaseType &s) noexcept : BaseType(s) {}
+		constexpr CStruct(Nu) noexcept : BaseType({ 0 }) {}
+		constexpr CStruct() : BaseType({ 0 }) {
+			if constexpr (has_self_size())
+				 static_cast<AnyChild *>(this)->SelfSize(sizeof(AnyChild));
+		}
+	public:
+		static constexpr       AnyChild &view_cast(      BaseType &s) noexcept requires(IsExtendedOf<AnyChild, Super>) ret_as(reuse_cast<      AnyChild &>(s));
+		static constexpr const AnyChild &view_cast(const BaseType &s) noexcept requires(IsExtendedOf<AnyChild, Super>) ret_as(reuse_cast<const AnyChild &>(s));
+	public:
+		constexpr operator         BaseType &()       noexcept ret_as(self);
+		constexpr operator   const BaseType &() const noexcept ret_as(self);
+		constexpr       BaseType & operator *()       noexcept ret_as(self);
+		constexpr const BaseType & operator *() const noexcept ret_as(self);
+		constexpr       BaseType * operator->()       noexcept ret_as(this);
+		constexpr const BaseType * operator->() const noexcept ret_as(this);
+		constexpr       BaseType * operator &()       noexcept ret_as(this);
+		constexpr const BaseType * operator &() const noexcept ret_as(this);
+	public:
+		inline auto operator=(const BaseType &s) noexcept
+			requires(ConstructorStaticAssert<AnyChild, BaseType>) {
+			AnyChild last{ (const BaseType &)self };
+			(BaseType &)self = s;
+			return right_cast(last);
+		}
+	};
 };
+
+template<class AnyChild, class AnyStruct>
+using ProxyCStruct = typename ProxyType<AnyStruct>::template CStruct<AnyChild>;
+
 #pragma endregion
 
 #pragma region Exception
@@ -1120,7 +1176,7 @@ public:
 	FunctionPackage(PackType &f) : func(f) {}
 	RetType operator()(ParaN ...args) override {
 		static_assert(static_compatible<PackType, RetType(ParaN...)>, "Argument list uncompatible");
-		// if_c (IsPointer<PackType>)
+		// if constexpr (IsPointer<PackType>)
 		return func(args...);
 	}
 };
@@ -1173,7 +1229,7 @@ struct EnumClassShim;
 
 template<class AnyType>
 constexpr bool IsEnumAtom = []() {
-	if_c (HasSuperType<AnyType> && HasEnumType<AnyType>)
+	if constexpr (HasSuperType<AnyType> && HasEnumType<AnyType>)
 		 return IsExtendedOf<AnyType, EnumClassShim<EnumTypeOf<AnyType>, SuperOf<AnyType>>>;
 	else return false;
 }();
@@ -1188,7 +1244,7 @@ using SuperOfEnum = SuperOf<EnumTypeOf<AnyEnum>>;
 
 template<EnumType AnyEnum>
 constexpr bool HasSuperEnum = ([]() {
-	if_c (HasSuperType<AnyEnum>)
+	if constexpr (HasSuperType<AnyEnum>)
 		return IsEnumBased<SuperOfEnum<AnyEnum>>;
 	return false;
 })();
@@ -1206,9 +1262,9 @@ constexpr bool IsDefaultEnum = requires { AnyEnum::Default; };
 
 template<EnumType AnyEnum>
 constexpr bool HasDefaultEnum = ([]() {
-	if_c (IsDefaultEnum<AnyEnum>)
+	if constexpr (IsDefaultEnum<AnyEnum>)
 		return true;
-	elif_c (HasSuperEnum<AnyEnum>)
+	elif constexpr (HasSuperEnum<AnyEnum>)
 		return HasDefaultEnum<SuperOfEnum<AnyEnum>>;
 	else return false;
 })();
@@ -1225,7 +1281,7 @@ template<EnumType AnyEnum1, EnumType AnyEnum2>
 constexpr auto enum_result_cast(BaseTypeOf<AnyEnum1> v) {
 	constexpr int order = OrderCastOfEnum<AnyEnum1, AnyEnum2>;
 	static_assert(order != 0, "Different branches of enums cannot summon safe result");
-	if_c (order > 0)
+	if constexpr (order > 0)
 		 return AnyEnum1::value_cast(v);
 	else return AnyEnum2::value_cast(v);
 }
@@ -1341,12 +1397,12 @@ constexpr auto AssertFaultMap = ValueMap<ops,
 
 template<class AnyType, AssertOps ops, auto val>
 constexpr bool assert_oeperator(AnyType arg) {
-	     if constexpr   (ops == AssertOps::   Bigger  )  return arg >  val;
-	else if constexpr   (ops == AssertOps::   BigEqual)  return arg >= val;
-	else if constexpr   (ops == AssertOps:: Smaller   )  return arg <  val;
-	else if constexpr   (ops == AssertOps:: SmallEqual)  return arg <= val;
-	else if constexpr   (ops == AssertOps::      Equal)  return arg == val;
-	else if constexpr   (ops == AssertOps::     Nequal)  return arg != val;
+	     if constexpr   (ops == AssertOps::   Bigger  )  return val <  arg;
+	else if constexpr   (ops == AssertOps::   BigEqual)  return val <= arg;
+	else if constexpr   (ops == AssertOps:: Smaller   )  return val >  arg;
+	else if constexpr   (ops == AssertOps:: SmallEqual)  return val >= arg;
+	else if constexpr   (ops == AssertOps::      Equal)  return val == arg;
+	else if constexpr   (ops == AssertOps::     Nequal)  return val != arg;
 	else if constexpr   (ops == AssertOps::ByErrorCode)  return val() != 0;
 	else if constexpr   (ops == AssertOps::CustomTest )  return val( arg );
 	else { static_assert(ops == AssertOps::Default    ); return (bool)arg; }
