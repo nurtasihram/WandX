@@ -8,6 +8,10 @@
 #	error This project requires C++20 or later.
 #endif
 
+#if !defined(_MSVC_TRADITIONAL) || _MSVC_TRADITIONAL
+#	error This project requires a C++20 compliant preprocessor. For MSVC may need open /Zc:preprocessor option
+#endif
+
 #pragma region Macros Self-Helpers
 // macro direct operators
 #define	_mx_cat_(a, b)  a ## b
